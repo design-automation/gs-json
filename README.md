@@ -1,10 +1,14 @@
-# gs-json
+# gs-JSON
 
-General file format for modelling with geometry and semantics.
+gs-JSON is a general file format for modelling with geometry and semantics. The geometry includes both polygonal and spline based geometry. Semantics can be added to any geometric entity or collection of entities.
 
-# Topology
+# Geometry
 
-The topological structure is follows:
+Geometric entities are interconnected into a topological hierarchy. 
+
+## Topological Hierarchy
+
+The topological hierarchy is follows:
 * 0D
   * VERTEX = geometry
 * 1D
@@ -15,21 +19,22 @@ The topological structure is follows:
 
 Each WIRE has:
 * a set of connected EDGES (implicit), each of which has
-* a sequence of VERTICES, each of which is
-* associated with a point.
+* a sequence of VERTICES (implicit), each of which is
+* associated with a single point.
     
 Each FACE has:
 * a set of closed WIRES (implicit), each of which has
 * a set of connected EDGES (implicit), each of which has
-* a sequence of VERTICES, each of which is
-* associated with a point.
+* a sequence of VERTICES (implicit), each of which is
+* associated with a single point.
     
-VERTICES and EDGES are not explicitly represented. The exist implicitly. 
-For example, a polygonal or polyline has implicit EDGES and VERTICES.
+Certain levles of geometric entities are not explicitly represented. The exist implicitly. For example, a polygonal or polyline has implicit EDGES and VERTICES.
 
-# Geometry
+Other higher level topologies (such as shells, solids, and compound solids) can be created using *collections*. See below for more details. 
 
-All geometry references a list of POINTS.
+## Geometric Entities
+
+All geometric entities references a list of POINTS.
 
 The geometric entities are as follows:
 * 0D VERTICES:
@@ -58,12 +63,45 @@ This represents the following:
     
 The third element may in some cases be omitted. 
 For example, a polygon has no parameters. 
-        
+
+# Semantics
+
+Semantic information can be added to the model in two ways: *attributes* and *collections*. 
+
+## Attributes
+
+Attributes can be defined for POINTS, VERTICES, EDGES, WIRES and FACES. When an attribute is defined, all entities of that type will be assigned a value.
+
+The lists of values may typically be sparse (i.e. there may be many 'null' values) and may contain many repeat values. An efficient reveresed key-value datastructure is used. (The keys are the attribute values, and the values are arrays of entity numbers.)
+
+For example, for the list of values below:
+* [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null]
+* 0     1   2   3   4  5    6    7     8   9   10  11  12  13  14  15 16   17 <- indexes
+
+The represented is as follows:
+    {
+        "a":[1,4,12],
+        "b":[2,8,10,13,14],
+        "c":[3,9,11,15]
+    }
+
+## Collections
+
+
+Collections can have user defined properties, which are define as key-value pairs.
+Collections are reference by their unique name.
+
+A collection can contain:
+* a set of entities (possibly mixed topologival types, including implicit entities), and
+* other collections.
+
+The set of entities inside a collection are defined by indexing the geometry (i.e. the FACES, WIRES, EDGES, VERTICES, and POINTS). 
+
 ## Indexing Geometry
 
-In order to refer to the entity and sub-entities, integer arrays are used.
+In order to identify the entities and sub-entities in a collection, indexing arrays are used.
 
-The basic form of these arrays s as follows:
+The basic form of these arrays is as follows:
 * For WIRES: [wire_number, edge_number, vertex_number]
 * For FACES: [face_number, wire_number, edge_number, vertex_number]
 For example:
@@ -87,8 +125,7 @@ For example:
 * face 0, skip wires, skip edges, vertex 10:
   * [0,null,null,10]
 
-An index value may specofy a range, as follows: [from, to, step].
-The 'step' may be omitted, in which case it is assumed to be 1. 
+An index value may specofy a range, as follows: [from, to, step]. The 'step' may be omitted, in which case it is assumed to be 1. 
 For example:
 * face 0, wire 1, edges 2 to 4:
   * [0,1,[2,4]]
@@ -102,41 +139,11 @@ For example:
 * face 0, skip wires, every other edge, start vertex:
   * [0,null,[0,-1,2],0]
 
-# Semantics
+# Example
 
-ATTRIBUTES can be defined for POINTS, VERTICES, EDGES, WIRES and FACES.
-When an attribute is defined, all entities of that type will be assigned a value.
-
-The lists of values may typically be sparse (i.e. there may be many 'null' values) and
-may contain many repeat values.
-
-An efficient reveresed key-value dictionary is used.
-For example, for the list of values below:
-* [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null]
-* 0     1   2   3   4  5    6    7     8   9   10  11  12  13  14  15 16   17 <- indexes
-
-The represented is as follows:
-    {
-        'a':[1,4,12],
-        'b':[2,8,10,13,14],
-        'c':[3,9,11,15]
-    }
-
-COLLECTIONS are reference by their unique name.
-
-A COLLECTION can contain:
-* a set of entities (possibly mixed topologival types, including implicit entities)
-* other collections.
-
-COLLECTIONS can have user defined PROPERTIES, which are define as key-value pairs.
-
-COLLECTIONS can be used to represent more complex entities, such as shells, solids, and composite solids.
-
+WORK IN PROGRESS.
 
 Note: javascript comments are used in these examples even though comments are not technically allowed in JSON.
-
-# Example
-WORK IN PROGRESS.
 
 ```javascript
 {
@@ -257,29 +264,29 @@ WORK IN PROGRESS.
             }
         },
         "collections": {
-            {//this is an empty collection (which is ok), it has some properties
+            {//Empty collection (which is ok), it has some properties
                 "uuid":"xxxxx", 
                 "name":"no_geometry",
                 "properties": {"key1":value1, "key2":value2, ...},
             },
-            {//two EDGES. It has no properties (which is ok).
+            {//A collection containing two EDGES. It has no properties (which is ok).
                 "uuid":"xxxxx",  
                 "name":"some_edges", //user defined name
                 "faces":[[0,0,[0,-1,2]]], //first face, first wire, every other edge (uses ranges)
             },
-            {//two WIRES
+            {//A collection containing two WIRES
                 "uuid":"xxxxx", 
                 "name":"two_wires",
                 "faces":[[1,0],[1,1]],
                 "properties": {"key1":value1, "key2":value2, ...}
             },
-            {//a collection containing some other collections
+            {//A collection containing some other collections.
                 "uuid":"xxxxx", 
                 "name":"coll_of_colls",
                 "collections":["no_geometry", "one_vertex"],
                 "properties": {"key1":value1, "key2":value2, ...}
             },
-            {//a collection containing some random stuff
+            {//A collection containing some random stuff.
                 "uuid":"xxxxx", 
                 "name":"everything_all_mixed_up",
                 "vertices":[0,1,2],                         //three vertices
