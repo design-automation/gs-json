@@ -51,9 +51,9 @@ The geometric entities are as follows:
 More geometric entities may be added in the future.
 
 #### Point Arrays
-All geometric entities references arrays of POINTS. Multiple geometric entities can reference the same points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
+All geometric entities references arrays of POINTS. Multiple geometric entities can reference the same POINTS. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
 
-POINTS may be defined using different coordinate systems (2D, 3D, cartesian, polar, spherical). For example, a 2D cartesian points array may look like this:
+POINTS may be defined using different coordinate systems (2D, 3D, cartesian, polar, spherical). For example, a 2D cartesian POINTS array may look like this:
 * [[0.1,0.2],[0.3,0.4], ...]
 
 Each POINT array is associated with a transformation matrix that will transform the points in the array into the global 3D cartesian coordinate system. The origin of this global coordinate system is located at the *location* specific in the metadata. 
