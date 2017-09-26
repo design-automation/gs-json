@@ -9,12 +9,12 @@ Geometric entities are interconnected into a topological hierarchy.
 ## Topological Hierarchy
 
 The topological hierarchy is follows:
-* 0D
+* 0D Topology
   * VERTEX = geometry
-* 1D
+* 1D Topology
   * EDGE = geometry bounded by VERTICES
   * WIRE = geometry: a set of one or more VERTEX connected EDGES
-* 2D
+* 2D Topology
   * FACE = geometry bounded by one or more closed WIRES
 
 Each WIRE has:
@@ -34,7 +34,7 @@ Other higher level topologies (such as shells, solids, and compound solids) can 
 
 ## Geometric Entities
 
-All geometric entities references a list of POINTS.
+All geometric entities references an array of POINTS.
 
 The geometric entities are as follows:
 * 0D VERTICES:
@@ -58,9 +58,9 @@ So, for example, a polyline is defined as follows:
 
 This represents the following:
 1. type = 100, i.e. polyline
-1. vertex indices = [[0,0],[0,1],[0,2],[0,3]]
+1. vertex indices = [[0,0],[0,1],[0,2],[0,3]], referring to the arrays of points. 
 1. additional parameters = 0, open polyline
-    
+
 The third element may in some cases be omitted. 
 For example, a polygon has no parameters. 
 
@@ -72,9 +72,9 @@ Semantic information can be added to the model in two ways: *attributes* and *co
 
 Attributes can be defined for POINTS, VERTICES, EDGES, WIRES and FACES. When an attribute is defined, all entities of that type will be assigned a value.
 
-The lists of values may typically be sparse (i.e. there may be many 'null' values) and may contain many repeat values. An efficient reveresed key-value datastructure is used. (The keys are the attribute values, and the values are arrays of entity numbers.)
+The array of values may typically be sparse (i.e. there may be many 'null' values) and may contain many repeat values. An efficient reveresed key-value datastructure is used. (The keys are the attribute values, and the values are arrays of entity numbers.)
 
-For example, for the list of values below:
+For example, for the arry of values below:
 * [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null]
 * 0     1   2   3   4  5    6    7     8   9   10  11  12  13  14  15 16   17 <- indexes
 
@@ -170,9 +170,9 @@ Note: javascript comments are used in these examples even though comments are no
     //---------------------------------------------------------------------------------------------
     "geometry": {
         "points": [
-            [[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],           //list of 2d [x,y] coordinates
-            [[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],  //list of 3d [x,y,z] coordinates
-            [[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]   //list of 3d [x,y,z] coordinates
+            [[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],           //array of 2d [x,y] coordinates
+            [[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],  //array of 3d [x,y,z] coordinates
+            [[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]   //array of 3d [x,y,z] coordinates
         ]
         "xforms": [
             [1,0,0,20, 0,1,0,0, 0,0,1,0, 0,0,0,1],   //point transformation matrix, 4x4
