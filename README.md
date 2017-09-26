@@ -88,8 +88,7 @@ The represented is as follows:
 ## Collections
 
 
-Collections can have user defined properties, which are define as key-value pairs.
-Collections are reference by their unique name.
+Collections can have user defined properties, which are define as key-value pairs. 
 
 A collection can contain:
 * a set of entities (possibly mixed topologival types, including implicit entities), and
@@ -104,6 +103,7 @@ In order to identify the entities and sub-entities in a collection, indexing arr
 The basic form of these arrays is as follows:
 * For WIRES: [wire_number, edge_number, vertex_number]
 * For FACES: [face_number, wire_number, edge_number, vertex_number]
+
 For example:
 * wire 0, edge 1, vertex 0:
   * [0,1,0] 
