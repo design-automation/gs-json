@@ -3,11 +3,9 @@
 gs-JSON is a general file format for modelling with geometry and semantics. The geometry includes both polygonal and spline based geometry. Semantics can be added to any geometric entity or collection of entities.
 
 # Geometry
-
 Geometric entities are interconnected into a topological hierarchy. 
 
 ## Topological Hierarchy
-
 The topological hierarchy is follows:
 * 0D Topology
   * VERTEX = geometry
@@ -17,25 +15,25 @@ The topological hierarchy is follows:
 * 2D Topology
   * FACE = geometry bounded by one or more closed WIRES
 
+### Wires
 Each WIRE has:
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
 * associated with a single point.
-    
+
+### Faces
 Each FACE has:
 * a set of closed WIRES (implicit), each of which has
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
 * associated with a single point.
     
-Certain levles of geometric entities are not explicitly represented. The exist implicitly. For example, a polygonal or polyline has implicit EDGES and VERTICES.
+### Implicit Entities
+Certain entities are not explicitly represented in the geometry. The exist implicitly. For example, a polygonal has an explicitly defined FACE, but the WIRES, EDGES and VERTICES are all implicit. 
 
 Other higher level topologies (such as shells, solids, and compound solids) can be created using *collections*. See below for more details. 
 
 ## Geometric Entities
-
-All geometric entities references an array of POINTS.
-
 The geometric entities are as follows:
 * 0D VERTICES:
   * 0 - Acorn
@@ -50,26 +48,38 @@ The geometric entities are as follows:
   * 230 - NURBS Surface
   * 231 - Bezier Surface
 
-Each geometric entity is defined as by an array of three elements as follows: 
-* [type, [vertex indices], additional parameters]
+More geometric entities may be added in the future.
+
+### Point Arrays
+All geometric entities references arrays of POINTS. Multiple geometric entities can reference the same points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
+
+POINTS may be defined using different coordinate systems (2D, 3D, cartesian, polar, spherical). For example, a 2D cartesian points array may look like this:
+* [[0.1,0.2],[0.3,0.4], ...]
+
+Each POINT array is associated with a transformation matrix that will transform the points in the array into the global 3D cartesian coordinate system. The origin of this global coordinate system is located at the *location* specific in the metadata. 
+
+VERTICES index the POINTS in the point arrays as follows:
+* [array number, point number]
+
+### Wire/Face Arrays
+For maximum compactness, WIRES and FACES are represented using integer arrays, consisting of three elements as follows: 
+* [type, [point indices], additional parameters]
 
 So, for example, a polyline is defined as follows:
 * [100,[[0,0],[0,1],[0,2],[0,3]],0]
 
 This represents the following:
 1. type = 100, i.e. polyline
-1. vertex indices = [[0,0],[0,1],[0,2],[0,3]], referring to the arrays of points. 
+1. point indices = [[0,0],[0,1],[0,2],[0,3]], referring to the arrays of points. 
 1. additional parameters = 0, open polyline
 
 The third element may in some cases be omitted. 
 For example, a polygon has no parameters. 
 
 # Semantics
-
 Semantic information can be added to the model in two ways: *attributes* and *collections*. 
 
 ## Attributes
-
 Attributes can be defined for POINTS, VERTICES, EDGES, WIRES and FACES. When an attribute is defined, all entities of that type will be assigned a value.
 
 The array of values may typically be sparse (i.e. there may be many 'null' values) and may contain many repeat values. An efficient reveresed key-value datastructure is used. (The keys are the attribute values, and the values are arrays of entity numbers.)
@@ -78,7 +88,7 @@ For example, for the arry of values below:
 * [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null]
 * 0     1   2   3   4  5    6    7     8   9   10  11  12  13  14  15 16   17 <- indexes
 
-The represented is as follows:
+The represented is as follows: 
     {
         "a":[1,4,12],
         "b":[2,8,10,13,14],
@@ -86,8 +96,6 @@ The represented is as follows:
     }
 
 ## Collections
-
-
 Collections can have user defined properties, which are define as key-value pairs. 
 
 A collection can contain:
@@ -97,7 +105,6 @@ A collection can contain:
 The set of entities inside a collection are defined by indexing the geometry (i.e. the FACES, WIRES, EDGES, VERTICES, and POINTS). 
 
 ## Indexing Geometry
-
 In order to identify the entities and sub-entities in a collection, indexing arrays are used.
 
 The basic form of these arrays is as follows:
@@ -150,12 +157,12 @@ Note: javascript comments are used in these examples even though comments are no
     //---------------------------------------------------------------------------------------------
     //Some meta data
 	"metadata": {
-		"filetype":"mobius",
-        "version": 1.0,
-        "schema":"xxx",
-        "crs": {"epsg":3857},
-		"location": "+40.6894-074.0447" //ISO 6709, ±DD.DDDD±DDD.DDDD degrees format
-	},
+	    "filetype":"mobius",
+            "version": 1.0,
+            "schema":"xxx",
+            "crs": {"epsg":3857},
+	    "location": "+40.6894-074.0447" //ISO 6709, ±DD.DDDD±DDD.DDDD degrees format
+    },
     //---------------------------------------------------------------------------------------------
     "skins": {
         //See https://github.com/mrdoob/three.js/wiki/JSON-Texture-format-4
@@ -170,27 +177,37 @@ Note: javascript comments are used in these examples even though comments are no
     //---------------------------------------------------------------------------------------------
     "geometry": {
         "points": [
-            [[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],           //array of 2d [x,y] coordinates
-            [[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],  //array of 3d [x,y,z] coordinates
-            [[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]   //array of 3d [x,y,z] coordinates
+	    {
+	        "type":"2d_cartesian",
+                "coords":[[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],    //array of 2d [x,y] coordinates
+	        "xform":[1,0,0,20, 0,1,0,0, 0,0,1,0, 0,0,0,1],        //point transformation matrix, 4x4
+	    },
+	    {
+	        "type":"3d_cartesian",
+                "coords":[[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],  //array of 3d [x,y,z] coordinates
+	        "xform":[1,0,0,30, 0,1,0,0, 0,0,1,0, 0,0,0,1],               //point transformation matrix, 4x4
+	    },
+	    {
+	        "type":"3d_cartesian",
+                "coords":[[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]   //array of 3d [x,y,z] coordinates
+	        "xform":[1,0,0,40, 0,1,0,0, 0,0,1,0, 0,0,0,1],               //point transformation matrix, 4x4
+	    }
         ]
-        "xforms": [
-            [1,0,0,20, 0,1,0,0, 0,0,1,0, 0,0,0,1],   //point transformation matrix, 4x4
-            [1,0,0,30, 0,1,0,0, 0,0,1,0, 0,0,0,1],   //point transformation matrix, 4x4
-            [1,0,0,40, 0,1,0,0, 0,0,1,0, 0,0,0,1]    //point transformation matrix, 4x4
-        ],
         "vertices": [
             [0, [0,0]],            //acorn   [type, [origin vtx_id]]
             [1, [0,0], [1,1,1]],   //ray     [type, [origin vtx_id], [ray vector]]
             [2, [1,1], [1,0,0]]    //plane   [type, [origin vtx_id], [plane normal vector]]
+	    //...
         ]
         "wires": [
             [100, [[0,0],[0,1],[0,2],[0,3]], 0],   //planar open polyline, open (3 edges)  [type, [vtx_ids], [open_closed]]
             [100, [[1,0],[1,1],[1,2],[1,3]], 1],   //3d closed polylines (4 edges)         [type, [vtx_ids], [open_closed]]
+	    //...
         ]
         "faces": [
             [200, [[[2,50],[2,51],[2,52],[2,53]]]],                //polygon              [type, [[periphery vtx_ids]], []]
             [200, [[[1,60],[1,61],[1,62]],[[1,3],[1,4],[1,5]]]],   //polygon with a hole  [type, [[periphery vtx_ids],[hole 1 vtx_ids],[hole 1 vtx_ids]]]
+	    //...
         ]
     }
     //---------------------------------------------------------------------------------------------
@@ -201,9 +218,9 @@ Note: javascript comments are used in these examples even though comments are no
                 "name":"trees",
                 "level":"points", 
                 "values": {
-                    "raintree.czml":[1,3,5,6,7,8,11,...],
-                    "oaktree.czml":[2,3,20,22,...],
-                    ...
+                    "raintree":[1,3,5,6,7,8,11,...],
+                    "oaktree":[2,3,20,22,...],
+                    //...
                 }
             },
             {//some data attached to all the implicit EDGES
@@ -214,7 +231,7 @@ Note: javascript comments are used in these examples even though comments are no
                     "timber":[5,23,67,99,...],
                     "steel":[25,27,44,52,...],
                     "concrete":[1,45,46,87,...],
-                    ...
+                    //...
                 }
             },
             {//some data attached to all the FACES
@@ -227,7 +244,7 @@ Note: javascript comments are used in these examples even though comments are no
                     264:[3],
                     422:[4],
                     124:[5],
-                    ...
+                    //...
                 }
             },
             {//the viewer may "recognise" this attrib and render the geometry accordingly
@@ -238,7 +255,7 @@ Note: javascript comments are used in these examples even though comments are no
                     0:[1,2,4,6,7],
                     1:[8,9,12,44,66],
                     2:[55,77],
-                    ...
+                    //...
                 }            
             },
             {//the viewer may "recognise" this attrib and render the geometry accordingly
@@ -248,7 +265,7 @@ Note: javascript comments are used in these examples even though comments are no
                 "values": {
                     [0.3,0.2,0.4]:[1,2,4,6,7],
                     [0.7,0.2,0.3]:[8,9,12,44,66],
-                    ...
+                    //...
                 }            
             },
             {//the viewer may "recognise" this attrib and render the geometry accordingly
@@ -259,7 +276,7 @@ Note: javascript comments are used in these examples even though comments are no
                     [0.0,0.0,1.0]:[1,3,5,7,9,...],
                     [0.0,1.0,1.0]:[2,4,6,8,...],
                     [1.0,0.0,1.0]:[10,20,30,40,...],
-                    ....
+                    //....
                 }
             }
         },
