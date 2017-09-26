@@ -29,7 +29,7 @@ Each FACE has:
 * associated with a single point.
     
 #### Implicit Entities
-Certain entities are not explicitly represented in the geometry. The exist implicitly. For example, a polygonal has an explicitly defined FACE, but the WIRES, EDGES and VERTICES are all implicit. 
+Internal entities are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal has an explicitly defined FACE and POINTS, but the WIRES, EDGES and VERTICES are all implicit. 
 
 Other higher level topologies (such as shells, solids, and compound solids) can be created using *collections*. See below for more details. 
 
