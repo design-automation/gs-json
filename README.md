@@ -86,7 +86,6 @@ The array of values may typically be sparse (i.e. there may be many 'null' value
 
 For example, for the arry of values below:
 * [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null]
-* 0     1   2   3   4  5    6    7     8   9   10  11  12  13  14  15 16   17 <- indexes
 
 The represented is as follows: 
     {
@@ -177,21 +176,18 @@ Note: javascript comments are used in these examples even though comments are no
     //---------------------------------------------------------------------------------------------
     "geometry": {
         "points": [
-	    {
-	        "type":"2d_cartesian",
-                "coords":[[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],    //array of 2d [x,y] coordinates
-	        "xform":[1,0,0,20, 0,1,0,0, 0,0,1,0, 0,0,0,1],        //point transformation matrix, 4x4
-	    },
-	    {
-	        "type":"3d_cartesian",
-                "coords":[[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],  //array of 3d [x,y,z] coordinates
-	        "xform":[1,0,0,30, 0,1,0,0, 0,0,1,0, 0,0,0,1],               //point transformation matrix, 4x4
-	    },
-	    {
-	        "type":"3d_cartesian",
-                "coords":[[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]   //array of 3d [x,y,z] coordinates
-	        "xform":[1,0,0,40, 0,1,0,0, 0,0,1,0, 0,0,0,1],               //point transformation matrix, 4x4
-	    }
+	    [
+                [[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],            //array of 2d [x,y] coordinates
+	        [1,0,0,20, 0,1,0,0, 0,0,1,0, 0,0,0,1]                //point transformation matrix, 4x4
+	    ],
+	    [
+                [[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],   //array of 3d [x,y,z] coordinates
+	        [1,0,0,30, 0,1,0,0, 0,0,1,0, 0,0,0,1]                //point transformation matrix, 4x4
+	    ],
+	    [
+                [[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]    //array of 3d [x,y,z] coordinates
+	        [1,0,0,40, 0,1,0,0, 0,0,1,0, 0,0,0,1]                //point transformation matrix, 4x4
+	    ]
         ]
         "vertices": [
             [0, [0,0]],            //acorn   [type, [origin vtx_id]]
