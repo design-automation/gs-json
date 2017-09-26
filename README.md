@@ -2,54 +2,54 @@
 
 General file format for modelling with geometry and semantics.
 
-#Topology
+# Topology
 
 The topological structure is follows:
-*0D
-  *VERTEX = geometry
-*1D
-  *EDGE = geometry bounded by VERTICES
-  *WIRE = geometry: a set of one or more VERTEX connected EDGES
-*2D
-  *FACE = geometry bounded by one or more closed WIRES
+* 0D
+  * VERTEX = geometry
+* 1D
+  * EDGE = geometry bounded by VERTICES
+  * WIRE = geometry: a set of one or more VERTEX connected EDGES
+* 2D
+  * FACE = geometry bounded by one or more closed WIRES
 
 Each WIRE has:
-*a set of connected EDGES (implicit), each of which has
-*a sequence of VERTICES, each of which is
-*associated with a point.
+* a set of connected EDGES (implicit), each of which has
+* a sequence of VERTICES, each of which is
+* associated with a point.
     
 Each FACE has:
-*a set of closed WIRES (implicit), each of which has
-*a set of connected EDGES (implicit), each of which has
-*a sequence of VERTICES, each of which is
-*associated with a point.
+* a set of closed WIRES (implicit), each of which has
+* a set of connected EDGES (implicit), each of which has
+* a sequence of VERTICES, each of which is
+* associated with a point.
     
 VERTICES and EDGES are not explicitly represented. The exist implicitly. 
 For example, a polygonal or polyline has implicit EDGES and VERTICES.
 
-#Geometry
+# Geometry
 
 All geometry references a list of POINTS.
 
 The geometric entities are as follows:
 * 0D VERTICES:
-  *0 - Acorn
-  *1 - Ray
-  *2 - Plane
+  * 0 - Acorn
+  * 1 - Ray
+  * 2 - Plane
 * 1D WIRES, an array of:
-  *100 - Polyline
-  *130 - NURBS curve
-  *131 - Bezier curve
+  * 100 - Polyline
+  * 130 - NURBS curve
+  * 131 - Bezier curve
 * 2D FACES:
-  *200 - Polygon
-  *230 - NURBS Surface
-  *231 - Bezier Surface
+  * 200 - Polygon
+  * 230 - NURBS Surface
+  * 231 - Bezier Surface
 
 Each geometric entity is defined as by an array of three elements as follows: 
-*[type, [vertex indices], additional parameters]
+* [type, [vertex indices], additional parameters]
 
 So, for example, a polyline is defined as follows:
-*[100,[[0,0],[0,1],[0,2],[0,3]],0]
+* [100,[[0,0],[0,1],[0,2],[0,3]],0]
 
 This represents the following:
 1. type = 100, i.e. polyline
@@ -59,50 +59,50 @@ This represents the following:
 The third element may in some cases be omitted. 
 For example, a polygon has no parameters. 
         
-#Indexing Geometry
+## Indexing Geometry
 
 In order to refer to the entity and sub-entities, integer arrays are used.
 
 The basic form of these arrays s as follows:
-*For WIRES: [wire_number, edge_number, vertex_number]
-*For FACES: [face_number, wire_number, edge_number, vertex_number]
+* For WIRES: [wire_number, edge_number, vertex_number]
+* For FACES: [face_number, wire_number, edge_number, vertex_number]
 For example:
-*wire 0, edge 1, vertex 0:
-  *[0,1,0] 
-*face 0, wire 1, edge 2, vertex 0:
-  *[0,1,2,0] 
+* wire 0, edge 1, vertex 0:
+  * [0,1,0] 
+* face 0, wire 1, edge 2, vertex 0:
+  * [0,1,2,0] 
 
 An index array may be truncated.
 For example, 
-*face 0, wire 1, edge 2:
-  *[0,1,2] No need to specify any vertices.
+* face 0, wire 1, edge 2:
+  * [0,1,2] No need to specify any vertices.
 
 An index value may use right side indexing, i.e. negative numbers (c.f. Python slicing).
 For example:
-*face 0, wire 1, last edge:
-  *[0,1,-1]
+* face 0, wire 1, last edge:
+  * [0,1,-1]
 
 An index value may be 'null', indicating that the level should be skipped.
 For example:
-*face 0, skip wires, skip edges, vertex 10:
-  *[0,null,null,10]
+* face 0, skip wires, skip edges, vertex 10:
+  * [0,null,null,10]
 
 An index value may specofy a range, as follows: [from, to, step].
 The 'step' may be omitted, in which case it is assumed to be 1. 
 For example:
-*face 0, wire 1, edges 2 to 4:
-  *[0,1,[2,4]]
-*face 0, wire 1, last three edges:
-  *[0,1,[-3,-1]]
-*face 0, wire 1, all edges:
-  *[0,1,[0,-1]]
+* face 0, wire 1, edges 2 to 4:
+  * [0,1,[2,4]]
+* face 0, wire 1, last three edges:
+  * [0,1,[-3,-1]]
+* face 0, wire 1, all edges:
+  * [0,1,[0,-1]]
 
 The above may all be combined.
 For example:
-*face 0, skip wires, every other edge, start vertex:
-  *[0,null,[0,-1,2],0]
+* face 0, skip wires, every other edge, start vertex:
+  * [0,null,[0,-1,2],0]
 
-#Semantics
+# Semantics
 
 ATTRIBUTES can be defined for POINTS, VERTICES, EDGES, WIRES and FACES.
 When an attribute is defined, all entities of that type will be assigned a value.
@@ -112,7 +112,7 @@ may contain many repeat values.
 
 An efficient reveresed key-value dictionary is used.
 For example, for the list of values below:
-*[null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null]
+* [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null]
 * 0     1   2   3   4  5    6    7     8   9   10  11  12  13  14  15 16   17 <- indexes
 
 The represented is as follows:
@@ -125,8 +125,8 @@ The represented is as follows:
 COLLECTIONS are reference by their unique name.
 
 A COLLECTION can contain:
-*a set of entities (possibly mixed topologival types, including implicit entities)
-*other collections.
+* a set of entities (possibly mixed topologival types, including implicit entities)
+* other collections.
 
 COLLECTIONS can have user defined PROPERTIES, which are define as key-value pairs.
 
@@ -135,7 +135,9 @@ COLLECTIONS can be used to represent more complex entities, such as shells, soli
 
 Note: javascript comments are used in these examples even though comments are not technically allowed in JSON.
 
+# Example
 WORK IN PROGRESS.
+
 ```javascript
 {
     //---------------------------------------------------------------------------------------------
