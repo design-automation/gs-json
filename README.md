@@ -15,20 +15,20 @@ The topological hierarchy is follows:
 * 2D Topology
   * FACE = geometry bounded by one or more closed WIRES
 
-### Wires
+##### Wires
 Each WIRE has:
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
 * associated with a single point.
 
-### Faces
+##### Faces
 Each FACE has:
 * a set of closed WIRES (implicit), each of which has
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
 * associated with a single point.
     
-### Implicit Entities
+##### Implicit Entities
 Certain entities are not explicitly represented in the geometry. The exist implicitly. For example, a polygonal has an explicitly defined FACE, but the WIRES, EDGES and VERTICES are all implicit. 
 
 Other higher level topologies (such as shells, solids, and compound solids) can be created using *collections*. See below for more details. 
@@ -50,7 +50,7 @@ The geometric entities are as follows:
 
 More geometric entities may be added in the future.
 
-### Point Arrays
+##### Point Arrays
 All geometric entities references arrays of POINTS. Multiple geometric entities can reference the same points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
 
 POINTS may be defined using different coordinate systems (2D, 3D, cartesian, polar, spherical). For example, a 2D cartesian points array may look like this:
@@ -61,7 +61,7 @@ Each POINT array is associated with a transformation matrix that will transform 
 VERTICES index the POINTS in the point arrays as follows:
 * [array number, point number]
 
-### Wire/Face Arrays
+##### Wire/Face Arrays
 For maximum compactness, WIRES and FACES are represented using integer arrays, consisting of three elements as follows: 
 * [type, [point indices], additional parameters]
 
@@ -104,7 +104,7 @@ A collection can contain:
 
 The set of entities inside a collection are defined by indexing the geometry (i.e. the FACES, WIRES, EDGES, VERTICES, and POINTS). 
 
-## Indexing Geometry
+##### Indexing Geometry
 In order to identify the entities and sub-entities in a collection, indexing arrays are used.
 
 The basic form of these arrays is as follows:
