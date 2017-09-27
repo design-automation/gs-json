@@ -154,8 +154,7 @@ Note: javascript comments are used in these examples even though comments are no
 ```javascript
 {
     //---------------------------------------------------------------------------------------------
-    //Some meta data
-	"metadata": {
+    "metadata": {
 	    "filetype":"mobius",
             "version": 1.0,
             "schema":"xxx",
