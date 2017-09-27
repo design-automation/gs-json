@@ -1,6 +1,10 @@
 # gs-JSON
 
-gs-JSON is a general file format for modelling with geometry and semantics. The geometry includes both polygonal and spline based geometry. Semantics can be added to any geometric entity or collection of entities.
+gs-JSON is a spatial modelling file format that integrates geometry and semantics. Geometry includes both polygonal and spline based geometry. Semantics consists of key-value pairs linked to entities in the model in two ways:
+1. by specifying *attributes* linked to geometric entities at specific topological levels, and/or
+1. by specifying *properties* linked to collections of geometric entities.   
+
+These two approaches (attributes and properties) to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes have been further generalised, allowing them to be added to topological levels that are implicit within the geometry. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric entities can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON is domain agnostic and therefore does not specify any domain-specific semantics. 
 
 # Geometry
 Geometric entities are interconnected into a topological hierarchy. 
@@ -8,12 +12,13 @@ Geometric entities are interconnected into a topological hierarchy.
 ## Topological Hierarchy
 The topological hierarchy is follows:
 * 0D Topology
-  * VERTEX = geometry
+  * POINT = a point is space.
+  * VERTEX = a geometric node linked to a POINT.
 * 1D Topology
-  * EDGE = geometry bounded by VERTICES
-  * WIRE = geometry: a set of one or more VERTEX connected EDGES
+  * EDGE = a line or curve bounded by start and end VERTICES.
+  * WIRE = a set of one or more connected EDGES, either open or closed.
 * 2D Topology
-  * FACE = geometry bounded by one or more closed WIRES
+  * FACE = a surface bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.
 
 #### Wires
 Each WIRE has:
@@ -29,7 +34,7 @@ Each FACE has:
 * associated with a single point.
     
 #### Implicit Entities
-Internal entities are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal has an explicitly defined FACE and POINTS, but the WIRES, EDGES and VERTICES are all implicit. 
+In order to ensure that the file format is efficient and compact, internal entities are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal has an explicitly defined FACE and POINTS, but the WIRES, EDGES and VERTICES are all implicit. 
 
 Other higher level topologies (such as shells, solids, and compound solids) can be created using *collections*. See below for more details. 
 
