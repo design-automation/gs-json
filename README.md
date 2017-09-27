@@ -2,7 +2,7 @@
 
 gs-JSON is a spatial modelling file format that integrates geometry and semantics. Geometry includes both polygonal and spline based geometry. Semantics consists of key-value pairs linked to entities in the model in two ways:
 1. by specifying *attributes* linked to geometric entities at specific topological levels, and/or
-1. by specifying *properties* linked to collections of geometric entities.   
+1. by specifying *properties* linked to nested collections of geometric entities.   
 
 These two approaches (attributes and properties) to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes have been further generalised, allowing them to be added to topological levels that are implicit within the geometry. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric entities can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON is domain agnostic and therefore does not specify any domain-specific semantics. 
 
