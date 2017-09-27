@@ -1,6 +1,6 @@
 # gs-JSON
 
-gs-JSON is a spatial modelling file format that integrates geometry and semantics. Geometry includes both polygonal and spline based geometry. Semantics consists of key-value pairs linked to entities in the model in two ways:
+gs-JSON is a domain agnostic spatial modelling file format that integrates geometry and semantics. Geometry includes both polygonal and spline based geometry. Semantics consists of key-value pairs linked to entities in the model in two ways:
 1. by specifying *attributes* linked to geometric entities at specific topological levels, and/or
 1. by specifying *properties* linked to nested collections of geometric entities.   
 
