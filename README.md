@@ -106,8 +106,10 @@ If the entity has no additional parameters, then the third element may be an emp
 # Semantic Representation
 Within a js-JSON file, all semantics is defined in a two arrays, as follows:
 ```javascript
-"attributes":  [ ... ],
-"collections": [ ... ],
+"semantics": {
+	"attributes":  [ ... ],
+	"collections": [ ... ]
+}
 ```
 
 The attributes and collections arrays each contain objects that define teh semantics.
