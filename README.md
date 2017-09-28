@@ -156,24 +156,19 @@ The basic form of the indexing arrays is as follows:
 
 The *topology index* refers to one of the four sub-arrays: either the POINTS, VERTICES, WIRES or FACES. The value must therefore be in the range [0-4].
 
-The entity index array points to specific geometric entities or ranges of entities. The first element in the array is the *topology index*, which identifies the topological level. This is followed by indices that dig down into the geometry, through the topological levels. The basic form of these arrays are as follows:
-* For indexing POINTS: [0, point_set_index, point_index]
-* For indexing VERTEX entities: [0, vertex_index]
-* For indexing WIRE entities: [1, wire_index, edge_index, vertex_index]
-* For indexing FACE entities: [2, face_index, wire_index, edge_index, vertex_index]
-
-It is important to note that the entity index array can point to implicit geometric entities.
-
-For example, here are two examples of entity index arrays:
-* wire 0, edge 1, vertex 0:
-  * [1,0,1,0]
-* face 0, wire 1, edge 2, vertex 0:
-  * [2,0,1,2,0]
+The entity index array referes to specific geometric entities or ranges of entities. The first element in the array is the *topology index*, which identifies the topological level. This is followed by indices that dig down into the geometry, through the topological levels. The basic form of these arrays are as follows:
+* For indexing VERTEX entities: [0, vertex_index, point_index]
+* For indexing WIRE entities:   [1, wire_index, implicit_edge_index, implicit_vertex_index, point_index]
+* For indexing FACE entities:   [2, face_index, implicit_wire_index, implicit_edge_index, implicit_vertex_index, point_index]
 
 An entity index array may be truncated.
 For example, 
+* wire 0, edge 1, vertex 0:
+  * [1,0,1,0]
 * face 0, wire 1, edge 2:
-  * [2,0,1,2] No need to specify any vertices.
+  * [2,0,1,2]
+  
+The *point_index* must be 0 (assumng it has not been truncated). This is because a vertex can only have one point. For straight line polygonal geometry, the *implicit_edge_index* must be either 0 or 1, since straight line edges can only have two vertices. 
 
 An entity index value may use right side indexing, i.e. negative numbers (c.f. Python slicing).
 For example:
