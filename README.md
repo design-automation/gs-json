@@ -68,13 +68,13 @@ These two approaches to adding semantics to a model are based on existing approa
 Within a gs-JSON file, the all geometry is defined in a single array containing four sub-arrays, as follows:
 ```javascript
 "geometry": [
-	[ ... ], //POINTS array
+	[ ... ], //POINTSETS array
 	[ ... ], //VERTICES array
 	[ ... ], //WIRES array
 	[ ... ], //FACES array
 ]
 ```
-## Points Array
+## Pointsets Array
 POINTSETS may be defined that use different coordinate systems (2D, 3D, cartesian, polar, spherical). Each POINTSET is associated with a 4x4 transformation matrix that will transform the points in the array into the global 3D cartesian coordinate system. The origin of this global coordinate system is located at the *location* specific in the metadata. (See https://threejs.org/docs/#api/math/Matrix4 for more informatio about the transformation matrix form.)
 
 The POINTS array con contain multipl POINTSETS, each of which is represented as follows: 
