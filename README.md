@@ -150,7 +150,10 @@ For example:
 
 WORK IN PROGRESS.
 
-Note: javascript comments are used in these examples even though comments are not technically allowed in JSON.
+There are some examples files here:
+* https://github.com/phtj/gs-JSON/tree/master/tests
+
+Below is an annoted example. Note that javascript style comments are used even though comments are not technically allowed in JSON.
 
 ```javascript
 {
