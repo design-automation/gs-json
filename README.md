@@ -87,17 +87,13 @@ Semantic information can be added to the model in two ways: *attributes* and *co
 ## Attributes
 Attributes can be defined for POINTS, VERTICES, EDGES, WIRES and FACES. When an attribute is defined, all entities of that type will be assigned a value.
 
-The array of values may typically be sparse (i.e. there may be many 'null' values) and may contain many repeat values. An efficient reveresed key-value datastructure is used. (The keys are the attribute values, and the values are arrays of entity numbers.)
+The array of values may typically be sparse (i.e. there may be many 'null' values) and may contain many repeat values. An efficient reveresed list is sued, where the first item is the value and the second item is an array of entity indexes. (Using JSON objects does not work, since keys that are not strings will cause problems.)
 
 For example, for the arry of values below:
 * [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null]
 
 The represented is as follows: 
-    {
-        "a":[1,4,12],
-        "b":[2,8,10,13,14],
-        "c":[3,9,11,15]
-    }
+* [["a",[1,4,12]],["b",[2,8,10,13,14]],["c",[3,9,11,15]]]
 
 ## Collections
 Collections can have user defined properties, which are define as key-value pairs. 
@@ -217,67 +213,67 @@ Note: javascript comments are used in these examples even though comments are no
                 "uuid":"xxxxx",
                 "name":"trees",
                 "level":"points", 
-                "values": {
-                    "raintree":[1,3,5,6,7,8,11,...],
-                    "oaktree":[2,3,20,22,...],
+                "values": [
+                    ["raintree",  [1,3,5,6,7,8,11,...]],
+                    ["oaktree",   [2,3,20,22,...]],
                     //...
-                }
+                ]
             },
             {//some data attached to all the implicit EDGES
                 "uuid":"xxxxx",
                 "name":"construction",
                 "level":"edges" 
-                "values": {
-                    "timber":[5,23,67,99,...],
-                    "steel":[25,27,44,52,...],
-                    "concrete":[1,45,46,87,...],
+                "values": [
+                    ["timber",   [5,23,67,99,...]],
+                    ["steel",    [25,27,44,52,...]],
+                    ["concrete", [1,45,46,87,...]],
                     //...
-                }
+                ]
             },
             {//some data attached to all the FACES
                 "uuid":"xxxxx",
                 "name":"insolation",
                 "level":"faces" 
-                "values": {
-                    123:[1],
-                    567:[2],
-                    264:[3],
-                    422:[4],
-                    124:[5],
+                "values": [
+                    [123, [1]],
+                    [567, [2]],
+                    [264, [3]],
+                    [422, [4]],
+                    [124, [5]],
                     //...
-                }
+                ]
             },
             {//the viewer may "recognise" this attrib and render the geometry accordingly
                 "uuid":"xxxxx",
                 "name":"materials",
                 "level":"faces"
-                "values": {
-                    0:[1,2,4,6,7],
-                    1:[8,9,12,44,66],
-                    2:[55,77],
+                "values": [
+                    [0, [1,2,4,6,7]],
+                    [1, [8,9,12,44,66]],
+                    [2, [55,77]],
                     //...
-                }            
+                ]            
             },
             {//the viewer may "recognise" this attrib and render the geometry accordingly
                 "uuid":"xxxxx",
                 "name":"color",
                 "level":"vertices"
-                "values": {
-                    [0.3,0.2,0.4]:[1,2,4,6,7],
-                    [0.7,0.2,0.3]:[8,9,12,44,66],
+                "values": [
+                    [[0.3,0.2,0.4], [1,2,4,6,7]],
+                    [[0.7,0.2,0.3], [8,9,12,44,66]],
                     //...
-                }            
+                ]            
             },
             {//the viewer may "recognise" this attrib and render the geometry accordingly
                 "uuid":"xxxxx",
                 "name":"normals":
                 "level":"vertices"
-                "values": {
-                    [0.0,0.0,1.0]:[1,3,5,7,9,...],
-                    [0.0,1.0,1.0]:[2,4,6,8,...],
-                    [1.0,0.0,1.0]:[10,20,30,40,...],
+                "values": [
+                    [[0.0,0.0,1.0], [1,3,5,7,9,...]],
+                    [[0.0,1.0,1.0], [2,4,6,8,...]],
+                    [[1.0,0.0,1.0], [10,20,30,40,...]],
                     //....
-                }
+                ]
             }
         },
         "collections": {
