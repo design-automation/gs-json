@@ -67,12 +67,14 @@ These two approaches to adding semantics to a model are based on existing approa
 # Geometric Representation
 Within a gs-JSON file, the all geometry is defined in a single array containing four sub-arrays, as follows:
 ```javascript
-"geometry": [
-	[ ... ], //POINTSETS array
-	[ ... ], //VERTICES array
-	[ ... ], //WIRES array
-	[ ... ], //FACES array
-]
+"geometry": {
+	"pointsets": [ ... ], //POINTSETS array
+	"entities": [
+		[ ... ], //VERTICES array
+		[ ... ], //WIRES array
+		[ ... ], //FACES array
+	]
+}
 ```
 ## Pointsets Array
 POINTSETS may be defined that use different coordinate systems (2D, 3D, cartesian, polar, spherical). Each POINTSET is associated with a 4x4 transformation matrix that will transform the points in the array into the global 3D cartesian coordinate system. The origin of this global coordinate system is located at the *location* specific in the metadata. (See https://threejs.org/docs/#api/math/Matrix4 for more informatio about the transformation matrix form.)
@@ -89,12 +91,12 @@ For example, lets say there are two POINTSETS (one 2D and another 3D) containing
 A sequence of four VERTICES can index these four points as follows:
 * [  [0,[0,1]],  [1,[0,1]]  ]
 
-## Vertex/Wire/Face Entities Array
-For maximum compactness, VERTEX, WIRE, and FACE entities are represented using integer arrays, consisting of three elements as follows: 
-* [type, [point indices], additional parameters]
+## Entities Array
+For maximum compactness, entities are represented using integer arrays, consisting of three elements as follows: 
+* [type, [array of point indices], [array of additional parameters]]
 
 So, for example, a polyline is defined as follows:
-* [100, [[0,[0,1]],[1,[0,1]]], 0]
+* [100, [[0,[0,1]],[1,[0,1]]], [0]]
 
 This represents the following:
 1. type = 100, i.e. polyline
@@ -147,55 +149,55 @@ Collections objects are defined as follows:
 *Properties* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
 
 ## Indexing Geometry
-In order to identify specific entities in the geometry array, a special indexing system is used.
+In order to identify specific entities in the geometry array, a special *entity index array* is used.
 
 The basic form of the indexing arrays is as follows:
-* [topology_index, entity_index_array]
+* [topology_index, ....]
 
 The *topology index* refers to one of the four sub-arrays: either the POINTS, VERTICES, WIRES or FACES. The value must therefore be in the range [0-4].
 
-The *entity index array* points to specific geometric entities or ranges of entities. The length of the indexing array will vary depending on the value of the topology index. The most basic form of these arrays are as follows:
-* For POINTS:   [point_set_index, point_index]
-* For VERTICES:                                     [vertex_index]
-* For WIRES:                [wire_index, edge_index, vertex_index]
-* For FACES:    [face_index, wire_index, edge_index, vertex_index]
+The entity index array points to specific geometric entities or ranges of entities. The first element in the array is the *topology index*, which identifies the topological level. This is followed by indices that dig down into the geometry, through the topological levels. The basic form of these arrays are as follows:
+* For indexing POINTS: [0, point_set_index, point_index]
+* For indexing VERTEX entities: [0, vertex_index]
+* For indexing WIRE entities: [1, wire_index, edge_index, vertex_index]
+* For indexing FACE entities: [2, face_index, wire_index, edge_index, vertex_index]
 
 It is important to note that the entity index array can point to implicit geometric entities.
 
 For example, here are two examples of entity index arrays:
 * wire 0, edge 1, vertex 0:
-  * [0,1,0]
+  * [1,0,1,0]
 * face 0, wire 1, edge 2, vertex 0:
-  * [0,1,2,0]
+  * [2,0,1,2,0]
 
 An entity index array may be truncated.
 For example, 
 * face 0, wire 1, edge 2:
-  * [0,1,2] No need to specify any vertices.
+  * [2,0,1,2] No need to specify any vertices.
 
 An entity index value may use right side indexing, i.e. negative numbers (c.f. Python slicing).
 For example:
 * face 0, wire 1, last edge:
-  * [0,1,-1]
+  * [2,0,1,-1]
 
 An entity index value may be 'null', indicating that the level should be skipped.
 For example:
 * face 0, skip wires, skip edges, vertex 10:
-  * [0,null,null,10]
+  * [2,0,null,null,10]
 
 An entity index value may specify a range, as follows: [from, to, step]. The 'step' may be omitted, in which case it is assumed to be 1. 
 For example:
 * face 0, wire 1, edges 2 to 4:
-  * [0,1,[2,4]]
+  * [2,0,1,[2,4]]
 * face 0, wire 1, last three edges:
-  * [0,1,[-3,-1]]
+  * [2,0,1,[-3,-1]]
 * face 0, wire 1, all edges:
-  * [0,1,[0,-1]]
+  * [2,0,1,[0,-1]]
 
 The above may all be combined.
 For example:
-* faces topology, face 0, skip wires, every other edge, start vertex:
-  * [3, [0,null,[0,-1,2],0]]
+* face 0, skip wires, every other edge, start vertex:
+  * [3,0,null,[0,-1,2],0]
 
 # Example
 
@@ -228,8 +230,8 @@ Below is an annoted example. Note that javascript style comments are used even t
         ], 
     }
     //---------------------------------------------------------------------------------------------
-    "geometry": [
-        [ //POINTS
+    "geometry": {
+        "pointsets": [
 	    [
                 [[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],            //array of 2d [x,y] coordinates
 	        [1,0,0,20, 0,1,0,0, 0,0,1,0, 0,0,0,1]                //point transformation matrix, 4x4
@@ -243,25 +245,25 @@ Below is an annoted example. Note that javascript style comments are used even t
 	        [1,0,0,40, 0,1,0,0, 0,0,1,0, 0,0,0,1]                //point transformation matrix, 4x4
 	    ]
         ]
-	[ //VERTICES
-	],
-        [ //EDGES
-            [0, [0,0]],            //acorn   [type, [origin vtx_id]]
-            [1, [0,0], [1,1,1]],   //ray     [type, [origin vtx_id], [ray vector]]
-            [2, [1,1], [1,0,0]]    //plane   [type, [origin vtx_id], [plane normal vector]]
-	    //...
-        ],
-        [ //WIRES
-            [100, [[0,0],[0,1],[0,2],[0,3]], 0],   //planar open polyline, open (3 edges)  [type, [vtx_ids], [open_closed]]
-            [100, [[1,0],[1,1],[1,2],[1,3]], 1],   //3d closed polylines (4 edges)         [type, [vtx_ids], [open_closed]]
-	    //...
-        ],
-        [ //FACES
-            [200, [[[2,50],[2,51],[2,52],[2,53]]]],                //polygon              [type, [[periphery vtx_ids]], []]
-            [200, [[[1,60],[1,61],[1,62]],[[1,3],[1,4],[1,5]]]],   //polygon with a hole  [type, [[periphery vtx_ids],[hole 1 vtx_ids],[hole 1 vtx_ids]]]
-	    //...
-        ]
-    ]
+	"entities": [
+		[ //VERTEX entities
+		    [0, [0,0]],            //acorn   [type, [origin vtx_id]]
+		    [1, [0,0], [1,1,1]],   //ray     [type, [origin vtx_id], [ray vector]]
+		    [2, [1,1], [1,0,0]]    //plane   [type, [origin vtx_id], [plane normal vector]]
+		    //...
+		],
+		[ //WIRE entities
+		    [100, [[0,0],[0,1],[0,2],[0,3]], 0],   //planar open polyline, open (3 edges)  [type, [vtx_ids], [open_closed]]
+		    [100, [[1,0],[1,1],[1,2],[1,3]], 1],   //3d closed polylines (4 edges)         [type, [vtx_ids], [open_closed]]
+		    //...
+		],
+		[ //FACE entities
+		    [200, [[[2,50],[2,51],[2,52],[2,53]]]],                //polygon              [type, [[periphery vtx_ids]], []]
+		    [200, [[[1,60],[1,61],[1,62]],[[1,3],[1,4],[1,5]]]],   //polygon with a hole  [type, [[periphery vtx_ids],[hole 1 vtx_ids],[hole 1 vtx_ids]]]
+		    //...
+		]
+	]
+    }
     //---------------------------------------------------------------------------------------------
     "semantics": {
         "attributes": [
@@ -341,12 +343,12 @@ Below is an annoted example. Note that javascript style comments are used even t
             {//A collection containing two EDGES. It has no properties (which is ok).
                 "uuid":"xxxxx",  
                 "name":"some_edges", //user defined name
-                "entities":[[3, [0,0,[0,-1,2]]]], //first face, first wire, every other edge (uses ranges)
+                "entities":[[2,0,0,[0,-1,2]]], //first face, first wire, every other edge (uses ranges)
             },
             {//A collection containing two WIRES
                 "uuid":"xxxxx", 
                 "name":"two_wires",
-                "entities":[3, [[1,[0,1]]]], //second face, first two wires (periphery and hole)
+                "entities":[2,1,[0,1]]], //second face, first two wires (periphery and hole)
                 "properties": {"key1":value1, "key2":value2, ...}
             },
             {//A collection containing some other collections.
@@ -359,9 +361,9 @@ Below is an annoted example. Note that javascript style comments are used even t
                 "uuid":"xxxxx", 
                 "name":"everything_all_mixed_up",
 		"entities": [
-                    [1, [0,1,2]],               //three vertices
-                    [2, [[[0,1],0]]],           //two edges, in different wires
-                    [3, [[0,0,1],[1,1,0]]],     //another two edges, in different faces
+                    [0,[0,2]],     //three vertices
+                    [1,[0,1],0],   //two edges, in different wires
+                    [2,0,0,1]      //second edge in first face
 		]
                 "collections":["coll_of_colls"],            //a collection
                 "properties": {"key1":value1, "key2":value2, ...}
