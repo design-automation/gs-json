@@ -25,26 +25,26 @@ All geometric entities references arrays of POINTS. Multiple geometric entities 
 Each WIRE has:
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
-* associated with a single point.
+* associated with a single POINT.
 
 #### Faces
 Each FACE has:
 * a set of closed WIRES (implicit), each of which has
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
-* associated with a single point.
+* associated with a single POINT.
 
 ## Geomety
 The geometric entities together with their type identifiers are as follows:
-* 0D VERTEX ENTITIES:
+* 0D VERTEX entities:
   * 0 - Acorn
   * 1 - Ray
   * 2 - Plane
-* 1D WIRE ENTITIES:
+* 1D WIRE entities:
   * 100 - Polyline
   * 120 - NURBS curve
   * 121 - Bezier curve
-* 2D FACE ENTITIES:
+* 2D FACE entities:
   * 200 - Polygon
   * 220 - NURBS Surface
   * 221 - Bezier Surface
