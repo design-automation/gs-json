@@ -212,7 +212,7 @@ Note: javascript comments are used in these examples even though comments are no
             {//some data attached to all the POINTS 
                 "uuid":"xxxxx",
                 "name":"trees",
-                "level":"points", 
+                "topology":"points", 
                 "values": [
                     ["raintree",  [1,3,5,6,7,8,11,...]],
                     ["oaktree",   [2,3,20,22,...]],
@@ -222,7 +222,7 @@ Note: javascript comments are used in these examples even though comments are no
             {//some data attached to all the implicit EDGES
                 "uuid":"xxxxx",
                 "name":"construction",
-                "level":"edges" 
+                "topology":"edges" 
                 "values": [
                     ["timber",   [5,23,67,99,...]],
                     ["steel",    [25,27,44,52,...]],
@@ -233,7 +233,7 @@ Note: javascript comments are used in these examples even though comments are no
             {//some data attached to all the FACES
                 "uuid":"xxxxx",
                 "name":"insolation",
-                "level":"faces" 
+                "topology":"faces" 
                 "values": [
                     [123, [1]],
                     [567, [2]],
@@ -246,7 +246,7 @@ Note: javascript comments are used in these examples even though comments are no
             {//the viewer may "recognise" this attrib and render the geometry accordingly
                 "uuid":"xxxxx",
                 "name":"materials",
-                "level":"faces"
+                "topology":"faces"
                 "values": [
                     [0, [1,2,4,6,7]],
                     [1, [8,9,12,44,66]],
@@ -257,7 +257,7 @@ Note: javascript comments are used in these examples even though comments are no
             {//the viewer may "recognise" this attrib and render the geometry accordingly
                 "uuid":"xxxxx",
                 "name":"color",
-                "level":"vertices"
+                "topology":"vertices"
                 "values": [
                     [[0.3,0.2,0.4], [1,2,4,6,7]],
                     [[0.7,0.2,0.3], [8,9,12,44,66]],
@@ -267,7 +267,7 @@ Note: javascript comments are used in these examples even though comments are no
             {//the viewer may "recognise" this attrib and render the geometry accordingly
                 "uuid":"xxxxx",
                 "name":"normals":
-                "level":"vertices"
+                "topology":"vertices"
                 "values": [
                     [[0.0,0.0,1.0], [1,3,5,7,9,...]],
                     [[0.0,1.0,1.0], [2,4,6,8,...]],
