@@ -74,7 +74,7 @@ Within a gs-JSON file, the all geometry is defined in a single array containing 
 	[ ... ], //FACES array
 ]
 ```
-#### Points Array
+## Points Array
 POINTSETS may be defined that use different coordinate systems (2D, 3D, cartesian, polar, spherical). Each POINTSET is associated with a 4x4 transformation matrix that will transform the points in the array into the global 3D cartesian coordinate system. The origin of this global coordinate system is located at the *location* specific in the metadata. (See https://threejs.org/docs/#api/math/Matrix4 for more informatio about the transformation matrix form.)
 
 The POINTS array con contain multipl POINTSETS, each of which is represented as follows: 
@@ -89,7 +89,7 @@ For example, lets say there are two POINTSETS (one 2D and another 3D) containing
 A sequence of four VERTICES can index these four points as follows:
 * [  [0,[0,1]],  [1,[0,1]]  ]
 
-#### Vertex/Wire/Face Entities Array
+## Vertex/Wire/Face Entities Array
 For maximum compactness, VERTEX, WIRE, and FACE entities are represented using integer arrays, consisting of three elements as follows: 
 * [type, [point indices], additional parameters]
 
