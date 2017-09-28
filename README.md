@@ -338,12 +338,16 @@ Below is an annoted example. Note that javascript style comments are used even t
             {//A collection containing two EDGES. It has no properties (which is ok).
                 "uuid":"xxxxx",  
                 "name":"some_edges", //user defined name
-                "entities":[[2,0,0,[0,-1,2]]], //first face, first wire, every other edge (uses ranges)
+                "entities":[
+		    [2,0,0,[0,-1,2]] //first face, first wire, every other edge (uses ranges)
+		], 
             },
             {//A collection containing two WIRES
                 "uuid":"xxxxx", 
                 "name":"two_wires",
-                "entities":[2,1,[0,1]]], //second face, first two wires (periphery and hole)
+                "entities":[
+		    [2,1,[0,1]] //second face, first two wires (periphery and hole)
+		], 
                 "properties": {"key1":value1, "key2":value2, ...}
             },
             {//A collection containing some other collections.
