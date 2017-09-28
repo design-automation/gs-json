@@ -18,7 +18,7 @@ The topological hierarchy is follows:
 * 2D Topology
   * FACE = a surface bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.
 
-####Points
+#### Points
 All geometric entities references arrays of POINTS. Multiple geometric entities can reference the same POINTS. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
 
 #### Wires
