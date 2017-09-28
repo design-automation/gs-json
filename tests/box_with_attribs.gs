@@ -22,23 +22,23 @@
     "semantics": {
         "attributes": [
 
-            {"values": [[1, [0, 1, 2, 3]], [0, [4, 5, 6, 7]]], "name": "on_ground", "level": "points"}, 
+            {"values": [[1, [0, 1, 2, 3]], [0, [4, 5, 6, 7]]], "name": "on_ground", "topology": "points"}, 
 
             {"values": [[[-0.0, -0.0, -1.0], [0, 1, 2, 3]], [[1.0, -0.0, -0.0], [4, 5, 6, 7]], [[-0.0, -0.0, 1.0], [8, 9, 10, 11]], [[-1.0, 0.0, -0.0], [12, 13, 14, 15]], [[0.0, -1.0, -0.0], [16, 17, 18, 19]], [[-0.0, 1.0, -0.0], [20, 21, 22, 23]]], "name": "N", "level": "vertices"}, 
 
             {"values": [[[0.0, 0.0, 1.0], [0, 1, 2, 3, 6, 7, 12, 13, 17, 18, 20, 23]], [[1.0, 1.0, 1.0], [4, 5, 8, 9, 10, 11, 14, 15, 16, 19, 21, 22]]], "name": "Cd", "level": "vertices"}, 
 
-            {"values": [[1, [0, 2]], [0, [1, 3, 4, 5]]], "name": "adj_face1", "level": "faces"}, 
+            {"values": [[1, [0, 2]], [0, [1, 3, 4, 5]]], "name": "adj_face1", "topology": "faces"}, 
 
-            {"values": [[3, [0, 2]], [2, [1, 3]], [1, [4, 5]]], "name": "adj_face2", "level": "faces"}, 
+            {"values": [[3, [0, 2]], [2, [1, 3]], [1, [4, 5]]], "name": "adj_face2", "topology": "faces"}, 
 
-            {"values": [[4, [0, 1, 2, 3]], [2, [4, 5]]], "name": "adj_face3", "level": "faces"}, 
+            {"values": [[4, [0, 1, 2, 3]], [2, [4, 5]]], "name": "adj_face3", "topology": "faces"}, 
 
-            {"values": [[5, [0, 1, 2, 3]], [3, [4, 5]]], "name": "adj_face4", "level": "faces"}, 
+            {"values": [[5, [0, 1, 2, 3]], [3, [4, 5]]], "name": "adj_face4", "topology": "faces"}, 
 
-            {"values": [[0, [0]], [1, [1]], [2, [2]], [3, [3]], [4, [4]], [5, [5]]], "name": "index", "level": "faces"}, 
+            {"values": [[0, [0]], [1, [1]], [2, [2]], [3, [3]], [4, [4]], [5, [5]]], "name": "index", "topology": "faces"}, 
 
-            {"values": [[100.0, [0, 2]], [50.0, [1, 3, 4, 5]]], "name": "area", "level": "faces"}
+            {"values": [[100.0, [0, 2]], [50.0, [1, 3, 4, 5]]], "name": "area", "topology": "faces"}
         
         ]
     }
