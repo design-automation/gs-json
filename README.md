@@ -1,11 +1,11 @@
 # gs-JSON
 
-gs-JSON is a domain agnostic spatial modelling file format that combines geometry and semantics. 
+gs-JSON is a domain agnostic spatial modelling file format that combines geometry and semantics (hence the 'gs'). 
 
 # Conceptual Overview
 gs-JSON uses model topology as the organising framework for defining both geometry and semantics.
 
-Geometry includes both polygonal and spline based geometric entities. Semantics consists of key-value pairs linked to entities in the model.
+Geometry includes both polygonal and spline based geometric entities. Semantics consists of data linked to entities and collections of entities in the model.
 
 ## Topology
 The topological hierarchy is follows:
@@ -82,7 +82,10 @@ POINTSETS may be defined that use different coordinate systems (2D, 3D, cartesia
 The POINTS array con contain multipl POINTSETS, each of which is represented as follows: 
 * [array of points, transformation matrix]
 
-VERTICES index the POINTS in the point arrays as follows:
+## Indexing Method for Points
+In order to identify specific POINTS in the POINTSETS array, a special *point index array* is used. This is used by VERTICES to refer to POINTS. 
+
+The indexing arrays is as follows:
 * [point set index, [array of point indices]]
 
 For example, lets say there are two POINTSETS (one 2D and another 3D) containing four POINTS, like this:
@@ -105,51 +108,8 @@ This represents the following:
 
 If the entity has no additional parameters, then the third element may be an empty array. 
 
-# Semantic Representation
-Within a js-JSON file, all semantics is defined in a two arrays, as follows:
-```javascript
-"semantics": {
-	"attributes":  [ ... ],
-	"collections": [ ... ]
-}
-```
-
-The attributes and collections arrays each contain objects that define teh semantics.
-
-## Attribute Objects
-Attributes objects is defined as follows:
-* {"uuid"="xxx", "name"="my_attrib", "topology"="faces", "values"=[...]}
-
-*Topology* can be "points", "vertices", "edges", "wires", and "faces".
-
-*Values* is an array the defines the values for some subset of geometric entities. For example, if "topology"="faces", then the values will be specified for some subset of the faces in the model. The values can be any valid JSON type. 
-
-The array of values may typically be sparse (i.e. there may be many 'null' values) and may contain many repeat values. A compact array representation is used, where the first item is the value and the second item is an array of entity indexes. 
-
-For example, lets say a model contains 20 geonetric entities, and that these entities are assigned the following values:
-* [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null,null,null]
-
-The attribute object values array would be as follows: 
-* [  ["a",[1,4,12]],  ["b",[2,8,10,13,14]],  ["c",[3,9,11,15]]  ]
-
-The values may also consist of an array of integer indexes that point back into specific geometric entities. (For example, in the winged-edge data structure, each edge points to a set of neighbouring edges.) The method of indexing these entities is described in more detail in the sub-section 'Indexing Geometry'. 
-
-## Collections Objects
-A collection can contain:
-* geometric entities (explicit and implicit), and/or
-* other collections.
-
-Collections objects are defined as follows: 
-* {"uuid"="xxx", "name"="my_coll", "entities"=[...], "collections"=[...], "properties"={"key1":value1, "key2":value2, ...}}
-
-*Entities* is an array of integer indexes that point back into specific geometric entities. These entities may be both explicit or implicit entities (i.e. FACES, WIRES, EDGES, VERTICES, and POINTS), and may be mixed. The method of indexing these entities is described in more detail in the sub-section 'Indexing Geometry'. 
-
-*Collections* is an array of strings, which must all be names of other collections. These other collections must all have beend defined earlier in the collections array. 
-
-*Properties* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
-
-## Indexing Geometry
-In order to identify specific entities in the geometry array, a special *entity index array* is used.
+## Indexing Method for Entities
+In order to identify specific entities in the entities array, a special *entity index array* is used.
 
 The basic form of the indexing arrays is as follows:
 * [topology_index, ....]
@@ -192,7 +152,50 @@ For example:
 The above may all be combined.
 For example:
 * face 0, skip wires, every other edge, start vertex:
-  * [3,0,null,[0,-1,2],0]
+  * [2,0,null,[0,-1,2],0]
+
+# Semantic Representation
+Within a js-JSON file, all semantics is defined in a two arrays, as follows:
+```javascript
+"semantics": {
+	"attributes":  [ ... ],
+	"collections": [ ... ]
+}
+```
+
+The attributes and collections arrays each contain objects that define the semantics.
+
+## Attribute Objects
+Attributes objects is defined as follows:
+* {"uuid"="xxx", "name"="my_attrib", "topology"="faces", "values"=[...]}
+
+*Topology* can be "points", "vertices", "edges", "wires", and "faces".
+
+*Values* is an array the defines the values for some subset of geometric entities. For example, if "topology"="faces", then the values will be specified for some subset of the faces in the model. The values can be any valid JSON type. 
+
+The array of values may typically be sparse (i.e. there may be many 'null' values) and may contain many repeat values. A compact array representation is used, where the first item is the value and the second item is an array of entity indexes. 
+
+For example, lets say a model contains 20 geonetric entities, and that these entities are assigned the following values:
+* [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null,null,null]
+
+The attribute object values array would be as follows: 
+* [  ["a",[1,4,12]],  ["b",[2,8,10,13,14]],  ["c",[3,9,11,15]]  ]
+
+The values may also consist of an array of integer indexes that point back into specific geometric entities. (For example, in the winged-edge data structure, each edge points to a set of neighbouring edges.) The method of indexing these entities is described in more detail in the section 'Indexing Method for Entities' above. 
+
+## Collections Objects
+A collection can contain:
+* geometric entities (explicit and implicit), and/or
+* other collections.
+
+Collections objects are defined as follows: 
+* {"uuid"="xxx", "name"="my_coll", "entities"=[...], "collections"=[...], "properties"={"key1":value1, "key2":value2, ...}}
+
+*Entities* is an array of integer indexes that point back into specific geometric entities. These entities may be both explicit or implicit entities (i.e. FACES, WIRES, EDGES, VERTICES, and POINTS), and may be mixed. The method of indexing these entities is described in more detail in the section 'Indexing Method for Entities' above. 
+
+*Collections* is an array of strings, which must all be names of other collections. These other collections must all have beend defined earlier in the collections array. 
+
+*Properties* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
 
 # Example
 
