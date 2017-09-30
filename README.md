@@ -2,8 +2,8 @@
 
 gs-JSON is a domain agnostic spatial modelling file format that combines geometry and semantics (hence the 'gs'). 
 
-# Conceptual Overview
-gs-JSON uses model topology as the organising framework for defining both geometry and semantics.
+# Conceptual Model
+gs-JSON concettual model uses topology as the organising framework for defining both geometry and semantics.
 
 Geometry includes both polygonal and spline based geometric entities. Semantics consists of data linked to entities and collections of entities in the model.
 
@@ -69,7 +69,7 @@ Semantic information can be added to the model in two ways:
 
 These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological levels that are implicit within the geometry. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric entities can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.
 
-# Geometric Representation
+# JSON Encoding of Geometry
 Within a gs-JSON file, the all geometry is defined in a single array containing four sub-arrays, as follows:
 ```javascript
 "geometry": {
@@ -182,7 +182,7 @@ For example:
 * face 0, skip wires, every other edge, start vertex:
   * [2,0,null,[0,-1,2],0]
 
-# Semantic Representation
+# JSON Encoding of Semantics
 Within a js-JSON file, all semantics is defined in a two arrays, as follows:
 ```javascript
 "semantics": {
