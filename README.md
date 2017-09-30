@@ -282,19 +282,19 @@ Below is an annoted example. Note that javascript style comments are used even t
         ]
 	"entities": [
 		[ //VERTEX entities
-		    [0, [0,0]],            //acorn   [type, [origin vtx_id]]
-		    [1, [0,0], [1,1,1]],   //ray     [type, [origin vtx_id], [ray vector]]
-		    [2, [1,1], [1,0,0]]    //plane   [type, [origin vtx_id], [plane normal vector]]
+		    [0, [0,0]],            //acorn   [type, [origin vtx]]
+		    [1, [0,0], [1,1,1]],   //ray     [type, [origin vtx], [ray vector]]
+		    [2, [1,1], [1,0,0]]    //plane   [type, [origin vtx], [plane normal vector]]
 		    //...
 		],
 		[ //WIRE entities
-		    [100, [[0,0],[0,1],[0,2],[0,3]], 0],   //planar open polyline, open (3 edges)  [type, [vtx_ids], [open_closed]]
-		    [100, [[1,0],[1,1],[1,2],[1,3]], 1],   //3d closed polylines (4 edges)         [type, [vtx_ids], [open_closed]]
+		    [100, [[0, [0,1,2,3]],[2, [4,5,6,7]]], 0],   //planar open polyline, open (7 edges)  [type, [vtxs], [open_closed]]
+		    [100, [[1, [0,1,2,3]]], 1],                  //3d closed polylines (4 edges)         [type, [vtxs], [open_closed]]
 		    //...
 		],
 		[ //FACE entities
-		    [200, [[[2,50],[2,51],[2,52],[2,53]]]],                //polygon              [type, [[periphery vtx_ids]], []]
-		    [200, [[[1,60],[1,61],[1,62]],[[1,3],[1,4],[1,5]]]],   //polygon with a hole  [type, [[periphery vtx_ids],[hole 1 vtx_ids],[hole 1 vtx_ids]]]
+		    [200, [[2,[50,51,52,53]]], []],               //polygon              [type, [[periphery vtxs]], []]
+		    [200, [[0,[60,61,62]],[1,[70,71,72]]], []],   //polygon with a hole  [type, [[periphery vtxs],[hole 1 vtxs]...]]
 		    //...
 		]
 	]
