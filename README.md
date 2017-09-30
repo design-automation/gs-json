@@ -68,11 +68,31 @@ These two approaches to adding semantics to a model are based on existing approa
 Within a gs-JSON file, the all geometry is defined in a single array containing four sub-arrays, as follows:
 ```javascript
 "geometry": {
-	"pointsets": [ ... ], //POINTSETS array
+	"pointsets": [ //POINTSETS array
+		[...],
+		[...],
+		[...],
+		//... 
+	], 
 	"entities": [
-		[ ... ], //VERTICES array
-		[ ... ], //WIRES array
-		[ ... ], //FACES array
+		[  //VERTEX entities array
+			[...],
+			[...],
+			[...],
+			//...
+		],
+		[  //WIRE entities array
+			[...],
+			[...],
+			[...],
+			//...
+		],
+		[  //FACE entities array
+			[...],
+			[...],
+			[...],
+			//...
+		] 
 	]
 }
 ```
@@ -80,7 +100,10 @@ Within a gs-JSON file, the all geometry is defined in a single array containing 
 POINTSETS may be defined that use different coordinate systems (2D, 3D, cartesian, polar, spherical). Each POINTSET is associated with a 4x4 transformation matrix that will transform the points in the array into the global 3D cartesian coordinate system. The origin of this global coordinate system is located at the *location* specific in the metadata. (See https://threejs.org/docs/#api/math/Matrix4 for more informatio about the transformation matrix form.)
 
 The POINTS array con contain multipl POINTSETS, each of which is represented as follows: 
-* [array of points, transformation matrix]
+* [[array of points], [transformation matrix]]
+
+For example, a set of 2D points in the global coordinate system (i.e. transformed by the identity matrix) is as follows:
+* [[[0.1,0.2], [0.3,0.4]], [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]]
 
 ### Indexing Method for Points
 In order to identify specific POINTS in the POINTSETS array, a special type of *point index array* is used. This is used by VERTICES to refer to POINTS. 
@@ -94,7 +117,7 @@ For example, lets say there are two POINTSETS (one 2D and another 3D) containing
 A sequence of four VERTICES can index these four points as follows:
 * [  [0,[0,1]],  [1,[0,1]]  ]
 
-## Entities Array
+## Entities Arrays
 For maximum compactness, entities are represented using integer arrays, consisting of three elements as follows: 
 * [type, [array of point indices], [array of additional parameters]]
 
@@ -158,9 +181,18 @@ For example:
 Within a js-JSON file, all semantics is defined in a two arrays, as follows:
 ```javascript
 "semantics": {
-	"attributes":  [ ... ],
-	"collections": [ ... ]
-}
+	"attributes":  [ 
+		{...},
+		{...},
+		{...},
+		//...
+	],
+	"collections": [ 
+		{...},
+		{...},
+		{...},
+		//...
+	],
 ```
 
 The attributes and collections arrays each contain objects that define the semantics.
@@ -198,7 +230,6 @@ Collections objects are defined as follows:
 *Properties* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
 
 # Example
-
 WORK IN PROGRESS.
 
 There are some examples files here:
@@ -356,7 +387,7 @@ Below is an annoted example. Note that javascript style comments are used even t
             {//A collection containing some other collections.
                 "uuid":"xxxxx", 
                 "name":"coll_of_colls",
-                "collections":["no_geometry", "one_vertex"],
+                "collections":["no_geometry", "some_edges"],
                 "properties": {"key1":value1, "key2":value2, ...}
             },
             {//A collection containing some random stuff.
