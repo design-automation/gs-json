@@ -21,13 +21,13 @@ The topological hierarchy is follows:
 ### Points
 All geometric entities references arrays of POINTS. 
 
-### Wires
+### Wire Entities
 Each WIRE has:
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
 * associated with a single POINT.
 
-### Faces
+### Face Entities
 Each FACE has:
 * a set of closed WIRES (implicit), each of which has
 * a set of connected EDGES (implicit), each of which has
