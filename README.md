@@ -282,9 +282,9 @@ Below is an annoted example. Note that javascript style comments are used even t
 		]
 	"entities": [
 		[ //VERTEX entities
-			[0, [0,0]],		//acorn	 [type, [origin vtx]]
-			[1, [0,0], [1,1,1]],	//ray	 [type, [origin vtx], [ray vector]]
-			[2, [1,1], [1,0,0]]	//plane	 [type, [origin vtx], [plane normal vector]]
+			[0, [0,[0]], []],	//acorn	 [type, [origin vtx]]
+			[1, [0,[0]], [1,1,1]],	//ray	 [type, [origin vtx], [ray vector]]
+			[2, [1,[1]], [1,0,0]]	//plane	 [type, [origin vtx], [plane normal vector]]
 			//...
 		],
 		[ //WIRE entities
@@ -293,8 +293,8 @@ Below is an annoted example. Note that javascript style comments are used even t
 			//...
 		],
 		[ //FACE entities
-			[200, [[2,[50,51,52,53]]], []],			//polygon	[type, [[periphery vtxs]], []]
-			[200, [[1,[60,61,62]]], [[[1,[70,71,72]]]]],	//polygon with a hole  [type, [[periphery vtxs],[hole 1 vtxs]]]
+			[200, [[2,[50,51,52,53]]], []],			//polygon		[type, [[periphery vtxs]], []]
+			[200, [[1,[60,61,62]]], [[[1,[70,71,72]]]]],	//polygon with a hole	[type, [[periphery vtxs],[hole 1 vtxs]]]
 			//...
 		]
 	]
