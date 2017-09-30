@@ -18,16 +18,16 @@ The topological hierarchy is follows:
 * 2D Topology
   * FACE = a surface bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.
 
-#### Points
+### Points
 All geometric entities references arrays of POINTS. Multiple geometric entities can reference the same POINTS. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
 
-#### Wires
+### Wires
 Each WIRE has:
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
 * associated with a single POINT.
 
-#### Faces
+### Faces
 Each FACE has:
 * a set of closed WIRES (implicit), each of which has
 * a set of connected EDGES (implicit), each of which has
@@ -82,8 +82,8 @@ POINTSETS may be defined that use different coordinate systems (2D, 3D, cartesia
 The POINTS array con contain multipl POINTSETS, each of which is represented as follows: 
 * [array of points, transformation matrix]
 
-## Indexing Method for Points
-In order to identify specific POINTS in the POINTSETS array, a special *point index array* is used. This is used by VERTICES to refer to POINTS. 
+### Indexing Method for Points
+In order to identify specific POINTS in the POINTSETS array, a special type of *point index array* is used. This is used by VERTICES to refer to POINTS. 
 
 The indexing arrays is as follows:
 * [point set index, [array of point indices]]
@@ -108,8 +108,8 @@ This represents the following:
 
 If the entity has no additional parameters, then the third element may be an empty array. 
 
-## Indexing Method for Entities
-In order to identify specific entities in the entities array, a special *entity index array* is used.
+### Indexing Method for Entities
+In order to identify specific entities in the entities array, a special type of *entity index array* is used.
 
 The basic form of the indexing arrays is as follows:
 * [topology_index, ....]
