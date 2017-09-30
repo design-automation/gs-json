@@ -248,9 +248,9 @@ Below is an annoted example. Note that javascript style comments are used even t
 	//---------------------------------------------------------------------------------------------
 	"metadata": {
 		"filetype":"mobius",
-			"version": 1.0,
-			"schema":"xxx",
-			"crs": {"epsg":3857},
+		"version": 1.0,
+		"schema":"xxx",
+		"crs": {"epsg":3857},
 		"location": "+40.6894-074.0447" //ISO 6709, ±DD.DDDD±DDD.DDDD degrees format
 	},
 	//---------------------------------------------------------------------------------------------
@@ -268,33 +268,33 @@ Below is an annoted example. Note that javascript style comments are used even t
 	"geometry": {
 		"pointsets": [
 			[
-				[[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],			 //array of 2d [x,y] coordinates
-				[1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]				 //point transformation matrix, 4x4
+				[[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],		//array of 2d [x,y] coordinates
+				[1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]			//point transformation matrix, 4x4
 			],
 			[
-				[[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],	 //array of 3d [x,y,z] coordinates
-				[1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]				 //point transformation matrix, 4x4
+				[[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],	//array of 3d [x,y,z] coordinates
+				[1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]			//point transformation matrix, 4x4
 			],
 			[
-				[[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]	 //array of 3d [x,y,z] coordinates, transformed 123 up
-				[1,0,0,0, 0,1,0,0, 0,0,1,123, 0,0,0,1]				 //point transformation matrix, 4x4
+				[[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]	//array of 3d [x,y,z] coordinates, transformed 123 up
+				[1,0,0,0, 0,1,0,0, 0,0,1,123, 0,0,0,1]			//point transformation matrix, 4x4
 			]
 		]
 	"entities": [
 		[ //VERTEX entities
-			[0, [0,0]],			   //acorn	 [type, [origin vtx]]
-			[1, [0,0], [1,1,1]],   //ray	 [type, [origin vtx], [ray vector]]
-			[2, [1,1], [1,0,0]]	   //plane	 [type, [origin vtx], [plane normal vector]]
+			[0, [0,0]],		//acorn	 [type, [origin vtx]]
+			[1, [0,0], [1,1,1]],	//ray	 [type, [origin vtx], [ray vector]]
+			[2, [1,1], [1,0,0]]	//plane	 [type, [origin vtx], [plane normal vector]]
 			//...
 		],
 		[ //WIRE entities
-			[100, [[0, [0,1,2,3]],[2, [4,5,6,7]]], 0],	 //planar open polyline, open (7 edges)	 [type, [vtxs], [open_closed]]
-			[100, [[1, [0,1,2,3]]], 1],					 //3d closed polylines (4 edges)		 [type, [vtxs], [open_closed]]
+			[100, [[0, [0,1,2,3]],[2, [4,5,6,7]]], 0],	//planar open polyline, open (7 edges)	 [type, [vtxs], [open_closed]]
+			[100, [[1, [0,1,2,3]]], 1],			//3d closed polylines (4 edges)		 [type, [vtxs], [open_closed]]
 			//...
 		],
 		[ //FACE entities
-			[200, [[2,[50,51,52,53]]], []],				   //polygon			  [type, [[periphery vtxs]], []]
-			[200, [[1,[60,61,62]]], [[[1,[70,71,72]]]]],   //polygon with a hole  [type, [[periphery vtxs],[hole 1 vtxs]]]
+			[200, [[2,[50,51,52,53]]], []],			//polygon	[type, [[periphery vtxs]], []]
+			[200, [[1,[60,61,62]]], [[[1,[70,71,72]]]]],	//polygon with a hole  [type, [[periphery vtxs],[hole 1 vtxs]]]
 			//...
 		]
 	]
@@ -345,7 +345,7 @@ Below is an annoted example. Note that javascript style comments are used even t
 					[1, [8,9,12,44,66]],
 					[2, [55,77]],
 					//...
-				]			 
+				]
 			},
 			{//the viewer may "recognise" this attrib and render the geometry accordingly
 				"uuid":"xxxxx",
@@ -355,7 +355,7 @@ Below is an annoted example. Note that javascript style comments are used even t
 					[[0.3,0.2,0.4], [1,2,4,6,7]],
 					[[0.7,0.2,0.3], [8,9,12,44,66]],
 					//...
-				]			 
+				]
 			},
 			{//the viewer may "recognise" this attrib and render the geometry accordingly
 				"uuid":"xxxxx",
@@ -379,15 +379,15 @@ Below is an annoted example. Note that javascript style comments are used even t
 				"uuid":"xxxxx",	 
 				"name":"some_edges", //user defined name
 				"entities":[
-			[2,0,0,[0,-1,2]] //first face, first wire, every other edge (uses ranges)
-		], 
+					[2,0,0,[0,-1,2]] //first face, first wire, every other edge (uses ranges)
+				], 
 			},
 			{//A collection containing two WIRES
 				"uuid":"xxxxx", 
 				"name":"two_wires",
 				"entities":[
-			[2,1,[0,1]] //second face, first two wires (periphery and hole)
-		], 
+					[2,1,[0,1]] //second face, first two wires (periphery and hole)
+				], 
 				"properties": {"key1":value1, "key2":value2, ...}
 			},
 			{//A collection containing some other collections.
@@ -399,11 +399,11 @@ Below is an annoted example. Note that javascript style comments are used even t
 			{//A collection containing some random stuff.
 				"uuid":"xxxxx", 
 				"name":"everything_all_mixed_up",
-		"entities": [
-					[0,[0,2]],	   //three vertices
-					[1,[0,1],0],   //two edges, in different wires
-					[2,0,0,1]	   //second edge in first face
-		]
+				"entities": [
+					[0,[0,2]],	//three vertices
+					[1,[0,1],0],	//two edges, in different wires
+					[2,0,0,1]	//second edge in first face
+				]
 				"collections":["coll_of_colls"],			//a collection
 				"properties": {"key1":value1, "key2":value2, ...}
 			}
