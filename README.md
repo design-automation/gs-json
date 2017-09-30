@@ -53,7 +53,7 @@ More geometric entities may be added in the future.
 
 Other higher level topologies (such as shells, solids, and compound solids) can be created using *collections*. See below for more details. 
 
-#### Implicit Entities
+### Implicit Entities
 In order to ensure that the file format is efficient and compact, internal entities are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal has an explicitly defined FACE and POINTS, but the WIRES, EDGES and VERTICES are all implicit. 
 
 ## Semantics
