@@ -1,6 +1,6 @@
 # gs-JSON
 
-gs-JSON is a domain agnostic spatial modelling file format that combines geometry and semantics (hence the 'gs'). 
+gs-JSON is a domain agnostic 3D file format for geometric and semantic modelling (hence the 'gs'). 
 
 # Conceptual Model
 gs-JSON conceptual model uses topology as the organising framework for defining both geometry and semantics.
