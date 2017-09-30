@@ -19,7 +19,7 @@ The topological hierarchy is follows:
   * FACE = a surface bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.
 
 ### Points
-All geometric entities references arrays of POINTS. Multiple geometric entities can reference the same POINTS. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
+All geometric entities references arrays of POINTS. 
 
 ### Wires
 Each WIRE has:
@@ -33,6 +33,11 @@ Each FACE has:
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
 * associated with a single POINT.
+
+### Shared Entities
+Multiple geometric entities can reference the same POINTS. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
+
+However, higher level entities cannot be shared. For example, an EDGE cannot be part of two faces. Thus, if two faces have there EDGES touching, then the POINTS can be shared, but there will still be seperate EDGES, each with its own VERTICES. 
 
 ## Geomety
 The geometric entities together with their type identifiers are as follows:
