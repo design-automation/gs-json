@@ -269,15 +269,15 @@ Below is an annoted example. Note that javascript style comments are used even t
         "pointsets": [
 	    [
                 [[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],            //array of 2d [x,y] coordinates
-	        [1,0,0,20, 0,1,0,0, 0,0,1,0, 0,0,0,1]                //point transformation matrix, 4x4
+	        [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]                 //point transformation matrix, 4x4
 	    ],
 	    [
                 [[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],   //array of 3d [x,y,z] coordinates
-	        [1,0,0,30, 0,1,0,0, 0,0,1,0, 0,0,0,1]                //point transformation matrix, 4x4
+	        [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]                 //point transformation matrix, 4x4
 	    ],
 	    [
-                [[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]    //array of 3d [x,y,z] coordinates
-	        [1,0,0,40, 0,1,0,0, 0,0,1,0, 0,0,0,1]                //point transformation matrix, 4x4
+                [[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]    //array of 3d [x,y,z] coordinates, transformed 123 up
+	        [1,0,0,0, 0,1,0,0, 0,0,1,123, 0,0,0,1]               //point transformation matrix, 4x4
 	    ]
         ]
 	"entities": [
