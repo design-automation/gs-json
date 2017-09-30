@@ -245,170 +245,170 @@ Below is an annoted example. Note that javascript style comments are used even t
 
 ```javascript
 {
-    //---------------------------------------------------------------------------------------------
-    "metadata": {
-	    "filetype":"mobius",
-            "version": 1.0,
-            "schema":"xxx",
-            "crs": {"epsg":3857},
-	    "location": "+40.6894-074.0447" //ISO 6709, ±DD.DDDD±DDD.DDDD degrees format
-    },
-    //---------------------------------------------------------------------------------------------
-    "skins": {
-        //See https://github.com/mrdoob/three.js/wiki/JSON-Texture-format-4
-        "images": [],    //based on three.js
-        "textures": [],  //based on three.js
-        "materials": [  //based on three.js
-            {...},
-            {...},
-            {...}
-        ], 
-    }
-    //---------------------------------------------------------------------------------------------
-    "geometry": {
-        "pointsets": [
-	    [
-                [[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],            //array of 2d [x,y] coordinates
-	        [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]                 //point transformation matrix, 4x4
-	    ],
-	    [
-                [[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],   //array of 3d [x,y,z] coordinates
-	        [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]                 //point transformation matrix, 4x4
-	    ],
-	    [
-                [[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]    //array of 3d [x,y,z] coordinates, transformed 123 up
-	        [1,0,0,0, 0,1,0,0, 0,0,1,123, 0,0,0,1]               //point transformation matrix, 4x4
-	    ]
-        ]
+	//---------------------------------------------------------------------------------------------
+	"metadata": {
+		"filetype":"mobius",
+			"version": 1.0,
+			"schema":"xxx",
+			"crs": {"epsg":3857},
+		"location": "+40.6894-074.0447" //ISO 6709, ±DD.DDDD±DDD.DDDD degrees format
+	},
+	//---------------------------------------------------------------------------------------------
+	"skins": {
+		//See https://github.com/mrdoob/three.js/wiki/JSON-Texture-format-4
+		"images": [],	 //based on three.js
+		"textures": [],	 //based on three.js
+		"materials": [	//based on three.js
+			{...},
+			{...},
+			{...}
+		], 
+	}
+	//---------------------------------------------------------------------------------------------
+	"geometry": {
+		"pointsets": [
+			[
+				[[1.2,3.4],[5.6,7.8],[9.10,11.12], ....],			 //array of 2d [x,y] coordinates
+				[1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]				 //point transformation matrix, 4x4
+			],
+			[
+				[[0.1,0.2,0.3],[1.4,1.5,1.6],[2.7,2.8,2.9], ....],	 //array of 3d [x,y,z] coordinates
+				[1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]				 //point transformation matrix, 4x4
+			],
+			[
+				[[1.1,1.2,1.3],[2.4,2.5,2.6],[3.7,3.8,3.9], ....]	 //array of 3d [x,y,z] coordinates, transformed 123 up
+				[1,0,0,0, 0,1,0,0, 0,0,1,123, 0,0,0,1]				 //point transformation matrix, 4x4
+			]
+		]
 	"entities": [
 		[ //VERTEX entities
-		    [0, [0,0]],            //acorn   [type, [origin vtx]]
-		    [1, [0,0], [1,1,1]],   //ray     [type, [origin vtx], [ray vector]]
-		    [2, [1,1], [1,0,0]]    //plane   [type, [origin vtx], [plane normal vector]]
-		    //...
+			[0, [0,0]],			   //acorn	 [type, [origin vtx]]
+			[1, [0,0], [1,1,1]],   //ray	 [type, [origin vtx], [ray vector]]
+			[2, [1,1], [1,0,0]]	   //plane	 [type, [origin vtx], [plane normal vector]]
+			//...
 		],
 		[ //WIRE entities
-		    [100, [[0, [0,1,2,3]],[2, [4,5,6,7]]], 0],   //planar open polyline, open (7 edges)  [type, [vtxs], [open_closed]]
-		    [100, [[1, [0,1,2,3]]], 1],                  //3d closed polylines (4 edges)         [type, [vtxs], [open_closed]]
-		    //...
+			[100, [[0, [0,1,2,3]],[2, [4,5,6,7]]], 0],	 //planar open polyline, open (7 edges)	 [type, [vtxs], [open_closed]]
+			[100, [[1, [0,1,2,3]]], 1],					 //3d closed polylines (4 edges)		 [type, [vtxs], [open_closed]]
+			//...
 		],
 		[ //FACE entities
-		    [200, [[2,[50,51,52,53]]], []],               //polygon              [type, [[periphery vtxs]], []]
-		    [200, [[0,[60,61,62]],[1,[70,71,72]]], []],   //polygon with a hole  [type, [[periphery vtxs],[hole 1 vtxs]...]]
-		    //...
+			[200, [[2,[50,51,52,53]]], []],				   //polygon			  [type, [[periphery vtxs]], []]
+			[200, [[1,[60,61,62]]], [[[1,[70,71,72]]]]],   //polygon with a hole  [type, [[periphery vtxs],[hole 1 vtxs]]]
+			//...
 		]
 	]
-    }
-    //---------------------------------------------------------------------------------------------
-    "semantics": {
-        "attributes": [
-            {//some data attached to all the POINTS 
-                "uuid":"xxxxx",
-                "name":"trees",
-                "topology":"points", 
-                "values": [
-                    ["raintree",  [1,3,5,6,7,8,11,...]],
-                    ["oaktree",   [2,3,20,22,...]],
-                    //...
-                ]
-            },
-            {//some data attached to all the implicit EDGES
-                "uuid":"xxxxx",
-                "name":"construction",
-                "topology":"edges" 
-                "values": [
-                    ["timber",   [5,23,67,99,...]],
-                    ["steel",    [25,27,44,52,...]],
-                    ["concrete", [1,45,46,87,...]],
-                    //...
-                ]
-            },
-            {//some data attached to all the FACES
-                "uuid":"xxxxx",
-                "name":"insolation",
-                "topology":"faces" 
-                "values": [
-                    [123, [1]],
-                    [567, [2]],
-                    [264, [3]],
-                    [422, [4]],
-                    [124, [5]],
-                    //...
-                ]
-            },
-            {//the viewer may "recognise" this attrib and render the geometry accordingly
-                "uuid":"xxxxx",
-                "name":"materials",
-                "topology":"faces"
-                "values": [
-                    [0, [1,2,4,6,7]],
-                    [1, [8,9,12,44,66]],
-                    [2, [55,77]],
-                    //...
-                ]            
-            },
-            {//the viewer may "recognise" this attrib and render the geometry accordingly
-                "uuid":"xxxxx",
-                "name":"color",
-                "topology":"vertices"
-                "values": [
-                    [[0.3,0.2,0.4], [1,2,4,6,7]],
-                    [[0.7,0.2,0.3], [8,9,12,44,66]],
-                    //...
-                ]            
-            },
-            {//the viewer may "recognise" this attrib and render the geometry accordingly
-                "uuid":"xxxxx",
-                "name":"normals":
-                "topology":"vertices"
-                "values": [
-                    [[0.0,0.0,1.0], [1,3,5,7,9,...]],
-                    [[0.0,1.0,1.0], [2,4,6,8,...]],
-                    [[1.0,0.0,1.0], [10,20,30,40,...]],
-                    //....
-                ]
-            }
-        },
-        "collections": {
-            {//Empty collection (which is ok), it has some properties
-                "uuid":"xxxxx", 
-                "name":"no_geometry",
-                "properties": {"key1":value1, "key2":value2, ...},
-            },
-            {//A collection containing two EDGES. It has no properties (which is ok).
-                "uuid":"xxxxx",  
-                "name":"some_edges", //user defined name
-                "entities":[
-		    [2,0,0,[0,-1,2]] //first face, first wire, every other edge (uses ranges)
+	}
+	//---------------------------------------------------------------------------------------------
+	"semantics": {
+		"attributes": [
+			{//some data attached to all the POINTS 
+				"uuid":"xxxxx",
+				"name":"trees",
+				"topology":"points", 
+				"values": [
+					["raintree",  [1,3,5,6,7,8,11,...]],
+					["oaktree",	  [2,3,20,22,...]],
+					//...
+				]
+			},
+			{//some data attached to all the implicit EDGES
+				"uuid":"xxxxx",
+				"name":"construction",
+				"topology":"edges" 
+				"values": [
+					["timber",	 [5,23,67,99,...]],
+					["steel",	 [25,27,44,52,...]],
+					["concrete", [1,45,46,87,...]],
+					//...
+				]
+			},
+			{//some data attached to all the FACES
+				"uuid":"xxxxx",
+				"name":"insolation",
+				"topology":"faces" 
+				"values": [
+					[123, [1]],
+					[567, [2]],
+					[264, [3]],
+					[422, [4]],
+					[124, [5]],
+					//...
+				]
+			},
+			{//the viewer may "recognise" this attrib and render the geometry accordingly
+				"uuid":"xxxxx",
+				"name":"materials",
+				"topology":"faces"
+				"values": [
+					[0, [1,2,4,6,7]],
+					[1, [8,9,12,44,66]],
+					[2, [55,77]],
+					//...
+				]			 
+			},
+			{//the viewer may "recognise" this attrib and render the geometry accordingly
+				"uuid":"xxxxx",
+				"name":"color",
+				"topology":"vertices"
+				"values": [
+					[[0.3,0.2,0.4], [1,2,4,6,7]],
+					[[0.7,0.2,0.3], [8,9,12,44,66]],
+					//...
+				]			 
+			},
+			{//the viewer may "recognise" this attrib and render the geometry accordingly
+				"uuid":"xxxxx",
+				"name":"normals":
+				"topology":"vertices"
+				"values": [
+					[[0.0,0.0,1.0], [1,3,5,7,9,...]],
+					[[0.0,1.0,1.0], [2,4,6,8,...]],
+					[[1.0,0.0,1.0], [10,20,30,40,...]],
+					//....
+				]
+			}
+		},
+		"collections": {
+			{//Empty collection (which is ok), it has some properties
+				"uuid":"xxxxx", 
+				"name":"no_geometry",
+				"properties": {"key1":value1, "key2":value2, ...},
+			},
+			{//A collection containing two EDGES. It has no properties (which is ok).
+				"uuid":"xxxxx",	 
+				"name":"some_edges", //user defined name
+				"entities":[
+			[2,0,0,[0,-1,2]] //first face, first wire, every other edge (uses ranges)
 		], 
-            },
-            {//A collection containing two WIRES
-                "uuid":"xxxxx", 
-                "name":"two_wires",
-                "entities":[
-		    [2,1,[0,1]] //second face, first two wires (periphery and hole)
+			},
+			{//A collection containing two WIRES
+				"uuid":"xxxxx", 
+				"name":"two_wires",
+				"entities":[
+			[2,1,[0,1]] //second face, first two wires (periphery and hole)
 		], 
-                "properties": {"key1":value1, "key2":value2, ...}
-            },
-            {//A collection containing some other collections.
-                "uuid":"xxxxx", 
-                "name":"coll_of_colls",
-                "collections":["no_geometry", "some_edges"],
-                "properties": {"key1":value1, "key2":value2, ...}
-            },
-            {//A collection containing some random stuff.
-                "uuid":"xxxxx", 
-                "name":"everything_all_mixed_up",
+				"properties": {"key1":value1, "key2":value2, ...}
+			},
+			{//A collection containing some other collections.
+				"uuid":"xxxxx", 
+				"name":"coll_of_colls",
+				"collections":["no_geometry", "some_edges"],
+				"properties": {"key1":value1, "key2":value2, ...}
+			},
+			{//A collection containing some random stuff.
+				"uuid":"xxxxx", 
+				"name":"everything_all_mixed_up",
 		"entities": [
-                    [0,[0,2]],     //three vertices
-                    [1,[0,1],0],   //two edges, in different wires
-                    [2,0,0,1]      //second edge in first face
+					[0,[0,2]],	   //three vertices
+					[1,[0,1],0],   //two edges, in different wires
+					[2,0,0,1]	   //second edge in first face
 		]
-                "collections":["coll_of_colls"],            //a collection
-                "properties": {"key1":value1, "key2":value2, ...}
-            }
-        }
-    }
-    //---------------------------------------------------------------------------------------------
+				"collections":["coll_of_colls"],			//a collection
+				"properties": {"key1":value1, "key2":value2, ...}
+			}
+		}
+	}
+	//---------------------------------------------------------------------------------------------
 }
 ````
