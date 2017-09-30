@@ -197,7 +197,8 @@ Within a js-JSON file, all semantics is defined in a two arrays, as follows:
 		{...},
 		{...},
 		//...
-	],
+	]
+}
 ```
 
 The attributes and collections arrays each contain objects that define the semantics.
