@@ -71,13 +71,7 @@ These two approaches to adding semantics to a model are based on existing approa
 Within a gs-JSON file, the all geometry is defined in a single array containing four sub-arrays, as follows:
 ```javascript
 "geometry": {
-
-        "pointcount": 444,
-        "vertexcount": 555,
-        "edgecount": 44,
-        "wirecount": 22,
-        "facecount": 11,
-	
+        "counts": [444,555,44,22,11],
 	"entities": [
 		[  //VERTEX entities array
 			[...],
@@ -256,13 +250,7 @@ Below is an annoted example. Note that javascript style comments are used even t
 	}
 	//---------------------------------------------------------------------------------------------
 	"geometry": {
-
-		"pointcount": 444,
-		"vertexcount": 555,
-		"edgecount": 44,
-		"wirecount": 22,
-		"facecount": 11,
-		
+        	"counts": [444,555,44,22,11],
 		"entities": [
 			[ //VERTEX entities
 				[0, [0], []],	        //acorn	 [type, [origin vtx], []]
