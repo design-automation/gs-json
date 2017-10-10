@@ -2906,7 +2906,7 @@
     }
     "semantics":{
         "attributes":[
-            "name":"P",
+            "name":"positions",
             "level":"points",
             "values": [
                 [[-0.5512499809265137, 0.09201409667730331, -0.14496053755283356], [0]],
