@@ -1,7 +1,7 @@
 {
     "metadata": {
         "filetype":"mobius",
-        "version": 1.0,
+        "version": 0.1,
         "schema":"xxx",
         "crs": {"epsg":3857},
         "location": "+40.6894-074.0447" 
