@@ -214,7 +214,7 @@ Below is an annoted example. Note that javascript style comments are used even t
 	}
 	//---------------------------------------------------------------------------------------------
 	"geometry": {
-        	"counts": [444,555,44,22,11],
+        	"counts": [444,555,44,22,11,5], //number of points, vertices, edges, wires, faces, shells
 		"entities": [
 			[ //VERTEX entities
 				[0, [0], []],	        //acorn	 [type, [origin vtx], []]
@@ -227,7 +227,7 @@ Below is an annoted example. Note that javascript style comments are used even t
 				[100, [7,8,9,10], [1]],	  //closed polylines (4 edges)  [type, [vtxs], [open_closed]]
 				//...
 			],
-			[ //FACE entities
+			[ //SHELL entities
 				[200, [[50,51,52,53]], []],	       //shell with one polygon	 [type, [[vtxs]], []]
 				[200, [[60,61,62], [70,71,72]], []],   //shell with two polygons [type, [[vtxs],[vtxs]], []]
 				//...
