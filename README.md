@@ -16,7 +16,10 @@ The topological hierarchy is follows:
   * EDGE = a line or curve bounded by start and end VERTICES.
   * WIRE = a set of one or more connected EDGES, either open or closed.
 * 2D Topology
-  * FACE = a surface bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.
+  * FACE = a face bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.
+  * SHELL = a set of one or more connected FACES, either open or closed. 
+
+VERTICES, WIRES and SHELLS can be instantiated as geometric entities. 
 
 ### Wire Entities
 Each WIRE has:
@@ -24,8 +27,9 @@ Each WIRE has:
 * a sequence of VERTICES (implicit), each of which is
 * associated with a single (implicit) POINT.
 
-### Face Entities
-Each FACE has:
+### SHELL Entities
+Each SHELL has:
+* a set of connected FACES (implicit), each of which has
 * a set of closed WIRES (implicit), each of which has
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
@@ -46,18 +50,17 @@ The geometric entities together with their type identifiers are as follows:
   * 100 - Polyline
   * 120 - NURBS curve
   * 121 - Bezier curve
-* 2D FACE entities:
-  * 200 - Polygon (with holes, being tested...)
-  * 201 - Mesh (being tested...)
+* 2D SHELL entities:
+  * 200 - Polygon Mesh (can be non-planar, being tested...)
   * 220 - NURBS Surface
   * 221 - Bezier Surface
 
 More geometric entities may be added in the future.
 
-Other higher level topologies (such as shells, solids, and compound solids) can be created using *collections*. See below for more details. 
+Other higher level topological entities (such as solids and compound solids) can be created using *collections*. See below for more details. 
 
 ### Implicit Entities
-In order to ensure that the file format is efficient and compact, internal entities are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal has an explicitly defined FACE, but the WIRES, EDGES, VERTICES and POINTS are all implicit. 
+In order to ensure that the file format is efficient and compact, internal entities are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal mesh has an explicitly defined SHELL, but the FACES, WIRES, EDGES, VERTICES and POINTS are all implicit. 
 
 ## Semantics
 Semantic information can be added to the model in two ways:
@@ -68,7 +71,7 @@ Semantic information can be added to the model in two ways:
 These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological levels that are implicit within the geometry. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric entities can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.
 
 # JSON Encoding of Geometry
-Within a gs-JSON file, the all geometry is defined in a single array containing four sub-arrays, as follows:
+Within a gs-JSON file, the all geometry is defined in a single *entities* array containing three sub-arrays, as follows:
 ```javascript
 "geometry": {
         "counts": [444,555,44,22,11],
@@ -85,7 +88,7 @@ Within a gs-JSON file, the all geometry is defined in a single array containing 
 			[...],
 			//...
 		],
-		[  //FACE entities array
+		[  //SHELL entities array
 			[...],
 			[...],
 			[...],
@@ -95,10 +98,10 @@ Within a gs-JSON file, the all geometry is defined in a single array containing 
 }
 ```
 ## Entities Arrays
-For maximum compactness, entities are represented using integer arrays, consisting of three elements as follows: 
+Entities are represented using integer arrays, consisting of three elements as follows: 
 * [type, [array of point indices], [array of additional parameters]]
 
-So, for example, a polyline is defined as follows:
+So, for example, a single polyline is defined as follows:
 * [100, [0,1,2], [0]]
 
 This represents the following:
@@ -109,50 +112,11 @@ This represents the following:
 If the entity has no additional parameters, then the third element may be an empty array. 
 
 ### Indexing Method for Entities
-In order to identify specific entities in the entities array, a special type of *entity index array* is used.
+In order to identify specific entities in the entities array, a simple integer index is used.
 
-The basic form of the indexing arrays is as follows:
-* [topology_index, ....]
+For explicit geometry such as WIRES and SHELLS, these indexes refer directly to the position in an array of of geometric elements. For example, the SHELL with index 100 simply refers to the SHELLS array. 
 
-The *topology index* refers to one of the four sub-arrays: either the POINTS, VERTICES, WIRES or FACES. The value must therefore be in the range [0-4].
-
-The entity index array referes to specific geometric entities or ranges of entities. The first element in the array is the *topology index*, which identifies the topological level. This is followed by indices that dig down into the geometry, through the topological levels. The basic form of these arrays are as follows:
-* For indexing VERTEX entities: [0, vertex_index, implicit_point_index]
-* For indexing WIRE entities:   [1, wire_index, implicit_edge_index, implicit_vertex_index, implicit_point_index]
-* For indexing FACE entities:   [2, face_index, implicit_wire_index, implicit_edge_index, implicit_vertex_index, implicit_point_index]
-
-The *implicit_point_index* must be 0 (assumng it has not been truncated). This is because a vertex can only have one point. For straight line polygonal geometry, the *implicit_edge_index* must be either 0 or 1, since straight line edges can only have two vertices.
-
-An entity index array may be truncated.
-For example, 
-* wire 0, edge 2, vertex 1, point 0:
-  * [1,0,2,1,0]
-* face 0, wire 1, edge 2:
-  * [2,0,1,2] 
-
-An entity index value may use right side indexing, i.e. negative numbers (c.f. Python slicing).
-For example:
-* face 0, wire 1, last edge:
-  * [2,0,1,-1]
-
-An entity index value may be 'null', indicating that the level should be skipped.
-For example:
-* face 0, skip wires, skip edges, vertex 10:
-  * [2,0,null,null,10]
-
-An entity index value may specify a range, as follows: [from, to, step]. The 'step' may be omitted, in which case it is assumed to be 1. 
-For example:
-* face 0, wire 1, edges 2 to 4:
-  * [2,0,1,[2,4]]
-* face 0, wire 1, last three edges:
-  * [2,0,1,[-3,-1]]
-* face 0, wire 1, all edges:
-  * [2,0,1,[0,-1]]
-
-The above may all be combined.
-For example:
-* face 0, skip wires, every other edge, start vertex:
-  * [2,0,null,[0,-1,2],0]
+For implicit geometry such as POINTS, VERTICES, and EDGES, a conversion will need to be performed. A simple way to implement the conversion is to instantiate all implicit entities. For example, for EDGE number 100, the conversion would create an array of all edges in the model, and then select edge number 100. However, for large and compelx models, more efficient approaches may need to be considered. 
 
 # JSON Encoding of Semantics
 Within a js-JSON file, all semantics is defined in a two arrays, as follows:
@@ -195,29 +159,29 @@ Thus, any values that are not specified are assumed to be null.
 
 The values may also consist of an array that point back into specific geometric entities. (For example, in the winged-edge data structure, each edge points to a set of neighbouring edges.) The method of indexing these entities is described in more detail in the section 'Indexing Method for Entities' above. 
 
-### Viwer Point Attributes
-Certain POINT attributes may be recognised by the viewer. (This of course dpeends on the implmentation of the viewer.)
+### Viewer Attributes
+Certain POINT attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)
  
-* position - the position of the point, in 3d [x,y.z] or 2d [x,y]
-* normal - the point normal vector, in 3d [x,y.z]
-* colour - the point colour, as [r,g,b]
-* xform - the point transformation matrix
-
-(See https://threejs.org/docs/#api/math/Matrix4 for more informatio about the transformation matrix form.)
+* position - the position of the point, in 3d [x,y.z] or 2d [x,y].
+* normal - the point normal vector, in 3d [x,y.z].
+* colour - the point colour, as [r,g,b].
+* xform - the point transformation matrix. (See https://threejs.org/docs/#api/math/Matrix4 for more information about the transformation matrix form.)
  
 ## Collections Objects
 A collection can contain:
 * geometric entities (explicit and implicit), and/or
 * other collections.
 
+Collections are homogeneous. All the entities in a collection must be of the same type. So for eample, if a collection contains EDGES, then all entities in that cillection will be EDGES. However, since collections can also contain other collections, it is still possible to group together non-homogeneous entities. For example, a collection can contain two other collectiosn, one EDGES and the other SHELLS. 
+
 Collections objects are defined as follows: 
-* {"uuid"="xxx", "name"="my_coll", "entities"=[...], "collections"=[...], "properties"={"key1":value1, "key2":value2, ...}}
+* {"uuid"="xxx", "name"="my_coll", "typology"="xxx", "entities"=[...], "properties"={"key1":value1, "key2":value2, ...}}
 
-*Entities* is an array of integer indexes that point back into specific geometric entities. These entities may be both explicit or implicit entities (i.e. FACES, WIRES, EDGES, VERTICES, and POINTS), and may be mixed. The method of indexing these entities is described in more detail in the section 'Indexing Method for Entities' above. 
+*typology* is either "points", "vertices", "edges", "wires", "shells", "collections", or "none". 
 
-*Collections* is an array of strings, which must all be names of other collections. These other collections must all have beend defined earlier in the collections array. 
+*entities* is an array of integer indexes. If *topology* is "points", "vertices", "edges", "wires" or "shells", then the indexes point back into specific geometric entities at that topological level. If *topology* is "collections", then the indexes point back at  specific collections. (Circular references must be avoided.) If *topology* is "none" then this collection contains no entities (it may be the root of a tree), so *entities* can be omitted. 
 
-*Properties* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
+*properties* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
 
 # Example
 WORK IN PROGRESS.
@@ -259,13 +223,13 @@ Below is an annoted example. Note that javascript style comments are used even t
 				//...
 			],
 			[ //WIRE entities
-				[100, [0,1,2,3], [0]],	  //open polyline, open (7 edges)	 [type, [vtxs], [open_closed]]
-				[100, [7,8,9,10], [1]],	  //3d closed polylines (4 edges)		 [type, [vtxs], [open_closed]]
+				[100, [0,1,2,3], [0]],	  //open polyline (3 edges)     [type, [vtxs], [open_closed]]
+				[100, [7,8,9,10], [1]],	  //closed polylines (4 edges)  [type, [vtxs], [open_closed]]
 				//...
 			],
 			[ //FACE entities
-				[200, [50,51,52,53], []],	 //polygon		[type, [[periphery vtxs]], []]
-				[200, [60,61,62], [70,71,72]],	 //polygon with a hole	[type, [[periphery vtxs],[hole 1 vtxs]]]
+				[200, [[50,51,52,53]], []],	       //shell with one polygon	 [type, [[vtxs]], []]
+				[200, [[60,61,62], [70,71,72]], []],   //shell with two polygons [type, [[vtxs],[vtxs]], []]
 				//...
 			]
 		]
@@ -286,7 +250,7 @@ Below is an annoted example. Note that javascript style comments are used even t
 					//...
 				]
 			}
-			{//some data attached to all the implicit POINTS 
+			{//some data attached to implicit POINTS 
 				"uuid":"xxxxx",
 				"name":"trees",
 				"topology":"points", 
@@ -296,7 +260,7 @@ Below is an annoted example. Note that javascript style comments are used even t
 					//...
 				]
 			},
-			{//some data attached to all the implicit EDGES
+			{//some data attached to implicit EDGES
 				"uuid":"xxxxx",
 				"name":"construction",
 				"topology":"edges" 
@@ -307,7 +271,7 @@ Below is an annoted example. Note that javascript style comments are used even t
 					//...
 				]
 			},
-			{//some data attached to all the FACES
+			{//some data attached to implicit FACES
 				"uuid":"xxxxx",
 				"name":"insolation",
 				"topology":"faces" 
@@ -317,17 +281,6 @@ Below is an annoted example. Note that javascript style comments are used even t
 					[264, [3]],
 					[422, [4]],
 					[124, [5]],
-					//...
-				]
-			},
-			{//the viewer may "recognise" this attrib and render the geometry accordingly
-				"uuid":"xxxxx",
-				"name":"materials",
-				"topology":"faces"
-				"values": [
-					[0, [1,2,4,6,7]],
-					[1, [8,9,12,44,66]],
-					[2, [55,77]],
 					//...
 				]
 			},
@@ -343,8 +296,8 @@ Below is an annoted example. Note that javascript style comments are used even t
 			},
 			{//the viewer may "recognise" this attrib and render the geometry accordingly
 				"uuid":"xxxxx",
-				"name":"normals":
-				"topology":"vertices"
+				"name":"normals",
+				"topology":"vertices",
 				"values": [
 					[[0.0,0.0,1.0], [1,3,5,7,9,...]],
 					[[0.0,1.0,1.0], [2,4,6,8,...]],
@@ -353,45 +306,41 @@ Below is an annoted example. Note that javascript style comments are used even t
 				]
 			}
 		},
-		"collections": {
+		"collections": [
 			{//Empty collection (which is ok), it has some properties
 				"uuid":"xxxxx", 
 				"name":"no_geometry",
+				"topology":"none",
 				"properties": {"key1":value1, "key2":value2, ...},
 			},
-			{//A collection containing two EDGES. It has no properties (which is ok).
+			{//A collection containing some EDGES. It has no properties (which is ok).
 				"uuid":"xxxxx",	 
 				"name":"some_edges", //user defined name
-				"entities":[
-					[2,0,0,[0,-1,2]] //first face, first wire, every other edge (uses ranges)
-				], 
+				"topology":"edges",
+				"entities":[200,300,400,500]
 			},
-			{//A collection containing two WIRES
+			{//A collection containing some WIRES
 				"uuid":"xxxxx", 
-				"name":"two_wires",
-				"entities":[
-					[2,1,[0,1]] //second face, first two wires (periphery and hole)
-				], 
+				"name":"some_wires", //user defined name
+				"topology":"wires",
+				"entities":[22,33,44],
+				"properties": {"key1":value1, "key2":value2, ...}
+			},
+			{//A collection containing some SHELLS
+				"uuid":"xxxxx", 
+				"name":"some_shells", //user defined name
+				"topology":"shells",
+				"entities":[22,33,44],
 				"properties": {"key1":value1, "key2":value2, ...}
 			},
 			{//A collection containing some other collections.
 				"uuid":"xxxxx", 
 				"name":"coll_of_colls",
-				"collections":["no_geometry", "some_edges"],
+				"topology":"collections",
+				"entities":[0,2], 
 				"properties": {"key1":value1, "key2":value2, ...}
 			},
-			{//A collection containing some random stuff.
-				"uuid":"xxxxx", 
-				"name":"everything_all_mixed_up",
-				"entities": [
-					[0,[0,2]],	//three vertices
-					[1,[0,1],0],	//two edges, in different wires
-					[2,0,0,1]	//second edge in first face
-				]
-				"collections":["coll_of_colls"],			//a collection
-				"properties": {"key1":value1, "key2":value2, ...}
-			}
-		}
+		]
 	}
 	//---------------------------------------------------------------------------------------------
 }
