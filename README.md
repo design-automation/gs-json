@@ -21,7 +21,7 @@ The topological hierarchy is follows:
 
 VERTICES, WIRES and SHELLS can be instantiated as geometric entities. 
 
-### Wire Entities
+### WIRE Entities
 Each WIRE has:
 * a set of connected EDGES (implicit), each of which has
 * a sequence of VERTICES (implicit), each of which is
