@@ -1,13 +1,13 @@
 {
     "metadata": {
         "filetype":"mobius",
-        "version": 0.1,
+        "version": 1.0,
         "schema":"xxx",
         "crs": {"epsg":3857},
         "location": "+40.6894-074.0447" 
     },
     "geometry":{
-        "counts":[31, 31, 30, 1, 0],
+        "counts":[31, 31, 30, 1, 0, 0],
         "entities":[
             [],
             [
@@ -19,7 +19,7 @@
     "semantics":{
         "attributes":[
             "name":"position",
-            "level":"points",
+            "topology":"points",
             "values": [
                 [[-6.516970157623291, 5.117440223693848, 0.9417080283164978], [0]],
                 [[-5.572010040283203, 8.483989715576172, 1.6499300003051758], [1]],
