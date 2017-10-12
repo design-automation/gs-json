@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
 
-@Component({
-  selector: 'app-root',
-})
-
 export class JSONReaderWriter extends FileReader {
 	read() {
 		var arr;

@@ -4,11 +4,6 @@ import { JSONReaderWriter } from './exporter.readerwriter';
 import { CityGML2GSJSON } from '../mapper/mapper.citygml2gsjson';
 import { GSJSON2Threejs } from '../mapper/mapper.gsjson2threejs';
 
-
-@Component({
-  selector: 'app-root',
-})
-
 export class GSJSONExporter implements Exporter {
 	reader:XMLReaderWriter;
 	

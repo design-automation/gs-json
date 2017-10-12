@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 
-@Component({
-  selector: 'app-root',
-})
 export class AppArray {
 	array:Array<any>;
 	prefix:string;
