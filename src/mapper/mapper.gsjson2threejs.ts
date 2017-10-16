@@ -7,7 +7,7 @@ export class GSJSON2Threejs implements Mapper {
 	constructor() {
     }
 
-	map(gsjson:Document) {
+	map(gsjson:any) {
 		var threejs="";
 		//TO DO for gsjson to threejs Translation
 		return threejs;

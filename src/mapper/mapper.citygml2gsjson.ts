@@ -11,7 +11,7 @@ export class CityGML2GSJSON implements Mapper {
     this.faces=[];
   }
 
-	map(citygml:Document) {	
+	map(citygml:any) {	
     this.mapBuildElement(citygml.getElementsByTagName("bldg:RoofSurface"));
     this.mapBuildElement(citygml.getElementsByTagName("bldg:WallSurface"));
     this.mapBuildElement(citygml.getElementsByTagName("bldg:FloorSurface"));
