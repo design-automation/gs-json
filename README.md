@@ -74,7 +74,6 @@ These two approaches to adding semantics to a model are based on existing approa
 Within a gs-JSON file, the all geometry is defined in a single *entities* array containing three sub-arrays, as follows:
 ```javascript
 "geometry": {
-        "counts": [444,555,44,22,11],
 	"entities": [
 		[  //VERTEX entities array
 			[...],
