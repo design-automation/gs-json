@@ -101,20 +101,32 @@ Within a gs-JSON file, the all geometry is defined in a single *entities* array 
 Entities are represented using integer arrays, consisting of three elements as follows: 
 * [type, [array of point indices], [array of additional parameters]]
 
-So, for example, a single polyline is defined as follows:
-* [100, [0,1,2], [0]]
+### Polylines
+A polyline is defined as follows:
+* [100, [0,1,2,0], []]
 
 This represents the following:
-1. type = 100, i.e. polyline
-1. point indices = [0,1,2] 
-1. additional parameters = 0, an open polyline
+1. type = 100, i.e. polyline.
+1. point indices = [0,1,2,0], since the first and last are the same, it must be closed.
+1. additional parameters, none for a polyline.
 
-If the entity has no additional parameters, then the third element may be an empty array. 
+Polylines have wires that can be open or closed. 
+
+### Polygon Meshes
+A polygon mesh is defined as follows:
+* [200, [[60,61,63], [61,62,63]], [[60,61,62,63]]],
+
+This represents the following:
+1. type = 200, i.e. polygon mesh.
+1. point indices = [[60,61,63], [61,62,63]], which represents two triangles.
+1. additional parameters =  [[60,61,62,63]], which represents the closed wire around the outer edge.
+
+Polygon meshes have faces and wires, both of which are always closed.
 
 ### Indexing Method for Entities
 In order to identify specific entities in the entities array, a simple integer index is used.
 
-For explicit geometry such as WIRES and SHELLS, these indexes refer directly to the position in an array of of geometric elements. For example, the SHELL with index 100 simply refers to the SHELLS array. 
+For explicit geometry such as WIRES and SHELLS, these indexes refer directly to the position in an array of of geometric elements. For example, the SHELL with index 10 simply refers to the 10th item in the SHELLS array. 
 
 For implicit geometry such as POINTS, VERTICES, and EDGES, a conversion will need to be performed. A simple way to implement the conversion is to instantiate all implicit entities. For example, for EDGE number 100, the conversion would create an array of all edges in the model, and then select edge number 100. However, for large and compelx models, more efficient approaches may need to be considered. 
 
@@ -222,13 +234,13 @@ Below is an annoted example. Note that javascript style comments are used even t
 				//...
 			],
 			[ //WIRE entities
-				[100, [0,1,2,3], [0]],	  //open polyline (3 edges)     [type, [vtxs], [open_closed]]
-				[100, [7,8,9,10], [1]],	  //closed polylines (4 edges)  [type, [vtxs], [open_closed]]
+				[100, [0,1,2,3], []],	  //open polyline (3 edges)     [type, [vtxs], [open_closed]]
+				[100, [7,8,9,10,7], []],  //closed polylines (4 edges)  [type, [vtxs], [open_closed]]
 				//...
 			],
 			[ //SHELL entities
-				[200, [[50,51,52,53]], []],	       //shell with one polygon	 [type, [[vtxs]], []]
-				[200, [[60,61,62], [70,71,72]], []],   //shell with two polygons [type, [[vtxs],[vtxs]], []]
+				[200, [[50,51,52,53]], [[50,51,52,53]]],	   //shell with one polygon  [type, [[vtxs]], []]
+				[200, [[60,61,63], [61,62,63]], [[60,61,62,63]]],  //shell with two polygons [type, [[vtxs],[vtxs]], []]
 				//...
 			]
 		]
