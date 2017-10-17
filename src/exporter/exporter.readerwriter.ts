@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 
 export class JSONReaderWriter extends FileReader {
 	read() {
-		var arr;
-		var jsontxt = JSON.parse(this.result);
-		return jsontxt
+		return JSON.parse(this.result);
 	};
 
 	static write(jsonObj) {

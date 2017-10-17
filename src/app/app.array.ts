@@ -1,38 +1,49 @@
 import { Component } from '@angular/core';
 
-export class AppArray {
-	array:Array<any>;
+export class AppArray<T> {
+	values:Array<T>;
 	prefix:string;
 	postfix:string;
 
-	constructor(pre, input, post) {
-		this.array=input;
-		this.prefix=pre+"[";
-		this.postfix="]"+post;
+	constructor(input:Array<T>) {
+		this.values=input;
 	}
 	
-	static create(input) {
-		return new AppArray("", input, "");
+	static create(pre,input,post) {
+		var apparray=new AppArray(input)
+		apparray.prefix=pre;
+		apparray.postfix=post;
+		return apparray;
 	}
 
 	push(input) {
-		this.array.push(input);
+		this.values.push(input);
 	}
 	pop() {
-		return this.array.pop();
+		return this.values.pop();
 	}
 
     public toString = () : string => {
-		return this.prefix+this.array.toString()+this.postfix;
+		return this.prefix+this.values.toString()+this.postfix;
     }
 
-    public isEqual = (appArray:AppArray) : boolean => {
-    	var input=appArray.array;
-      	if(this.array.length!=input.length) {
+    public isEqual = (appArray:AppArray<T>) : boolean => {
+    	return AppArray.areEqual(this.values, appArray.values);
+  	}
+
+  	public findIndex = (value:T) : number => {
+  		var ind=this.values.findIndex(function(entry, index, arr){
+  			return AppArray.areEqual(value, entry);
+        });
+  		return ind;
+  	}
+
+  	private static areEqual = (array, input) : boolean => {
+    	if(array.length!=input.length) {
      	   	return false;
       	}
-      	for(var i=0;i<this.array.length;i++) {
-      	  	if(this.array[i]!=input[i]) {
+      	for(var i=0;i<array.length;i++) {
+      	  	if(array[i]!=input[i]) {
       	   		return false;
      	  	}
     	}

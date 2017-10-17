@@ -8,8 +8,8 @@ export class GSJSON2Threejs implements Mapper {
     }
 
 	map(gsjson:any) {
-		var threejs="";
+		alert(gsjson.metadata);
 		//TO DO for gsjson to threejs Translation
-		return threejs;
+		return gsjson;
 	}
 }

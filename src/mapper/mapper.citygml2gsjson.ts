@@ -1,32 +1,40 @@
 import { Component } from '@angular/core';
 import { AppArray } from '../app/app.array';
 import { Mapper } from './mapper.component';
+import { GSJSON } from '../formatstructure/formatstructure.gsjson';
+import { Metadata } from '../formatstructure/formatstructure.gsjson';
+import { Skins } from '../formatstructure/formatstructure.gsjson';
+import { Geometry } from '../formatstructure/formatstructure.gsjson';
+import { Semantics } from '../formatstructure/formatstructure.gsjson';
+import { Attribute } from '../formatstructure/formatstructure.gsjson';
+import { Collection } from '../formatstructure/formatstructure.gsjson';
 
 export class CityGML2GSJSON implements Mapper {
-  allpoints:Array<AppArray>;
-  faces:Array<any>;
-
+  positions:AppArray<Array<number>>;
+  faces:AppArray<any>;
+  points: Array<any>;
+  
   constructor() {
-    this.allpoints=new Array<AppArray>();
-    this.faces=[];
+    this.positions=new AppArray([]);
+    this.faces=new AppArray([]);
+    this.points=[];
   }
 
 	map(citygml:any) {	
     this.mapBuildElement(citygml.getElementsByTagName("bldg:RoofSurface"));
     this.mapBuildElement(citygml.getElementsByTagName("bldg:WallSurface"));
     this.mapBuildElement(citygml.getElementsByTagName("bldg:FloorSurface"));
-   
-    var points="\n\t\t\t["+this.allpoints.toString()+"\n\t\t\t]";
-    var transMatrix="\n\t\t\t[1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]";
-    var pointset="\n\t\"pointsets\": [\n\t\t["+points+","+transMatrix+"\n\t\t]\n\t]";
-    var entityData="\n\t\"entities\": [\n\t\t["+this.faces.toString()+"\n\t\t]\n\t]";    
-    return "\"geometry\": {"+pointset+","+entityData+"\n}";
+    var attrArray=new Array<Attribute>();
+    attrArray.push(new Attribute("", "position", "points", this.points, this.positions.values));
+    var data=new GSJSON(new Metadata("",0.1,"","",""),new Skins([],[],[]),new Geometry([],[]),new Semantics(attrArray,[]));
+    alert(JSON.stringify(data));
+    return JSON.stringify(data);
   }
 
   mapBuildElement(features) {
     for (var i=0;i<features.length ;i++) {
       var feature=features[i];
-      this.faces.push(new AppArray("\n\t\t\t\t",this.mapSurface(feature, 203, undefined),""));
+      this.faces.push(new AppArray(this.mapSurface(feature, 203, undefined)));
       
       this.mapOpenings(feature.getElementsByTagName("bldg:Window"));
       this.mapOpenings(feature.getElementsByTagName("bldg:Door"));
@@ -35,7 +43,7 @@ export class CityGML2GSJSON implements Mapper {
 
   mapOpenings(openings) {
     for (var i=0;i<openings.length ;i++) {
-      this.faces.push(new AppArray("\n\t\t\t\t",this.mapSurface(openings[i], 203, undefined),""));
+      this.faces.push(new AppArray(this.mapSurface(openings[i], 203, undefined)));
     }
   }
 
@@ -44,7 +52,7 @@ export class CityGML2GSJSON implements Mapper {
     face.push(facetype); 
     face.push(this.mapGeometry(feature));
 
-    var holes=AppArray.create([]);
+    var holes=new AppArray([]);
     if(holefeatures!=undefined) {  
       for (var i=0;i<holefeatures.length ;i++) {
         holes.push(this.mapGeometry(holefeatures[i]));
@@ -59,28 +67,26 @@ export class CityGML2GSJSON implements Mapper {
     var fsurface=[];
     for (var i=0;i<surface.length ;i++)
     { 
-      var polygon=AppArray.create([]);
+      var polygon=new AppArray([]);
       polygon.push(0);
     
       var newpoints = surface[i].textContent.split(' ').map(function(item) {
         return parseFloat(item);
       });
-      var polypoints=AppArray.create([]);
+      var polypoints=new AppArray([]);
       for (var j=0;j<newpoints.length-3 ;j=j+3) {
-        var point = new AppArray("\n\t\t\t\t",[newpoints[j],newpoints[j+1],newpoints[j+2]],"");
-        var ind=this.allpoints.findIndex(function(entry, index, arr){
-          return entry.isEqual(point);
-        });
-
+        var point = [newpoints[j],newpoints[j+1],newpoints[j+2]];
+        var ind=this.positions.findIndex(point);
         if(ind<0) {
-          this.allpoints.push(point);
-          ind=this.allpoints.length-1;
+          this.positions.push(point);
+          ind=this.positions.values.length-1;
         }
+        this.points.push(ind);
         polypoints.push(ind);
       }    
       polygon.push(polypoints);
       fsurface.push(polygon);
     }
-    return AppArray.create(fsurface);
+    return new AppArray(fsurface);
   }
 }
