@@ -27,7 +27,6 @@ export class CityGML2GSJSON implements Mapper {
     var attrArray=new Array<Attribute>();
     attrArray.push(new Attribute("", "position", "points", this.points, this.positions.values));
     var data=new GSJSON(new Metadata("",0.1,"","",""),new Skins([],[],[]),new Geometry([],[]),new Semantics(attrArray,[]));
-    alert(JSON.stringify(data));
     return JSON.stringify(data);
   }
 
