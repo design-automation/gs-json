@@ -141,23 +141,22 @@ The attributes and collections arrays each contain objects that define the seman
 
 ## Attribute Objects
 Attributes objects are defined as follows:
-* {"uuid"="xxx", "name"="my_attrib", "topology"="faces", "values"=[...]}
+* {"uuid"="xxx", "name"="my_attrib", "topology"="xxx", "values"=[...], "map"=[...] }
 
-*Topology* can be "points", "vertices", "edges", "wires", and "faces".
+*topology* can be "points", "vertices", "edges", "wires", "faces", and "shells".
 
-*Values* is an array the defines the values for some subset of geometric entities. For example, if "topology"="faces", then the values will be specified for some subset of the faces in the model. The values can be any valid JSON type.
+*values* is an array the defines the set of values that will be assigned to the geometric entities. The values can be any valid JSON type.
 
-The array of values may typically be sparse (i.e. there may be many 'null' values) and may contain many repeat values. A compact array representation is used, where the first item is the value and the second item is an array of entity indexes. 
+*map* is an array of indices, whose length is equal to the number of geometric entities.  
 
-For example, lets say a model contains 20 entities, and that these entities are assigned the following values:
+For example, lets say a model contains 20 faces, and that these faces are assigned the following attribute values:
 * [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null,null,null]
 
-The attribute object values array would be as follows: 
-* [  ["a",[1,4,12]],  ["b",[2,8,10,13,14]],  ["c",[3,9,11,15]]  ]
+The two arrays would be as follows: 
+* "values" = [null,"a","b","c"]
+* "map" = [0,1,2,3,1,0,0,0,2,3,2,3,1,2,2,3,0,0,0,0]
 
-Thus, any values that are not specified are assumed to be null.
-
-The values may also consist of an array that point back into specific geometric entities. (For example, in the winged-edge data structure, each edge points to a set of neighbouring edges.) The method of indexing these entities is described in more detail in the section 'Indexing Method for Entities' above. 
+Note that the length of the map array must be equal to the number of entities (which in this case is 20).
 
 ### Viewer Attributes
 Certain POINT attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)
@@ -241,69 +240,43 @@ Below is an annoted example. Note that javascript style comments are used even t
 				"name": "position", 
 				"topology": "points",
 				"values": [
-					[[1.1,2.2,3.3],[3]],
-					[[4.4,5.5,6.6],[1]], 
-					[[7.7,8.8,9.9],[2,5,7,9]], 
-					[[10.,10.,10.],[0]], 
-					[[11.,11.,11.],[4,6]], 
-					[[12.,13.,14.],[8]], 
+					[1.1,2.2,3.3],
+					[4.4,5.5,6.6], 
+					[7.7,8.8,9.9],
+					[10.,10.,10.],
+					[11.,11.,11.],
+					[12.,13.,14.],
 					//...
 				]
+				"map": [3,1,2,0,4,2,4,2,5,2,...]
 			}
 			{//some data attached to implicit POINTS 
 				"uuid":"xxxxx",
 				"name":"trees",
 				"topology":"points", 
-				"values": [
-					["raintree",  [1,3,5,6,7,8,11,...]],
-					["oaktree",	  [2,3,20,22,...]],
-					//...
-				]
+				"values": [null,"raintree","oaktree", ...]
+				"map": [0,2,1,2,2,0,0,0,3,2..]
 			},
 			{//some data attached to implicit EDGES
 				"uuid":"xxxxx",
 				"name":"construction",
 				"topology":"edges" 
-				"values": [
-					["timber",	 [5,23,67,99,...]],
-					["steel",	 [25,27,44,52,...]],
-					["concrete", [1,45,46,87,...]],
-					//...
-				]
+				"values": [null,"timber","steel","concrete", ...]
+				"map": [0,0,0,1,1,1,1,2,2,2,1,1,1,3,3,3,0,0,0, ...]
 			},
 			{//some data attached to implicit FACES
 				"uuid":"xxxxx",
 				"name":"insolation",
 				"topology":"faces" 
-				"values": [
-					[123, [1]],
-					[567, [2]],
-					[264, [3]],
-					[422, [4]],
-					[124, [5]],
-					//...
-				]
+				"values": [123,567,264,422,124,...]
+				"map": [0,1,2,3,4,5,6,7,8,9,...]
 			},
 			{//the viewer may "recognise" this attrib and render the geometry accordingly
 				"uuid":"xxxxx",
 				"name":"color",
 				"topology":"vertices"
-				"values": [
-					[[0.3,0.2,0.4], [1,2,4,6,7]],
-					[[0.7,0.2,0.3], [8,9,12,44,66]],
-					//...
-				]
-			},
-			{//the viewer may "recognise" this attrib and render the geometry accordingly
-				"uuid":"xxxxx",
-				"name":"normals",
-				"topology":"vertices",
-				"values": [
-					[[0.0,0.0,1.0], [1,3,5,7,9,...]],
-					[[0.0,1.0,1.0], [2,4,6,8,...]],
-					[[1.0,0.0,1.0], [10,20,30,40,...]],
-					//....
-				]
+				"values": [[0.3,0.2,0.4],[0.7,0.2,0.3],[0.7,0.2,0.3],[0.7,0.2,0.3],...],
+				"map": [1,3,2,3,0,1,2,3,4,5,...]
 			}
 		},
 		"collections": [
