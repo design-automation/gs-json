@@ -21,6 +21,9 @@ The topological hierarchy is follows:
 
 VERTICES, WIRES and SHELLS can be instantiated as geometric entities. 
 
+### POINT Entities
+The base data to which everything else is connected is a set of points in space. 
+
 ### WIRE Entities
 Each WIRE has:
 * a set of connected EDGES (implicit), each of which has
@@ -30,10 +33,12 @@ Each WIRE has:
 ### SHELL Entities
 Each SHELL has:
 * a set of connected FACES (implicit), each of which has
+** a set of connected EDGES (implicit), each of which has
+** a sequence of VERTICES (implicit), each of which is
 * a set of closed WIRES (implicit), each of which has
-* a set of connected EDGES (implicit), each of which has
-* a sequence of VERTICES (implicit), each of which is
-* associated with a single (implicit) POINT.
+** a set of connected EDGES (implicit), each of which has
+** a sequence of VERTICES (implicit), each of which is
+* each vertex is associated with a single (implicit) POINT.
 
 ### Shared Entities
 Multiple geometric entities can reference the same POINTS. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
@@ -73,61 +78,38 @@ These two approaches to adding semantics to a model are based on existing approa
 # JSON Encoding of Geometry
 Within a gs-JSON file, the all geometry is defined in a single *entities* array containing three sub-arrays, as follows:
 ```javascript
-"geometry": {
-	"entities": [
-		[  //VERTEX entities array
-			[...],
-			[...],
-			[...],
-			//...
-		],
-		[  //WIRE entities array
-			[...],
-			[...],
-			[...],
-			//...
-		],
-		[  //SHELL entities array
-			[...],
-			[...],
-			[...],
-			//...
-		] 
-	]
-}
+"geometry": [
+  [...],
+	[...],
+	[...],
+	//...
+]
 ```
 ## Entities Arrays
 Entities are represented using integer arrays, consisting of three elements as follows: 
-* [type, [array of point indices], [array of additional parameters]]
+* [wires], [faces], [parameters]]
 
 ### Polylines
 A polyline is defined as follows:
-* [100, [0,1,2,0], []]
+* [[[0,1,2,3,0]], [], [100]]
 
 This represents the following:
-1. type = 100, i.e. polyline.
-1. point indices = [0,1,2,0], since the first and last are the same, it must be closed.
-1. additional parameters, none for a polyline.
+1. a single wire, with point indices 0,1,2,3,0 (since the first and last are the same, it must be closed.)
+1. no faces
+1. one parameter, type = 100, i.e. polyline.
 
-Polylines have wires that can be open or closed. 
+Polylines can be open or closed. A closed polyline is not the same as a polygon. 
 
 ### Polygon Meshes
 A polygon mesh is defined as follows:
-* [200, [[60,61,63], [61,62,63]], [[60,61,62,63]]],
+* [[[60,61,62,63,60]], [[60,61,63,60], [61,62,63,61]], [200]]
 
 This represents the following:
-1. type = 200, i.e. polygon mesh.
-1. point indices = [[60,61,63], [61,62,63]], which represents two triangles.
-1. additional parameters =  [[60,61,62,63]], which represents the closed wire around the outer edge.
+1. a single closed wire with 4 point indices 60,61,62,63,60
+1. two triangular faces 60,61,63,60 and 61,62,63,61
+1. one parameter, type = 200, i.e. polygon mesh
 
-Polygon meshes have faces and wires, both of which are always closed.
-
-### Indexing Method for Entities
-In order to identify specific entities in the entities array, a simple integer index is used.
-
-For explicit geometry such as WIRES and SHELLS, these indexes refer directly to the position in an array of of geometric elements. For example, the SHELL with index 10 simply refers to the 10th item in the SHELLS array. 
-
-For implicit geometry such as POINTS, VERTICES, and EDGES, a conversion will need to be performed. A simple way to implement the conversion is to instantiate all implicit entities. For example, for EDGE number 100, the conversion would create an array of all edges in the model, and then select edge number 100. However, for large and compelx models, more efficient approaches may need to be considered. 
+Polygon meshes have faces and wires, both of which are always closed. The wires represent the naked edges of the mesh. A mesh with no wires is a solid. 
 
 # JSON Encoding of Semantics
 Within a js-JSON file, all semantics is defined in a two arrays, as follows:
@@ -160,15 +142,6 @@ Attributes objects are defined as follows:
 
 *map* is an array of indices, whose length is equal to the number of geometric entities.  
 
-For example, lets say a model contains 20 faces, and that these faces are assigned the following attribute values:
-* [null,'a','b','c','a',null,null,null,'b','c','b','c','a','b','b','c',null,null,null,null]
-
-The two arrays would be as follows: 
-* "values" = [null,"a","b","c"]
-* "map" = [0,1,2,3,1,0,0,0,2,3,2,3,1,2,2,3,0,0,0,0]
-
-Note that the length of the map array must be equal to the number of entities (which in this case is 20).
-
 ### Viewer Attributes
 Certain POINT attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)
  
@@ -185,11 +158,11 @@ A collection can contain:
 Collections are homogeneous. All the entities in a collection must be of the same type. So for eample, if a collection contains EDGES, then all entities in that cillection will be EDGES. However, since collections can also contain other collections, it is still possible to group together non-homogeneous entities. For example, a collection can contain two other collectiosn, one EDGES and the other SHELLS. 
 
 Collections objects are defined as follows: 
-* {"uuid"="xxx", "name"="my_coll", "typology"="xxx", "entities"=[...], "properties"={"key1":value1, "key2":value2, ...}}
+* {"uuid"="xxx", "name"="my_coll", "typology"="xxx", "entities"=[...], "collections"=[...], "properties"={"key1":value1, "key2":value2, ...}}
 
 *typology* is either "points", "vertices", "edges", "wires", "shells", "collections", or "none". 
 
-*entities* is an array of integer indexes. If *topology* is "points", "vertices", "edges", "wires" or "shells", then the indexes point back into specific geometric entities at that topological level. If *topology* is "collections", then the indexes point back at  specific collections. (Circular references must be avoided.) If *topology* is "none" then this collection contains no entities (it may be the root of a tree), so *entities* can be omitted. 
+*entities* is ...
 
 *properties* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
 
