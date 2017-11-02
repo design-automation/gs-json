@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 #houdini
-tests/backup
+*/backup

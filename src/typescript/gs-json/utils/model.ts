@@ -1,43 +1,43 @@
 // interfaces for js-GSON
 
-interface Metadata {
+export interface IMetadata {
     filetype: "mobius";
     version: number;
     crs: any;
     location: string;
 }
-interface Entity {
+export interface IEntity {
     [index: number]: number|number[]|number[][];
 }
-interface Attribute {
+export interface IAttribute {
     name: string;
     topology: "points"|"vertices"|"edges"|"wires"|"faces"|"shells";
     values: any[];
     map: number[]|number[][]|number[][][];
 }
-interface Collection {
+export interface ICollection {
     name: string;
-    entities?: Entity[];
+    entities?: IEntity[];
     collections?: string[];
     properties?: { key: string, value: any };
 }
-interface Skin {
+export interface ISkin {
     images: string[];
     textures: string[];
     materials: any[];
 }
-interface GSJSON {
-    metadata: Metadata;
-    geometry?: Entity[];
-    attributes?: Attribute[];
-    collections?: Collection[];
-    skins?: Skin[];
+export interface IgsJSON {
+    metadata: IMetadata;
+    geometry?: IEntity[];
+    attributes?: IAttribute[];
+    collections?: ICollection[];
+    skins?: ISkin[];
 }
 
 //=================================================================================================
 
 function test():void {
-    let data: GSJSON = {
+    let data: IgsJSON = {
         "metadata": {
             "filetype": "mobius",
             "version": 0.1,
@@ -137,4 +137,3 @@ function test():void {
     }
     console.log(data.geometry[0]);
 }
-test();
