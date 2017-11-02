@@ -79,7 +79,7 @@ These two approaches to adding semantics to a model are based on existing approa
 Within a gs-JSON file, the all geometry is defined in a single *entities* array containing three sub-arrays, as follows:
 ```javascript
 "geometry": [
-  [...],
+	[...],
 	[...],
 	[...],
 	//...
@@ -114,20 +114,18 @@ Polygon meshes have faces and wires, both of which are always closed. The wires 
 # JSON Encoding of Semantics
 Within a js-JSON file, all semantics is defined in a two arrays, as follows:
 ```javascript
-"semantics": {
-	"attributes":  [ 
-		{...},
-		{...},
-		{...},
-		//...
-	],
-	"collections": [ 
-		{...},
-		{...},
-		{...},
-		//...
-	]
-}
+"attributes":  [ 
+	{...},
+	{...},
+	{...},
+	//...
+],
+"collections": [ 
+	{...},
+	{...},
+	{...},
+	//...
+]
 ```
 
 The attributes and collections arrays each contain objects that define the semantics.
@@ -172,133 +170,4 @@ WORK IN PROGRESS.
 There are some examples files here:
 * https://github.com/phtj/gs-JSON/tree/master/tests
 
-Below is an annoted example. Note that javascript style comments are used even though comments are not technically allowed in JSON.
 
-```javascript
-{
-	//---------------------------------------------------------------------------------------------
-	"metadata": {
-		"filetype":"mobius",
-		"version": 0.1,
-		"schema":"xxx",
-		"crs": {"epsg":3857},
-		"location": "+40.6894-074.0447" //ISO 6709, ±DD.DDDD±DDD.DDDD degrees format
-	},
-	//---------------------------------------------------------------------------------------------
-	"skins": {
-		//See https://github.com/mrdoob/three.js/wiki/JSON-Texture-format-4
-		"images": [],	 //based on three.js
-		"textures": [],	 //based on three.js
-		"materials": [	 //based on three.js
-			{...},
-			{...},
-			{...}
-		], 
-	}
-	//---------------------------------------------------------------------------------------------
-	"geometry": {
-        	"counts": [444,555,44,22,11,5], //number of points, vertices, edges, wires, faces, shells
-		"entities": [
-			[ //VERTEX entities
-				[0, [0], []],	        //acorn	 [type, [origin vtx], []]
-				[1, [1], [1,1,1]],	//ray	 [type, [origin vtx], [ray vector]]
-				[2, [2], [1,0,0]]	//plane	 [type, [origin vtx], [plane normal vector]]
-				//...
-			],
-			[ //WIRE entities
-				[100, [0,1,2,3], []],	  //open polyline (3 edges)     [type, [vtxs], [open_closed]]
-				[100, [7,8,9,10,7], []],  //closed polylines (4 edges)  [type, [vtxs], [open_closed]]
-				//...
-			],
-			[ //SHELL entities
-				[200, [[50,51,52,53]], [[50,51,52,53]]],	   //shell with one polygon  [type, [[vtxs]], []]
-				[200, [[60,61,63], [61,62,63]], [[60,61,62,63]]],  //shell with two polygons [type, [[vtxs],[vtxs]], []]
-				//...
-			]
-		]
-	}
-	//---------------------------------------------------------------------------------------------
-	"semantics": {
-		"attributes": [
-			{//positions of implicit POINTS 
-				"name": "position", 
-				"topology": "points",
-				"values": [
-					[1.1,2.2,3.3],
-					[4.4,5.5,6.6], 
-					[7.7,8.8,9.9],
-					[10.,10.,10.],
-					[11.,11.,11.],
-					[12.,13.,14.],
-					//...
-				]
-				"map": [3,1,2,0,4,2,4,2,5,2,...]
-			}
-			{//some data attached to implicit POINTS 
-				"uuid":"xxxxx",
-				"name":"trees",
-				"topology":"points", 
-				"values": [null,"raintree","oaktree", ...]
-				"map": [0,2,1,2,2,0,0,0,3,2..]
-			},
-			{//some data attached to implicit EDGES
-				"uuid":"xxxxx",
-				"name":"construction",
-				"topology":"edges" 
-				"values": [null,"timber","steel","concrete", ...]
-				"map": [0,0,0,1,1,1,1,2,2,2,1,1,1,3,3,3,0,0,0, ...]
-			},
-			{//some data attached to implicit FACES
-				"uuid":"xxxxx",
-				"name":"insolation",
-				"topology":"faces" 
-				"values": [123,567,264,422,124,...]
-				"map": [0,1,2,3,4,5,6,7,8,9,...]
-			},
-			{//the viewer may "recognise" this attrib and render the geometry accordingly
-				"uuid":"xxxxx",
-				"name":"color",
-				"topology":"vertices"
-				"values": [[0.3,0.2,0.4],[0.7,0.2,0.3],[0.7,0.2,0.3],[0.7,0.2,0.3],...],
-				"map": [1,3,2,3,0,1,2,3,4,5,...]
-			}
-		},
-		"collections": [
-			{//Empty collection (which is ok), it has some properties
-				"uuid":"xxxxx", 
-				"name":"no_geometry",
-				"topology":"none",
-				"properties": {"key1":value1, "key2":value2, ...},
-			},
-			{//A collection containing some EDGES. It has no properties (which is ok).
-				"uuid":"xxxxx",	 
-				"name":"some_edges", //user defined name
-				"topology":"edges",
-				"entities":[200,300,400,500]
-			},
-			{//A collection containing some WIRES
-				"uuid":"xxxxx", 
-				"name":"some_wires", //user defined name
-				"topology":"wires",
-				"entities":[22,33,44],
-				"properties": {"key1":value1, "key2":value2, ...}
-			},
-			{//A collection containing some SHELLS
-				"uuid":"xxxxx", 
-				"name":"some_shells", //user defined name
-				"topology":"shells",
-				"entities":[22,33,44],
-				"properties": {"key1":value1, "key2":value2, ...}
-			},
-			{//A collection containing some other collections.
-				"uuid":"xxxxx", 
-				"name":"coll_of_colls",
-				"topology":"collections",
-				"entities":[0,2], 
-				"properties": {"key1":value1, "key2":value2, ...}
-			},
-		]
-	}
-	//---------------------------------------------------------------------------------------------
-}
-````
