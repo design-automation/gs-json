@@ -43,3 +43,7 @@ Thumbs.db
 
 #houdini
 */backup
+
+# test reports
+/karma_html
+/coverage
