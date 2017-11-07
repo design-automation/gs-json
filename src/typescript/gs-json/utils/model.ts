@@ -1,23 +1,27 @@
 // ========================= ENUMS =========================
-enum EComponentType {
-    points = "points",
-    vertices = "vertices",
-    edges = "edges",
-    wires = "wires",
-    faces = "faces",
-    shells = "shells"
+enum EAttributeType {
+    points,   // = "points",
+    vertices, // = "vertices",
+    edges,    // = "edges",
+    wires,    // = "wires",
+    faces,    // = "faces",
+    shells,   // = "shells"
 }
 enum EDataType {
-    type_string = "string",
-    type_number = "number",
-    type_boolean = "boolean",
-    type_string_array = "string[]",
-    type_number_array = "number[]",
-    type_boolean_array = "boolean[]"
+    type_string,        // = "string",
+    type_number,        // = "number",
+    type_boolean,       // = "boolean",
+    type_string_array,  // = "string[]",
+    type_number_array,  // = "number[]",
+    type_boolean_array, // = "boolean[]"
 }
 enum EEntityType {
     polyline = 100,
     polymesh = 200
+}
+enum ECollectionType {  //not too sure about this enum
+    root,
+    leaf
 }
 // ========================= INTERFACES for gsJSON data =========================
 export interface IgsMetadata {
@@ -28,7 +32,7 @@ export interface IgsMetadata {
 }
 export interface IgsAttributeData {
     name: string;
-    component: "points" | "vertices" | "edges" | "wires" | "faces" | "shells"; //enum not working
+    attribute_type: "points" | "vertices" | "edges" | "wires" | "faces" | "shells"; //enum not working
     data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]"; //enum not working
     values: any[];
     map: (number|number[]|number[][])[];
@@ -54,32 +58,52 @@ export interface IgsData {
 // ========================= INTERFACES for classes =========================
 // interface for main model
 export interface IgsModel {
-    data:IgsData;
+    //Creation
+    createPoint(xyz:number[]):IPoint;
+    createPolyline(wire_points:IPoint[]):IEntity;
+    createPolymesh(wire_points:IPoint[], face_points:IFace[]):IEntity;
+    //Points
+    getPointIDs(num_vertices?:number):number[];
+    getPoint(point_id:number):IPoint;
+    addPoint(point:IPoint):boolean;
+    deletePoint(point_id:number):boolean;
+    deletePoints(point_ids:number[]):boolean;
     //Entities
-    getEntities(entity_type?:EEntityType):IEntity[];
-    getEntity(id:number):IEntity;
-    addEntity(entity: IEntity):boolean; //TODO how to create this new geometric entity
-    deleteEntity(index:number):boolean;
+    getEntitieIDs(entity_type?:EEntityType):number[];
+    getEntity(entity_id:number):IEntity;
+    addEntity(entity: IEntity):boolean;
+    deleteEntity(entity_id:number):boolean;
+    deleteEntities(entity_ids:number[]):boolean;
+    //Components
+    getVertices(entity_type?:EEntityType):IVertex[];
+    getEdges(entity_type?:EEntityType):IEdge[];
+    getWires(entity_type?:EEntityType):IWire[];
+    getFaces(entity_type?:EEntityType):IFace[];
+    getShells(entity_type?:EEntityType):IShell[];
     //Attributes
-    getAttributes(component_type?:EComponentType):IAttribute[];
+    getAttributes(attribute_type?:EAttributeType):IAttribute[];
     getAttribute(name:string):IAttribute;
-    addAttribute(name:string, component:EComponentType, type:EDataType):boolean;
-    deleteAttribute(name:string):boolean;
+    addAttribute(name:string, attribute_type:EAttributeType, data_type:EDataType):IAttribute;
+    deleteAttribute(attribute:IAttribute):boolean;
     //Collections
-    getCollections():ICollection[];
+    getCollections(collection_type?:ECollectionType):ICollection[];
     getCollection(name:string):ICollection;
-    addCollection(name:string):boolean;
-    deleteCollection(name:string):boolean;
+    addCollection(name:string):ICollection;
+    deleteCollection(collection:ICollection):boolean;
     //Clean up nulls and unused points
     purgePoints():number;
     purgeNulls():number;
+    //Runs some check
+    validateModel():boolean;
 }
 //interfaces for topological components
 export interface IComponent {
     getEntity():IEntity;
     getID():number;
-    setAttribValue(name:string, value:any):any;
-    getAttribValue(name:string):any;
+    getPath():IComponentPath;
+    getAttributes():IAttribute[];
+    setAttributeValue(attribute:IAttribute | string, value:any):any;//TODO, name or attribute
+    getAttributeValue(attribute:IAttribute | string):any;//TODO, name or attribute
     getCollections():ICollection[];
 }
 export interface IVertex extends IComponent {
@@ -130,8 +154,15 @@ export interface IAttribute {
     getID():number;
     getName():string;
     setName(name:string):string;
-    getComponentType():EComponentType;
+    getAttributeType():EAttributeType;
     getDataType():EDataType;
+}
+//interface for property
+export interface IProperty {
+    getName():string;
+    setName(name:string):string;
+    getValue():any;
+    setValue(value:any):any;
 }
 //interface for collection
 export interface ICollection {
@@ -141,18 +172,20 @@ export interface ICollection {
     //Collections
     getParentCollections():ICollection[];
     getChildCollections():ICollection[];
-    addChildCollection(entity:ICollection):boolean;
-    removeChildCollection(entity:ICollection):boolean;
+    addChildCollection(collection:ICollection):boolean;
+    removeChildCollection(collection:ICollection):boolean;
     //Entities
-    getEntities(entity_type?:EEntityType):IEntity[];
-    addEntity(entity:IEntity):boolean;
-    removeEntity(entity:IEntity):boolean;
+    getEntitieIDs(entity_type?:EEntityType):number[];
+    addEntity(entity_id:number):boolean;
+    addEntities(entity_ids:number[]):boolean;
+    removeEntity(entity_id:number):boolean;
+    removeEntities(entity_ids:number[]):boolean;
     //Properties
-    addProperty(name:string):boolean;
-    deleteProperty(name:string):boolean;
-    getPropetieNames():string[];
-    getPropertyValue(name:string):any;
-    setPropertyValue(name:string, value:any):any;
+    addProperty(property:IProperty):boolean;
+    deleteProperty(property:IProperty):boolean;
+    getPropeties():IProperty[];
+    //Type
+    getCollectionType():ECollectionType;
 }
 // interface for component path
 export interface IComponentPath {
@@ -164,38 +197,63 @@ export interface IComponentPath {
 //model class
 export class Model {
     private data:IgsData;
-    //Entities
-    getEntities(entity_type?:EEntityType):IEntity[] {
-        console.log("not implemented");
-        return [];
+    constructor(data:IgsData) {
+        this.data = data;
     }
-    getEntity(entity_id:number):IEntity {
+    //Creation
+    public createPoint(x:number, y:number, z:number):IPoint {
         console.log("not implemented");
         return null;
     }
-    addEntity(entity: IEntity):boolean{
+    public createPolyline(wire_points:IPoint[]):IEntity {
+        console.log("not implemented");
+        return null;
+    }
+    public createPolymesh(wire_points:IPoint[], face_points:IFace[]):IEntity {
+        console.log("not implemented");
+        return null;
+    }
+    //Points
+    public getPoints():IPoint[] {
+        console.log("not implemented");
+        return [];
+    }
+    public getPoint(point_id:number):IPoint {
+        console.log("not implemented");
+        return null;
+    }
+    //Entities
+    public getEntities(entity_type?:EEntityType):IEntity[] {
+        console.log("not implemented");
+        return [];
+    }
+    public getEntity(entity_id:number):IEntity {
+        console.log("not implemented");
+        return null;
+    }
+    public addEntity(entity: IEntity):boolean{
         console.log("not implemented");
         return false;
     } 
-    deleteEntity(entity_id:number):boolean{
+    public deleteEntity(entity_id:number):boolean{
         //for this method, must use 'delete' operator, do not use 'splice', 'shift', 'pop'
         //https://bytearcher.com/articles/how-to-delete-value-from-array/
         return this.data.geometry[entity_id];
     }
     //Attributes
-    getAttributes(component_type?:EComponentType):IAttribute[]{
+    public getAttributes(component_type?:EAttributeType):IAttribute[]{
         console.log("not implemented");
         return [];
     }
-    getAttribute(name:string):IAttribute{
+    public getAttribute(name:string):IAttribute{
         console.log("not implemented");
         return null;
     }
-    addAttribute(name:string, component:EComponentType, type:EDataType):boolean{
+    public addAttribute(name:string, component:EAttributeType, type:EDataType):boolean{
         console.log("not implemented");
         return false;
     }
-    deleteAttribute(name:string):boolean{
+    public deleteAttribute(name:string):boolean{
         console.log("not implemented");
         //for this method, must use 'delete' operator, do not use 'splice', 'shift', 'pop'
         //https://bytearcher.com/articles/how-to-delete-value-from-array/
@@ -203,19 +261,19 @@ export class Model {
         return false;
     }
     //Collections
-    getCollections():ICollection[]{
+    public getCollections():ICollection[]{
         console.log("not implemented");
         return [];
     }
-    getCollection(name:string):ICollection{
+    public getCollection(name:string):ICollection{
         console.log("not implemented");
         return null;
     }
-    addCollection(name:string):boolean{
+    public addCollection(name:string):boolean{
         console.log("not implemented");
         return false;
     }
-    deleteCollection(name:string):boolean{
+    public deleteCollection(name:string):boolean{
         console.log("not implemented");
         //for this method, must use 'delete' operator, do not use 'splice', 'shift', 'pop'
         //https://bytearcher.com/articles/how-to-delete-value-from-array/
@@ -223,22 +281,22 @@ export class Model {
         return false;
     }
     //Clean up nulls and unused points
-    purgePoints():number{
+    public purgePoints():number{
         console.log("not implemented");
         return -1;
     }
-    purgeNulls():number{
+    public purgeNulls():number{
         console.log("not implemented");
         return -1;
     }
 }
 // component class
 export class Component implements IComponent{
-    private data:IgsData;
+    private model:IgsModel;
     private entity_id:number;
     private component_path:IComponentPath;
-    constructor(data: IgsData, component_path:IComponentPath) {
-        this.data = data;
+    constructor(model:IgsModel, component_path:IComponentPath) {
+        this.model = model;
         this.component_path = component_path;
     }
     public getID():number {
@@ -246,91 +304,99 @@ export class Component implements IComponent{
         return this.entity_id;
     }
     public getEntity():IEntity {
-        console.log("getEntity not implemented");
-        return null
-    }
-    public setAttribValue(name:string, value:any):any {
-        console.log("setAttribValue not implemented");
+        console.log("not implemented");
         return null;
     }
-    public getAttribValue(name:string):any {
-        console.log("getAttribValue not implemented");
+    public getPath():IComponentPath {
+        console.log("not implemented");
+        return null;
+    }
+    public getAttributes():IAttribute[] {
+        console.log("not implemented");
+        return null;
+    }
+    public setAttributeValue(attribute:IAttribute | string, value:any):any {
+        console.log("not implemented");
+        return null;
+    }
+    public getAttributeValue(attribute :IAttribute | string):any {
+        console.log("not implemented");
         return null;
     }
     public getCollections():ICollection[] {
-        console.log("getCollections not implemented");
+        console.log("not implemented");
         return [];
     }
 }
 // vertex class 
 export class Vertex extends Component implements IVertex {
     public getPoint():IPoint {
-        console.log("getPoint not implemented");
+        console.log("not implemented");
         return null;
     }
     public next():IVertex {
-        console.log("next not implemented");
+        console.log("not implemented");
         return null;
     }
     public previous():IVertex {
-        console.log("previous not implemented");
+        console.log("not implemented");
         return null;
     }
 }
 // edge class 
 export class Edge extends Component implements IEdge {
     public getVertices():IVertex[] {
-        console.log("getVertices not implemented");
+        console.log("not implemented");
         return null;
     }
     public next():IEdge {
-        console.log("next not implemented");
+        console.log("not implemented");
         return null;
     }
     public previous():IEdge {
-        console.log("previous not implemented");
+        console.log("not implemented");
         return null;
     }
 }
 // wire class 
 export class Wire extends Component implements IWire {
     public getVertices():IVertex[] {
-        console.log("getVertices not implemented");
+        console.log("not implemented");
         return null;
     }
     public getEdges():IEdge[] {
-        console.log("getEdges not implemented");
+        console.log("not implemented");
         return null;
     }
 }
 // face class 
 export class Face extends Component implements IFace {
     public getVertices():IVertex[] {
-        console.log("getVertices not implemented");
+        console.log("not implemented");
         return null;
     }
     public getEdges():IEdge[] {
-        console.log("getEdges not implemented");
+        console.log("not implemented");
         return null;
     }
 }
 // shell class 
 export class Shell extends Component implements IShell {
     public getWires():IWire[] {
-        console.log("getWires not implemented");
+        console.log("not implemented");
         return null;
     }
     public getFaces():IFace[] {
-        console.log("getFaces not implemented");
+        console.log("not implemented");
         return null;
     }
 }
 // point class
 export class Point implements IPoint{
-    private data:IgsData;
+    private model:IgsModel;
     private point_id: number;
-    constructor(data:IgsData,point_id: number) {
-        this.data = data;
+    constructor(model:IgsModel,point_id: number) {
+        this.model = model;
         this.point_id = point_id;
     }
     public getID():number {
@@ -348,10 +414,10 @@ export class Point implements IPoint{
 }
 // entity class
 export class Entity implements IEntity{
-    private data:IgsData;
+    private model:IgsModel;
     private entity_id:number;
-    constructor(data:IgsData, entity_id:number) {
-        this.data = data;
+    constructor(model:IgsModel, entity_id:number) {
+        this.model = model;
         this.entity_id = entity_id; 
     }
     public getID():number {
@@ -391,13 +457,13 @@ export class Entity implements IEntity{
         return false;
     }
 }
-export class Polyline  extends Entity implements IPolyline{} // TODO Constructor to make new Polyline
-export class Polymesh extends Entity implements IPolymesh{} //TODO Constructor to make new Polymesh
+export class Polyline  extends Entity implements IPolyline{} 
+export class Polymesh extends Entity implements IPolymesh{} 
 export class Attribute implements IAttribute {
-    private data:IgsData;
+    private model:IgsModel;
     private attribute_id:number;
-    constructor(data:IgsData, attribute_id:number) {
-        this.data = data;
+    constructor(model:IgsModel, attribute_id:number) {
+        this.model = model;
         this.attribute_id = attribute_id; 
     }
     public getID():number {
@@ -412,7 +478,7 @@ export class Attribute implements IAttribute {
         console.log("not implemented");
         return null;
     }
-    public getComponentType():EComponentType {
+    public getAttributeType():EAttributeType {
         console.log("not implemented");
         return null;
     }
@@ -422,10 +488,10 @@ export class Attribute implements IAttribute {
     }
 }
 export class Collection implements ICollection {
-    private data:IgsData;
+    private model:IgsModel;
     private collection_id:number;
-    constructor(data:IgsData, collection_id:number) {
-        this.data = data;
+    constructor(model:IgsModel, collection_id:number) {
+        this.model = model;
         this.collection_id = collection_id;
     }
     public getID():number {
@@ -458,37 +524,43 @@ export class Collection implements ICollection {
         return false;
     }
     //Entities
-    public getEntities(entity_type?:EEntityType):IEntity[] {
+    public getEntitieIDs(entity_type?:EEntityType):number[] {
         console.log("not implemented");
         return [];
     }
-    public addEntity(entity:IEntity):boolean {
+    public addEntity(entity_id:number):boolean {
         console.log("not implemented");
         return false;
     }
-    public removeEntity(entity:IEntity):boolean {
+    public addEntities(entity_ids:number[]):boolean {
+        console.log("not implemented");
+        return false;
+    }
+    public removeEntity(entity_id:number):boolean {
+        console.log("not implemented");
+        return false;
+    }
+    public removeEntities(entity_ids:number[]):boolean {
         console.log("not implemented");
         return false;
     }
     //Properties
-    public addProperty(name:string):boolean {
+    public addProperty(property:IProperty):boolean {
         console.log("not implemented");
         return false;
     }
-    public deleteProperty(name:string):boolean {
+    public deleteProperty(property:IProperty):boolean {
         console.log("not implemented");
         return false;
     }
-    public getPropetieNames():string[] {
+    public getPropeties():IProperty[] {
         console.log("not implemented");
         return [];
     }
-    public getPropertyValue(name:string):any {
-        console.log("not implemented");
-        return null;
-    }
-    public setPropertyValue(name:string, value:any):any {
+    //Type
+    public getCollectionType():ECollectionType {
         console.log("not implemented");
         return null;
     }
 }
+
