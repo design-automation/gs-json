@@ -7,73 +7,75 @@ The gs-JSON conceptual model uses topology as the organising framework for defin
 
 Geometry includes both polygonal and spline based geometric entities. Semantics consists of data linked to entities and collections of entities in the model.
 
-## Topology
-The topological hierarchy is follows:
-* 0D Topology
+## Topological Components
+The topological component hierarchy is follows:
+* 0D Components
   * POINT = a point is space.
   * VERTEX = a location in space associated with a single POINT.
-* 1D Topology
+* 1D Components
   * EDGE = a line or curve bounded by start and end VERTICES.
   * WIRE = a set of one or more connected EDGES, either open or closed.
-* 2D Topology
+* 2D Components
   * FACE = a face bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.
   * SHELL = a set of one or more connected FACES, either open or closed. 
 
-VERTICES, WIRES and SHELLS can be instantiated as geometric entities. 
-
-### POINT Entities
+### POINTS
 The base data to which everything else is connected is a set of points in space. 
 
-### WIRE Entities
-Each WIRE has:
-* a set of connected EDGES (implicit), each of which has
-* a sequence of VERTICES (implicit), each of which is
-* associated with a single (implicit) POINT.
+### WIRE Components
+Each wire component has:
+* a set of connected edges (implicit), and
+* a sequence of vertices (implicit), each of which is
+* associated with a single (implicit) point.
 
-### SHELL Entities
-Each SHELL has:
-* a set of connected FACES (implicit), each of which has
-** a set of connected EDGES (implicit), each of which has
-** a sequence of VERTICES (implicit), each of which is
-* a set of closed WIRES (implicit), each of which has
-** a set of connected EDGES (implicit), each of which has
-** a sequence of VERTICES (implicit), each of which is
-* each vertex is associated with a single (implicit) POINT.
+### SHELL Components
+Each shell component has sub-components: wires and faces.
 
-### Shared Entities
-Multiple geometric entities can reference the same POINTS. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each POINT is therefore referenced by three vertices. 
+The wires represent the naked edges of the shell. Since a shell can have holes, there may be more than one. A shell can also have no naked edges, in which case it is closed. Wires have:
+* a set of connected edges (implicit), and
+* a sequence of vertices (implicit), each of which is
+* associated with a single (implicit) point.
 
-However, higher level entities cannot be shared. For example, an EDGE cannot be part of two faces. Thus, if two faces have EDGES touching, then the POINTS can be shared, but there will still be seperate EDGES, each with its own VERTICES. 
+The faces have:
+* a set of connected edges (implicit) forming a closed loop, each of which has
+* a sequence of vertices (implicit).
+
+### Shared Components
+Entities can share points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each point is therefore referenced by three vertices. 
+
+Edges that belong to the same wire or face share vertices. For example, an open wire with two edges will share have three vertices. The middle vertex will be shared by two edges.
+
+Hhigher level components cannot be shared. For example, an edge cannot be part of two faces. Thus, if two faces have edges touching, then the points can be shared, but there will still be seperate EDGES, each with its own vertices. 
 
 ## Geomety
 The geometric entities together with their type identifiers are as follows:
 * 0D VERTEX entities:
-  * 0 - Acorn
-  * 1 - Ray
-  * 2 - Plane
+  * 0 - Acorn //not implemented
+  * 1 - Ray //not implemented
+  * 2 - Plane //not implemented
 * 1D WIRE entities:
   * 100 - Polyline
-  * 120 - NURBS curve
-  * 121 - Bezier curve
+  * 120 - NURBS curve //not implemented
+  * 121 - Bezier curve //not implemented
 * 2D SHELL entities:
-  * 200 - Polygon Mesh (can be non-planar, being tested...)
-  * 220 - NURBS Surface
-  * 221 - Bezier Surface
+  * 200 - Polymesh
+  * 220 - NURBS Surface //not implemented
+  * 221 - Bezier Surface //not implemented
 
 More geometric entities may be added in the future.
 
-Other higher level topological entities (such as solids and compound solids) can be created using *collections*. See below for more details. 
+Other higher level entities (such as solids) can be created using *collections*. See below for more details. 
 
-### Implicit Entities
-In order to ensure that the file format is efficient and compact, internal entities are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal mesh has an explicitly defined SHELL, but the FACES, WIRES, EDGES, VERTICES and POINTS are all implicit. 
+### Implicit Components
+In order to ensure that the file format is efficient and compact, components are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal mesh has implicit faces, wires, edges, and vertices. 
 
 ## Semantics
 Semantic information can be added to the model in two ways:
 
-1. by specifying *attributes* linked to geometric entities at specific topological levels, and/or
+1. by specifying *attributes* linked to topological components, and/or
 1. by specifying *properties* linked to nested collections of geometric entities.   
 
-These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological levels that are implicit within the geometry. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric entities can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.
+These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within the geometry. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric entities can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.
 
 # JSON Encoding of Geometry
 Within a gs-JSON file, the all geometry is defined in a single *entities* array containing three sub-arrays, as follows:
@@ -128,10 +130,10 @@ Within a js-JSON file, all semantics is defined in a two arrays, as follows:
 ]
 ```
 
-The attributes and collections arrays each contain objects that define the semantics.
+The attributes and collections arrays each define the semantics.
 
-## Attribute Objects
-Attributes objects are defined as follows:
+## Attributes
+Attributes are defined as follows:
 * {"uuid"="xxx", "name"="my_attrib", "topology"="xxx", "values"=[...], "map"=[...] }
 
 *topology* can be "points", "vertices", "edges", "wires", "faces", and "shells".
@@ -141,14 +143,14 @@ Attributes objects are defined as follows:
 *map* is an array of indices, whose length is equal to the number of geometric entities.  
 
 ### Viewer Attributes
-Certain POINT attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)
+Certain point attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)
  
 * position - the position of the point, in 3d [x,y.z] or 2d [x,y].
 * normal - the point normal vector, in 3d [x,y.z].
 * colour - the point colour, as [r,g,b].
 * xform - the point transformation matrix. (See https://threejs.org/docs/#api/math/Matrix4 for more information about the transformation matrix form.)
  
-## Collections Objects
+## Collections
 A collection can contain:
 * geometric entities (explicit and implicit), and/or
 * other collections.
