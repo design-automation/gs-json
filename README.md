@@ -157,7 +157,7 @@ A collection can contain:
 
 Collections are homogeneous. All the entities in a collection must be of the same type. So for eample, if a collection contains EDGES, then all entities in that cillection will be EDGES. However, since collections can also contain other collections, it is still possible to group together non-homogeneous entities. For example, a collection can contain two other collectiosn, one EDGES and the other SHELLS. 
 
-Collections objects are defined as follows: 
+Collections are defined as follows: 
 * {"uuid"="xxx", "name"="my_coll", "typology"="xxx", "entities"=[...], "collections"=[...], "properties"={"key1":value1, "key2":value2, ...}}
 
 *typology* is either "points", "vertices", "edges", "wires", "shells", "collections", or "none". 
