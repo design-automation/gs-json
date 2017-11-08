@@ -170,6 +170,6 @@ Collections objects are defined as follows:
 WORK IN PROGRESS.
 
 There are some examples files here:
-* https://github.com/phtj/gs-JSON/tree/master/tests
+* https://github.com/phtj/gs-JSON/tree/master/src/assets/gs-json
 
 
