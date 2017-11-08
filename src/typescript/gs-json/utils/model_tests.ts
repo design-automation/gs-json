@@ -1,9 +1,6 @@
-
 import * as mod from "../utils/model";
 
-//tests
-
-function test1():void {
+export function test_load_object():boolean {
     let data: mod.IgsData = {
         "metadata": {
             "filetype": "mobius",
@@ -106,7 +103,21 @@ function test1():void {
             }
         ]
     }
-    console.log(data.geometry[0]);
+    return true;
 }
 
-test1();
+export function test_load_file (url:string):boolean {
+	let xmlhttp = new XMLHttpRequest();
+	//let url:string = "https://raw.githubusercontent.com/phtj/gs-JSON/master/src/assets/gs-json/box.gs";
+	var data: mod.IgsData;
+	xmlhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	        data = JSON.parse(this.responseText);
+	        console.log(data.geometry[0]); 
+	    }
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+	//console.log(data.geometry[0])
+	return true;
+}

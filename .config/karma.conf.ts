@@ -3,9 +3,12 @@ module.exports = (config) => {
   config.set({
     frameworks: ['jasmine', 'karma-typescript'],
   	browsers : ['Chrome'],
-    basePath: '../src/typescript/gs-json/tests',
-    files: [ { pattern: "./utils/*.ts" },
-             { pattern: "*.spec.ts" } ],
+    basePath: '../src/',
+    files: [
+      { pattern: 'assets/gs-json/*.gs', watched: false, included: false, served: true, nocache: false},
+      { pattern: 'typescript/gs-json/tests/*.test.ts' },
+      { pattern: 'typescript/gs-json/utils/*.ts' } 
+    ],
     karmaTypescriptConfig: {
             compilerOptions: {
                 module: "commonjs"
