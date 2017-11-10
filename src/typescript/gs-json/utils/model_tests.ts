@@ -1,4 +1,4 @@
-import * as mod from "../utils/model";
+import * as mod from "../utils/model_interfaces";
 
 export function test_load_object():boolean {
     let data: mod.IgsData = {
