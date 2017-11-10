@@ -1,7 +1,8 @@
-import * as mod from "../utils/model_interfaces";
+import * as m_i from "../utils/model_interfaces";
+import * as m_c from "../utils/model_classes";
 
 export function test_load_object():boolean {
-    let data: mod.IgsData = {
+    let data: m_i.IModelData = {
         "metadata": {
             "filetype": "mobius",
             "version": 0.1,
@@ -109,7 +110,7 @@ export function test_load_object():boolean {
 export function test_load_file (url:string):boolean {
 	let xmlhttp = new XMLHttpRequest();
 	//let url:string = "https://raw.githubusercontent.com/phtj/gs-JSON/master/src/assets/gs-json/box.gs";
-	var data: mod.IgsData;
+	var data: m_i.IgsData;
 	xmlhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 	        data = JSON.parse(this.responseText);
@@ -120,4 +121,11 @@ export function test_load_file (url:string):boolean {
 	xmlhttp.send();
 	//console.log(data.geometry[0])
 	return true;
+}
+export function test_model_constructor():boolean {
+    let model:m_i.IModel = new m_c.Model();
+    if (model) {
+        return true;
+    }
+    return false;
 }

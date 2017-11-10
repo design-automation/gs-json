@@ -25,40 +25,40 @@ export enum ECollectionType {  //not too sure about this enum
     leaf
 }
 // ========================= INTERFACES for gsJSON data =========================
-export interface IgsMetadata {
+export interface IMetadata {
     filetype: "mobius";
     version: number;
     crs: any;
     location: string;
 }
-export interface IgsAttributeData {
+export interface IAttributeData {
     name: string;
     attribute_type: "points" | "vertices" | "edges" | "wires" | "faces" | "shells"; //enum not working
     data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]"; //enum not working
     values: any[];
     map: (number|number[]|number[][])[];
 }
-export interface IgsCollectionData {
+export interface ICollectionData {
     name: string;
     entities?: any[];
     collections?: string[];
     properties?: { key: string, value: any };
 }
-export interface IgsSkinData {
+export interface ISkinData {
     images: string[];
     textures: string[];
     materials: any[];
 }
-export interface IgsData {
-    metadata: IgsMetadata;
+export interface IModelData {
+    metadata: IMetadata;
     geometry?: any[];
-    attributes?: IgsAttributeData[];
-    collections?: IgsCollectionData[];
-    skins?: IgsSkinData[];
+    attributes?: IAttributeData[];
+    collections?: ICollectionData[];
+    skins?: ISkinData[];
 }
 // ========================= INTERFACES for classes =========================
 // interface for main model
-export interface IgsModel {
+export interface IModel {
     //Creation
     createPoint(xyz:number[]):IPoint;
     createPolyline(wire_points:IPoint[]):IEntity;
