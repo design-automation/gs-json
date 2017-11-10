@@ -109,12 +109,11 @@ export function test_load_object():boolean {
 
 export function test_load_file (url:string):boolean {
 	let xmlhttp = new XMLHttpRequest();
-	//let url:string = "https://raw.githubusercontent.com/phtj/gs-JSON/master/src/assets/gs-json/box.gs";
-	var data: m_i.IgsData;
+	let data: m_i.IModelData;
 	xmlhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 	        data = JSON.parse(this.responseText);
-	        console.log(data.geometry[0]); 
+	        //console.log(data.geometry[0]); 
 	    }
 	};
 	xmlhttp.open("GET", url, true);
@@ -128,4 +127,26 @@ export function test_model_constructor():boolean {
         return true;
     }
     return false;
+}
+
+export function test_model_create_point():boolean {
+    let model:m_i.IModel = new m_c.Model();
+    model.createPoint([1,2,3]);
+    //console.log(model.attributesData);
+    if (model.numPoints() == 1) {
+        return true;
+    }
+    return true;
+}
+
+export function test_model_set_point_positions():boolean {
+    let model:m_i.IModel = new m_c.Model();
+    let point:m_i.IPoint = model.createPoint([11,22,33]);
+    point.setPosition([4,5,6]);
+    console.log(model.attributesData);
+    let pos = point.getPosition();
+    let p1 = new m_c.Position([4,5,6]);
+    let p2 = new m_c.Position(pos);
+    return p1.equal(p2);
+    //return true;
 }

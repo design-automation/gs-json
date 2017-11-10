@@ -1,10 +1,28 @@
 import * as ifaces from "../utils/model_interfaces";
 // ========================= CLASSES =========================
+export class Position implements ifaces.IPosition {
+    xyz: number[];
+    constructor(xyz:number[]) {
+        this.xyz = xyz;
+    }
+    public equal(p: ifaces.IPosition): boolean {
+        if (this.xyz[0] != p.xyz[0]) {
+            return false;
+        } else if (this.xyz[1] != p.xyz[1]) {
+            return false;
+        } else if (this.xyz[2] != p.xyz[2]) {
+            return false;
+        }
+        return true;
+    }
+}
 //model class
 export class Model implements ifaces.IModel{
-    private data:ifaces.IModelData;
+    public geometryData:any[];
+    public attributesData:ifaces.IAttributeDict = {};
+    public collectionsData:ifaces.ICollectionDict = {};
     constructor() {
-        this.data = {
+        let data:ifaces.IModelData = {
         "metadata": {
             "filetype":"mobius",
             "version": 0.1,
@@ -21,18 +39,25 @@ export class Model implements ifaces.IModel{
                 "values":[]
             }
         }
+        this.geometryData = data.geometry;
+        this.attributesData = {"position": data.attributes[0]};
     }
     // Set data for the model
     public setData(data:ifaces.IModelData):void {
-        this.data = data;
+        this.geometryData = data.geometry;
+        for (let attribute of data.attributes) {
+            this.attributesData[attribute.name] = attribute;
+        }
+        for (let collection of data.collections) {
+            this.collectionsData[collection.name] = collection;
+        }
     }
     //Creation
     public createPoint(xyz:number[]):ifaces.IPoint {
-        //for "position" point attribute, we need to append the xyz
-        //for all othe point attributes, we need to append a null
-        let att:ifaces.IAttribute = this.getAttribute("position");
-        console.log("not implemented");
-        return null;
+        let point:Point = new Point(this, this.numPoints());
+        let value_index:number = this.addAttributeValue("position", xyz);
+        this.attributesData["position"].map.push(value_index);
+        return point;
     }
     public createPolyline(wire_points:ifaces.IPoint[]):ifaces.IEntity {
         console.log("not implemented");
@@ -43,13 +68,12 @@ export class Model implements ifaces.IModel{
         return null;
     }
     //Points
-    public getPointIDs(num_vertices?:number):number[] {
+    public getPointIDs(num_vertices?:number):number[] { //This is confusing?
         console.log("not implemented");
         return [];
     }
     public getPoint(point_id:number):ifaces.IPoint {
-        console.log("not implemented");
-        return null;
+        return new Point(this, point_id);
     }
     public addPoint(point:ifaces.IPoint):boolean {
         console.log("not implemented");
@@ -62,6 +86,9 @@ export class Model implements ifaces.IModel{
     public deletePoints(point_ids:number[]):boolean {
         console.log("not implemented");
         return false;
+    }
+    public numPoints():number {
+        return this.attributesData["position"].map.length;
     }
     //Entities
     public getEntitieIDs(entity_type?:ifaces.EEntityType):number[] {
@@ -136,6 +163,15 @@ export class Model implements ifaces.IModel{
         //delete this.data.attributes[attribute_id];
         return false;
     }
+    public addAttributeValue(name:string, value:any) {
+        let attribute_data:ifaces.IAttributeData = this.attributesData[name];
+        let pos:number = attribute_data.values.indexOf(value); //TODO: this does not work  in javascript
+        if (pos >= 0) {
+            return pos;
+        }
+        attribute_data.values.push(value);
+        return attribute_data.values.length - 1;
+    }
     //Collections
     public getCollections(collection_type?:ifaces.ECollectionType):ifaces.ICollection[] {
         console.log("not implemented");
@@ -192,19 +228,19 @@ export class Component implements ifaces.IComponent{
         console.log("not implemented");
         return null;
     }
-    public getAttributes():ifaces.IAttribute[] {
+    public getAttributes():string[] {
         console.log("not implemented");
         return null;
     }
-    public setAttributeValue(attribute:ifaces.IAttribute | string, value:any):any {
+    public setAttributeValue(name:string, value:any):any {
         console.log("not implemented");
         return null;
     }
-    public getAttributeValue(attribute :ifaces.IAttribute | string):any {
+    public getAttributeValue(name:string):any {
         console.log("not implemented");
         return null;
     }
-    public getCollections():ifaces.ICollection[] {
+    public getCollections():string[] {
         console.log("not implemented");
         return [];
     }
@@ -276,7 +312,7 @@ export class Shell extends Component implements ifaces.IShell {
 export class Point implements ifaces.IPoint{
     private model:ifaces.IModel;
     private point_id: number;
-    constructor(model:ifaces.IModel,point_id: number) {
+    constructor(model:ifaces.IModel, point_id: number) {
         this.model = model;
         this.point_id = point_id;
     }
@@ -285,12 +321,27 @@ export class Point implements ifaces.IPoint{
         return this.point_id;
     }
     public setPosition(xyz:number[]):number[] {
-        console.log("not implemented");
-        return [];
+        let old_xyz:number[] = this.getPosition();
+        let value_index:number = this.model.addAttributeValue("position", xyz);
+        this.model.attributesData["position"].map[this.point_id] = value_index;
+        return old_xyz;
     }
     public getPosition():number[] {
+        let value_index:number = this.model.attributesData["position"].map[this.point_id] as number;
+        let xyz:number[] = this.model.attributesData["position"].values[value_index];
+        return xyz;
+    }
+    public getAttributes():string[] {
         console.log("not implemented");
-        return [];
+        return null;
+    }
+    public setAttributeValue(name:string, value:any):any {
+        console.log("not implemented");
+        return null;
+    }
+    public getAttributeValue(name:string):any {
+        console.log("not implemented");
+        return null;
     }
 }
 // entity class

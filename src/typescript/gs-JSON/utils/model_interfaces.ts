@@ -57,8 +57,21 @@ export interface IModelData {
     skins?: ISkinData[];
 }
 // ========================= INTERFACES for classes =========================
+export interface IAttributeDict {
+    [details: string] : IAttributeData;
+}
+export interface ICollectionDict {
+    [details: string] : ICollectionData;
+}
+export interface IPosition {
+    xyz: number[];
+    equal(p: IPosition): boolean;
+}
 // interface for main model
 export interface IModel {
+    geometryData:any[];
+    attributesData:IAttributeDict; 
+    collectionsData:ICollectionDict;
     //Creation
     createPoint(xyz:number[]):IPoint;
     createPolyline(wire_points:IPoint[]):IEntity;
@@ -69,6 +82,7 @@ export interface IModel {
     addPoint(point:IPoint):boolean;
     deletePoint(point_id:number):boolean;
     deletePoints(point_ids:number[]):boolean;
+    numPoints():number;
     //Entities
     getEntitieIDs(entity_type?:EEntityType):number[];
     getEntity(entity_id:number):IEntity;
@@ -86,6 +100,7 @@ export interface IModel {
     getAttribute(name:string):IAttribute;
     addAttribute(name:string, attribute_type:EAttributeType, data_type:EDataType):IAttribute;
     deleteAttribute(attribute:IAttribute):boolean;
+    addAttributeValue(name:string, value:any):any; //still a bit odd
     //Collections
     getCollections(collection_type?:ECollectionType):ICollection[];
     getCollection(name:string):ICollection;
@@ -102,10 +117,10 @@ export interface IComponent {
     getEntity():IEntity;
     getID():number;
     getPath():IComponentPath;
-    getAttributes():IAttribute[];
-    setAttributeValue(attribute:IAttribute | string, value:any):any;//TODO, name or attribute
-    getAttributeValue(attribute:IAttribute | string):any;//TODO, name or attribute
-    getCollections():ICollection[];
+    getAttributes():string[];
+    setAttributeValue(name:string, value:any):any;
+    getAttributeValue(name:string):any;
+    getCollections():string[];
 }
 export interface IVertex extends IComponent {
     getPoint(): IPoint;
@@ -134,6 +149,9 @@ export interface IPoint {
     getID():number;
     getPosition():number[];
     setPosition(xyz:number[]):number[];
+    getAttributes():string[];
+    setAttributeValue(name:string, value:any):any;//TODO, name or attribute
+    getAttributeValue(name:string):any;//TODO, name or attribute
 }
 export interface IEntity {
     getID():number;
