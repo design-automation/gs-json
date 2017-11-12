@@ -1,28 +1,24 @@
 //model_interfaces
 // ========================= ENUMS =========================
-export enum EAttributeType {
-    points,   // = "points",
-    vertices, // = "vertices",
-    edges,    // = "edges",
-    wires,    // = "wires",
-    faces,    // = "faces",
-    shells,   // = "shells"
+export enum EComponentType {
+    points = "points",
+    vertices = "vertices",
+    edges = "edges",
+    wires = "wires",
+    faces = "faces",
+    shells = "shells"
 }
 export enum EDataType {
-    type_string,        // = "string",
-    type_number,        // = "number",
-    type_boolean,       // = "boolean",
-    type_string_array,  // = "string[]",
-    type_number_array,  // = "number[]",
-    type_boolean_array, // = "boolean[]"
+    type_string = "string",
+    type_number = "number",
+    type_boolean = "boolean",
+    type_string_array = "string[]",
+    type_number_array = "number[]",
+    type_boolean_array = "boolean[]"
 }
 export enum EEntityType {
     polyline = 100,
     polymesh = 200
-}
-export enum ECollectionType {  //not too sure about this enum
-    root,
-    leaf
 }
 // ========================= INTERFACES for gsJSON data =========================
 export interface IMetadata {
@@ -33,7 +29,7 @@ export interface IMetadata {
 }
 export interface IAttributeData {
     name: string;
-    attribute_type: "points" | "vertices" | "edges" | "wires" | "faces" | "shells"; //enum not working
+    component_type: "points" | "vertices" | "edges" | "wires" | "faces" | "shells"; //enum not working
     data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]"; //enum not working
     values: any[];
     map: (number|number[]|number[][])[];
@@ -57,38 +53,49 @@ export interface IModelData {
     skins?: ISkinData[];
 }
 // ========================= INTERFACES for classes =========================
-export interface IAttributeDict {
-    [details: string] : IAttributeData;
+export interface IDict { //used for collection properties
+    [key: string] : any;
 }
-export interface ICollectionDict {
-    [details: string] : ICollectionData;
+export interface IAttributeDataDict {
+    [key: string] : IAttributeData; //TODO Should be changed to IAttribute
 }
-export interface IPosition {
-    xyz: number[];
-    equal(p: IPosition): boolean;
+export interface IAttributeTypesDict {
+    points: IAttributeDataDict;
+    vertices: IAttributeDataDict;
+    edges: IAttributeDataDict;
+    wires: IAttributeDataDict;
+    faces: IAttributeDataDict;
+    shells: IAttributeDataDict;
+}
+export interface ICollectionsDict {
+    [key: string] : ICollectionData; //TODO should be changed to ICollection
+}
+// interface for path to a single component in an attribute array
+export interface IPath {
+    id:number;  //entity_id or point_id
+    component_type:EComponentType; //shells, faces, wires
+    component_number:number;
+    subcomponent_type:EComponentType; //edges, vertices
+    subcomponent_number:number;
+    getType():EComponentType;
 }
 // interface for main model
 export interface IModel {
-    geometryData:any[];
-    attributesData:IAttributeDict; 
-    collectionsData:ICollectionDict;
     //Creation
     createPoint(xyz:number[]):IPoint;
     createPolyline(wire_points:IPoint[]):IEntity;
     createPolymesh(wire_points:IPoint[], face_points:IFace[]):IEntity;
     //Points
-    getPointIDs(num_vertices?:number):number[];
     getPoint(point_id:number):IPoint;
-    addPoint(point:IPoint):boolean;
+    addPoint(point:IPoint):IPoint;
     deletePoint(point_id:number):boolean;
     deletePoints(point_ids:number[]):boolean;
     numPoints():number;
     //Entities
     getEntitieIDs(entity_type?:EEntityType):number[];
     getEntity(entity_id:number):IEntity;
-    addEntity(entity: IEntity):boolean;
+    addEntity(entity: IEntity):IEntity;
     deleteEntity(entity_id:number):boolean;
-    deleteEntities(entity_ids:number[]):boolean;
     //Components
     getVertices(entity_type?:EEntityType):IVertex[];
     getEdges(entity_type?:EEntityType):IEdge[];
@@ -96,16 +103,19 @@ export interface IModel {
     getFaces(entity_type?:EEntityType):IFace[];
     getShells(entity_type?:EEntityType):IShell[];
     //Attributes
-    getAttributes(attribute_type?:EAttributeType):IAttribute[];
-    getAttribute(name:string):IAttribute;
-    addAttribute(name:string, attribute_type:EAttributeType, data_type:EDataType):IAttribute;
-    deleteAttribute(attribute:IAttribute):boolean;
-    addAttributeValue(name:string, value:any):any; //still a bit odd
+    getAttributes(component_type:EComponentType):IAttribute[];
+    getAttribute(name:string, component_type:EComponentType):IAttribute;
+    addAttribute(name:string, component_type:EComponentType, data_type:EDataType):IAttribute;
+    deleteAttribute(name:string, component_type:EComponentType):boolean;
+    //Attribute Values
+    getAttributeValue(name:string, path:IPath):any;
+    setAttributeValue(name:string, path:IPath, value:any):any;
+    addAttributeValue(name:string, path:IPath):void;
     //Collections
-    getCollections(collection_type?:ECollectionType):ICollection[];
+    getCollections():ICollection[];
     getCollection(name:string):ICollection;
     addCollection(name:string):ICollection;
-    deleteCollection(collection:ICollection):boolean;
+    deleteCollection(name:string):boolean;
     //Clean up nulls and unused points
     purgePoints():number;
     purgeNulls():number;
@@ -116,8 +126,8 @@ export interface IModel {
 export interface IComponent {
     getEntity():IEntity;
     getID():number;
-    getPath():IComponentPath;
-    getAttributes():string[];
+    getAttributes():IAttribute[];
+    getAttributeNames():string[];
     setAttributeValue(name:string, value:any):any;
     getAttributeValue(name:string):any;
     getCollections():string[];
@@ -126,33 +136,41 @@ export interface IVertex extends IComponent {
     getPoint(): IPoint;
     next():IVertex;
     previous():IVertex;
+    getEdge():IEdge;
 }
 export interface IEdge extends IComponent {
     getVertices(): IVertex[];
     next():IEdge;
     previous():IEdge;
+    getParent():IWire|IFace;
 }
 export interface IWire extends IComponent {
     getVertices():IVertex[];
     getEdges(): IEdge[];
+    getShell():IShell;
 }
 export interface IFace extends IComponent {
     getVertices():IVertex[];
     getEdges(): IEdge[];
+    neighbours():IFace[];
+    getShell():IShell;
 }
 export interface IShell extends IComponent {
     getWires(): IWire[];
     getFaces(): IFace[];
 }
-//interfaces for geometric entities
+//interfaces for points, that seem to exist somewhere between entities and components
 export interface IPoint {
     getID():number;
     getPosition():number[];
     setPosition(xyz:number[]):number[];
-    getAttributes():string[];
+    getAttributes():IAttribute[];
+    getAttributeNames():string[];
     setAttributeValue(name:string, value:any):any;//TODO, name or attribute
     getAttributeValue(name:string):any;//TODO, name or attribute
+    getVertices():IVertex[];
 }
+//interfaces for geometric entities
 export interface IEntity {
     getID():number;
     getVertices():IVertex[];
@@ -170,45 +188,26 @@ export interface IPolymesh extends IEntity {
 }
 // interfcae for attributes
 export interface IAttribute {
-    getID():number;
     getName():string;
     setName(name:string):string;
-    getAttributeType():EAttributeType;
+    getComponentType():EComponentType;
     getDataType():EDataType;
-}
-//interface for property
-export interface IProperty {
-    getName():string;
-    setName(name:string):string;
-    getValue():any;
-    setValue(value:any):any;
 }
 //interface for collection
 export interface ICollection {
-    getID():number;
     getName():string;
     setName(name:string):string;
-    //Collections
+    //Parent/child collections
     getParentCollections():ICollection[];
     getChildCollections():ICollection[];
     addChildCollection(collection:ICollection):boolean;
     removeChildCollection(collection:ICollection):boolean;
-    //Entities
+    //Entities in this collection
     getEntitieIDs(entity_type?:EEntityType):number[];
     addEntity(entity_id:number):boolean;
     addEntities(entity_ids:number[]):boolean;
     removeEntity(entity_id:number):boolean;
     removeEntities(entity_ids:number[]):boolean;
-    //Properties
-    addProperty(property:IProperty):boolean;
-    deleteProperty(property:IProperty):boolean;
-    getPropeties():IProperty[];
-    //Type
-    getCollectionType():ECollectionType;
-}
-// interface for component path
-export interface IComponentPath {
-    component_type:0|1; //wires or faces
-    component_number:number; //wire or face number
-    sub_component_number:number; //vertex or edge number
+    //Properties for this collection (key-value pairs)
+    getPropeties():IDict;
 }

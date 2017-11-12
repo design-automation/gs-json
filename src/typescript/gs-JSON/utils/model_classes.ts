@@ -1,191 +1,266 @@
-import * as ifaces from "../utils/model_interfaces";
-// ========================= CLASSES =========================
-export class Position implements ifaces.IPosition {
-    xyz: number[];
-    constructor(xyz:number[]) {
-        this.xyz = xyz;
-    }
-    public equal(p: ifaces.IPosition): boolean {
-        if (this.xyz[0] != p.xyz[0]) {
+import * as ifs from "../utils/model_interfaces";
+// ========================= Utility functions =========================
+//utility functions for number arrays
+export function arraysEqual(array1: number[], array2: number[]): boolean {
+        if (array1.length != array2.length) {
             return false;
-        } else if (this.xyz[1] != p.xyz[1]) {
-            return false;
-        } else if (this.xyz[2] != p.xyz[2]) {
-            return false;
+        }
+        let i:number;
+        for (i=0;i<array1.length;i++) {
+            if (array1[i] != array2[i]) {
+                return false;
+            }
         }
         return true;
     }
 }
+export function indexOfArray(array1:number[], array2: number[][]):number {
+    let i:number;
+    for (i=0;i<array2.length;i++) { //can use forEach
+        if (array1 != array2[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// ========================= CLASSES =========================
+//path to some attribute for a component in the geometry
+export class Path implements ifs.IPath {
+    id:number; //entity or point
+    component_type:ifs.EComponentType; //shells, faces, wires, points
+    component_number:number;
+    subcomponent_type:ifs.EComponentType; //edges, vertices
+    subcomponent_number:number;
+    constructor(id:number,
+            component_type?:ifs.EComponentType, component_number?:number,
+            subcomponent_type?:ifs.EComponentType, subcomponent_number?:number) {
+        this.id = id;
+        this.component_type = component_type;
+        this.component_number = component_number;
+        this.subcomponent_type = subcomponent_type;
+        this.subcomponent_number = subcomponent_number;
+    }
+    public getType():ifs.EComponentType {
+        if (this.subcomponent_type) {
+            return this.subcomponent_type;
+        } else {
+            return this.component_type;
+        }
+    }
+}
 //model class
-export class Model implements ifaces.IModel{
-    public geometryData:any[];
-    public attributesData:ifaces.IAttributeDict = {};
-    public collectionsData:ifaces.ICollectionDict = {};
+export class Model implements ifs.IModel{
+    private metadata:ifs.IMetadata;
+    private geometry_data:any[];
+    private attribute_types_dict:ifs.IAttributeTypesDict;
+    private collections_dict:ifs.ICollectionsDict;
     constructor() {
-        let data:ifaces.IModelData = {
-        "metadata": {
-            "filetype":"mobius",
-            "version": 0.1,
-            "crs": {"epsg":3857},
-            "location": "+0-0" 
-        },
-        "geometry":[],
-        "attributes":[
-            {
+        //create default metadata
+        this.metadata = {
+            filetype: "mobius",
+            version:  0.1,
+            crs:      {"epsg":3857},
+            location: "+0-0" 
+        }
+        //create an empty geometry array
+        this.geometry_data = [];
+        //create one attribute, called "position"
+        this.attribute_types_dict = {
+            points:   {},
+            vertices: {},
+            edges:    {},
+            wires:    {},
+            faces:    {},
+            shells:   {}
+        }
+        this.attribute_types_dict.points = {
+            "position": {
                 "name":"position",
-                "attribute_type":"points",
+                "component_type":"points",
                 "data_type":"number[]",
                 "map": [],
                 "values":[]
             }
-        }
-        this.geometryData = data.geometry;
-        this.attributesData = {"position": data.attributes[0]};
+        };
+        this.collections_dict = {};
     }
     // Set data for the model
-    public setData(data:ifaces.IModelData):void {
-        this.geometryData = data.geometry;
+    public setData(data:ifs.IModelData):void {
+        this.geometry_data = data.geometry;
         for (let attribute of data.attributes) {
-            this.attributesData[attribute.name] = attribute;
+            this.attribute_types_dict[attribute.component_type][attribute.name] = attribute;           
         }
         for (let collection of data.collections) {
-            this.collectionsData[collection.name] = collection;
+            this.attribute_types_dict[collection.name] = collection;
         }
     }
     //Creation
-    public createPoint(xyz:number[]):ifaces.IPoint {
-        let point:Point = new Point(this, this.numPoints());
-        let value_index:number = this.addAttributeValue("position", xyz);
-        this.attributesData["position"].map.push(value_index);
+    public createPoint(xyz:number[]):ifs.IPoint {
+        let point:Point = new Point(this);
+        point.setPosition(xyz);
         return point;
     }
-    public createPolyline(wire_points:ifaces.IPoint[]):ifaces.IEntity {
+    public createPolyline(wire_points:ifs.IPoint[]):ifs.IEntity {
         console.log("not implemented");
         return null;
     }
-    public createPolymesh(wire_points:ifaces.IPoint[], face_points:ifaces.IFace[]):ifaces.IEntity {
+    public createPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IEntity {
         console.log("not implemented");
         return null;
     }
     //Points
-    public getPointIDs(num_vertices?:number):number[] { //This is confusing?
-        console.log("not implemented");
-        return [];
-    }
-    public getPoint(point_id:number):ifaces.IPoint {
+    public getPoint(point_id:number):ifs.IPoint {
         return new Point(this, point_id);
     }
-    public addPoint(point:ifaces.IPoint):boolean {
+    public addPoint(point:ifs.IPoint):ifs.IPoint {
         console.log("not implemented");
-        return false;
+        return null;
     }
     public deletePoint(point_id:number):boolean {
         console.log("not implemented");
-        return false;
+        return null;
+        //also delete anythin that uses this point
     }
     public deletePoints(point_ids:number[]):boolean {
         console.log("not implemented");
-        return false;
+        return null;
     }
     public numPoints():number {
-        return this.attributesData["position"].map.length;
+        return this.attribute_types_dict[ifs.EComponentType.points]["position"].map.length;
     }
     //Entities
-    public getEntitieIDs(entity_type?:ifaces.EEntityType):number[] {
+    public getEntitieIDs(entity_type?:ifs.EEntityType):number[] {
         console.log("not implemented");
         return [];
     }
-    public getEntities(entity_type?:ifaces.EEntityType):ifaces.IEntity[] {
+    public getEntities(entity_type?:ifs.EEntityType):ifs.IEntity[] {
         console.log("not implemented");
         return [];
     }
-    public getEntity(entity_id:number):ifaces.IEntity {
+    public getEntity(entity_id:number):ifs.IEntity {
         console.log("not implemented");
         return null;
     }
-    public addEntity(entity: ifaces.IEntity):boolean{
+    public addEntity(entity: ifs.IEntity):ifs.IEntity{
         console.log("not implemented");
-        return false;
+        return null;
     } 
     public deleteEntity(entity_id:number):boolean{
-        //for this method, must use 'delete' operator, do not use 'splice', 'shift', 'pop'
-        //https://bytearcher.com/articles/how-to-delete-value-from-array/
-        return this.data.geometry[entity_id];
-    }
-    public deleteEntities(entity_ids:number[]):boolean {
-        console.log("not implemented");
-        return false;
+        return delete this.geometry_data[entity_id];
     }
     //Components
-    public getVertices(entity_type?:ifaces.EEntityType):ifaces.IVertex[] {
+    public getVertices(entity_type?:ifs.EEntityType):ifs.IVertex[] {
         console.log("not implemented");
         return null;
     }
-    public getEdges(entity_type?:ifaces.EEntityType):ifaces.IEdge[] {
+    public getEdges(entity_type?:ifs.EEntityType):ifs.IEdge[] {
         console.log("not implemented");
         return null;
     }
-    public getWires(entity_type?:ifaces.EEntityType):ifaces.IWire[] {
+    public getWires(entity_type?:ifs.EEntityType):ifs.IWire[] {
         console.log("not implemented");
         return null;
     }
-    public getFaces(entity_type?:ifaces.EEntityType):ifaces.IFace[] {
+    public getFaces(entity_type?:ifs.EEntityType):ifs.IFace[] {
         console.log("not implemented");
         return null;
     }
-    public getShells(entity_type?:ifaces.EEntityType):ifaces.IShell[] {
+    public getShells(entity_type?:ifs.EEntityType):ifs.IShell[] {
         console.log("not implemented");
         return null;
     }
     //Attributes
-    public getAttributes(component_type?:ifaces.EAttributeType):ifaces.IAttribute[] {
-        console.log("not implemented");
-        return [];
-    }
-    public getAttribute(name:string):ifaces.IAttribute {
-        let i:number;
-        for (i=0, i < this.data.attributes.length; i++) {
-            let att:ifaces.IAttributeData = this.data.attributes[i];
-            if (att.name == name) {
-                return new Attribute(this, i);
-            }
+    public getAttributes(component_type:ifs.EComponentType):ifs.IAttribute[] {
+        let attributes_array:ifs.IAttribute[] = [];
+        let attribute_data:ifs.IAttributeData;
+        let attribute_name:string;
+        for(attribute_name in this.attribute_types_dict[component_type]) {
+            let attribute_data:ifs.IAttributeData = this.attribute_types_dict[component_type][attribute_name];
+            attributes_array.push(
+                new Attribute(this, attribute_name, component_type, ifs.EComponentType[attribute_data.data_type])
+            );
         }
-        return null;  //TODO throw exception
+        return attributes_array;
     }
-    public addAttribute(name:string, component:ifaces.EAttributeType, type:ifaces.EDataType):ifaces.IAttribute{
+    public getAttribute(name:string, component_type?:ifs.EComponentType):ifs.IAttribute {
+        let attribute_data:ifs.IAttributeData = this.attribute_types_dict[component_type][name];
+        return new Attribute(this, attribute_data.name, component_type, ifs.EComponentType[attribute_data.data_type]); 
+    }
+    public addAttribute(name:string, component:ifs.EComponentType, type:ifs.EDataType):ifs.IAttribute{
         console.log("not implemented");
         return null;
     }
-    public deleteAttribute(attribute:ifaces.IAttribute):boolean {
+    public deleteAttribute(name:string, component_type:ifs.EComponentType):boolean {
         console.log("not implemented");
         //for this method, must use 'delete' operator, do not use 'splice', 'shift', 'pop'
         //https://bytearcher.com/articles/how-to-delete-value-from-array/
         //delete this.data.attributes[attribute_id];
         return false;
     }
-    public addAttributeValue(name:string, value:any) {
-        let attribute_data:ifaces.IAttributeData = this.attributesData[name];
-        let pos:number = attribute_data.values.indexOf(value); //TODO: this does not work  in javascript
-        if (pos >= 0) {
-            return pos;
+    //Attribute Values
+    private _getAttributeValueIndex(name:string, path:ifs.IPath):number {
+        let attribute_map:any[] = this.attribute_types_dict[path.getType()][name].map;
+        //points attributes
+        if (path.component_type == ifs.EComponentType.points) {
+            return attribute_map[path.id] as number;
         }
-        attribute_data.values.push(value);
-        return attribute_data.values.length - 1;
+        //vertices, edges, attributes 
+        if (path.subcomponent_type) { // vertices or edges
+            return attribute_map[path.id][path.component_number][path.subcomponent_number] as number;
+        } 
+        //wires, faces, shells attributes
+        if (path.component_type){ //wires or faces
+            return attribute_map[path.id][path.component_number] as number;
+        } 
+    }
+    public getAttributeValue(name:string, path:ifs.IPath):any {
+        let value_index:number = this._getAttributeValueIndex(name, path);
+        return this.attribute_types_dict[path.getType()][name].values[value_index];
+    }
+    public setAttributeValue(name:string, path:ifs.IPath, value:any):any {
+        //TODO: this implememtation is not correct
+        //At the moment it is overwrting values, which might still be used elsewhere
+        //Instead the value must be added to the values list
+        //Then the map needs to be changed to point to the new value
+
+
+
+        let value_index:number = this._getAttributeValueIndex(name, path);
+        let old_value:any = this.attribute_types_dict[path.getType()][name].values[value_index];
+        this.attribute_types_dict[path.getType()][name].values[value_index] = value; // This is not correct
+        return old_value;
+    }
+    public addAttributeValue(name:string, path:ifs.IPath):void {
+        let attribute_map:any[] = this.attribute_types_dict[path.getType()][name].map;
+                                
+        //points attributes
+        if (path.component_type == ifs.EComponentType.points) {
+            attribute_map.push(0);
+        }
+        //vertices, edges, attributes 
+        else if (path.subcomponent_type) {
+            attribute_map[path.id][path.component_number][path.subcomponent_number].push(0);
+        } 
+        //wires, faces, shells attributes
+        else if (path.component_type){
+            attribute_map[path.id][path.component_number].push(0);
+        }
     }
     //Collections
-    public getCollections(collection_type?:ifaces.ECollectionType):ifaces.ICollection[] {
+    public getCollections():ifs.ICollection[] {
         console.log("not implemented");
         return [];
     }
-    public getCollection(name:string):ifaces.ICollection {
+    public getCollection(name:string):ifs.ICollection {
         console.log("not implemented");
         return null;
     }
-    public addCollection(name:string):ifaces.ICollection {
+    public addCollection(name:string):ifs.ICollection {
         console.log("not implemented");
         return null;
     }
-    public deleteCollection(collection:ifaces.ICollection):boolean {
+    public deleteCollection(name:string):boolean {
         console.log("not implemented");
         //for this method, must use 'delete' operator, do not use 'splice', 'shift', 'pop'
         //https://bytearcher.com/articles/how-to-delete-value-from-array/
@@ -208,37 +283,39 @@ export class Model implements ifaces.IModel{
     }
 }
 // component class
-export class Component implements ifaces.IComponent{
-    private model:ifaces.IModel;
-    private entity_id:number;
-    private component_path:ifaces.IComponentPath;
-    constructor(model:ifaces.IModel, component_path:ifaces.IComponentPath) {
+export class Component implements ifs.IComponent{
+    private model:ifs.IModel;
+    private path:ifs.IPath;
+    constructor(model:ifs.IModel, path:ifs.IPath) {
         this.model = model;
-        this.component_path = component_path;
+        this.path = path;
     }
     public getID():number {
-        console.log("not implemented");
-        return this.entity_id;
+        return this.path.id;
     }
-    public getEntity():ifaces.IEntity {
+    public getEntity():ifs.IEntity {
         console.log("not implemented");
         return null;
     }
-    public getPath():ifaces.IComponentPath {
-        console.log("not implemented");
-        return null;
+    public getPath():ifs.IPath {
+        return this.path;
     }
-    public getAttributes():string[] {
-        console.log("not implemented");
-        return null;
+    public getAttributes():ifs.IAttribute[] {
+        return this.model.getAttributes(this.path.getType());
+    }
+    public getAttributeNames():string[] {
+        let names:string[] = [];
+        let attribute:ifs.IAttribute;
+        for(attribute of this.model.getAttributes(this.path.getType())) {
+            names.push(attribute.getName());
+        }
+        return names;
     }
     public setAttributeValue(name:string, value:any):any {
-        console.log("not implemented");
-        return null;
+        return this.model.setAttributeValue(name, this.path, value);
     }
     public getAttributeValue(name:string):any {
-        console.log("not implemented");
-        return null;
+        return this.model.getAttributeValue(name, this.path);
     }
     public getCollections():string[] {
         console.log("not implemented");
@@ -246,109 +323,145 @@ export class Component implements ifaces.IComponent{
     }
 }
 // vertex class 
-export class Vertex extends Component implements ifaces.IVertex {
-    public getPoint():ifaces.IPoint {
+export class Vertex extends Component implements ifs.IVertex {
+    public getPoint():ifs.IPoint {
         console.log("not implemented");
         return null;
     }
-    public next():ifaces.IVertex {
+    public next():ifs.IVertex {
         console.log("not implemented");
         return null;
     }
-    public previous():ifaces.IVertex {
+    public previous():ifs.IVertex {
+        console.log("not implemented");
+        return null;
+    }
+    public getEdge():ifs.IEdge {
         console.log("not implemented");
         return null;
     }
 }
 // edge class 
-export class Edge extends Component implements ifaces.IEdge {
-    public getVertices():ifaces.IVertex[] {
+export class Edge extends Component implements ifs.IEdge {
+    public getVertices():ifs.IVertex[] {
         console.log("not implemented");
         return null;
     }
-    public next():ifaces.IEdge {
+    public next():ifs.IEdge {
         console.log("not implemented");
         return null;
     }
-    public previous():ifaces.IEdge {
+    public previous():ifs.IEdge {
+        console.log("not implemented");
+        return null;
+    }
+    public getParent():ifs.IWire|ifs.IFace {
         console.log("not implemented");
         return null;
     }
 }
 // wire class 
-export class Wire extends Component implements ifaces.IWire {
-    public getVertices():ifaces.IVertex[] {
+export class Wire extends Component implements ifs.IWire {
+    public getVertices():ifs.IVertex[] {
         console.log("not implemented");
         return null;
     }
-    public getEdges():ifaces.IEdge[] {
+    public getEdges():ifs.IEdge[] {
+        console.log("not implemented");
+        return null;
+    }
+    public getShell():ifs.IShell {
         console.log("not implemented");
         return null;
     }
 }
 // face class 
-export class Face extends Component implements ifaces.IFace {
-    public getVertices():ifaces.IVertex[] {
+export class Face extends Component implements ifs.IFace {
+    public getVertices():ifs.IVertex[] {
         console.log("not implemented");
         return null;
     }
-    public getEdges():ifaces.IEdge[] {
+    public getEdges():ifs.IEdge[] {
+        console.log("not implemented");
+        return null;
+    }
+    public neighbours():ifs.IFace[] {
+        console.log("not implemented");
+        return null;
+    }
+    public getShell():ifs.IShell {
         console.log("not implemented");
         return null;
     }
 }
 // shell class 
-export class Shell extends Component implements ifaces.IShell {
-    public getWires():ifaces.IWire[] {
+export class Shell extends Component implements ifs.IShell {
+    public getWires():ifs.IWire[] {
         console.log("not implemented");
         return null;
     }
-    public getFaces():ifaces.IFace[] {
+    public getFaces():ifs.IFace[] {
         console.log("not implemented");
         return null;
     }
 }
 // point class
-export class Point implements ifaces.IPoint{
-    private model:ifaces.IModel;
+export class Point implements ifs.IPoint{
+    private model:ifs.IModel;
     private point_id: number;
-    constructor(model:ifaces.IModel, point_id: number) {
+    constructor(model:ifs.IModel, point_id?: number) {
         this.model = model;
-        this.point_id = point_id;
+        if (point_id) {
+            this.point_id = point_id;
+        } else {
+            //make the point number equal to the list length
+            this.point_id = model.numPoints();
+            //add one more item to all point attributes
+            let attribute:ifs.IAttribute;
+            let path:ifs.IPath = new Path(this.point_id, ifs.EComponentType.points);
+            for(attribute of this.model.getAttributes(ifs.EComponentType.points)) {
+                this.model.addAttributeValue(attribute.getName(), path);
+            }
+        }
     }
     public getID():number {
-        console.log("not implemented");
         return this.point_id;
     }
     public setPosition(xyz:number[]):number[] {
-        let old_xyz:number[] = this.getPosition();
-        let value_index:number = this.model.addAttributeValue("position", xyz);
-        this.model.attributesData["position"].map[this.point_id] = value_index;
-        return old_xyz;
+        return this.setAttributeValue("position", xyz);
     }
     public getPosition():number[] {
-        let value_index:number = this.model.attributesData["position"].map[this.point_id] as number;
-        let xyz:number[] = this.model.attributesData["position"].values[value_index];
-        return xyz;
+        return this.getAttributeValue("position");
     }
-    public getAttributes():string[] {
-        console.log("not implemented");
-        return null;
+    public getAttributes():ifs.IAttribute[] {
+        return this.model.getAttributes(ifs.EComponentType.points);
+    }
+    public getAttributeNames():string[] {
+        let names:string[] = [];
+        let attribute:ifs.IAttribute;
+        for(attribute of this.model.getAttributes(ifs.EComponentType.points)) {
+            names.push(attribute.getName());
+        }
+        return names;
     }
     public setAttributeValue(name:string, value:any):any {
-        console.log("not implemented");
-        return null;
+        let path:ifs.IPath = new Path(this.point_id, ifs.EComponentType.points);
+        return this.model.setAttributeValue(name, path, value);
     }
     public getAttributeValue(name:string):any {
+        let path:ifs.IPath = new Path(this.point_id, ifs.EComponentType.points);
+        return this.model.getAttributeValue(name, path);
+    }
+    public getVertices():ifs.IVertex[] {
         console.log("not implemented");
         return null;
     }
 }
 // entity class
-export class Entity implements ifaces.IEntity{
-    private model:ifaces.IModel;
+export class Entity implements ifs.IEntity{
+    private model:ifs.IModel;
     private entity_id:number;
-    constructor(model:ifaces.IModel, entity_id:number) {
+    constructor(model:ifs.IModel, entity_id:number) {
         this.model = model;
         this.entity_id = entity_id; 
     }
@@ -356,27 +469,27 @@ export class Entity implements ifaces.IEntity{
         console.log("not implemented");
         return this.entity_id;
     }
-    public getVertices():ifaces.IVertex[] {
+    public getVertices():ifs.IVertex[] {
         console.log("not implemented");
         return [];
     }
-    public getEdges():ifaces.IEdge[] {
+    public getEdges():ifs.IEdge[] {
         console.log("not implemented");
         return [];
     }
-    public getWires():ifaces.IWire[] {
+    public getWires():ifs.IWire[] {
         console.log("not implemented");
         return [];
     }
-    public getFaces():ifaces.IFace[] {
+    public getFaces():ifs.IFace[] {
         console.log("not implemented");
         return [];
     }
-    public getShells():ifaces.IShell[] {
+    public getShells():ifs.IShell[] {
         console.log("not implemented");
         return [];
     }
-    public getType():ifaces.EEntityType {
+    public getType():ifs.EEntityType {
         console.log("not implemented");
         return null;
     }
@@ -389,46 +502,44 @@ export class Entity implements ifaces.IEntity{
         return false;
     }
 }
-export class Polyline  extends Entity implements ifaces.IPolyline{} 
-export class Polymesh extends Entity implements ifaces.IPolymesh{} 
-export class Attribute implements ifaces.IAttribute {
-    private model:ifaces.IModel;
-    private attribute_id:number;
-    constructor(model:ifaces.IModel, attribute_id:number) {
+export class Polyline  extends Entity implements ifs.IPolyline{} 
+export class Polymesh extends Entity implements ifs.IPolymesh{} 
+
+
+// Attribute class
+export class Attribute implements ifs.IAttribute {
+    private model:ifs.IModel;
+    private name:string;
+    private component_type:ifs.EComponentType;
+    private data_type:ifs.EDataType;
+    constructor(model:ifs.IModel, name:string, component_type:ifs.EComponentType, data_type:ifs.EDataType) {
         this.model = model;
-        this.attribute_id = attribute_id; 
-    }
-    public getID():number {
-        console.log("not implemented");
-        return this.attribute_id;
+        this.name = name;
+        this.component_type = component_type;
+        this.data_type = data_type;
     }
     public getName():string {
-        console.log("not implemented");
-        return null;
+        return this.name;
     }
     public setName(name:string):string {
-        console.log("not implemented");
-        return null;
+        let old_name:string = this.name;
+        this.name = name;
+        return old_name;
     }
-    public getAttributeType():ifaces.EAttributeType {
-        console.log("not implemented");
-        return null;
+    public getComponentType():ifs.EComponentType {
+        return this.component_type;
     }
-    public getDataType():ifaces.EDataType {
-        console.log("not implemented");
-        return null;
+    public getDataType():ifs.EDataType {
+        return this.data_type;
     }
 }
-export class Collection implements ifaces.ICollection {
-    private model:ifaces.IModel;
-    private collection_id:number;
-    constructor(model:ifaces.IModel, collection_id:number) {
+//Collections class
+export class Collection implements ifs.ICollection {
+    private model:ifs.IModel;
+    private name:string;
+    constructor(model:ifs.IModel, name:string) {
         this.model = model;
-        this.collection_id = collection_id;
-    }
-    public getID():number {
-        console.log("not implemented");
-        return this.collection_id;
+        this.name = name;
     }
     public getName():string {
         console.log("not implemented");
@@ -439,24 +550,24 @@ export class Collection implements ifaces.ICollection {
         return null;
     }
     //Collections
-    public getParentCollections():ifaces.ICollection[] {
+    public getParentCollections():ifs.ICollection[] {
         console.log("not implemented");
         return [];
     }
-    public getChildCollections():ifaces.ICollection[] {
+    public getChildCollections():ifs.ICollection[] {
         console.log("not implemented");
         return [];
     }
-    public addChildCollection(entity:ifaces.ICollection):boolean {
+    public addChildCollection(entity:ifs.ICollection):boolean {
         console.log("not implemented");
         return false;
     }
-    public removeChildCollection(entity:ifaces.ICollection):boolean {
+    public removeChildCollection(entity:ifs.ICollection):boolean {
         console.log("not implemented");
         return false;
     }
     //Entities
-    public getEntitieIDs(entity_type?:ifaces.EEntityType):number[] {
+    public getEntitieIDs(entity_type?:ifs.EEntityType):number[] {
         console.log("not implemented");
         return [];
     }
@@ -477,22 +588,9 @@ export class Collection implements ifaces.ICollection {
         return false;
     }
     //Properties
-    public addProperty(property:ifaces.IProperty):boolean {
-        console.log("not implemented");
-        return false;
-    }
-    public deleteProperty(property:ifaces.IProperty):boolean {
-        console.log("not implemented");
-        return false;
-    }
-    public getPropeties():ifaces.IProperty[] {
+    public getPropeties():ifs.IDict[] {
         console.log("not implemented");
         return [];
-    }
-    //Type
-    public getCollectionType():ifaces.ECollectionType {
-        console.log("not implemented");
-        return null;
     }
 }
 
