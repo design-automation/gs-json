@@ -1,6 +1,6 @@
 //model_interfaces
 // ========================= ENUMS =========================
-export enum EComponentType {
+export enum ETopoType {
     points = "points",
     vertices = "vertices",
     edges = "edges",
@@ -16,28 +16,28 @@ export enum EDataType {
     type_number_array = "number[]",
     type_boolean_array = "boolean[]"
 }
-export enum EEntityType {
+export enum EObjType {
     polyline = 100,
     polymesh = 200
 }
-// ========================= INTERFACES for gsJSON data =========================
+// ========================= INTERFACES for reading gsJSON data =========================
 export interface IMetadata {
     filetype: "mobius";
     version: number;
     crs: any;
     location: string;
 }
-export interface IAttributeData {
+export interface IAttribData {
     name: string;
-    component_type: "points" | "vertices" | "edges" | "wires" | "faces" | "shells"; //enum not working
+    topo_type: "points" | "vertices" | "edges" | "wires" | "faces" | "shells"; //enum not working
     data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]"; //enum not working
     values: any[];
-    map: (number|number[]|number[][])[];
+    map: (number|number[]|number[][])[]; //values_map
 }
-export interface ICollectionData {
+export interface ICollData {
     name: string;
-    entities?: any[];
-    collections?: string[];
+    objs?: any[];
+    colls?: string[];
     properties?: { key: string, value: any };
 }
 export interface ISkinData {
@@ -48,166 +48,173 @@ export interface ISkinData {
 export interface IModelData {
     metadata: IMetadata;
     geometry?: any[];
-    attributes?: IAttributeData[];
-    collections?: ICollectionData[];
+    attribs?: IAttribData[];
+    colls?: ICollData[];
     skins?: ISkinData[];
 }
 // ========================= INTERFACES for classes =========================
-export interface IDict { //used for collection properties
+export interface IDict { //used for coll properties
     [key: string] : any;
 }
-export interface IAttributeDataDict {
-    [key: string] : IAttributeData; //TODO Should be changed to IAttribute
+export interface IAttribDict {
+    [key: string] : IAttrib;
 }
-export interface IAttributeTypesDict {
-    points: IAttributeDataDict;
-    vertices: IAttributeDataDict;
-    edges: IAttributeDataDict;
-    wires: IAttributeDataDict;
-    faces: IAttributeDataDict;
-    shells: IAttributeDataDict;
+export interface IAttribTypesDict {
+    points: IAttribDict;
+    vertices: IAttribDict;
+    edges: IAttribDict;
+    wires: IAttribDict;
+    faces: IAttribDict;
+    shells: IAttribDict;
 }
-export interface ICollectionsDict {
-    [key: string] : ICollectionData; //TODO should be changed to ICollection
+export interface ICollsDict {
+    [key: string] : IColl;
 }
-// interface for path to a single component in an attribute array
+// interface for path to a single topo in an attrib array
 export interface IPath {
-    id:number;  //entity_id or point_id
-    component_type:EComponentType; //shells, faces, wires
-    component_number:number;
-    subcomponent_type:EComponentType; //edges, vertices
-    subcomponent_number:number;
-    getType():EComponentType;
+    id:number;  //obj_id or point_id number
+    topo_type:ETopoType; //shells, faces, wires
+    topo_number:number;
+    subtopo_type:ETopoType; //edges, vertices
+    subtopo_number:number;
+    getType():ETopoType;
 }
 // interface for main model
 export interface IModel {
     //Creation
     createPoint(xyz:number[]):IPoint;
-    createPolyline(wire_points:IPoint[]):IEntity;
-    createPolymesh(wire_points:IPoint[], face_points:IFace[]):IEntity;
+    createPolyline(wire_points:IPoint[]):IObj;
+    createPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
     //Points
     getPoint(point_id:number):IPoint;
     addPoint(point:IPoint):IPoint;
-    deletePoint(point_id:number):boolean;
-    deletePoints(point_ids:number[]):boolean;
+    delPoint(point_id:number):boolean;
+    delPoints(point_ids:number[]):boolean;
     numPoints():number;
-    //Entities
-    getEntitieIDs(entity_type?:EEntityType):number[];
-    getEntity(entity_id:number):IEntity;
-    addEntity(entity: IEntity):IEntity;
-    deleteEntity(entity_id:number):boolean;
-    //Components
-    getVertices(entity_type?:EEntityType):IVertex[];
-    getEdges(entity_type?:EEntityType):IEdge[];
-    getWires(entity_type?:EEntityType):IWire[];
-    getFaces(entity_type?:EEntityType):IFace[];
-    getShells(entity_type?:EEntityType):IShell[];
-    //Attributes
-    getAttributes(component_type:EComponentType):IAttribute[];
-    getAttribute(name:string, component_type:EComponentType):IAttribute;
-    addAttribute(name:string, component_type:EComponentType, data_type:EDataType):IAttribute;
-    deleteAttribute(name:string, component_type:EComponentType):boolean;
-    //Attribute Values
-    getAttributeValue(name:string, path:IPath):any;
-    setAttributeValue(name:string, path:IPath, value:any):any;
-    addAttributeValue(name:string, path:IPath):void;
-    //Collections
-    getCollections():ICollection[];
-    getCollection(name:string):ICollection;
-    addCollection(name:string):ICollection;
-    deleteCollection(name:string):boolean;
+    //Objs
+    getObjIDs(obj_type?:EObjType):number[];
+    getObj(obj_id:number):IObj;
+    addObj(obj: IObj):IObj;
+    delObj(obj_id:number):boolean;
+    //Topos
+    getVertices(obj_type?:EObjType):IVertex[];
+    getEdges(obj_type?:EObjType):IEdge[];
+    getWires(obj_type?:EObjType):IWire[];
+    getFaces(obj_type?:EObjType):IFace[];
+    getShells(obj_type?:EObjType):IShell[];
+    //Counters
+    numPoints():number;
+    numTopos(attrib_type:ETopoType):number;
+    numObjs(obj_type:EObjType):number;
+    //Attribs
+    getAttribs(topo_type:ETopoType):IAttrib[];
+    getAttrib(name:string, topo_type:ETopoType):IAttrib;
+    addAttrib(name:string, topo_type:ETopoType, data_type:EDataType):IAttrib;
+    delAttrib(name:string, topo_type:ETopoType):boolean;
+    //Colls
+    getColls():IColl[];
+    getColl(name:string):IColl;
+    addColl(name:string):IColl;
+    delColl(name:string):boolean;
     //Clean up nulls and unused points
     purgePoints():number;
     purgeNulls():number;
     //Runs some check
     validateModel():boolean;
 }
-//interfaces for topological components
-export interface IComponent {
-    getEntity():IEntity;
-    getID():number;
-    getAttributes():IAttribute[];
-    getAttributeNames():string[];
-    setAttributeValue(name:string, value:any):any;
-    getAttributeValue(name:string):any;
-    getCollections():string[];
+//Geom superclass
+export interface IGeometry  {
+    
 }
-export interface IVertex extends IComponent {
-    getPoint(): IPoint;
-    next():IVertex;
-    previous():IVertex;
-    getEdge():IEdge;
-}
-export interface IEdge extends IComponent {
-    getVertices(): IVertex[];
-    next():IEdge;
-    previous():IEdge;
-    getParent():IWire|IFace;
-}
-export interface IWire extends IComponent {
-    getVertices():IVertex[];
-    getEdges(): IEdge[];
-    getShell():IShell;
-}
-export interface IFace extends IComponent {
-    getVertices():IVertex[];
-    getEdges(): IEdge[];
-    neighbours():IFace[];
-    getShell():IShell;
-}
-export interface IShell extends IComponent {
-    getWires(): IWire[];
-    getFaces(): IFace[];
-}
-//interfaces for points, that seem to exist somewhere between entities and components
-export interface IPoint {
-    getID():number;
+//interfaces for points, that seem to exist somewhere between objs and topos
+export interface IPoint extends IGeometry {
+    getPath():IPath;
     getPosition():number[];
     setPosition(xyz:number[]):number[];
-    getAttributes():IAttribute[];
-    getAttributeNames():string[];
-    setAttributeValue(name:string, value:any):any;//TODO, name or attribute
-    getAttributeValue(name:string):any;//TODO, name or attribute
+    getAttribNames():string[];
+    setAttribValue(name:string, value:any):any;
+    getAttribValue(name:string):any;
     getVertices():IVertex[];
 }
-//interfaces for geometric entities
-export interface IEntity {
+//interfaces for geometric objs
+export interface IObj extends IGeometry {
     getID():number;
     getVertices():IVertex[];
     getEdges():IEdge[];
     getWires():IWire[];
     getFaces():IFace[];
     getShells():IShell[];
-    getType():EEntityType;
+    getType():EObjType;
     isPolyline():boolean;
     isPolymesh():boolean;
 }
-export interface IPolyline  extends IEntity {
+export interface IPolyline  extends IObj {
 }
-export interface IPolymesh extends IEntity {
+export interface IPolymesh extends IObj {
 }
-// interfcae for attributes
-export interface IAttribute {
+//interfaces for topological topos
+export interface ITopo {
+    getObj():IObj;
+    getID():number;
+    getAttribNames():string[];
+    setAttribValue(name:string, value:any):any;
+    getAttribValue(name:string):any;
+    getColls():string[];
+}
+export interface IVertex extends ITopo {
+    getPoint(): IPoint;
+    next():IVertex;
+    previous():IVertex;    
+    getEdge():IEdge;
+}
+export interface IEdge extends ITopo {
+    getVertices(): IVertex[];
+    next():IEdge;
+    previous():IEdge;
+    neighbours():IEdge[];
+    getParent():IWire|IFace; //getWireOrFace()
+}
+export interface IWire extends ITopo {
+    getVertices():IVertex[];
+    getEdges(): IEdge[];
+    getShell():IShell;
+}
+export interface IFace extends ITopo {
+    getVertices():IVertex[];
+    getEdges(): IEdge[];
+    neighbours():IFace[];
+    getShell():IShell;
+}
+export interface IShell extends ITopo {
+    getWires(): IWire[];
+    getFaces(): IFace[];
+}
+// interfcae for attribs
+export interface IAttrib {
     getName():string;
     setName(name:string):string;
-    getComponentType():EComponentType;
+    getAttribType():ETopoType;
     getDataType():EDataType;
+    //Attrib Values
+    getValue(path:IPath):any;
+    setValue(path:IPath, value:any):any;
+    length():number;
 }
-//interface for collection
-export interface ICollection {
+//interface for coll
+export interface IColl {
     getName():string;
     setName(name:string):string;
-    //Parent/child collections
-    getParentCollections():ICollection[];
-    getChildCollections():ICollection[];
-    addChildCollection(collection:ICollection):boolean;
-    removeChildCollection(collection:ICollection):boolean;
-    //Entities in this collection
-    getEntitieIDs(entity_type?:EEntityType):number[];
-    addEntity(entity_id:number):boolean;
-    addEntities(entity_ids:number[]):boolean;
-    removeEntity(entity_id:number):boolean;
-    removeEntities(entity_ids:number[]):boolean;
-    //Properties for this collection (key-value pairs)
+    //Parent/child colls
+    getParentColls():IColl[];
+    getChildColls():IColl[];
+    addChildColl(coll:IColl):boolean;
+    removeChildColl(coll:IColl):boolean;
+    //Objs in this coll
+    getEntitieIDs(obj_type?:EObjType):number[];
+    addObj(obj_id:number):boolean;
+    addObjs(obj_ids:number[]):boolean;
+    removeObj(obj_id:number):boolean;
+    removeObjs(obj_ids:number[]):boolean;
+    //Properties for this coll (key-value pairs)
     getPropeties():IDict;
 }

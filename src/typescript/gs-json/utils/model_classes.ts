@@ -2,17 +2,15 @@ import * as ifs from "../utils/model_interfaces";
 // ========================= Utility functions =========================
 //utility functions for number arrays
 export function arraysEqual(array1: number[], array2: number[]): boolean {
-        if (array1.length != array2.length) {
+    if (array1.length != array2.length) {
+        return false;
+    }
+    for (let i:number=0;i<array1.length;i++) {
+        if (array1[i] != array2[i]) {
             return false;
         }
-        let i:number;
-        for (i=0;i<array1.length;i++) {
-            if (array1[i] != array2[i]) {
-                return false;
-            }
-        }
-        return true;
     }
+    return true;
 }
 export function indexOfArray(array1:number[], array2: number[][]):number {
     let i:number;
@@ -23,29 +21,28 @@ export function indexOfArray(array1:number[], array2: number[][]):number {
     }
     return -1;
 }
-
 // ========================= CLASSES =========================
-//path to some attribute for a component in the geometry
+//path to some attrib for a topo in the geometry
 export class Path implements ifs.IPath {
-    id:number; //entity or point
-    component_type:ifs.EComponentType; //shells, faces, wires, points
-    component_number:number;
-    subcomponent_type:ifs.EComponentType; //edges, vertices
-    subcomponent_number:number;
+    id:number; //obj or point
+    topo_type:ifs.ETopoType; //shells, faces, wires, points
+    topo_number:number;
+    subtopo_type:ifs.ETopoType; //edges, vertices
+    subtopo_number:number;
     constructor(id:number,
-            component_type?:ifs.EComponentType, component_number?:number,
-            subcomponent_type?:ifs.EComponentType, subcomponent_number?:number) {
+            topo_type?:ifs.ETopoType, topo_number?:number,
+            subtopo_type?:ifs.ETopoType, subtopo_number?:number) {
         this.id = id;
-        this.component_type = component_type;
-        this.component_number = component_number;
-        this.subcomponent_type = subcomponent_type;
-        this.subcomponent_number = subcomponent_number;
+        this.topo_type = topo_type;
+        this.topo_number = topo_number;
+        this.subtopo_type = subtopo_type;
+        this.subtopo_number = subtopo_number;
     }
-    public getType():ifs.EComponentType {
-        if (this.subcomponent_type) {
-            return this.subcomponent_type;
+    public getType():ifs.ETopoType {
+        if (this.subtopo_type) {
+            return this.subtopo_type;
         } else {
-            return this.component_type;
+            return this.topo_type;
         }
     }
 }
@@ -53,46 +50,32 @@ export class Path implements ifs.IPath {
 export class Model implements ifs.IModel{
     private metadata:ifs.IMetadata;
     private geometry_data:any[];
-    private attribute_types_dict:ifs.IAttributeTypesDict;
-    private collections_dict:ifs.ICollectionsDict;
+    private attrib_types_dict:ifs.IAttribTypesDict;
+    private colls_dict:ifs.ICollsDict;
     constructor() {
         //create default metadata
-        this.metadata = {
-            filetype: "mobius",
-            version:  0.1,
-            crs:      {"epsg":3857},
-            location: "+0-0" 
-        }
+        this.metadata = {filetype: "mobius", version:  0.1, crs:{"epsg":3857}, location: "+0-0"}
         //create an empty geometry array
         this.geometry_data = [];
-        //create one attribute, called "position"
-        this.attribute_types_dict = {
-            points:   {},
-            vertices: {},
-            edges:    {},
-            wires:    {},
-            faces:    {},
-            shells:   {}
+        //create one attrib, called "position"
+        this.attrib_types_dict = {points:{}, vertices:{}, edges:{}, wires:{}, faces:{}, shells:{}}
+        this.attrib_types_dict.points = {
+            position: new Attrib(this, "position", ifs.ETopoType.points, ifs.EDataType.type_number_array)
         }
-        this.attribute_types_dict.points = {
-            "position": {
-                "name":"position",
-                "component_type":"points",
-                "data_type":"number[]",
-                "map": [],
-                "values":[]
-            }
-        };
-        this.collections_dict = {};
+        //create empty colls dict
+        this.colls_dict = {};
     }
     // Set data for the model
     public setData(data:ifs.IModelData):void {
         this.geometry_data = data.geometry;
-        for (let attribute of data.attributes) {
-            this.attribute_types_dict[attribute.component_type][attribute.name] = attribute;           
+        for (let attrib_data of data.attribs) {
+            let topo_type:ifs.ETopoType = ifs.ETopoType[attrib_data.topo_type];
+            let data_type:ifs.EDataType = ifs.ETopoType[attrib_data.data_type];
+            let attrib:Attrib = new Attrib(this, attrib_data.name, topo_type, data_type);
+            this.attrib_types_dict[attrib_data.topo_type][attrib_data.name] = attrib;           
         }
-        for (let collection of data.collections) {
-            this.attribute_types_dict[collection.name] = collection;
+        for (let coll of data.colls) {
+            this.attrib_types_dict[coll.name] = null; //TODO
         }
     }
     //Creation
@@ -101,170 +84,118 @@ export class Model implements ifs.IModel{
         point.setPosition(xyz);
         return point;
     }
-    public createPolyline(wire_points:ifs.IPoint[]):ifs.IEntity {
+    public createPolyline(wire_points:ifs.IPoint[]):ifs.IObj {
         console.log("not implemented");
         return null;
     }
-    public createPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IEntity {
+    public createPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IObj {
         console.log("not implemented");
         return null;
     }
     //Points
     public getPoint(point_id:number):ifs.IPoint {
-        return new Point(this, point_id);
+        return new Point(this, new Path(point_id, ifs.ETopoType.points));
     }
     public addPoint(point:ifs.IPoint):ifs.IPoint {
         console.log("not implemented");
         return null;
     }
-    public deletePoint(point_id:number):boolean {
+    public delPoint(point_id:number):boolean {
         console.log("not implemented");
         return null;
-        //also delete anythin that uses this point
+        //also del anythin that uses this point
     }
-    public deletePoints(point_ids:number[]):boolean {
+    public delPoints(point_ids:number[]):boolean {
         console.log("not implemented");
         return null;
     }
-    public numPoints():number {
-        return this.attribute_types_dict[ifs.EComponentType.points]["position"].map.length;
-    }
-    //Entities
-    public getEntitieIDs(entity_type?:ifs.EEntityType):number[] {
+    //Objs
+    public getObjIDs(obj_type?:ifs.EObjType):number[] {
         console.log("not implemented");
         return [];
     }
-    public getEntities(entity_type?:ifs.EEntityType):ifs.IEntity[] {
+    public getObjs(obj_type?:ifs.EObjType):ifs.IObj[] {
         console.log("not implemented");
         return [];
     }
-    public getEntity(entity_id:number):ifs.IEntity {
+    public getObj(obj_id:number):ifs.IObj {
         console.log("not implemented");
         return null;
     }
-    public addEntity(entity: ifs.IEntity):ifs.IEntity{
+    public addObj(obj: ifs.IObj):ifs.IObj{
         console.log("not implemented");
         return null;
     } 
-    public deleteEntity(entity_id:number):boolean{
-        return delete this.geometry_data[entity_id];
+    public delObj(obj_id:number):boolean{
+        return delete this.geometry_data[obj_id];
     }
-    //Components
-    public getVertices(entity_type?:ifs.EEntityType):ifs.IVertex[] {
+    //Topo components
+    public getVertices(obj_type?:ifs.EObjType):ifs.IVertex[] {
         console.log("not implemented");
         return null;
     }
-    public getEdges(entity_type?:ifs.EEntityType):ifs.IEdge[] {
+    public getEdges(obj_type?:ifs.EObjType):ifs.IEdge[] {
         console.log("not implemented");
         return null;
     }
-    public getWires(entity_type?:ifs.EEntityType):ifs.IWire[] {
+    public getWires(obj_type?:ifs.EObjType):ifs.IWire[] {
         console.log("not implemented");
         return null;
     }
-    public getFaces(entity_type?:ifs.EEntityType):ifs.IFace[] {
+    public getFaces(obj_type?:ifs.EObjType):ifs.IFace[] {
         console.log("not implemented");
         return null;
     }
-    public getShells(entity_type?:ifs.EEntityType):ifs.IShell[] {
+    public getShells(obj_type?:ifs.EObjType):ifs.IShell[] {
         console.log("not implemented");
         return null;
     }
-    //Attributes
-    public getAttributes(component_type:ifs.EComponentType):ifs.IAttribute[] {
-        let attributes_array:ifs.IAttribute[] = [];
-        let attribute_data:ifs.IAttributeData;
-        let attribute_name:string;
-        for(attribute_name in this.attribute_types_dict[component_type]) {
-            let attribute_data:ifs.IAttributeData = this.attribute_types_dict[component_type][attribute_name];
-            attributes_array.push(
-                new Attribute(this, attribute_name, component_type, ifs.EComponentType[attribute_data.data_type])
-            );
-        }
-        return attributes_array;
+    //counters
+    public numPoints():number {
+        return this.attrib_types_dict[ifs.ETopoType.points]["position"].length();
     }
-    public getAttribute(name:string, component_type?:ifs.EComponentType):ifs.IAttribute {
-        let attribute_data:ifs.IAttributeData = this.attribute_types_dict[component_type][name];
-        return new Attribute(this, attribute_data.name, component_type, ifs.EComponentType[attribute_data.data_type]); 
-    }
-    public addAttribute(name:string, component:ifs.EComponentType, type:ifs.EDataType):ifs.IAttribute{
+    public numTopos(attrib_type:ifs.ETopoType):number {
         console.log("not implemented");
         return null;
     }
-    public deleteAttribute(name:string, component_type:ifs.EComponentType):boolean {
+    public numObjs(obj_type:ifs.EObjType):number {
         console.log("not implemented");
-        //for this method, must use 'delete' operator, do not use 'splice', 'shift', 'pop'
-        //https://bytearcher.com/articles/how-to-delete-value-from-array/
-        //delete this.data.attributes[attribute_id];
-        return false;
+        return null;
     }
-    //Attribute Values
-    private _getAttributeValueIndex(name:string, path:ifs.IPath):number {
-        let attribute_map:any[] = this.attribute_types_dict[path.getType()][name].map;
-        //points attributes
-        if (path.component_type == ifs.EComponentType.points) {
-            return attribute_map[path.id] as number;
-        }
-        //vertices, edges, attributes 
-        if (path.subcomponent_type) { // vertices or edges
-            return attribute_map[path.id][path.component_number][path.subcomponent_number] as number;
-        } 
-        //wires, faces, shells attributes
-        if (path.component_type){ //wires or faces
-            return attribute_map[path.id][path.component_number] as number;
-        } 
+    //Attribs
+    public getAttribs(attrib_type:ifs.ETopoType):ifs.IAttrib[] {
+        let attrib_dict:ifs.IAttribDict =  this.attrib_types_dict[attrib_type];
+        return Object.keys(attrib_dict).map(key=>attrib_dict[key]);
     }
-    public getAttributeValue(name:string, path:ifs.IPath):any {
-        let value_index:number = this._getAttributeValueIndex(name, path);
-        return this.attribute_types_dict[path.getType()][name].values[value_index];
+    public getAttrib(name:string, attrib_type?:ifs.ETopoType):ifs.IAttrib {
+        return this.attrib_types_dict[attrib_type][name];
     }
-    public setAttributeValue(name:string, path:ifs.IPath, value:any):any {
-        //TODO: this implememtation is not correct
-        //At the moment it is overwrting values, which might still be used elsewhere
-        //Instead the value must be added to the values list
-        //Then the map needs to be changed to point to the new value
-
-
-
-        let value_index:number = this._getAttributeValueIndex(name, path);
-        let old_value:any = this.attribute_types_dict[path.getType()][name].values[value_index];
-        this.attribute_types_dict[path.getType()][name].values[value_index] = value; // This is not correct
-        return old_value;
+    public addAttrib(name:string, attrib_type:ifs.ETopoType, data_type:ifs.EDataType):ifs.IAttrib{
+        let attrib:Attrib = new Attrib(this, name, attrib_type, data_type);
+        this.attrib_types_dict[attrib_type][name] = attrib;
+        return attrib;
     }
-    public addAttributeValue(name:string, path:ifs.IPath):void {
-        let attribute_map:any[] = this.attribute_types_dict[path.getType()][name].map;
-                                
-        //points attributes
-        if (path.component_type == ifs.EComponentType.points) {
-            attribute_map.push(0);
-        }
-        //vertices, edges, attributes 
-        else if (path.subcomponent_type) {
-            attribute_map[path.id][path.component_number][path.subcomponent_number].push(0);
-        } 
-        //wires, faces, shells attributes
-        else if (path.component_type){
-            attribute_map[path.id][path.component_number].push(0);
-        }
+    public delAttrib(name:string, attrib_type:ifs.ETopoType):boolean {
+        return delete this.attrib_types_dict[attrib_type][name];
     }
-    //Collections
-    public getCollections():ifs.ICollection[] {
+    //Colls
+    public getColls():ifs.IColl[] {
         console.log("not implemented");
         return [];
     }
-    public getCollection(name:string):ifs.ICollection {
+    public getColl(name:string):ifs.IColl {
         console.log("not implemented");
         return null;
     }
-    public addCollection(name:string):ifs.ICollection {
+    public addColl(name:string):ifs.IColl {
         console.log("not implemented");
         return null;
     }
-    public deleteCollection(name:string):boolean {
+    public delColl(name:string):boolean {
         console.log("not implemented");
-        //for this method, must use 'delete' operator, do not use 'splice', 'shift', 'pop'
-        //https://bytearcher.com/articles/how-to-delete-value-from-array/
-        //delete this.data.collections[collection_id];
+        //for this method, must use 'del' operator, do not use 'splice', 'shift', 'pop'
+        //https://bytearcher.com/articles/how-to-del-value-from-array/
+        //del this.data.colls[coll_id];
         return false;
     }
     //Clean up nulls and unused points
@@ -282,192 +213,57 @@ export class Model implements ifs.IModel{
         return false;
     }
 }
-// component class
-export class Component implements ifs.IComponent{
+// point class
+export class Point implements ifs.IPoint{
     private model:ifs.IModel;
-    private path:ifs.IPath;
-    constructor(model:ifs.IModel, path:ifs.IPath) {
+    private path: ifs.IPath;
+    constructor(model:ifs.IModel, path?: ifs.IPath) {
         this.model = model;
-        this.path = path;
-    }
-    public getID():number {
-        return this.path.id;
-    }
-    public getEntity():ifs.IEntity {
-        console.log("not implemented");
-        return null;
+        if (path) {
+            this.path = path;
+        } else {
+            //make the point id equal to the list length
+            this.path = new Path(model.numPoints(), ifs.ETopoType.points);
+            //add one more item to all point attribs
+            for(let attrib of this.model.getAttribs(ifs.ETopoType.points)) {
+                attrib.setValue(this.path, null);
+            }
+        }
     }
     public getPath():ifs.IPath {
         return this.path;
     }
-    public getAttributes():ifs.IAttribute[] {
-        return this.model.getAttributes(this.path.getType());
-    }
-    public getAttributeNames():string[] {
-        let names:string[] = [];
-        let attribute:ifs.IAttribute;
-        for(attribute of this.model.getAttributes(this.path.getType())) {
-            names.push(attribute.getName());
-        }
-        return names;
-    }
-    public setAttributeValue(name:string, value:any):any {
-        return this.model.setAttributeValue(name, this.path, value);
-    }
-    public getAttributeValue(name:string):any {
-        return this.model.getAttributeValue(name, this.path);
-    }
-    public getCollections():string[] {
-        console.log("not implemented");
-        return [];
-    }
-}
-// vertex class 
-export class Vertex extends Component implements ifs.IVertex {
-    public getPoint():ifs.IPoint {
-        console.log("not implemented");
-        return null;
-    }
-    public next():ifs.IVertex {
-        console.log("not implemented");
-        return null;
-    }
-    public previous():ifs.IVertex {
-        console.log("not implemented");
-        return null;
-    }
-    public getEdge():ifs.IEdge {
-        console.log("not implemented");
-        return null;
-    }
-}
-// edge class 
-export class Edge extends Component implements ifs.IEdge {
-    public getVertices():ifs.IVertex[] {
-        console.log("not implemented");
-        return null;
-    }
-    public next():ifs.IEdge {
-        console.log("not implemented");
-        return null;
-    }
-    public previous():ifs.IEdge {
-        console.log("not implemented");
-        return null;
-    }
-    public getParent():ifs.IWire|ifs.IFace {
-        console.log("not implemented");
-        return null;
-    }
-}
-// wire class 
-export class Wire extends Component implements ifs.IWire {
-    public getVertices():ifs.IVertex[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getEdges():ifs.IEdge[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getShell():ifs.IShell {
-        console.log("not implemented");
-        return null;
-    }
-}
-// face class 
-export class Face extends Component implements ifs.IFace {
-    public getVertices():ifs.IVertex[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getEdges():ifs.IEdge[] {
-        console.log("not implemented");
-        return null;
-    }
-    public neighbours():ifs.IFace[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getShell():ifs.IShell {
-        console.log("not implemented");
-        return null;
-    }
-}
-// shell class 
-export class Shell extends Component implements ifs.IShell {
-    public getWires():ifs.IWire[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getFaces():ifs.IFace[] {
-        console.log("not implemented");
-        return null;
-    }
-}
-// point class
-export class Point implements ifs.IPoint{
-    private model:ifs.IModel;
-    private point_id: number;
-    constructor(model:ifs.IModel, point_id?: number) {
-        this.model = model;
-        if (point_id) {
-            this.point_id = point_id;
-        } else {
-            //make the point number equal to the list length
-            this.point_id = model.numPoints();
-            //add one more item to all point attributes
-            let attribute:ifs.IAttribute;
-            let path:ifs.IPath = new Path(this.point_id, ifs.EComponentType.points);
-            for(attribute of this.model.getAttributes(ifs.EComponentType.points)) {
-                this.model.addAttributeValue(attribute.getName(), path);
-            }
-        }
-    }
-    public getID():number {
-        return this.point_id;
-    }
     public setPosition(xyz:number[]):number[] {
-        return this.setAttributeValue("position", xyz);
+        return this.setAttribValue("position", xyz);
     }
     public getPosition():number[] {
-        return this.getAttributeValue("position");
+        return this.getAttribValue("position");
     }
-    public getAttributes():ifs.IAttribute[] {
-        return this.model.getAttributes(ifs.EComponentType.points);
+    public getAttribNames():string[] {
+        return this.model.getAttribs(ifs.ETopoType.points).map(attrib=>attrib.getName());
     }
-    public getAttributeNames():string[] {
-        let names:string[] = [];
-        let attribute:ifs.IAttribute;
-        for(attribute of this.model.getAttributes(ifs.EComponentType.points)) {
-            names.push(attribute.getName());
-        }
-        return names;
+    public setAttribValue(name:string, value:any):any {
+        return this.model.getAttrib(name, ifs.ETopoType.points).setValue(this.path, value);
     }
-    public setAttributeValue(name:string, value:any):any {
-        let path:ifs.IPath = new Path(this.point_id, ifs.EComponentType.points);
-        return this.model.setAttributeValue(name, path, value);
-    }
-    public getAttributeValue(name:string):any {
-        let path:ifs.IPath = new Path(this.point_id, ifs.EComponentType.points);
-        return this.model.getAttributeValue(name, path);
+    public getAttribValue(name:string):any {
+        return this.model.getAttrib(name, ifs.ETopoType.points).getValue(this.path);
     }
     public getVertices():ifs.IVertex[] {
         console.log("not implemented");
         return null;
     }
 }
-// entity class
-export class Entity implements ifs.IEntity{
+// obj class
+export class Obj implements ifs.IObj{
     private model:ifs.IModel;
-    private entity_id:number;
-    constructor(model:ifs.IModel, entity_id:number) {
+    private obj_id:number;
+    constructor(model:ifs.IModel, obj_id:number) {
         this.model = model;
-        this.entity_id = entity_id; 
+        this.obj_id = obj_id; 
     }
     public getID():number {
         console.log("not implemented");
-        return this.entity_id;
+        return this.obj_id;
     }
     public getVertices():ifs.IVertex[] {
         console.log("not implemented");
@@ -489,7 +285,7 @@ export class Entity implements ifs.IEntity{
         console.log("not implemented");
         return [];
     }
-    public getType():ifs.EEntityType {
+    public getType():ifs.EObjType {
         console.log("not implemented");
         return null;
     }
@@ -502,21 +298,152 @@ export class Entity implements ifs.IEntity{
         return false;
     }
 }
-export class Polyline  extends Entity implements ifs.IPolyline{} 
-export class Polymesh extends Entity implements ifs.IPolymesh{} 
+export class Polyline  extends Obj implements ifs.IPolyline{} 
+export class Polymesh extends Obj implements ifs.IPolymesh{} 
+// topo class
+export class Topo implements ifs.ITopo{
+    private model:ifs.IModel;
+    private path:ifs.IPath;
+    constructor(model:ifs.IModel, path:ifs.IPath) {
+        this.model = model;
+        this.path = path;
+    }
+    public getID():number {
+        return this.path.id;
+    }
+    public getObj():ifs.IObj {
+        return new Obj(this.model, this.path.id);
+    }
+    public getPath():ifs.IPath {
+        return this.path;
+    }
+    public getAttribNames():string[] {
+        return this.model.getAttribs(this.path.topo_type).map(attrib=>attrib.getName());
+    }
+    public setAttribValue(name:string, value:any):any {;
+        return this.model.getAttrib(name, this.path.topo_type).setValue(this.path, value);
+    }
+    public getAttribValue(name:string):any {
+        return this.model.getAttrib(name, this.path.topo_type).getValue(this.path);
+    }
+    public getColls():string[] {
+        console.log("not implemented");
+        return [];
+    }
+}
+// vertex class 
+export class Vertex extends Topo implements ifs.IVertex {
+    public getPoint():ifs.IPoint {
+        console.log("not implemented");
+        return null;
+    }
+    public next():ifs.IVertex {
+        console.log("not implemented");
+        return null;
+    }
+    public previous():ifs.IVertex {
+        console.log("not implemented");
+        return null;
+    }
+    public getEdge():ifs.IEdge {
+        console.log("not implemented");
+        return null;
+    }
+}
+// edge class 
+export class Edge extends Topo implements ifs.IEdge {
+    public getVertices():ifs.IVertex[] {
+        console.log("not implemented");
+        return null;
+    }
+    public next():ifs.IEdge {
+        console.log("not implemented");
+        return null;
+    }
+    public previous():ifs.IEdge {
+        console.log("not implemented");
+        return null;
+    }
+    public neighbours():ifs.IEdge[] {
+        console.log("not implemented");
+        return null;
+    }
+    public getParent():ifs.IWire|ifs.IFace {
+        console.log("not implemented");
+        return null;
+    }
+}
+// wire class 
+export class Wire extends Topo implements ifs.IWire {
+    public getVertices():ifs.IVertex[] {
+        console.log("not implemented");
+        return null;
+    }
+    public getEdges():ifs.IEdge[] {
+        console.log("not implemented");
+        return null;
+    }
+    public getShell():ifs.IShell {
+        console.log("not implemented");
+        return null;
+    }
+}
+// face class 
+export class Face extends Topo implements ifs.IFace {
+    public getVertices():ifs.IVertex[] {
+        console.log("not implemented");
+        return null;
+    }
+    public getEdges():ifs.IEdge[] {
+        console.log("not implemented");
+        return null;
+    }
+    public neighbours():ifs.IFace[] {
+        console.log("not implemented");
+        return null;
+    }
+    public getShell():ifs.IShell {
+        console.log("not implemented");
+        return null;
+    }
+}
+// shell class 
+export class Shell extends Topo implements ifs.IShell {
+    public getWires():ifs.IWire[] {
+        console.log("not implemented");
+        return null;
+    }
+    public getFaces():ifs.IFace[] {
+        console.log("not implemented");
+        return null;
+    }
+}
 
-
-// Attribute class
-export class Attribute implements ifs.IAttribute {
+// Attrib class
+export class Attrib implements ifs.IAttrib {
     private model:ifs.IModel;
     private name:string;
-    private component_type:ifs.EComponentType;
+    private attrib_type:ifs.ETopoType;
     private data_type:ifs.EDataType;
-    constructor(model:ifs.IModel, name:string, component_type:ifs.EComponentType, data_type:ifs.EDataType) {
+    private values_map:any[];
+    private values:any[];
+    constructor(model:ifs.IModel, name:string, attrib_type:ifs.ETopoType, data_type:ifs.EDataType, values_map?:any[], values?:any[]) {
         this.model = model;
         this.name = name;
-        this.component_type = component_type;
+        this.attrib_type = attrib_type;
         this.data_type = data_type;
+        if (values_map) {
+            this.values_map = values_map;
+        } else {
+            this.values_map = [];
+            //TODO initiaize array, everything points to null
+            //Array.from({ length: 5 }, (v,i) => 0);
+        }
+        if (values) {
+            this.values = values;
+        } else {
+            this.values = [null];
+        }
     }
     public getName():string {
         return this.name;
@@ -526,15 +453,66 @@ export class Attribute implements ifs.IAttribute {
         this.name = name;
         return old_name;
     }
-    public getComponentType():ifs.EComponentType {
-        return this.component_type;
+    public getAttribType():ifs.ETopoType {
+        return this.attrib_type;
     }
     public getDataType():ifs.EDataType {
         return this.data_type;
     }
+    //Attrib Values
+    public getValue(path:ifs.IPath):any {
+        return this.values[this._getValueIndex(path)];
+    }
+    public setValue(path:ifs.IPath, value:any):any {
+        //TODO: this implememtation is not correct
+        //At the moment it is overwrting values, which might still be used elsewhere
+        //Instead the value must be added to the values list
+        //Then the map needs to be changed to point to the new value
+
+
+
+        // let value_index:number = this._getValueIndex(path);
+
+        // let old_value:any = this.attrib_types_dict[path.getType()][name].values[value_index];
+        // this.attrib_types_dict[path.getType()][name].values[value_index] = value; // This is not correct
+        // return old_value;
+        return null;
+    }
+    public length():number  {
+        return this.values_map.length;
+    }
+    //Private methods
+    private _getValueIndex(path:ifs.IPath):number {
+        //points attribs
+        if (path.topo_type == ifs.ETopoType.points) {
+            return this.values_map[path.id] as number;
+        }
+        //vertices, edges, attribs 
+        if (path.subtopo_type) { // vertices or edges
+            return this.values_map[path.id][path.topo_number][path.subtopo_number] as number;
+        } 
+        //wires, faces, shells attribs
+        if (path.topo_type){ //wires or faces
+            return this.values_map[path.id][path.topo_number] as number;
+        } 
+    }
+    private _addValue(path:ifs.IPath):void {
+        //points attribs
+        if (path.topo_type == ifs.ETopoType.points) {
+            this.values_map.push(0);
+        }
+        //vertices, edges, attribs 
+        else if (path.subtopo_type) {
+            this.values_map[path.id][path.topo_number][path.subtopo_number].push(0);
+        } 
+        //wires, faces, shells attribs
+        else if (path.topo_type){
+            this.values_map[path.id][path.topo_number].push(0);
+        }
+    }
 }
-//Collections class
-export class Collection implements ifs.ICollection {
+//Colls class
+export class Coll implements ifs.IColl {
     private model:ifs.IModel;
     private name:string;
     constructor(model:ifs.IModel, name:string) {
@@ -549,41 +527,41 @@ export class Collection implements ifs.ICollection {
         console.log("not implemented");
         return null;
     }
-    //Collections
-    public getParentCollections():ifs.ICollection[] {
+    //Colls
+    public getParentColls():ifs.IColl[] {
         console.log("not implemented");
         return [];
     }
-    public getChildCollections():ifs.ICollection[] {
+    public getChildColls():ifs.IColl[] {
         console.log("not implemented");
         return [];
     }
-    public addChildCollection(entity:ifs.ICollection):boolean {
+    public addChildColl(obj:ifs.IColl):boolean {
         console.log("not implemented");
         return false;
     }
-    public removeChildCollection(entity:ifs.ICollection):boolean {
+    public removeChildColl(obj:ifs.IColl):boolean {
         console.log("not implemented");
         return false;
     }
-    //Entities
-    public getEntitieIDs(entity_type?:ifs.EEntityType):number[] {
+    //Objs
+    public getEntitieIDs(obj_type?:ifs.EObjType):number[] {
         console.log("not implemented");
         return [];
     }
-    public addEntity(entity_id:number):boolean {
+    public addObj(obj_id:number):boolean {
         console.log("not implemented");
         return false;
     }
-    public addEntities(entity_ids:number[]):boolean {
+    public addObjs(obj_ids:number[]):boolean {
         console.log("not implemented");
         return false;
     }
-    public removeEntity(entity_id:number):boolean {
+    public removeObj(obj_id:number):boolean {
         console.log("not implemented");
         return false;
     }
-    public removeEntities(entity_ids:number[]):boolean {
+    public removeObjs(obj_ids:number[]):boolean {
         console.log("not implemented");
         return false;
     }
