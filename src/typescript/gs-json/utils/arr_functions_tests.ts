@@ -19,7 +19,6 @@ export function test_arr_equal():boolean {
 }
 
 export function test_arr_indexOf():boolean {
-	console.log(Arr.indexOf([1,2],[[],[2],[1,2],[3,4]]));
 	if (Arr.indexOf([1,2],[[],[2],[1,2],[3,4]]) != 2) {return false;}
 	if (Arr.indexOf([1,null],[[],[1,null],[2],[1,null],[3,4]]) != 1) {return false;}
 	if (Arr.indexOf([1,3],[[],[1,null],[2],[1,null],[3,4]]) != -1) {return false;}
@@ -36,7 +35,28 @@ export function test_arr_deepCopy():boolean {
 	let x:any[] = [1,2,[3,4,[5,6,[7,8]]]];
 	let y:any[] = Arr.deepCopy(x);
 	y[2][1] = 100;
- 	console.log(Arr.indexOf([1,2],[[],[2],[1,2],[3,4]]));
+	x[2][2][2] = 200;
 	if (x[2][1] != 4) {return false;}
+	if (y[2][1] != 100) {return false;}
+	if (x[2][2][2] != 200) {return false;}
+	if (!Arr.equal(y[2][2][2],[7,8])) {return false;}
 	return true;
 }
+
+export function test_arr_deepFill():boolean {
+	let x:any[] = [1,2,[3,4,[5,6,[7,8]]]];
+	Arr.deepFill(x, 0);
+	if (x[0] != 0) {return false;}
+	if (!Arr.equal(x[2][2][2],[0,0])) {return false;}
+	return true;
+}
+
+export function test_arr_deepCount():boolean {
+	let x:any[] = [1,2,[3,4,[5,6,[7,8]]]];
+	if (Arr.deepCount([]) != 0) {return false;}
+	if (Arr.deepCount([1,2,3]) != 3) {return false;}
+	if (Arr.deepCount(x) != 8) {return false;}
+	return true;
+}
+
+//TODO: add sparse arrays tp tests

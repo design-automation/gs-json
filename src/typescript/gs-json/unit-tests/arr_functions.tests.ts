@@ -17,7 +17,11 @@ describe('Arr utility functions', () => {
     it ('test_arr_deepCopy', () => {
         expect( tests.test_arr_deepCopy() ).toBe(true);    	
     });
+    it ('test_arr_deepFill', () => {
+        expect( tests.test_arr_deepFill() ).toBe(true);    	
+    });
+    it ('test_arr_deepCount', () => {
+        expect( tests.test_arr_deepCount() ).toBe(true);    	
+    });
 
-
-    
 });
