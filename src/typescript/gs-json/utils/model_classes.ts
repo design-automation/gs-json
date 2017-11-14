@@ -307,7 +307,7 @@ class Geom implements ifs.IGeom {
         return path_arr;
     }
     //Template is an array full of zeros, but with the right structure for teh attribute data
-    public getTemplate(topo_type:ifs.ETopoType):any[] {
+    public getTopoTemplate(topo_type:ifs.ETopoType):any[] {
         switch (topo_type) {
             case ifs.ETopoType.vertices:
                 return this.geometry_data.
@@ -584,8 +584,7 @@ export class Attrib implements ifs.IAttrib {
             if (this.topo_type == ifs.ETopoType.points) {
                 this.values_map = Arr.make(this.model.getGeom().numPoints(), 0);
             } else {
-                this.values_map = Arr.deepCopy(this.model.getGeom().getTemplate(this.topo_type));
-                Arr.deepFill(this.values_map, 0);
+                this.values_map = Arr.deepCopy(this.model.getGeom().getTopoTemplate(this.topo_type));
             }
         }
         if (values) {

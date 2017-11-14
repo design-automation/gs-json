@@ -117,7 +117,8 @@ export interface IGeom  {
     getObj(obj_id:number):IObj;
     delObj(obj_id:number):boolean;
     //Topos
-    getTopos(topo_type:ETopoType, obj_type?:EObjType):any[];
+    getTopoPaths(topo_type:ETopoType, obj_type?:EObjType):IPath[];
+    getTopoTemplate(topo_type:ETopoType):any[];
     //Counters
     numObjs(obj_type?:EObjType):number;
     numPoints(obj_type?:EObjType):number;
