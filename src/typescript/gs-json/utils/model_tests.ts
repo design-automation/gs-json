@@ -1,5 +1,6 @@
 import * as ifs from "../utils/model_interfaces";
 import * as cls from "../utils/model_classes";
+import {Arr} from "./arr_functions";
 
 export function test_load_object():boolean {
     let data: ifs.IModelData = {
@@ -132,7 +133,7 @@ export function test_model_constructor():boolean {
 export function test_model_create_point():boolean {
     let model:ifs.IModel = new cls.Model();
     model.createPoint([1,2,3]);
-    if (model.numPoints() == 1) {
+    if (model.getGeom().numPoints() == 1) {
         return true;
     }
     return true;
@@ -143,5 +144,5 @@ export function test_model_set_point_positions():boolean {
     let point:ifs.IPoint = model.createPoint([11,22,33]);
     point.setPosition([4,5,6]);
     let pos = point.getPosition();
-    return cls.arraysEqual([4,5,6], pos);
+    return Arr.equal([4,5,6], pos);
 }
