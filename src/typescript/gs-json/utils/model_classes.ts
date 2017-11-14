@@ -18,13 +18,13 @@ export class Arr {
     }
     public static indexOf(arr1:number[], arr2: number[][]):number {
         for (let i:number=0;i<arr2.length;i++) {
-            if (Arr.equal(arr1,arr2[i])) {
+            if (this.equal(arr1,arr2[i])) {
                 return i;
             }
         }
         return -1;
     }
-    public static flatten(arr:any[]) {
+    public static flatten(arr:any[]) {//Identity operator..?
         return arr.reduce(function (flat, toFlatten) {
             return flat.concat(Array.isArray(toFlatten) ? Arr.flatten(toFlatten) : toFlatten);
         }, []);
@@ -33,7 +33,7 @@ export class Arr {
         let arr2:any[] = [];
         for (let i:number=0;i<arr.length;i++) {
             if (Array.isArray(arr[i])) {
-                arr2.push(Arr.deepCopy(arr[i]));
+                arr2.push(this.deepCopy(arr[i]));
             } else {
                 arr2.push(arr[i]);
             }
@@ -43,16 +43,23 @@ export class Arr {
     public static deepFill(arr:any[], value:any):void {
         for (let i:number=0;i<arr.length;i++) {
             if (Array.isArray(arr[i])) {
-                Arr.deepFill(arr[i], value);
+                this.deepFill(arr[i], value);
             } else {
                 arr[i] = value;
             }
         }
     }
+    
     public static deepCount(arr:any[]):number {
-        return arr.reduce(function (flat, toFlatten) {
-            return flat.length + Array.isArray(toFlatten) ? Arr.deepCount(toFlatten) : toFlatten.length;
-        }, 0);
+    let a:number = 0 ;
+        for (let i:number=0;i<arr.length;i++){
+            if (arr[i].length == undefined ) {
+            a = a + 1 ;
+                } else {
+            a = a + this.deepCount(arr[i])
+                        }
+        }
+    return a ;
     }
 }
 // ========================= CLASSES =========================
