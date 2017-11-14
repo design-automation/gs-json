@@ -1,46 +1,80 @@
 import * as ifs from "../utils/model_interfaces";
 // ========================= Utility functions =========================
-//utility functions for number arrays
-export function arraysEqual(array1: number[], array2: number[]): boolean {
-    if (array1.length != array2.length) {
-        return false;
+// Some utility functions for number arrays
+export class Arr {
+    public static make(length:number, value:any):number[] {
+        return Array.apply(0, new Array(length)).map((v,i)=>value);
     }
-    for (let i:number=0;i<array1.length;i++) {
-        if (array1[i] != array2[i]) {
+    public static equal(arr1: number[], arr2: number[]): boolean {
+        if (arr1.length != arr2.length) {
             return false;
         }
+        for (let i:number=0;i<arr1.length;i++) {
+            if (arr1[i] != arr2[i]) {
+                return false;
+            }
+        }
+        return true;
     }
-    return true;
-}
-export function indexOfArray(array1:number[], array2: number[][]):number {
-    let i:number;
-    for (i=0;i<array2.length;i++) { //can use forEach
-        if (array1 != array2[i]) {
-            return i;
+    public static indexOf(arr1:number[], arr2: number[][]):number {
+        for (let i:number=0;i<arr2.length;i++) {
+            if (Arr.equal(arr1,arr2[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public static flatten(arr:any[]) {
+        return arr.reduce(function (flat, toFlatten) {
+            return flat.concat(Array.isArray(toFlatten) ? Arr.flatten(toFlatten) : toFlatten);
+        }, []);
+    }
+    public static deepCopy(arr:any[]):any[] {
+        let arr2:any[] = [];
+        for (let i:number=0;i<arr.length;i++) {
+            if (Array.isArray(arr[i])) {
+                arr2.push(Arr.deepCopy(arr[i]));
+            } else {
+                arr2.push(arr[i]);
+            }
+        }
+        return arr2;
+    }
+    public static deepFill(arr:any[], value:any):void {
+        for (let i:number=0;i<arr.length;i++) {
+            if (Array.isArray(arr[i])) {
+                Arr.deepFill(arr[i], value);
+            } else {
+                arr[i] = value;
+            }
         }
     }
-    return -1;
+    public static deepCount(arr:any[]):number {
+        return arr.reduce(function (flat, toFlatten) {
+            return flat.length + Array.isArray(toFlatten) ? Arr.deepCount(toFlatten) : toFlatten.length;
+        }, 0);
+    }
 }
 // ========================= CLASSES =========================
-//path to some attrib for a topo in the geometry
+// Path to some attrib attached to a topo in the geometry
 export class Path implements ifs.IPath {
     id:number; //obj or point
     topo_type:ifs.ETopoType; //shells, faces, wires, points
-    topo_number:number;
-    subtopo_type:ifs.ETopoType; //edges, vertices
-    subtopo_number:number;
+    topo_num:number;
+    topo_subtype:ifs.ETopoType; //edges, vertices
+    topo_subnum:number;
     constructor(id:number,
-            topo_type?:ifs.ETopoType, topo_number?:number,
-            subtopo_type?:ifs.ETopoType, subtopo_number?:number) {
+            topo_type?:ifs.ETopoType, topo_num?:number,
+            topo_subtype?:ifs.ETopoType, topo_subnum?:number) {
         this.id = id;
         this.topo_type = topo_type;
-        this.topo_number = topo_number;
-        this.subtopo_type = subtopo_type;
-        this.subtopo_number = subtopo_number;
+        this.topo_num = topo_num;
+        this.topo_subtype = topo_subtype;
+        this.topo_subnum = topo_subnum;
     }
     public getType():ifs.ETopoType {
-        if (this.subtopo_type) {
-            return this.subtopo_type;
+        if (this.topo_subtype) {
+            return this.topo_subtype;
         } else {
             return this.topo_type;
         }
@@ -49,25 +83,25 @@ export class Path implements ifs.IPath {
 //model class
 export class Model implements ifs.IModel{
     private metadata:ifs.IMetadata;
-    private geometry_data:any[];
+    private geom:ifs.IGeom;
     private attrib_types_dict:ifs.IAttribTypesDict;
     private colls_dict:ifs.ICollsDict;
     constructor() {
         //create default metadata
         this.metadata = {filetype: "mobius", version:  0.1, crs:{"epsg":3857}, location: "+0-0"}
         //create an empty geometry array
-        this.geometry_data = [];
+        this.geom = new Geom(this);
         //create one attrib, called "position"
         this.attrib_types_dict = {points:{}, vertices:{}, edges:{}, wires:{}, faces:{}, shells:{}}
         this.attrib_types_dict.points = {
-            position: new Attrib(this, "position", ifs.ETopoType.points, ifs.EDataType.type_number_array)
+            position: new Attrib(this, "position", ifs.ETopoType.points, ifs.EDataType.type_num_arr)
         }
         //create empty colls dict
         this.colls_dict = {};
     }
     // Set data for the model
     public setData(data:ifs.IModelData):void {
-        this.geometry_data = data.geometry;
+        this.geom = new Geom(this, data.geometry);
         for (let attrib_data of data.attribs) {
             let topo_type:ifs.ETopoType = ifs.ETopoType[attrib_data.topo_type];
             let data_type:ifs.EDataType = ifs.ETopoType[attrib_data.data_type];
@@ -80,7 +114,7 @@ export class Model implements ifs.IModel{
     }
     //Creation
     public createPoint(xyz:number[]):ifs.IPoint {
-        let point:Point = new Point(this);
+        let point:Point = new Point(this.geom);
         point.setPosition(xyz);
         return point;
     }
@@ -92,111 +126,39 @@ export class Model implements ifs.IModel{
         console.log("not implemented");
         return null;
     }
-    //Points
-    public getPoint(point_id:number):ifs.IPoint {
-        return new Point(this, new Path(point_id, ifs.ETopoType.points));
-    }
-    public addPoint(point:ifs.IPoint):ifs.IPoint {
-        console.log("not implemented");
-        return null;
-    }
-    public delPoint(point_id:number):boolean {
-        console.log("not implemented");
-        return null;
-        //also del anythin that uses this point
-    }
-    public delPoints(point_ids:number[]):boolean {
-        console.log("not implemented");
-        return null;
-    }
-    //Objs
-    public getObjIDs(obj_type?:ifs.EObjType):number[] {
-        console.log("not implemented");
-        return [];
-    }
-    public getObjs(obj_type?:ifs.EObjType):ifs.IObj[] {
-        console.log("not implemented");
-        return [];
-    }
-    public getObj(obj_id:number):ifs.IObj {
-        console.log("not implemented");
-        return null;
-    }
-    public addObj(obj: ifs.IObj):ifs.IObj{
-        console.log("not implemented");
-        return null;
-    } 
-    public delObj(obj_id:number):boolean{
-        return delete this.geometry_data[obj_id];
-    }
-    //Topo components
-    public getVertices(obj_type?:ifs.EObjType):ifs.IVertex[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getEdges(obj_type?:ifs.EObjType):ifs.IEdge[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getWires(obj_type?:ifs.EObjType):ifs.IWire[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getFaces(obj_type?:ifs.EObjType):ifs.IFace[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getShells(obj_type?:ifs.EObjType):ifs.IShell[] {
-        console.log("not implemented");
-        return null;
-    }
-    //counters
-    public numPoints():number {
-        return this.attrib_types_dict[ifs.ETopoType.points]["position"].length();
-    }
-    public numTopos(attrib_type:ifs.ETopoType):number {
-        console.log("not implemented");
-        return null;
-    }
-    public numObjs(obj_type:ifs.EObjType):number {
-        console.log("not implemented");
-        return null;
+    //Geom
+    public getGeom():ifs.IGeom {
+        return this.geom;
     }
     //Attribs
-    public getAttribs(attrib_type:ifs.ETopoType):ifs.IAttrib[] {
-        let attrib_dict:ifs.IAttribDict =  this.attrib_types_dict[attrib_type];
+    public getAttribs(topo_type:ifs.ETopoType):ifs.IAttrib[] {
+        let attrib_dict:ifs.IAttribDict =  this.attrib_types_dict[topo_type];
         return Object.keys(attrib_dict).map(key=>attrib_dict[key]);
     }
-    public getAttrib(name:string, attrib_type?:ifs.ETopoType):ifs.IAttrib {
-        return this.attrib_types_dict[attrib_type][name];
+    public getAttrib(name:string, topo_type?:ifs.ETopoType):ifs.IAttrib {
+        return this.attrib_types_dict[topo_type][name];
     }
-    public addAttrib(name:string, attrib_type:ifs.ETopoType, data_type:ifs.EDataType):ifs.IAttrib{
-        let attrib:Attrib = new Attrib(this, name, attrib_type, data_type);
-        this.attrib_types_dict[attrib_type][name] = attrib;
+    public addAttrib(name:string, topo_type:ifs.ETopoType, data_type:ifs.EDataType):ifs.IAttrib {
+        let attrib:Attrib = new Attrib(this, name, topo_type, data_type);
+        this.attrib_types_dict[topo_type][name] = attrib;
         return attrib;
     }
-    public delAttrib(name:string, attrib_type:ifs.ETopoType):boolean {
-        return delete this.attrib_types_dict[attrib_type][name];
+    public delAttrib(name:string, topo_type:ifs.ETopoType):boolean {
+        return delete this.attrib_types_dict[topo_type][name];
     }
     //Colls
     public getColls():ifs.IColl[] {
-        console.log("not implemented");
-        return [];
+        return Object.keys(this.colls_dict).map(key=>this.colls_dict[key]);
     }
-    public getColl(name:string):ifs.IColl {
-        console.log("not implemented");
-        return null;
+    public getColl(name:string):ifs.IColl {;
+        return this.colls_dict[name];
     }
     public addColl(name:string):ifs.IColl {
-        console.log("not implemented");
-        return null;
+        this.colls_dict[name] = new Coll(this, name);
+        return this.colls_dict[name];
     }
     public delColl(name:string):boolean {
-        console.log("not implemented");
-        //for this method, must use 'del' operator, do not use 'splice', 'shift', 'pop'
-        //https://bytearcher.com/articles/how-to-del-value-from-array/
-        //del this.data.colls[coll_id];
-        return false;
+        return delete this.colls_dict[name];
     }
     //Clean up nulls and unused points
     public purgePoints():number {
@@ -213,19 +175,199 @@ export class Model implements ifs.IModel{
         return false;
     }
 }
-// point class
-export class Point implements ifs.IPoint{
+// Geometry 
+class Geom implements ifs.IGeom {
     private model:ifs.IModel;
-    private path: ifs.IPath;
-    constructor(model:ifs.IModel, path?: ifs.IPath) {
+    private geometry_data:any[];
+    constructor(model:ifs.IModel, geometry_data?:any[]) {
         this.model = model;
+        if (geometry_data) {
+            this.geometry_data = geometry_data;
+        } else {
+            this.geometry_data = [];
+        }
+    }
+    public getModel():ifs.IModel {
+        return this.model;
+    }
+    //Points
+    public getPointIDs(obj_type?:ifs.EObjType):number[] {
+        let geom_filtered:any[] = this.geometry_data.filter((n)=>n!=undefined);
+        if (obj_type) {
+            geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type);
+        }
+        return Arr.flatten(geom_filtered);
+    }
+    public getPoints(obj_type?:ifs.EObjType):ifs.IPoint[] {
+        return this.getPointIDs(obj_type).map((v,i)=>this.getPoint(v));
+    }
+    public getPoint(point_id:number):ifs.IPoint {
+        return new Point(this, new Path(point_id, ifs.ETopoType.points));
+    }
+    public delPoint(point_id:number):boolean {
+        console.log("not implemented");
+        return null;
+        //this is actually a rather complex method
+        //del anythin that uses this point
+        //for the point attributes, we need to del the attribute in the values_map
+        //this all has to be done very carefully so that our array pointers do not get out of sync
+    }
+    //Objs
+    public getObjIDs(obj_type?:ifs.EObjType):number[] {
+        let geom_filtered:any[] = this.geometry_data.filter((n)=>n!=undefined);
+        if (obj_type) {
+            geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type);
+        }
+        return geom_filtered.map((v,i)=>i);
+    }
+    public getObjs(obj_type?:ifs.EObjType):ifs.IObj[] {
+        return this.getObjIDs(obj_type).map((v,i)=>this.getObj(v));
+    }
+    public getObj(obj_id:number):ifs.IObj {
+        let obj:ifs.IObj = new Obj(this, obj_id);
+        switch (obj.getType()) {
+            case ifs.EObjType.polyline:
+                return obj as ifs.IPolyline
+            case ifs.EObjType.polymesh:
+                return obj as ifs.IPolymesh
+        }
+    }
+    public delObj(obj_id:number):boolean{
+        return delete this.geometry_data[obj_id];
+    }
+    //Topo components, get a list of paths point to specific topo components in teh geometry
+    public getTopoPaths(topo_type:ifs.ETopoType, obj_type?:ifs.EObjType):ifs.IPath[] {
+        let geom_filtered:any[] = this.geometry_data.filter((n)=>n!=undefined);
+        if (obj_type) {
+            geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type);
+        }
+        let path_arr:ifs.IPath[] = [];
+        switch (topo_type) {
+            case ifs.ETopoType.vertices:
+                for (let i=0;i<geom_filtered.length;i++) {
+                    let wires_data:number[][] = geom_filtered[i][0];
+                    
+                    for (let j=0;j<wires_data.length;j++) {
+                        let wire_data:number[] = geom_filtered[j];
+                        for (let k=0;k<wire_data.length;k++) {
+                            path_arr.push(new Path(i, ifs.ETopoType.wires, j, topo_type, k));
+                        }
+                    }
+                    let faces_data:number[][] = geom_filtered[i][1];
+                    for (let j=0;j<faces_data.length;j++) {
+                        let face_data:number[] = geom_filtered[j];
+                        for (let k=0;k<face_data.length;k++) {
+                            path_arr.push(new Path(i, ifs.ETopoType.faces, j, topo_type, k));
+                        }
+                    }
+                }
+                break;
+            case ifs.ETopoType.edges:
+                for (let i=0;i<geom_filtered.length;i++) {
+                    let wires_data:number[][] = geom_filtered[i][0];
+                    
+                    for (let j=0;j<wires_data.length;j++) {
+                        let wire_data:number[] = geom_filtered[j];
+                        for (let k=0;k<wire_data.length - 1;k++) {
+                            path_arr.push(new Path(i, ifs.ETopoType.wires, j, topo_type, k));
+                        }
+                    }
+                    let faces_data:number[][] = geom_filtered[i][1];
+                    for (let j=0;j<faces_data.length;j++) {
+                        let face_data:number[] = geom_filtered[j];
+                        for (let k=0;k<face_data.length - 1;k++) {
+                            path_arr.push(new Path(i, ifs.ETopoType.faces, j, topo_type, k));
+                        }
+                    }
+                }
+                break;
+            case ifs.ETopoType.wires:
+                for (let i=0;i<geom_filtered.length;i++) {
+                    let wires_data:number[][] = geom_filtered[i][0];
+                    for (let j=0;j<wires_data.length;j++) {
+                        path_arr.push(new Path(i, topo_type, j));
+                    }
+                }
+                break;
+            case ifs.ETopoType.faces:
+                for (let i=0;i<geom_filtered.length;i++) {
+                    let faces_data:number[][] = geom_filtered[i][1];
+                    for (let j=0;j<faces_data.length;j++) {
+                        path_arr.push(new Path(i, topo_type, j));
+                    }
+                }
+                break;
+            case ifs.ETopoType.shells:
+                geom_filtered = geom_filtered.filter((n)=>n[1].length > 0);
+                for (let i=0;i<geom_filtered.length;i++) {
+                    path_arr.push(new Path(i, topo_type));
+                }
+                break;
+        }
+        return path_arr;
+    }
+    //Template is an array full of zeros, but with the right structure for teh attribute data
+    public getTemplate(topo_type:ifs.ETopoType):any[] {
+        switch (topo_type) {
+            case ifs.ETopoType.vertices:
+                return this.geometry_data.
+                    map((v,i)=>[
+                        [v[0].map((v2,i2)=>Arr.make(v2.length, 0))],
+                        [v[1].map((v2,i2)=>Arr.make(v2.length, 0))]]);
+            case ifs.ETopoType.edges:
+                return this.geometry_data.
+                    map((v,i)=>[
+                        [v[0].map((v2,i2)=>Arr.make(v2.length-1, 0))],
+                        [v[1].map((v2,i2)=>Arr.make(v2.length-1, 0))]]);
+            case ifs.ETopoType.wires:
+                return this.geometry_data.
+                    map((v,i)=>
+                        [v[0].map((v2,i2)=>Arr.make(v2.length, 0))]);
+            case ifs.ETopoType.faces:
+                return this.geometry_data.
+                    map((v,i)=>
+                        [v[1].map((v2,i2)=>Arr.make(v2.length, 0))]);
+            case ifs.ETopoType.shells:
+                console.log("not implemented"); //TODO
+                return null;
+        }
+    }
+    //Counters
+    public numObjs(obj_type?:ifs.EObjType):number {
+        return this.getObjIDs(obj_type).length;
+    }
+    public numPoints(obj_type?:ifs.EObjType):number {
+        return this.getPointIDs(obj_type).length;
+    }
+    public numTopos(topo_type:ifs.ETopoType):number {
+        return this.getTopoPaths(topo_type).length; //TODO, may be faster to use template
+    }
+}
+//Entity, superclass of points and objects
+export class Entity {
+    protected geom:ifs.IGeom;
+    constructor(geom:ifs.IGeom) {
+        this.geom = geom;
+    }
+    public getGeom():ifs.IGeom {
+        return this.geom;
+    }
+    public getModel():ifs.IModel {
+        return this.geom.getModel();
+    }
+}
+// Point class
+export class Point extends Entity implements ifs.IPoint{
+    private path: ifs.IPath;
+    constructor(geom:ifs.IGeom, path?: ifs.IPath) {
+        super(geom);
         if (path) {
             this.path = path;
         } else {
             //make the point id equal to the list length
-            this.path = new Path(model.numPoints(), ifs.ETopoType.points);
+            this.path = new Path(geom.numPoints(), ifs.ETopoType.points);
             //add one more item to all point attribs
-            for(let attrib of this.model.getAttribs(ifs.ETopoType.points)) {
+            for(let attrib of this.getModel().getAttribs(ifs.ETopoType.points)) {
                 attrib.setValue(this.path, null);
             }
         }
@@ -240,25 +382,24 @@ export class Point implements ifs.IPoint{
         return this.getAttribValue("position");
     }
     public getAttribNames():string[] {
-        return this.model.getAttribs(ifs.ETopoType.points).map(attrib=>attrib.getName());
+        return this.getModel().getAttribs(ifs.ETopoType.points).map(attrib=>attrib.getName());
     }
     public setAttribValue(name:string, value:any):any {
-        return this.model.getAttrib(name, ifs.ETopoType.points).setValue(this.path, value);
+        return this.getModel().getAttrib(name, ifs.ETopoType.points).setValue(this.path, value);
     }
     public getAttribValue(name:string):any {
-        return this.model.getAttrib(name, ifs.ETopoType.points).getValue(this.path);
+        return this.getModel().getAttrib(name, ifs.ETopoType.points).getValue(this.path);
     }
     public getVertices():ifs.IVertex[] {
         console.log("not implemented");
         return null;
     }
 }
-// obj class
-export class Obj implements ifs.IObj{
-    private model:ifs.IModel;
+// Obj class
+export class Obj extends Entity implements ifs.IObj{
     private obj_id:number;
-    constructor(model:ifs.IModel, obj_id:number) {
-        this.model = model;
+    constructor(geom:ifs.IGeom, obj_id:number) {
+        super(geom);
         this.obj_id = obj_id; 
     }
     public getID():number {
@@ -302,36 +443,42 @@ export class Polyline  extends Obj implements ifs.IPolyline{}
 export class Polymesh extends Obj implements ifs.IPolymesh{} 
 // topo class
 export class Topo implements ifs.ITopo{
-    private model:ifs.IModel;
+    private geom:ifs.IGeom;
     private path:ifs.IPath;
-    constructor(model:ifs.IModel, path:ifs.IPath) {
-        this.model = model;
+    constructor(geom:ifs.IGeom, path:ifs.IPath) {
+        this.geom = geom;
         this.path = path;
+    }
+    public getGeom():ifs.IGeom {
+        return this.geom;
+    }
+    public getModel():ifs.IModel {
+        return this.geom.getModel();
     }
     public getID():number {
         return this.path.id;
     }
     public getObj():ifs.IObj {
-        return new Obj(this.model, this.path.id);
+        return new Obj(this.geom, this.path.id);
     }
     public getPath():ifs.IPath {
         return this.path;
     }
     public getAttribNames():string[] {
-        return this.model.getAttribs(this.path.topo_type).map(attrib=>attrib.getName());
+        return this.getModel().getAttribs(this.path.topo_type).map(attrib=>attrib.getName());
     }
     public setAttribValue(name:string, value:any):any {;
-        return this.model.getAttrib(name, this.path.topo_type).setValue(this.path, value);
+        return this.getModel().getAttrib(name, this.path.topo_type).setValue(this.path, value);
     }
     public getAttribValue(name:string):any {
-        return this.model.getAttrib(name, this.path.topo_type).getValue(this.path);
+        return this.getModel().getAttrib(name, this.path.topo_type).getValue(this.path);
     }
     public getColls():string[] {
         console.log("not implemented");
         return [];
     }
 }
-// vertex class 
+// Vertex class 
 export class Vertex extends Topo implements ifs.IVertex {
     public getPoint():ifs.IPoint {
         console.log("not implemented");
@@ -350,7 +497,7 @@ export class Vertex extends Topo implements ifs.IVertex {
         return null;
     }
 }
-// edge class 
+// Edge class 
 export class Edge extends Topo implements ifs.IEdge {
     public getVertices():ifs.IVertex[] {
         console.log("not implemented");
@@ -373,7 +520,7 @@ export class Edge extends Topo implements ifs.IEdge {
         return null;
     }
 }
-// wire class 
+// Wire class 
 export class Wire extends Topo implements ifs.IWire {
     public getVertices():ifs.IVertex[] {
         console.log("not implemented");
@@ -388,7 +535,7 @@ export class Wire extends Topo implements ifs.IWire {
         return null;
     }
 }
-// face class 
+// Face class 
 export class Face extends Topo implements ifs.IFace {
     public getVertices():ifs.IVertex[] {
         console.log("not implemented");
@@ -407,7 +554,7 @@ export class Face extends Topo implements ifs.IFace {
         return null;
     }
 }
-// shell class 
+// Shell class 
 export class Shell extends Topo implements ifs.IShell {
     public getWires():ifs.IWire[] {
         console.log("not implemented");
@@ -418,31 +565,33 @@ export class Shell extends Topo implements ifs.IShell {
         return null;
     }
 }
-
 // Attrib class
 export class Attrib implements ifs.IAttrib {
     private model:ifs.IModel;
     private name:string;
-    private attrib_type:ifs.ETopoType;
+    private topo_type:ifs.ETopoType;
     private data_type:ifs.EDataType;
     private values_map:any[];
     private values:any[];
-    constructor(model:ifs.IModel, name:string, attrib_type:ifs.ETopoType, data_type:ifs.EDataType, values_map?:any[], values?:any[]) {
+    constructor(model:ifs.IModel, name:string, topo_type:ifs.ETopoType, data_type:ifs.EDataType, values_map?:any[], values?:any[]) {
         this.model = model;
         this.name = name;
-        this.attrib_type = attrib_type;
+        this.topo_type = topo_type;
         this.data_type = data_type;
         if (values_map) {
             this.values_map = values_map;
         } else {
-            this.values_map = [];
-            //TODO initiaize array, everything points to null
-            //Array.from({ length: 5 }, (v,i) => 0);
+            if (this.topo_type == ifs.ETopoType.points) {
+                this.values_map = Arr.make(this.model.getGeom().numPoints(), 0);
+            } else {
+                this.values_map = Arr.deepCopy(this.model.getGeom().getTemplate(this.topo_type));
+                Arr.deepFill(this.values_map, 0);
+            }
         }
         if (values) {
             this.values = values;
         } else {
-            this.values = [null];
+            this.values = [null];//first value is always null
         }
     }
     public getName():string {
@@ -453,62 +602,44 @@ export class Attrib implements ifs.IAttrib {
         this.name = name;
         return old_name;
     }
-    public getAttribType():ifs.ETopoType {
-        return this.attrib_type;
+    public getTopoType():ifs.ETopoType {
+        return this.topo_type;
     }
     public getDataType():ifs.EDataType {
         return this.data_type;
     }
     //Attrib Values
     public getValue(path:ifs.IPath):any {
-        return this.values[this._getValueIndex(path)];
+        let index:number;
+        if (this.topo_type == ifs.ETopoType.points || this.topo_type == ifs.ETopoType.shells) {
+            index = this.values_map[path.id] as number;
+        } else if (this.topo_type == ifs.ETopoType.vertices || this.topo_type == ifs.ETopoType.edges) { 
+            index = this.values_map[path.id][path.topo_num][path.topo_subnum] as number; 
+        } else if (this.topo_type == ifs.ETopoType.wires || this.topo_type == ifs.ETopoType.faces){
+            index = this.values_map[path.id][path.topo_num] as number;
+        } 
+        return this.values[index];
     }
     public setValue(path:ifs.IPath, value:any):any {
-        //TODO: this implememtation is not correct
-        //At the moment it is overwrting values, which might still be used elsewhere
-        //Instead the value must be added to the values list
-        //Then the map needs to be changed to point to the new value
-
-
-
-        // let value_index:number = this._getValueIndex(path);
-
-        // let old_value:any = this.attrib_types_dict[path.getType()][name].values[value_index];
-        // this.attrib_types_dict[path.getType()][name].values[value_index] = value; // This is not correct
-        // return old_value;
-        return null;
+        let index:number = Arr.indexOf(value, this.values);
+        if (index == -1) {
+            index = this.values.push(value) - 1;
+        }
+        let old_value:any;
+        if (this.topo_type == ifs.ETopoType.points || this.topo_type == ifs.ETopoType.shells) {
+            old_value = this.values_map[path.id];
+            this.values_map[path.id] = index;
+        } else if (this.topo_type == ifs.ETopoType.vertices || this.topo_type == ifs.ETopoType.edges) { 
+            old_value = this.values_map[path.id][path.topo_num][path.topo_subnum]
+            this.values_map[path.id][path.topo_num][path.topo_subnum] = index;
+        } else if (this.topo_type == ifs.ETopoType.wires || this.topo_type == ifs.ETopoType.faces){
+            old_value = this.values_map[path.id][path.topo_num];
+            this.values_map[path.id][path.topo_num] = index;
+        }
+        return old_value;
     }
-    public length():number  {
+    public count():number  {
         return this.values_map.length;
-    }
-    //Private methods
-    private _getValueIndex(path:ifs.IPath):number {
-        //points attribs
-        if (path.topo_type == ifs.ETopoType.points) {
-            return this.values_map[path.id] as number;
-        }
-        //vertices, edges, attribs 
-        if (path.subtopo_type) { // vertices or edges
-            return this.values_map[path.id][path.topo_number][path.subtopo_number] as number;
-        } 
-        //wires, faces, shells attribs
-        if (path.topo_type){ //wires or faces
-            return this.values_map[path.id][path.topo_number] as number;
-        } 
-    }
-    private _addValue(path:ifs.IPath):void {
-        //points attribs
-        if (path.topo_type == ifs.ETopoType.points) {
-            this.values_map.push(0);
-        }
-        //vertices, edges, attribs 
-        else if (path.subtopo_type) {
-            this.values_map[path.id][path.topo_number][path.subtopo_number].push(0);
-        } 
-        //wires, faces, shells attribs
-        else if (path.topo_type){
-            this.values_map[path.id][path.topo_number].push(0);
-        }
     }
 }
 //Colls class

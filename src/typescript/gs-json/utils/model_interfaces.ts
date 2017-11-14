@@ -1,7 +1,7 @@
 //model_interfaces
 // ========================= ENUMS =========================
 export enum ETopoType {
-    points = "points",
+    points = "points", // this is not a topo, but we still need it in the enum
     vertices = "vertices",
     edges = "edges",
     wires = "wires",
@@ -9,12 +9,12 @@ export enum ETopoType {
     shells = "shells"
 }
 export enum EDataType {
-    type_string = "string",
-    type_number = "number",
-    type_boolean = "boolean",
-    type_string_array = "string[]",
-    type_number_array = "number[]",
-    type_boolean_array = "boolean[]"
+    type_str = "string",
+    type_num = "number",
+    type_bool = "boolean",
+    type_str_arr = "string[]",
+    type_num_arr = "number[]",
+    type_bool_arr = "boolean[]"
 }
 export enum EObjType {
     polyline = 100,
@@ -74,9 +74,9 @@ export interface ICollsDict {
 export interface IPath {
     id:number;  //obj_id or point_id number
     topo_type:ETopoType; //shells, faces, wires
-    topo_number:number;
-    subtopo_type:ETopoType; //edges, vertices
-    subtopo_number:number;
+    topo_num:number;
+    topo_subtype:ETopoType; //edges, vertices
+    topo_subnum:number;
     getType():ETopoType;
 }
 // interface for main model
@@ -85,27 +85,8 @@ export interface IModel {
     createPoint(xyz:number[]):IPoint;
     createPolyline(wire_points:IPoint[]):IObj;
     createPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
-    //Points
-    getPoint(point_id:number):IPoint;
-    addPoint(point:IPoint):IPoint;
-    delPoint(point_id:number):boolean;
-    delPoints(point_ids:number[]):boolean;
-    numPoints():number;
-    //Objs
-    getObjIDs(obj_type?:EObjType):number[];
-    getObj(obj_id:number):IObj;
-    addObj(obj: IObj):IObj;
-    delObj(obj_id:number):boolean;
-    //Topos
-    getVertices(obj_type?:EObjType):IVertex[];
-    getEdges(obj_type?:EObjType):IEdge[];
-    getWires(obj_type?:EObjType):IWire[];
-    getFaces(obj_type?:EObjType):IFace[];
-    getShells(obj_type?:EObjType):IShell[];
-    //Counters
-    numPoints():number;
-    numTopos(attrib_type:ETopoType):number;
-    numObjs(obj_type:EObjType):number;
+    //Geometry
+    getGeom():IGeom;
     //Attribs
     getAttribs(topo_type:ETopoType):IAttrib[];
     getAttrib(name:string, topo_type:ETopoType):IAttrib;
@@ -122,12 +103,33 @@ export interface IModel {
     //Runs some check
     validateModel():boolean;
 }
-//Geom superclass
-export interface IGeometry  {
-    
+//Class to hold manipulate geometry arrays
+export interface IGeom  {
+    getModel():IModel;
+    //Points
+    getPointIDs(obj_type?:EObjType):number[];
+    getPoints(obj_type?:EObjType):IPoint[];
+    getPoint(point_id:number):IPoint;
+    delPoint(point_id:number):boolean;
+    //Objs
+    getObjIDs(obj_type?:EObjType):number[];
+    getObjs(obj_type?:EObjType):IObj[];
+    getObj(obj_id:number):IObj;
+    delObj(obj_id:number):boolean;
+    //Topos
+    getTopos(topo_type:ETopoType, obj_type?:EObjType):any[];
+    //Counters
+    numObjs(obj_type?:EObjType):number;
+    numPoints(obj_type?:EObjType):number;
+    numTopos(topo_type:ETopoType):number;
+}
+//Superclass for objects and points
+export interface IEntity  {
+    getGeom():IGeom;
+    getModel():IModel;
 }
 //interfaces for points, that seem to exist somewhere between objs and topos
-export interface IPoint extends IGeometry {
+export interface IPoint extends IEntity {
     getPath():IPath;
     getPosition():number[];
     setPosition(xyz:number[]):number[];
@@ -137,7 +139,7 @@ export interface IPoint extends IGeometry {
     getVertices():IVertex[];
 }
 //interfaces for geometric objs
-export interface IObj extends IGeometry {
+export interface IObj extends IEntity {
     getID():number;
     getVertices():IVertex[];
     getEdges():IEdge[];
@@ -154,6 +156,8 @@ export interface IPolymesh extends IObj {
 }
 //interfaces for topological topos
 export interface ITopo {
+    getGeom():IGeom;
+    getModel():IModel;
     getObj():IObj;
     getID():number;
     getAttribNames():string[];
@@ -193,12 +197,12 @@ export interface IShell extends ITopo {
 export interface IAttrib {
     getName():string;
     setName(name:string):string;
-    getAttribType():ETopoType;
+    getTopoType():ETopoType;
     getDataType():EDataType;
     //Attrib Values
     getValue(path:IPath):any;
     setValue(path:IPath, value:any):any;
-    length():number;
+    count():number;
 }
 //interface for coll
 export interface IColl {
