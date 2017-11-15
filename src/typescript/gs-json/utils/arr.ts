@@ -61,7 +61,6 @@ export class Arr {
             }
         }
     }
-    
     public static deepCount(arr:any[]):number {
         if (arr === undefined) {return 0;}
         let a:number = 0 ;

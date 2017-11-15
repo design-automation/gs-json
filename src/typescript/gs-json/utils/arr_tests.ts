@@ -1,6 +1,6 @@
-import {Arr} from "./arr_functions";
+import {Arr} from "./arr";
 
-export function test_arr_make():boolean {
+export function test_make():boolean {
 	let a:number[] = Arr.make(10, 5);
 	if (a[0] != 5) {return false;}
 	if (a[9] != 5) {return false;}
@@ -10,7 +10,7 @@ export function test_arr_make():boolean {
 	return true;
 }
 
-export function test_arr_equal():boolean {
+export function test_equal():boolean {
 	if (!Arr.equal([1,2,3],[1,2,3])) {return false;}
 	if (Arr.equal([1,2,3], [1,2])) {return false;}
 	if (Arr.equal([1,2], [1,2,3])) {return false;}
@@ -26,7 +26,7 @@ export function test_arr_equal():boolean {
 	return true;
 }
 
-export function test_arr_indexOf():boolean {
+export function test_indexOf():boolean {
 	if (Arr.indexOf(2,[0,1,2,3]) != 2) {return false;}
 	if (Arr.indexOf(null,[0,1,null,3]) != 2) {return false;}
 	if (Arr.indexOf([1,2],[null]) != -1) {return false;}
@@ -41,7 +41,7 @@ export function test_arr_indexOf():boolean {
 	return true;
 }
 
-export function test_arr_flatten():boolean {
+export function test_flatten():boolean {
 	//console.log(Arr.indexOf([1,2],[[],[2],[1,2],[3,4]]));
 	if (!Arr.equal(Arr.flatten([[],[2],[1,2],[3,4]]), [2,1,2,3,4])) {return false;}
 	//sparse arrays
@@ -51,7 +51,7 @@ export function test_arr_flatten():boolean {
 	return true;
 }
 
-export function test_arr_deepCopy():boolean {
+export function test_deepCopy():boolean {
 	let x:any[] = [1,2,[3,4,[5,6,[7,8]]]];
 	let y:any[] = Arr.deepCopy(x);
 	y[2][1] = 100;
@@ -67,7 +67,7 @@ export function test_arr_deepCopy():boolean {
 	return true;
 }
 
-export function test_arr_deepFill():boolean {
+export function test_deepFill():boolean {
 	let x:any[] = [1,2,[3,4,[5,6,[7,8]]]];
 	Arr.deepFill(x, 0);
 	if (x[0] != 0) {return false;}
@@ -79,7 +79,7 @@ export function test_arr_deepFill():boolean {
 	return true;
 }
 
-export function test_arr_deepCount():boolean {
+export function test_deepCount():boolean {
 	let x:any[] = [1,2,[3,4,[5,6,[7,8]]]];
 	if (Arr.deepCount([]) != 0) {return false;}
 	if (Arr.deepCount([1,2,3]) != 3) {return false;}

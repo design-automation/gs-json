@@ -1,8 +1,12 @@
-import * as ifs from "../utils/model_interfaces";
-import * as cls from "../utils/model_classes";
-import {Arr} from "./arr_functions";
+import * as ifs from "../utils/interfaces";
+import {Model} from "../utils/model";
+import {Geom} from "./geom";
+import {Entity,Point,Obj,Polyline,Polymesh} from "./entities";
+import {Topo} from "./topos";
+import {Attrib, Path} from "./attribs";
+import {Group} from "./groups";
 
-export function test_load_object():boolean {
+export function test_setData1():boolean {
     let data: ifs.IModelData = {
         "metadata": {
             "filetype": "mobius",
@@ -108,41 +112,29 @@ export function test_load_object():boolean {
     return true;
 }
 
-export function test_load_file (url:string):boolean {
+export function test_setData2 (url:string):boolean {
 	let xmlhttp = new XMLHttpRequest();
 	let data: ifs.IModelData;
 	xmlhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 	        data = JSON.parse(this.responseText);
-	        //console.log(data.geometry[0]); 
 	    }
 	};
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
-	//console.log(data.geometry[0])
 	return true;
 }
-export function test_model_constructor():boolean {
-    let model:ifs.IModel = new cls.Model();
-    if (model) {
-        return true;
-    }
-    return false;
-}
 
-export function test_model_create_point():boolean {
-    let model:ifs.IModel = new cls.Model();
-    model.createPoint([1,2,3]);
-    if (model.getGeom().numPoints() == 1) {
-        return true;
-    }
+
+export function test_constructor():boolean {
+    let model:ifs.IModel = new Model();
+    if (!model) {return false;}
     return true;
 }
 
-export function test_model_set_point_positions():boolean {
-    let model:ifs.IModel = new cls.Model();
-    let point:ifs.IPoint = model.createPoint([11,22,33]);
-    point.setPosition([4,5,6]);
-    let pos = point.getPosition();
-    return Arr.equal([4,5,6], pos);
+export function test_createPoint():boolean {
+    let model:ifs.IModel = new Model();
+    model.createPoint([1,2,3]);
+    if (model.getGeom().numPoints() != 1) {return false;}
+    return true;
 }

@@ -1,4 +1,3 @@
-//model_interfaces
 // ========================= ENUMS =========================
 export enum ETopoType {
     points = "points", // this is not a topo, but we still need it in the enum
@@ -69,15 +68,6 @@ export interface IAttribTypesDict {
 }
 export interface IGroupsDict {
     [key: string] : IGroup;
-}
-// interface for path to a single topo in an attrib array
-export interface IPath {
-    id:number;  //obj_id or point_id number
-    topo_type:ETopoType; //shells, faces, wires
-    topo_num:number;
-    topo_subtype:ETopoType; //edges, vertices
-    topo_subnum:number;
-    getType():ETopoType;
 }
 // interface for main model
 export interface IModel {
@@ -193,6 +183,15 @@ export interface IFace extends ITopo {
 export interface IShell extends ITopo {
     getWires(): IWire[];
     getFaces(): IFace[];
+}
+// interface for path to a single topo in an attrib array
+export interface IPath {
+    id:number;  //obj_id or point_id number
+    topo_type:ETopoType; //shells, faces, wires
+    topo_num:number;
+    topo_subtype:ETopoType; //edges, vertices
+    topo_subnum:number;
+    getType():ETopoType;
 }
 // interfcae for attribs
 export interface IAttrib {
