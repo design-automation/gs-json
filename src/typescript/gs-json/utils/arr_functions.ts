@@ -4,6 +4,7 @@ export class Arr {
         return Array.apply(0, new Array(length)).map((v,i)=>value);
     }
     public static equal(arr1: number[], arr2: number[]): boolean {
+        if (arr1 === undefined || arr2 === undefined) {return false;}
         if (arr1.length != arr2.length) {
             return false;
         }
@@ -15,6 +16,7 @@ export class Arr {
         return true;
     }
     public static indexOf(arr1:number[], arr2:number[][]):number {
+        if (arr1 === undefined || arr2 === undefined) {return -1;}
         for (let i:number=0;i<arr2.length;i++) {
             if (this.equal(arr1,arr2[i])) {
                 return i;
@@ -22,12 +24,14 @@ export class Arr {
         }
         return -1;
     }
-    public static flatten(arr:any[]) {//Identity operator..?
+    public static flatten(arr:any[]) {
+        if (arr === undefined) {return;}
         return arr.reduce(function (flat, toFlatten) {
             return flat.concat(Array.isArray(toFlatten) ? Arr.flatten(toFlatten) : toFlatten);
         }, []);
     }
     public static deepCopy(arr:any[]):any[] {
+        if (arr === undefined) {return;}
         let arr2:any[] = [];
         for (let i:number=0;i<arr.length;i++) {
             if (Array.isArray(arr[i])) {
@@ -39,6 +43,7 @@ export class Arr {
         return arr2;
     }
     public static deepFill(arr:any[], value:any):void {
+        if (arr === undefined) {return;}
         for (let i:number=0;i<arr.length;i++) {
             if (Array.isArray(arr[i])) {
                 this.deepFill(arr[i], value);
