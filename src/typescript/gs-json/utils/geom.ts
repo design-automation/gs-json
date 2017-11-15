@@ -22,13 +22,14 @@ export class Geom implements ifs.IGeom {
     }
     //Points
     public getPointIDs(obj_type?:ifs.EObjType):number[] {
-        let geom_filtered:any[] = this.geometry_data.filter((n)=>n!=undefined);
         if (obj_type) {
+            let geom_filtered:any[] = this.geometry_data.filter((n)=>n!=undefined);
             geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type).map((v,i)=>[v[0],v[1]]);
+            geom_filtered = Arr.flatten(geom_filtered);
+            return geom_filtered;
+            //return new Set(geom_filtered).values(); //<<<<<<<<<<<<<<<<<TODO
         }
-        geom_filtered = Arr.flatten(geom_filtered);
-        return geom_filtered;
-        //return new Set(geom_filtered).values();
+        return Arr.makeSeq(this.numPoints());
     }
     public getPoints(obj_type?:ifs.EObjType):ifs.IPoint[] {
         return this.getPointIDs(obj_type).map((v,i)=>this.getPoint(v));

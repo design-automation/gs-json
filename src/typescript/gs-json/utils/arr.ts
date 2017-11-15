@@ -4,6 +4,10 @@ export class Arr {
         if (length==0) {return [];}
         return Array.apply(0, new Array(length)).map((v,i)=>value);
     }
+    public static makeSeq(length:number):number[] {
+        if (length==0) {return [];}
+        return Array.apply(0, new Array(length)).map((v,i)=>i);
+    }
     public static equal(arr1: any[], arr2: any[]): boolean {
         if (arr1 === undefined || arr2 === undefined) {return false;}
         if (arr1 === null && arr2 === null) {return true;} //both are null
