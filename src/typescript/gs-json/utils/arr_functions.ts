@@ -1,10 +1,10 @@
-// Some utility functions for number arrays
+// Some utility functions for arrays
 export class Arr {
     public static make(length:number, value:any):number[] {
         if (length==0) {return [];}
         return Array.apply(0, new Array(length)).map((v,i)=>value);
     }
-    public static equal(arr1: number[], arr2: number[]): boolean {
+    public static equal(arr1: any[], arr2: any[]): boolean {
         if (arr1 === undefined || arr2 === undefined) {return false;}
         if (arr1 === null && arr2 === null) {return true;} //both are null
         if (arr1 === null || arr2 === null) {return false;} //only one is null
@@ -18,8 +18,9 @@ export class Arr {
         }
         return true;
     }
-    public static indexOf(item:number|number[], arr:any[]):number {
+    public static indexOf(item:any, arr:any[]):number {
         if (item === undefined || arr === undefined) {return -1;}
+        if (arr === null) {return -1;}
         if (!Array.isArray(item)) {return arr.indexOf(item)};
         for (let i:number=0;i<arr.length;i++) {
             if (Array.isArray(arr[i]) && this.equal(item,arr[i])) {
