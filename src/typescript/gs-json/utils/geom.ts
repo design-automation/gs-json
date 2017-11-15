@@ -24,9 +24,11 @@ export class Geom implements ifs.IGeom {
     public getPointIDs(obj_type?:ifs.EObjType):number[] {
         let geom_filtered:any[] = this.geometry_data.filter((n)=>n!=undefined);
         if (obj_type) {
-            geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type);
+            geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type).map((v,i)=>[v[0],v[1]]);
         }
-        return Arr.flatten(geom_filtered);
+        geom_filtered = Arr.flatten(geom_filtered);
+        return geom_filtered;
+        //return new Set(geom_filtered).values();
     }
     public getPoints(obj_type?:ifs.EObjType):ifs.IPoint[] {
         return this.getPointIDs(obj_type).map((v,i)=>this.getPoint(v));
@@ -135,6 +137,14 @@ export class Geom implements ifs.IGeom {
                 break;
         }
         return path_arr;
+    }
+    public getTopos(topo_type:ifs.ETopoType, obj_type?:ifs.EObjType):ifs.ITopo[] {
+        console.log("not implemented");
+        return null;
+    }
+    public getTopo(topo_path:ifs.IPath):ifs.ITopo {
+        console.log("not implemented");
+        return null;
     }
     //Template is an array full of zeros, but with the right structure for the attribute data
     public getTopoTemplate(topo_type:ifs.ETopoType):any[] {
