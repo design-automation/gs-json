@@ -252,7 +252,7 @@ class Geom implements ifs.IGeom {
         }
         return path_arr;
     }
-    //Template is an array full of zeros, but with the right structure for teh attribute data
+    //Template is an array full of zeros, but with the right structure for the attribute data
     public getTopoTemplate(topo_type:ifs.ETopoType):any[] {
         switch (topo_type) {
             case ifs.ETopoType.vertices:
@@ -287,7 +287,7 @@ class Geom implements ifs.IGeom {
         return this.getModel().getAttrib("position", ifs.ETopoType.points).count();
     }
     public numTopos(topo_type:ifs.ETopoType):number {
-        return this.getTopoPaths(topo_type).length; //TODO, may be faster to use template
+        return Arr.deepCount(this.getTopoTemplate(topo_type));
     }
 }
 //Entity, superclass of points and objects
