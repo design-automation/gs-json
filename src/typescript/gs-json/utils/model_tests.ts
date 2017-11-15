@@ -82,7 +82,7 @@ export function test_load_object():boolean {
                 "values": [6, 7]
             }
         ],
-        "colls": [
+        "groups": [
             {
                 "name": "boxes",
                 "objs": [[6], [7]]

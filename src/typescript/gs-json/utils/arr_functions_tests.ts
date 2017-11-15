@@ -5,6 +5,8 @@ export function test_arr_make():boolean {
 	if (a[0] != 5) {return false;}
 	if (a[9] != 5) {return false;}
 	if (a.length != 10) {return false;}
+	if (Arr.make(0, 5).length != 0) {return false;}
+	if (!Arr.equal(Arr.make(0, 5),[])) {return false;}
 	return true;
 }
 
@@ -25,13 +27,16 @@ export function test_arr_equal():boolean {
 }
 
 export function test_arr_indexOf():boolean {
+	if (Arr.indexOf(2,[0,1,2,3]) != 2) {return false;}
+	if (Arr.indexOf(null,[0,1,null,3]) != 2) {return false;}
+	if (Arr.indexOf([1,2],[null]) != -1) {return false;}
 	if (Arr.indexOf([1,2],[[],[2],[1,2],[3,4]]) != 2) {return false;}
 	if (Arr.indexOf([1,null],[[],[1,null],[2],[1,null],[3,4]]) != 1) {return false;}
 	if (Arr.indexOf([1,3],[[],[1,null],[2],[1,null],[3,4]]) != -1) {return false;}
 	//sparse arrays
 	let x:number[][] = [];
 	x[2] = [1,2];
-	console.log(Arr.indexOf([1,2],x));
+	//console.log(Arr.indexOf([1,2],x));
 	if (Arr.indexOf([1,2],x) != 2) {return false;}
 	return true;
 }

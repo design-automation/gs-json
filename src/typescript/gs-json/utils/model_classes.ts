@@ -31,7 +31,7 @@ export class Model implements ifs.IModel{
     private metadata:ifs.IMetadata;
     private geom:ifs.IGeom;
     private attrib_types_dict:ifs.IAttribTypesDict;
-    private colls_dict:ifs.ICollsDict;
+    private groups_dict:ifs.IGroupsDict;
     constructor() {
         //create default metadata
         this.metadata = {filetype: "mobius", version:  0.1, crs:{"epsg":3857}, location: "+0-0"}
@@ -42,8 +42,8 @@ export class Model implements ifs.IModel{
         this.attrib_types_dict.points = {
             position: new Attrib(this, "position", ifs.ETopoType.points, ifs.EDataType.type_num_arr)
         }
-        //create empty colls dict
-        this.colls_dict = {};
+        //create empty groups dict
+        this.groups_dict = {};
     }
     // Set data for the model
     public setData(data:ifs.IModelData):void {
@@ -54,8 +54,8 @@ export class Model implements ifs.IModel{
             let attrib:Attrib = new Attrib(this, attrib_data.name, topo_type, data_type);
             this.attrib_types_dict[attrib_data.topo_type][attrib_data.name] = attrib;           
         }
-        for (let coll of data.colls) {
-            this.attrib_types_dict[coll.name] = null; //TODO
+        for (let group of data.groups) {
+            this.attrib_types_dict[group.name] = null; //TODO
         }
     }
     //Creation
@@ -92,19 +92,19 @@ export class Model implements ifs.IModel{
     public delAttrib(name:string, topo_type:ifs.ETopoType):boolean {
         return delete this.attrib_types_dict[topo_type][name];
     }
-    //Colls
-    public getColls():ifs.IColl[] {
-        return Object.keys(this.colls_dict).map(key=>this.colls_dict[key]);
+    //Groups
+    public getGroups():ifs.IGroup[] {
+        return Object.keys(this.groups_dict).map(key=>this.groups_dict[key]);
     }
-    public getColl(name:string):ifs.IColl {;
-        return this.colls_dict[name];
+    public getGroup(name:string):ifs.IGroup {;
+        return this.groups_dict[name];
     }
-    public addColl(name:string):ifs.IColl {
-        this.colls_dict[name] = new Coll(this, name);
-        return this.colls_dict[name];
+    public addGroup(name:string):ifs.IGroup {
+        this.groups_dict[name] = new Group(this, name);
+        return this.groups_dict[name];
     }
-    public delColl(name:string):boolean {
-        return delete this.colls_dict[name];
+    public delGroup(name:string):boolean {
+        return delete this.groups_dict[name];
     }
     //Clean up nulls and unused points
     public purgePoints():number {
@@ -284,7 +284,9 @@ class Geom implements ifs.IGeom {
     }
     public numPoints(obj_type?:ifs.EObjType):number {
         if (obj_type) {return this.getPointIDs(obj_type).length;} 
-        return this.getModel().getAttrib("position", ifs.ETopoType.points).count();
+        let positions:ifs.IAttrib = this.getModel().getAttrib("position", ifs.ETopoType.points);
+        if (positions) {return positions.count()};
+        return 0;
     }
     public numTopos(topo_type:ifs.ETopoType):number {
         return Arr.deepCount(this.getTopoTemplate(topo_type));
@@ -420,7 +422,7 @@ export class Topo implements ifs.ITopo{
     public getAttribValue(name:string):any {
         return this.getModel().getAttrib(name, this.path.topo_type).getValue(this.path);
     }
-    public getColls():string[] {
+    public getGroups():string[] {
         console.log("not implemented");
         return [];
     }
@@ -567,10 +569,13 @@ export class Attrib implements ifs.IAttrib {
         return this.values[index];
     }
     public setValue(path:ifs.IPath, value:any):any {
+        console.log(value);
         let index:number = Arr.indexOf(value, this.values);
+        //console.log(index);
         if (index == -1) {
             index = this.values.push(value) - 1;
         }
+        //console.log(this.values);
         let old_value:any;
         if (this.topo_type == ifs.ETopoType.points || this.topo_type == ifs.ETopoType.shells) {
             old_value = this.values_map[path.id];
@@ -588,8 +593,8 @@ export class Attrib implements ifs.IAttrib {
         return this.values_map.length;
     }
 }
-//Colls class
-export class Coll implements ifs.IColl {
+//Groups class
+export class Group implements ifs.IGroup {
     private model:ifs.IModel;
     private name:string;
     constructor(model:ifs.IModel, name:string) {
@@ -604,20 +609,20 @@ export class Coll implements ifs.IColl {
         console.log("not implemented");
         return null;
     }
-    //Colls
-    public getParentColls():ifs.IColl[] {
+    //Groups
+    public getParentGroups():ifs.IGroup[] {
         console.log("not implemented");
         return [];
     }
-    public getChildColls():ifs.IColl[] {
+    public getChildGroups():ifs.IGroup[] {
         console.log("not implemented");
         return [];
     }
-    public addChildColl(obj:ifs.IColl):boolean {
+    public addChildGroup(obj:ifs.IGroup):boolean {
         console.log("not implemented");
         return false;
     }
-    public removeChildColl(obj:ifs.IColl):boolean {
+    public removeChildGroup(obj:ifs.IGroup):boolean {
         console.log("not implemented");
         return false;
     }

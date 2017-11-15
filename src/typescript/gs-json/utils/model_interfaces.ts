@@ -34,10 +34,10 @@ export interface IAttribData {
     values: any[];
     map: (number|number[]|number[][])[]; //values_map
 }
-export interface ICollData {
+export interface IGroupData {
     name: string;
     objs?: any[];
-    colls?: string[];
+    groups?: string[];
     properties?: { key: string, value: any };
 }
 export interface ISkinData {
@@ -49,11 +49,11 @@ export interface IModelData {
     metadata: IMetadata;
     geometry?: any[];
     attribs?: IAttribData[];
-    colls?: ICollData[];
+    groups?: IGroupData[];
     skins?: ISkinData[];
 }
 // ========================= INTERFACES for classes =========================
-export interface IDict { //used for coll properties
+export interface IDict { //used for group properties
     [key: string] : any;
 }
 export interface IAttribDict {
@@ -67,8 +67,8 @@ export interface IAttribTypesDict {
     faces: IAttribDict;
     shells: IAttribDict;
 }
-export interface ICollsDict {
-    [key: string] : IColl;
+export interface IGroupsDict {
+    [key: string] : IGroup;
 }
 // interface for path to a single topo in an attrib array
 export interface IPath {
@@ -92,11 +92,11 @@ export interface IModel {
     getAttrib(name:string, topo_type:ETopoType):IAttrib;
     addAttrib(name:string, topo_type:ETopoType, data_type:EDataType):IAttrib;
     delAttrib(name:string, topo_type:ETopoType):boolean;
-    //Colls
-    getColls():IColl[];
-    getColl(name:string):IColl;
-    addColl(name:string):IColl;
-    delColl(name:string):boolean;
+    //Groups
+    getGroups():IGroup[];
+    getGroup(name:string):IGroup;
+    addGroup(name:string):IGroup;
+    delGroup(name:string):boolean;
     //Clean up nulls and unused points
     purgePoints():number;
     purgeNulls():number;
@@ -164,7 +164,7 @@ export interface ITopo {
     getAttribNames():string[];
     setAttribValue(name:string, value:any):any;
     getAttribValue(name:string):any;
-    getColls():string[];
+    getGroups():string[];
 }
 export interface IVertex extends ITopo {
     getPoint(): IPoint;
@@ -205,21 +205,21 @@ export interface IAttrib {
     setValue(path:IPath, value:any):any;
     count():number;
 }
-//interface for coll
-export interface IColl {
+//interface for group
+export interface IGroup {
     getName():string;
     setName(name:string):string;
-    //Parent/child colls
-    getParentColls():IColl[];
-    getChildColls():IColl[];
-    addChildColl(coll:IColl):boolean;
-    removeChildColl(coll:IColl):boolean;
-    //Objs in this coll
+    //Parent/child groups
+    getParentGroups():IGroup[];
+    getChildGroups():IGroup[];
+    addChildGroup(group:IGroup):boolean;
+    removeChildGroup(group:IGroup):boolean;
+    //Objs in this group
     getEntitieIDs(obj_type?:EObjType):number[];
     addObj(obj_id:number):boolean;
     addObjs(obj_ids:number[]):boolean;
     removeObj(obj_id:number):boolean;
     removeObjs(obj_ids:number[]):boolean;
-    //Properties for this coll (key-value pairs)
+    //Properties for this group (key-value pairs)
     getPropeties():IDict;
 }
