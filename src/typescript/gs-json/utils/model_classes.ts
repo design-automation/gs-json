@@ -569,13 +569,10 @@ export class Attrib implements ifs.IAttrib {
         return this.values[index];
     }
     public setValue(path:ifs.IPath, value:any):any {
-        console.log(value);
         let index:number = Arr.indexOf(value, this.values);
-        //console.log(index);
         if (index == -1) {
             index = this.values.push(value) - 1;
         }
-        //console.log(this.values);
         let old_value:any;
         if (this.topo_type == ifs.ETopoType.points || this.topo_type == ifs.ETopoType.shells) {
             old_value = this.values_map[path.id];
