@@ -283,7 +283,8 @@ class Geom implements ifs.IGeom {
         return this.getObjIDs(obj_type).length;
     }
     public numPoints(obj_type?:ifs.EObjType):number {
-        return this.getPointIDs(obj_type).length;
+        if (obj_type) {return this.getPointIDs(obj_type).length;} 
+        return this.getModel().getAttrib("position", ifs.ETopoType.points).count();
     }
     public numTopos(topo_type:ifs.ETopoType):number {
         return this.getTopoPaths(topo_type).length; //TODO, may be faster to use template
