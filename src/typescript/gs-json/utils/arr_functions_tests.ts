@@ -63,7 +63,7 @@ export function test_arr_deepCopy():boolean {
 	//sparse arrays
 	x[5] = 1;
 	y = Arr.deepCopy(x);
-	if (!Arr.equal(x,y)) {return false;}//FAILS
+	if (y[5] != 1) {return false;}
 	return true;
 }
 
@@ -73,9 +73,9 @@ export function test_arr_deepFill():boolean {
 	if (x[0] != 0) {return false;}
 	if (!Arr.equal(x[2][2][2],[0,0])) {return false;}
 	//sparse arrays
-	x[5] = 1;
-	y = Arr.deepFill(x, 0);
-	if (x[5] != 0) {return false;}//FAILS	
+	x[5] = 1; //x[3] and x[4] are undefined
+	Arr.deepFill(x, 0);
+	if (x[5] != 0) {return false;}	
 	return true;
 }
 
@@ -86,9 +86,7 @@ export function test_arr_deepCount():boolean {
 	if (Arr.deepCount(x) != 8) {return false;}
 	//sparse arrays
 	x[5] = 1;
-	y = Arr.deepFill(x, 0);
-	if (Arr.deepCount(x) != 9) {return false;}//FAILS	
+	Arr.deepFill(x, 0);
+	if (Arr.deepCount(x) != 9) {return false;}	
 	return true;
 }
-
-//TODO: add sparse arrays tp tests

@@ -40,9 +40,11 @@ export class Arr {
         let arr2:any[] = [];
         for (let i:number=0;i<arr.length;i++) {
             if (Array.isArray(arr[i])) {
-                arr2.push(this.deepCopy(arr[i]));
+                arr2[i] = (Arr.deepCopy(arr[i]));
             } else {
-                arr2.push(arr[i]);
+                if (arr[i] !== undefined) {
+                    arr2[i] = (arr[i]);
+                }
             }
         }
         return arr2;
@@ -51,22 +53,27 @@ export class Arr {
         if (arr === undefined) {return;}
         for (let i:number=0;i<arr.length;i++) {
             if (Array.isArray(arr[i])) {
-                this.deepFill(arr[i], value);
+                Arr.deepFill(arr[i], value);
             } else {
-                arr[i] = value;
+                if (arr[i] !== undefined) {
+                    arr[i] = value;
+                }
             }
         }
     }
     
     public static deepCount(arr:any[]):number {
-    let a:number = 0 ;
+        if (arr === undefined) {return 0;}
+        let a:number = 0 ;
         for (let i:number=0;i<arr.length;i++){
-            if (arr[i].length == undefined ) {
-            a = a + 1 ;
-                } else {
-            a = a + this.deepCount(arr[i])
-                        }
+            if (Array.isArray(arr[i])) {
+                a = a + Arr.deepCount(arr[i])
+            } else {
+                if (arr[i] !== undefined) {
+                    a = a + 1 ;
+                }
+            }
         }
-    return a ;
+        return a ;
     }
 }
