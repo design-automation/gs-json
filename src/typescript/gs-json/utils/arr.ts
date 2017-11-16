@@ -1,13 +1,13 @@
 // Some utility functions for arrays
 /**
- * Comment for Arr class.
+ * A set of static methds for working with arrays.
  */
 export class Arr {
     /**
-    * Comment for method make.
-    * @param length  Comment for parameter ´target´.
-    * @param value
-    * @returns       Comment for return value.
+    * Make an array of numbers. All elemnts in the array will have the same value. 
+    * @param length  The length of the new array. If length is 0, then an empty array is returned.
+    * @param value    The values in the array.
+    * @returns        The resulting array.
     */
     public static make(length:number, value:any):number[] {
         if (length==0) {return [];}
