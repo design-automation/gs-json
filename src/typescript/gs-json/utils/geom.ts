@@ -25,9 +25,7 @@ export class Geom implements ifs.IGeom {
         if (obj_type) {
             let geom_filtered:any[] = this.geometry_data.filter((n)=>n!=undefined);
             geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type).map((v,i)=>[v[0],v[1]]);
-            geom_filtered = Arr.flatten(geom_filtered);
-            return geom_filtered;
-            //return new Set(geom_filtered).values(); //<<<<<<<<<<<<<<<<<TODO
+            return Array.from(new Set(Arr.flatten(geom_filtered)));
         }
         return Arr.makeSeq(this.numPoints());
     }
