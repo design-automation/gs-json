@@ -1,5 +1,14 @@
 // Some utility functions for arrays
+/**
+ * Comment for Arr class.
+ */
 export class Arr {
+    /**
+    * Comment for method make.
+    * @param length  Comment for parameter ´target´.
+    * @param value
+    * @returns       Comment for return value.
+    */
     public static make(length:number, value:any):number[] {
         if (length==0) {return [];}
         return Array.apply(0, new Array(length)).map((v,i)=>value);
