@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "karma start ./.config/karma.conf.ts",
-    "build-docs": "typedoc --out  ./docs/typescript ./src/typescript/gs-json/utils --module commonjs"
+    "docs": "typedoc --out  ./docs/typescript ./src/typescript/gs-json/utils --module commonjs"
   },
   "repository": {
     "type": "git",
