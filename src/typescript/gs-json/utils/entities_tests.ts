@@ -53,12 +53,15 @@ let data: ifs.IModelData = {
     ]
 };
 
-let path1: Ifs.IPath{
-    "topo_type": ifs.ETopoType.points ;
-    "topo_num": 908;
-    "topo_subtype": ifs.ETopoType.points;
-    "topo_subnum": 904;
-}
+let path1:ifs.IPath = new Path(24, ifs.ETopoType.points, 908, ifs.ETopoType.points, 909);
+
+// let path1: ifs.IPath = {
+//     "id":24,
+//     "topo_type": ifs.ETopoType.points,
+//     "topo_num": 908,
+//     "topo_subtype": ifs.ETopoType.points,
+//     "topo_subnum": 904
+// }
 
 
 export function test1():void{

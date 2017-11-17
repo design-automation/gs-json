@@ -22,17 +22,21 @@ export class Group implements ifs.IGroup {
         return old_name;
     }
     //Groups
-    public getParentGroups():ifs.IGroup[] {
+    public getParentGroup():ifs.IGroup {
         console.log("not implemented");
-        return [];
-    }
-    public setParentGroups():ifs.IGroup[] {
-        console.log("not implemented");
-        return [];
-    }    
+        return null;
+    }   
     public getChildGroups():ifs.IGroup[] {
         console.log("not implemented");
         return [];
+    }
+    public setParentGroup(group:ifs.IGroup):boolean{
+        console.log("not implemented");
+        return false;
+    }
+    public removeParentGroup(group:ifs.IGroup):boolean{
+        console.log("not implemented");
+        return false;
     }
     //Objs
     public getEntitieIDs(obj_type?:ifs.EObjType):number[] {
