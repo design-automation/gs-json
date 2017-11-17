@@ -22,19 +22,19 @@ export class Group implements ifs.IGroup {
         return old_name;
     }
     //Groups
-    public getParentGroups():ifs.IGroup[] {
+    public getParentGroup():ifs.IGroup {
         console.log("not implemented");
-        return [];
-    }
+        return null;
+    }   
     public getChildGroups():ifs.IGroup[] {
         console.log("not implemented");
         return [];
     }
-    public addChildGroup(obj:ifs.IGroup):boolean {
+    public setParentGroup(group:ifs.IGroup):boolean{
         console.log("not implemented");
         return false;
     }
-    public removeChildGroup(obj:ifs.IGroup):boolean {
+    public removeParentGroup(group:ifs.IGroup):boolean{
         console.log("not implemented");
         return false;
     }

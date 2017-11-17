@@ -193,9 +193,9 @@ export interface IShell extends ITopo {
 // interface for path to a single topo in an attrib array
 export interface IPath {
     id:number;  //obj_id or point_id number
-    topo_type:ETopoType; //shells, faces, wires
+    topo_type:ETopoType; //shells, faces, wires, points
     topo_num:number;
-    topo_subtype:ETopoType; //edges, vertices
+    topo_subtype: ETopoType; //ETopoType.vertices | ETopoType.edges; //edges, vertices
     topo_subnum:number;
     getType():ETopoType;
 }
@@ -215,10 +215,10 @@ export interface IGroup {
     getName():string;
     setName(name:string):string;
     //Parent/child groups
-    getParentGroups():IGroup[];
+    getParentGroup():IGroup;
     getChildGroups():IGroup[];
-    addChildGroup(group:IGroup):boolean;
-    removeChildGroup(group:IGroup):boolean;
+    setParentGroup(group:IGroup):boolean;
+    removeParentGroup(group:IGroup):boolean;
     //Objs in this group
     getEntitieIDs(obj_type?:EObjType):number[];
     addObj(obj_id:number):boolean;
