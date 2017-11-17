@@ -19,5 +19,5 @@ let Model_1:Model = new Model();
     Model_1.delGroup("Second_Group");
     Model_1.getGroup("Third_Group").setName("Third, renamed as Second");
     Model_1.getGroups(); // Get Groups show two names per group
-    return true
+    return true;
 }
