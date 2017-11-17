@@ -26,17 +26,13 @@ export class Group implements ifs.IGroup {
         console.log("not implemented");
         return [];
     }
+    public setParentGroups():ifs.IGroup[] {
+        console.log("not implemented");
+        return [];
+    }    
     public getChildGroups():ifs.IGroup[] {
         console.log("not implemented");
         return [];
-    }
-    public addChildGroup(obj:ifs.IGroup):boolean {
-        console.log("not implemented");
-        return false;
-    }
-    public removeChildGroup(obj:ifs.IGroup):boolean {
-        console.log("not implemented");
-        return false;
     }
     //Objs
     public getEntitieIDs(obj_type?:ifs.EObjType):number[] {
