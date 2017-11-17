@@ -5,9 +5,10 @@ gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic 
 # Conceptual Model
 The gs-JSON conceptual model uses topology as the organising framework for defining both geometry and semantics.
 
-Geometry includes both polygonal and spline based geometric entities. Semantics consists of data linked to entities and collections of entities in the model.
+Geometry consists of objects, and includes both polygonal and spline based geometry. Semantics consists of data linked to objects and groups of objects in the model.
 
-## Topological Components
+## Topology
+Each geometric object consists of a set of topological components.
 The topological component hierarchy is follows:
 * 0D Components
   * POINT = a point is space.
@@ -19,17 +20,17 @@ The topological component hierarchy is follows:
   * FACE = a face bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.
   * SHELL = a set of one or more connected FACES, either open or closed. 
 
-### POINTS
+### Points
 The base data to which everything else is connected is a set of points in space. 
 
-### WIRE Components
-Each wire component has:
+### Wires
+Each wire has:
 * a set of connected edges (implicit), and
 * a sequence of vertices (implicit), each of which is
 * associated with a single (implicit) point.
 
-### SHELL Components
-Each shell component has sub-components: wires and faces.
+### Shells
+Each shell has topological sub-components: wires and faces.
 
 The wires represent the naked edges of the shell. Since a shell can have holes, there may be more than one. A shell can also have no naked edges, in which case it is closed. Wires have:
 * a set of connected edges (implicit), and
@@ -40,45 +41,45 @@ The faces have:
 * a set of connected edges (implicit) forming a closed loop, each of which has
 * a sequence of vertices (implicit).
 
-### Shared Components
-Entities can share points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each point is therefore referenced by three vertices. 
+### Shared Points and Vertices
+Vertices can share points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each point is therefore referenced by three vertices. 
 
 Edges that belong to the same wire or face share vertices. For example, an open wire with two edges will share have three vertices. The middle vertex will be shared by two edges.
 
 Hhigher level components cannot be shared. For example, an edge cannot be part of two faces. Thus, if two faces have edges touching, then the points can be shared, but there will still be seperate EDGES, each with its own vertices. 
 
 ## Geomety
-The geometric entities together with their type identifiers are as follows:
-* 0D VERTEX entities:
+The geometric objects together with their type identifiers are as follows:
+* 0D VERTEX objects:
   * 0 - Acorn //not implemented
   * 1 - Ray //not implemented
   * 2 - Plane //not implemented
-* 1D WIRE entities:
+* 1D WIRE objects:
   * 100 - Polyline
   * 120 - NURBS curve //not implemented
   * 121 - Bezier curve //not implemented
-* 2D SHELL entities:
+* 2D SHELL objects:
   * 200 - Polymesh
   * 220 - NURBS Surface //not implemented
   * 221 - Bezier Surface //not implemented
 
-More geometric entities may be added in the future.
+More geometric objects may be added in the future.
 
-Other higher level entities (such as solids) can be created using *collections*. See below for more details. 
+Other higher level objects (such as solids) can be created using *collections*. See below for more details. 
 
-### Implicit Components
-In order to ensure that the file format is efficient and compact, components are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal mesh has implicit faces, wires, edges, and vertices. 
+### Implicit Topology
+In order to ensure that the file format is efficient and compact, topological components are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal mesh has implicit faces, wires, edges, and vertices. 
 
 ## Semantics
 Semantic information can be added to the model in two ways:
 
-1. by specifying *attributes* linked to topological components, and/or
-1. by specifying *properties* linked to nested collections of geometric entities.   
+1. by specifying *attributes* linked to the topological components inside obejcts, and/or
+1. by specifying *properties* linked to nested groups of geometric objects.   
 
-These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within the geometry. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric entities can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.
+These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.
 
 # JSON Encoding of Geometry
-Within a gs-JSON file, the all geometry is defined in a single *entities* array containing three sub-arrays, as follows:
+Within a gs-JSON file, the all geometry is defined in a single *geometry* array, where each element in the array specified a geometric object, as follows:
 ```javascript
 "geometry": [
 	[...],
@@ -87,12 +88,12 @@ Within a gs-JSON file, the all geometry is defined in a single *entities* array 
 	//...
 ]
 ```
-## Entities Arrays
-Entities are represented using integer arrays, consisting of three elements as follows: 
-* [wires], [faces], [parameters]]
+## Geometric Objects
+Objects are represented using integer arrays, consisting of three sub-arrays as follows: 
+* [[wires], [faces], [parameters]]
 
 ### Polylines
-A polyline is defined as follows:
+A example of a polyline:
 * [[[0,1,2,3,0]], [], [100]]
 
 This represents the following:
@@ -103,7 +104,7 @@ This represents the following:
 Polylines can be open or closed. A closed polyline is not the same as a polygon. 
 
 ### Polygon Meshes
-A polygon mesh is defined as follows:
+An example of a polygon mesh:
 * [[[60,61,62,63,60]], [[60,61,63,60], [61,62,63,61]], [200]]
 
 This represents the following:
@@ -122,7 +123,7 @@ Within a js-JSON file, all semantics is defined in a two arrays, as follows:
 	{...},
 	//...
 ],
-"collections": [ 
+"groups": [ 
 	{...},
 	{...},
 	{...},
@@ -130,44 +131,42 @@ Within a js-JSON file, all semantics is defined in a two arrays, as follows:
 ]
 ```
 
-The attributes and collections arrays each define the semantics.
+The attributes and groups arrays each define the semantics.
 
 ## Attributes
 Attributes are defined as follows:
-* {"uuid"="xxx", "name"="my_attrib", "topology"="xxx", "values"=[...], "map"=[...] }
+* {"name"="my_attrib", "topo_type"="xxx", "data_type"="xxx", "values"=[...], "values_map"=[...] }
 
-*topology* can be "points", "vertices", "edges", "wires", "faces", and "shells".
+*topo_type* can be "points", "vertices", "edges", "wires", "faces", and "shells".
 
-*values* is an array the defines the set of values that will be assigned to the geometric entities. The values can be any valid JSON type.
+*data_type* can be "string", "number","boolean","string[]","number[]","boolean[]".
 
-*map* is an array of indices, whose length is equal to the number of geometric entities.  
+*values* is an array the defines the set of unique values that will be assigned to the geometric objects. The values must follow the data type specified in *data_type*.
+
+*values_map* is an array of indices, whose length is equal to the number of elements.  
 
 ### Viewer Attributes
-Certain point attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)
+Certain attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)
  
 * position - the position of the point, in 3d [x,y.z] or 2d [x,y].
 * normal - the point normal vector, in 3d [x,y.z].
 * colour - the point colour, as [r,g,b].
-* xform - the point transformation matrix. (See https://threejs.org/docs/#api/math/Matrix4 for more information about the transformation matrix form.)
  
-## Collections
-A collection can contain:
-* geometric entities (explicit and implicit), and/or
-* other collections.
+## Groups
+A group can contain geometric objects. Geometric objects may be contained in more than one group.
 
-Collections are homogeneous. All the entities in a collection must be of the same type. So for eample, if a collection contains EDGES, then all entities in that cillection will be EDGES. However, since collections can also contain other collections, it is still possible to group together non-homogeneous entities. For example, a collection can contain two other collectiosn, one EDGES and the other SHELLS. 
+Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a *root* or *top-level* group. 
 
-Collections are defined as follows: 
-* {"uuid"="xxx", "name"="my_coll", "typology"="xxx", "entities"=[...], "collections"=[...], "properties"={"key1":value1, "key2":value2, ...}}
+Groups are defined as follows: 
+* {"name"="my_coll", "typology"="xxx", "objects"=[...], "parent_group"=[...], "properties"={"key1":value1, "key2":value2, ...}}
 
 *typology* is either "points", "vertices", "edges", "wires", "shells", "collections", or "none". 
 
-*entities* is ...
+*objects* is an integer array of objects indices. 
 
 *properties* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
 
 # Example
-WORK IN PROGRESS.
 
 There are some examples files here:
 * https://github.com/phtj/gs-JSON/tree/master/src/assets/gs-json

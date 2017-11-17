@@ -1,4 +1,3 @@
-// Some utility functions for arrays
 /**
  * A set of static methods for working with arrays.
  */
