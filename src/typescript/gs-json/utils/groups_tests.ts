@@ -9,3 +9,16 @@ import {Group} from "./groups";
 export function test_xxx():boolean {
     return true;
 }
+
+
+export function Various_Modifications():void{
+let Model_1 = new Model()
+    Model_1.addGroup("First_Group")
+    Model_1.addGroup("Second_Group")
+    Model_1.addGroup("Third_Group")
+    Model_1.delGroup("Second_Group")
+    Model_1.getGroup("Third_Group").setName("Third, renamed as Second")
+    console.log(Model_1.getGroups()) // Get Groups show two names per group
+    console.log(Model_1) // While calling the model shows two names per group
+}
+Various_Modifications()
