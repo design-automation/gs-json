@@ -11,7 +11,7 @@ export function test_setPointPosition():boolean {
     let model:ifs.IModel = new Model();
     let point:ifs.IPoint = model.createPoint([11,22,33]);
     point.setPosition([4,5,6]);
-    let pos = point.getPosition();
+    let pos:number[] = point.getPosition();
     return Arr.equal([4,5,6], pos);
 }
 
@@ -31,11 +31,18 @@ let data: ifs.IModelData = {
     ],
     "attribs": [
         {
-            "name": "position",
+            "name": "Name_1",
             "topo_type": "points",
             "data_type": "number[]",
             "map": [0, 1, 2, 3],
             "values": [[-0.7794438004493713, -1.0, 0.0], [0.22055619955062866, -1.0, 0.0], [0.22055619955062866, -1.0, 3.0]]
+        },
+        {
+            "name": "Name_3",
+            "topo_type": "vertices",
+            "data_type":"number",
+            "map": [[[0, 1, 2, 3, 4, 5], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []]],
+            "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
         }
     ],
     "groups": [
@@ -46,6 +53,14 @@ let data: ifs.IModelData = {
     ]
 };
 
+let path1: Ifs.IPath{
+    "topo_type": ifs.ETopoType.points ;
+    "topo_num": 908;
+    "topo_subtype": ifs.ETopoType.points;
+    "topo_subnum": 904;
+}
+
+
 export function test1():void{
     let m1:Model = new Model();
     m1.setData(data);
@@ -53,4 +68,17 @@ export function test1():void{
     e1.getGeom(); //method 1
     e1.getModel(); //method 2
 }
-test1() //OK
+test1(); //OK
+
+export function test2():void{
+    let m2:Model = new Model();
+    m2.setData(data);
+    let P1:Point = new Point(m2.getGeom(),path1); // constructor
+    P1.getPath(); //set of methods
+    P1.setPosition([2,2,4]);
+    P1.getPosition();
+    P1.getAttribNames();
+    P1.setAttribValue("Name_1",9);
+    P1.getAttribValue("Name_1");
+}
+test2(); //OK
