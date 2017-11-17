@@ -14,12 +14,10 @@ export class Group implements ifs.IGroup {
         this.name = name;
     }
     public getName():string {
-        console.log("not implemented");
-        return null;
+        return this.name
     }
-    public setName(name:string):string {
-        console.log("not implemented");
-        return null;
+    public setName(name:string):void {
+        this.name = name
     }
     //Groups
     public getParentGroups():ifs.IGroup[] {
