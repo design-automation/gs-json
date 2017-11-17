@@ -160,13 +160,13 @@ A group can contain geometric objects. Geometric objects may be contained in mor
 Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a *root* or *top-level* group. 
 
 Groups are defined as follows: 
-* {"name"="my_coll", "typology"="xxx", "objects"=[...], "parent_group"=[...], "properties"={"key1":value1, "key2":value2, ...}}
+* {"name"="my_coll", "typology"="xxx", "objects"=[...], "parent"=[...], "props"={"key1":value1, "key2":value2, ...}}
 
 *typology* is either "points", "vertices", "edges", "wires", "shells", "collections", or "none". 
 
 *objects* is an integer array of objects indices. 
 
-*properties* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
+*props* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
 
 # Example
 

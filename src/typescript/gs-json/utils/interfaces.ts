@@ -19,7 +19,7 @@ export enum EObjType {
     polyline = 100,
     nurbs_curve = 120,
     bezier_curve = 121,
-    polymesh = 200
+    polymesh = 200,
     nurbs_surface = 220,
     bezier_surface = 221,
 }
