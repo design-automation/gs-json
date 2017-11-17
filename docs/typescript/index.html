@@ -68,9 +68,10 @@
 				<p>gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the &#39;gs&#39;). </p>
 				<h1 id="conceptual-model">Conceptual Model</h1>
 				<p>The gs-JSON conceptual model uses topology as the organising framework for defining both geometry and semantics.</p>
-				<p>Geometry includes both polygonal and spline based geometric entities. Semantics consists of data linked to entities and collections of entities in the model.</p>
-				<h2 id="topological-components">Topological Components</h2>
-				<p>The topological component hierarchy is follows:</p>
+				<p>Geometry consists of objects, and includes both polygonal and spline based geometry. Semantics consists of data linked to objects and groups of objects in the model.</p>
+				<h2 id="topology">Topology</h2>
+				<p>Each geometric object consists of a set of topological components.
+				The topological component hierarchy is follows:</p>
 				<ul>
 					<li>0D Components<ul>
 							<li>POINT = a point is space.</li>
@@ -88,17 +89,17 @@
 						</ul>
 					</li>
 				</ul>
-				<h3 id="points">POINTS</h3>
+				<h3 id="points">Points</h3>
 				<p>The base data to which everything else is connected is a set of points in space. </p>
-				<h3 id="wire-components">WIRE Components</h3>
-				<p>Each wire component has:</p>
+				<h3 id="wires">Wires</h3>
+				<p>Each wire has:</p>
 				<ul>
 					<li>a set of connected edges (implicit), and</li>
 					<li>a sequence of vertices (implicit), each of which is</li>
 					<li>associated with a single (implicit) point.</li>
 				</ul>
-				<h3 id="shell-components">SHELL Components</h3>
-				<p>Each shell component has sub-components: wires and faces.</p>
+				<h3 id="shells">Shells</h3>
+				<p>Each shell has topological sub-components: wires and faces.</p>
 				<p>The wires represent the naked edges of the shell. Since a shell can have holes, there may be more than one. A shell can also have no naked edges, in which case it is closed. Wires have:</p>
 				<ul>
 					<li>a set of connected edges (implicit), and</li>
@@ -110,45 +111,45 @@
 					<li>a set of connected edges (implicit) forming a closed loop, each of which has</li>
 					<li>a sequence of vertices (implicit).</li>
 				</ul>
-				<h3 id="shared-components">Shared Components</h3>
-				<p>Entities can share points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each point is therefore referenced by three vertices. </p>
+				<h3 id="shared-points-and-vertices">Shared Points and Vertices</h3>
+				<p>Vertices can share points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each point is therefore referenced by three vertices. </p>
 				<p>Edges that belong to the same wire or face share vertices. For example, an open wire with two edges will share have three vertices. The middle vertex will be shared by two edges.</p>
 				<p>Hhigher level components cannot be shared. For example, an edge cannot be part of two faces. Thus, if two faces have edges touching, then the points can be shared, but there will still be seperate EDGES, each with its own vertices. </p>
 				<h2 id="geomety">Geomety</h2>
-				<p>The geometric entities together with their type identifiers are as follows:</p>
+				<p>The geometric objects together with their type identifiers are as follows:</p>
 				<ul>
-					<li>0D VERTEX entities:<ul>
+					<li>0D VERTEX objects:<ul>
 							<li>0 - Acorn //not implemented</li>
 							<li>1 - Ray //not implemented</li>
 							<li>2 - Plane //not implemented</li>
 						</ul>
 					</li>
-					<li>1D WIRE entities:<ul>
+					<li>1D WIRE objects:<ul>
 							<li>100 - Polyline</li>
 							<li>120 - NURBS curve //not implemented</li>
 							<li>121 - Bezier curve //not implemented</li>
 						</ul>
 					</li>
-					<li>2D SHELL entities:<ul>
+					<li>2D SHELL objects:<ul>
 							<li>200 - Polymesh</li>
 							<li>220 - NURBS Surface //not implemented</li>
 							<li>221 - Bezier Surface //not implemented</li>
 						</ul>
 					</li>
 				</ul>
-				<p>More geometric entities may be added in the future.</p>
-				<p>Other higher level entities (such as solids) can be created using <em>collections</em>. See below for more details. </p>
-				<h3 id="implicit-components">Implicit Components</h3>
-				<p>In order to ensure that the file format is efficient and compact, components are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal mesh has implicit faces, wires, edges, and vertices. </p>
+				<p>More geometric objects may be added in the future.</p>
+				<p>Other higher level objects (such as solids) can be created using <em>collections</em>. See below for more details. </p>
+				<h3 id="implicit-topology">Implicit Topology</h3>
+				<p>In order to ensure that the file format is efficient and compact, topological components are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal mesh has implicit faces, wires, edges, and vertices. </p>
 				<h2 id="semantics">Semantics</h2>
 				<p>Semantic information can be added to the model in two ways:</p>
 				<ol>
-					<li>by specifying <em>attributes</em> linked to topological components, and/or</li>
-					<li>by specifying <em>properties</em> linked to nested collections of geometric entities.   </li>
+					<li>by specifying <em>attributes</em> linked to the topological components inside obejcts, and/or</li>
+					<li>by specifying <em>properties</em> linked to nested groups of geometric objects.   </li>
 				</ol>
-				<p>These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within the geometry. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric entities can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.</p>
+				<p>These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.</p>
 				<h1 id="json-encoding-of-geometry">JSON Encoding of Geometry</h1>
-				<p>Within a gs-JSON file, the all geometry is defined in a single <em>entities</em> array containing three sub-arrays, as follows:</p>
+				<p>Within a gs-JSON file, the all geometry is defined in a single <em>geometry</em> array, where each element in the array specified a geometric object, as follows:</p>
 				<pre><code class="lang-javascript"><span class="hljs-string">"geometry"</span>: [
     [...],
     [...],
@@ -156,13 +157,13 @@
     <span class="hljs-comment">//...</span>
 ]
 </code></pre>
-				<h2 id="entities-arrays">Entities Arrays</h2>
-				<p>Entities are represented using integer arrays, consisting of three elements as follows: </p>
+				<h2 id="geometric-objects">Geometric Objects</h2>
+				<p>Objects are represented using integer arrays, consisting of three sub-arrays as follows: </p>
 				<ul>
-					<li>[wires], [faces], [parameters]]</li>
+					<li>[[wires], [faces], [parameters]]</li>
 				</ul>
 				<h3 id="polylines">Polylines</h3>
-				<p>A polyline is defined as follows:</p>
+				<p>A example of a polyline:</p>
 				<ul>
 					<li>[[[0,1,2,3,0]], [], [100]]</li>
 				</ul>
@@ -174,7 +175,7 @@
 				</ol>
 				<p>Polylines can be open or closed. A closed polyline is not the same as a polygon. </p>
 				<h3 id="polygon-meshes">Polygon Meshes</h3>
-				<p>A polygon mesh is defined as follows:</p>
+				<p>An example of a polygon mesh:</p>
 				<ul>
 					<li>[[[60,61,62,63,60]], [[60,61,63,60], [61,62,63,61]], [200]]</li>
 				</ul>
@@ -193,46 +194,41 @@
     {...},
     <span class="hljs-comment">//...</span>
 ],
-<span class="hljs-string">"collections"</span>: [ 
+<span class="hljs-string">"groups"</span>: [ 
     {...},
     {...},
     {...},
     <span class="hljs-comment">//...</span>
 ]
 </code></pre>
-				<p>The attributes and collections arrays each define the semantics.</p>
+				<p>The attributes and groups arrays each define the semantics.</p>
 				<h2 id="attributes">Attributes</h2>
 				<p>Attributes are defined as follows:</p>
 				<ul>
-					<li>{&quot;uuid&quot;=&quot;xxx&quot;, &quot;name&quot;=&quot;my_attrib&quot;, &quot;topology&quot;=&quot;xxx&quot;, &quot;values&quot;=[...], &quot;map&quot;=[...] }</li>
+					<li>{&quot;name&quot;=&quot;my_attrib&quot;, &quot;topo_type&quot;=&quot;xxx&quot;, &quot;data_type&quot;=&quot;xxx&quot;, &quot;values&quot;=[...], &quot;values_map&quot;=[...] }</li>
 				</ul>
-				<p><em>topology</em> can be &quot;points&quot;, &quot;vertices&quot;, &quot;edges&quot;, &quot;wires&quot;, &quot;faces&quot;, and &quot;shells&quot;.</p>
-				<p><em>values</em> is an array the defines the set of values that will be assigned to the geometric entities. The values can be any valid JSON type.</p>
-				<p><em>map</em> is an array of indices, whose length is equal to the number of geometric entities.  </p>
+				<p><em>topo_type</em> can be &quot;points&quot;, &quot;vertices&quot;, &quot;edges&quot;, &quot;wires&quot;, &quot;faces&quot;, and &quot;shells&quot;.</p>
+				<p><em>data_type</em> can be &quot;string&quot;, &quot;number&quot;,&quot;boolean&quot;,&quot;string[]&quot;,&quot;number[]&quot;,&quot;boolean[]&quot;.</p>
+				<p><em>values</em> is an array the defines the set of unique values that will be assigned to the geometric objects. The values must follow the data type specified in <em>data_type</em>.</p>
+				<p><em>values_map</em> is an array of indices, whose length is equal to the number of elements.  </p>
 				<h3 id="viewer-attributes">Viewer Attributes</h3>
-				<p>Certain point attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)</p>
+				<p>Certain attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)</p>
 				<ul>
 					<li>position - the position of the point, in 3d [x,y.z] or 2d [x,y].</li>
 					<li>normal - the point normal vector, in 3d [x,y.z].</li>
 					<li>colour - the point colour, as [r,g,b].</li>
-					<li>xform - the point transformation matrix. (See <a href="https://threejs.org/docs/#api/math/Matrix4">https://threejs.org/docs/#api/math/Matrix4</a> for more information about the transformation matrix form.)</li>
 				</ul>
-				<h2 id="collections">Collections</h2>
-				<p>A collection can contain:</p>
+				<h2 id="groups">Groups</h2>
+				<p>A group can contain geometric objects. Geometric objects may be contained in more than one group.</p>
+				<p>Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a <em>root</em> or <em>top-level</em> group. </p>
+				<p>Groups are defined as follows: </p>
 				<ul>
-					<li>geometric entities (explicit and implicit), and/or</li>
-					<li>other collections.</li>
-				</ul>
-				<p>Collections are homogeneous. All the entities in a collection must be of the same type. So for eample, if a collection contains EDGES, then all entities in that cillection will be EDGES. However, since collections can also contain other collections, it is still possible to group together non-homogeneous entities. For example, a collection can contain two other collectiosn, one EDGES and the other SHELLS. </p>
-				<p>Collections are defined as follows: </p>
-				<ul>
-					<li>{&quot;uuid&quot;=&quot;xxx&quot;, &quot;name&quot;=&quot;my_coll&quot;, &quot;typology&quot;=&quot;xxx&quot;, &quot;entities&quot;=[...], &quot;collections&quot;=[...], &quot;properties&quot;={&quot;key1&quot;:value1, &quot;key2&quot;:value2, ...}}</li>
+					<li>{&quot;name&quot;=&quot;my_coll&quot;, &quot;typology&quot;=&quot;xxx&quot;, &quot;objects&quot;=[...], &quot;parent_group&quot;=[...], &quot;properties&quot;={&quot;key1&quot;:value1, &quot;key2&quot;:value2, ...}}</li>
 				</ul>
 				<p><em>typology</em> is either &quot;points&quot;, &quot;vertices&quot;, &quot;edges&quot;, &quot;wires&quot;, &quot;shells&quot;, &quot;collections&quot;, or &quot;none&quot;. </p>
-				<p><em>entities</em> is ...</p>
+				<p><em>objects</em> is an integer array of objects indices. </p>
 				<p><em>properties</em> is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. </p>
 				<h1 id="example">Example</h1>
-				<p>WORK IN PROGRESS.</p>
 				<p>There are some examples files here:</p>
 				<ul>
 					<li><a href="https://github.com/phtj/gs-JSON/tree/master/src/assets/gs-json">https://github.com/phtj/gs-JSON/tree/master/src/assets/gs-json</a></li>
