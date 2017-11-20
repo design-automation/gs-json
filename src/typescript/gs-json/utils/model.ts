@@ -27,9 +27,7 @@ export class Model implements ifs.IModel{
         this.geom = new Geom(this);
         //create one attrib, called "position"
         this.attrib_types_dict = {objs:{}, points:{}, faces:{}, wires:{}, edges:{}, vertices:{} }
-        this.attrib_types_dict.points = {
-            position: new Attrib(this, "position", ifs.EGeomType.points, ifs.EDataType.type_num_arr)
-        }
+        this.attrib_types_dict.points = {}
         //create empty groups dict
         this.groups_dict = {};
     }
