@@ -147,10 +147,51 @@ export function test_setData2 (url:string):boolean {
 	return true;
 }
 
-
 export function test_constructor():boolean {
     let model:gsj.IModel = new gsj.Model();
     if (!model) {return false;}
     return true;
 }
 
+export function test_Model_constructor():boolean {
+    return true;
+}
+export function test_Model_getGeom():boolean {
+    return true;
+}
+export function test_Model_setData():boolean {
+    return true;
+}
+export function test_Model_getAttribs():boolean {
+    return true;
+}
+export function test_Model_getAttrib():boolean {
+    return true;
+}
+export function test_Model_addAttrib():boolean {
+    return true;
+}
+export function test_Model_delAttrib():boolean {
+    return true;
+}
+export function test_Model_getGroups():boolean {
+    return true;
+}
+export function test_Model_getGroup():boolean {
+    return true;
+}
+export function test_Model_addGroup():boolean {
+    return true;
+}
+export function test_Model_delGroup():boolean {
+    return true;
+}
+export function test_Model_purgePoints():boolean {
+    return true;
+}
+export function test_Model_purgeNulls():boolean {
+    return true;
+}
+export function test_Model_validateModel():boolean {
+    return true;
+}
