@@ -6,10 +6,18 @@ import {Attrib} from "./attribs";
 import {Group} from "./groups";
 
 // Geometry 
+/**
+* Class Geom
+*/
 export class Geom implements ifs.IGeom {
     private model:ifs.IModel;
     private points_data:[number[],number[][]];
     private objs_data:any[];
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     constructor(model:ifs.IModel, points_data?:[number[],number[][]], objs_data?:any[]) {
         this.model = model;
         if (points_data) {
@@ -23,10 +31,20 @@ export class Geom implements ifs.IGeom {
             this.objs_data = [];
         }
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getModel():ifs.IModel {
-        return this.model;
+    return this.model;
     }
     //Creation
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public addPoint(xyz:number[]):ifs.IPoint {
         let point:Point = new Point(this, this.numPoints());
         //append a point to the points array
@@ -36,13 +54,28 @@ export class Geom implements ifs.IGeom {
 
         return point;
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public addPolyline(wire_points:ifs.IPoint[]):ifs.IObj {
         throw new Error ("Method not implemented.");
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public addPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IObj {
         throw new Error ("Method not implemented.");
     }
     //Points
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getPointIDs(obj_type?:ifs.EObjType):number[] {
         if (obj_type) {
             let geom_filtered:any[] = this.objs_data.filter((n)=>n!=undefined);
@@ -51,12 +84,27 @@ export class Geom implements ifs.IGeom {
         }
         return Arr.makeSeq(this.numPoints());
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getPoints(obj_type?:ifs.EObjType):ifs.IPoint[] {
         return this.getPointIDs(obj_type).map((v,i)=>this.getPoint(v));
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getPoint(point_id:number):ifs.IPoint {
         return new Point(this, point_id);
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public delPoint(point_id:number):boolean {
         throw new Error ("Method not implemented.");
         //this is actually a rather complex method
@@ -64,10 +112,20 @@ export class Geom implements ifs.IGeom {
         //for the point attributes, we need to del the attribute in the values_map
         //this all has to be done very carefully so that our array pointers do not get out of sync
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public numPoints(obj_type?:ifs.EObjType):number {
         if (obj_type) {return this.getPointIDs(obj_type).length;} 
         return this.points_data.length; //works also for sparse arrays
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public setPointPosition(point_id:number, xyz:number[]):number[] {
         let old_xyz:number[] = this.points_data[1][this.points_data[0][point_id]];
         if (Arr.equal(xyz, old_xyz)) {return old_xyz;}
@@ -79,10 +137,20 @@ export class Geom implements ifs.IGeom {
         this.points_data[0][point_id] = value_index;
         return old_xyz;
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getPointPosition(point_id:number,):number[] {
         return this.points_data[1][this.points_data[0][point_id]];
     }
     //Objs
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getObjIDs(obj_type?:ifs.EObjType):number[] {
         let geom_filtered:any[] = this.objs_data.filter((n)=>n!=undefined);
         if (obj_type) {
@@ -90,9 +158,19 @@ export class Geom implements ifs.IGeom {
         }
         return geom_filtered.map((v,i)=>i);
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getObjs(obj_type?:ifs.EObjType):ifs.IObj[] {
         return this.getObjIDs(obj_type).map((v,i)=>this.getObj(v));
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getObj(obj_id:number):ifs.IObj {
         try {
             switch (this.objs_data[obj_id][2][0]) {
@@ -105,16 +183,31 @@ export class Geom implements ifs.IGeom {
             return null;  //catch index our of bounds errors
         }
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public delObj(obj_id:number):boolean{
         return delete this.objs_data[obj_id];
         //TODO: update all the attribute arrays
         //TODO: update the group arrays
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public numObjs(obj_type?:ifs.EObjType):number {
         if (obj_type) {return this.getObjIDs(obj_type).length;} 
         return this.objs_data.length; //works also for sparse arrays
     }
     // Topo
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     private _getVEPathsFromWF(path_arr:ifs.IGeomPath[], obj_id:number, wf_data:any[], w_or_f:number, v_or_e:number):void {
         let wf_type = [ifs.EGeomType.wires,ifs.EGeomType.faces][w_or_f] as ifs.EGeomType.wires|ifs.EGeomType.faces;
         let ve_type = [ifs.EGeomType.vertices,ifs.EGeomType.edges][v_or_e] as ifs.EGeomType.vertices|ifs.EGeomType.edges;
@@ -125,6 +218,11 @@ export class Geom implements ifs.IGeom {
             }
         }
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     private _getVEPathsFromObjsData(objs_data:any[], v_or_e:number):ifs.IGeomPath[] {
         let path_arr:ifs.IGeomPath[] = [];
         //loop through all the objects
@@ -136,6 +234,11 @@ export class Geom implements ifs.IGeom {
         }
         return path_arr;
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     private _getWFPathsFromObjsData(objs_data:any[], w_or_f:number):ifs.IGeomPath[] {
         let wf_type = [ifs.EGeomType.wires,ifs.EGeomType.faces][w_or_f] as ifs.EGeomType.faces|ifs.EGeomType.wires;
         let path_arr:ifs.IGeomPath[] = [];
@@ -148,6 +251,11 @@ export class Geom implements ifs.IGeom {
         }
         return path_arr;
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     private _getPaths(geom_type:ifs.EGeomType):ifs.IGeomPath[] {
         let objs_data:any[] = this.objs_data.filter((n)=>n!=undefined);
         switch (geom_type) {
@@ -161,13 +269,28 @@ export class Geom implements ifs.IGeom {
                 return this._getWFPathsFromObjsData(objs_data, 1);
         }
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getTopos(geom_type:ifs.EGeomType):ifs.ITopo[] {
         return this._getPaths(geom_type).map((v,i)=>new Topo(this,v));
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public numTopos(geom_type:ifs.EGeomType):number {
         return this._getPaths(geom_type).length;    
     }
     //Template is an array full of zeros, but with the right structure for the attribute data
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public getAttribTemplate(geom_type:ifs.EGeomType):any[] {
         switch (geom_type) {
             case ifs.EGeomType.objs:
@@ -192,6 +315,9 @@ export class Geom implements ifs.IGeom {
     }
 }
 // Path
+    /**
+    * to be completed
+    */
 export class GeomPath implements ifs.IGeomPath {
     id:number;                    //obj id or point id
     tt:ifs.EGeomType.faces|ifs.EGeomType.wires = null;      //topo type
@@ -199,6 +325,11 @@ export class GeomPath implements ifs.IGeomPath {
     st:ifs.EGeomType.vertices|ifs.EGeomType.edges = null;   //sub topo-type
     si:number = null;             //sub topo-index
     //for example, new Path([ifs.ETopoType.obj, 22], )
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     constructor(id:number, 
             tt?:ifs.EGeomType.faces|ifs.EGeomType.wires, ti?:number, 
             st?:ifs.EGeomType.vertices|ifs.EGeomType.edges, si?:number) {

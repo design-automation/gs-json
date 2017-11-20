@@ -106,12 +106,10 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#getattribvalue" class="tsd-kind-icon">get<wbr>Attrib<wbr>Value</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_topos_.face.html#getedges" class="tsd-kind-icon">get<wbr>Edges</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#getgeom" class="tsd-kind-icon">get<wbr>Geom</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#getgroups" class="tsd-kind-icon">get<wbr>Groups</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#getid" class="tsd-kind-icon">getID</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_topos_.face.html#getgeomtype" class="tsd-kind-icon">get<wbr>Geom<wbr>Type</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#getgroupnames" class="tsd-kind-icon">get<wbr>Group<wbr>Names</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#getmodel" class="tsd-kind-icon">get<wbr>Model</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#getobj" class="tsd-kind-icon">get<wbr>Obj</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#getpath" class="tsd-kind-icon">get<wbr>Path</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_topos_.face.html#getshell" class="tsd-kind-icon">get<wbr>Shell</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#getobjid" class="tsd-kind-icon">get<wbr>ObjID</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_topos_.face.html#getvertices" class="tsd-kind-icon">get<wbr>Vertices</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_topos_.face.html#neighbours" class="tsd-kind-icon">neighbours</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_topos_.face.html#setattribvalue" class="tsd-kind-icon">set<wbr>Attrib<wbr>Value</a></li>
@@ -126,14 +124,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Face<span class="tsd-signature-symbol">(</span>geom<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.igeom.html" class="tsd-signature-type">IGeom</a>, path<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.ipath.html" class="tsd-signature-type">IPath</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_topos_.face.html" class="tsd-signature-type">Face</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Face<span class="tsd-signature-symbol">(</span>geom<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.igeom.html" class="tsd-signature-type">IGeom</a>, path<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_topos_.face.html" class="tsd-signature-type">Face</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L11">topos.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L11">topos.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -142,7 +140,7 @@
 									<h5>geom: <a href="../interfaces/_interfaces_.igeom.html" class="tsd-signature-type">IGeom</a></h5>
 								</li>
 								<li>
-									<h5>path: <a href="../interfaces/_interfaces_.ipath.html" class="tsd-signature-type">IPath</a></h5>
+									<h5>path: <a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_topos_.face.html" class="tsd-signature-type">Face</a></h4>
@@ -164,7 +162,7 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getattribnames">getAttribNames</a></p>
 								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getattribnames">getAttribNames</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L31">topos.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L29">topos.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -183,7 +181,7 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getattribvalue">getAttribValue</a></p>
 								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getattribvalue">getAttribValue</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L37">topos.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L32">topos.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -207,7 +205,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getedges">getEdges</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L108">topos.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L101">topos.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.iedge.html" class="tsd-signature-type">IEdge</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -226,48 +224,48 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getgeom">getGeom</a></p>
 								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getgeom">getGeom</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L16">topos.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L19">topos.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.igeom.html" class="tsd-signature-type">IGeom</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="getgroups" class="tsd-anchor"></a>
-					<h3>get<wbr>Groups</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Groups<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="getgeomtype" class="tsd-anchor"></a>
+					<h3>get<wbr>Geom<wbr>Type</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Geom<wbr>Type<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getgroups">getGroups</a></p>
-								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getgroups">getGroups</a></p>
+								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getgeomtype">getGeomType</a></p>
+								<p>Overrides <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getgeomtype">getGeomType</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L40">topos.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L95">topos.ts:95</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="getid" class="tsd-anchor"></a>
-					<h3>getID</h3>
+					<a name="getgroupnames" class="tsd-anchor"></a>
+					<h3>get<wbr>Group<wbr>Names</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">getID<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Group<wbr>Names<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getid">getID</a></p>
-								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getid">getID</a></p>
+								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getgroupnames">getGroupNames</a></p>
+								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getgroupnames">getGroupNames</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L22">topos.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L38">topos.ts:38</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -283,7 +281,7 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getmodel">getModel</a></p>
 								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getmodel">getModel</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L19">topos.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L22">topos.ts:22</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.imodel.html" class="tsd-signature-type">IModel</a></h4>
@@ -291,57 +289,21 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="getobj" class="tsd-anchor"></a>
-					<h3>get<wbr>Obj</h3>
+					<a name="getobjid" class="tsd-anchor"></a>
+					<h3>get<wbr>ObjID</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Obj<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.iobj.html" class="tsd-signature-type">IObj</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>ObjID<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getobj">getObj</a></p>
-								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getobj">getObj</a></p>
+								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getobjid">getObjID</a></p>
+								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getobjid">getObjID</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L25">topos.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L16">topos.ts:16</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.iobj.html" class="tsd-signature-type">IObj</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="getpath" class="tsd-anchor"></a>
-					<h3>get<wbr>Path</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Path<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.ipath.html" class="tsd-signature-type">IPath</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#getpath">getPath</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L28">topos.ts:28</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.ipath.html" class="tsd-signature-type">IPath</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getshell" class="tsd-anchor"></a>
-					<h3>get<wbr>Shell</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Shell<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.ishell.html" class="tsd-signature-type">IShell</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getshell">getShell</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L116">topos.ts:116</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.ishell.html" class="tsd-signature-type">IShell</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -356,7 +318,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#getvertices">getVertices</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L104">topos.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L98">topos.ts:98</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.ivertex.html" class="tsd-signature-type">IVertex</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -374,7 +336,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#neighbours">neighbours</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L112">topos.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L104">topos.ts:104</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.iface.html" class="tsd-signature-type">IFace</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -393,7 +355,7 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iface.html">IFace</a>.<a href="../interfaces/_interfaces_.iface.html#setattribvalue">setAttribValue</a></p>
 								<p>Inherited from <a href="_topos_.topo.html">Topo</a>.<a href="_topos_.topo.html#setattribvalue">setAttribValue</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/35cf22d/src/typescript/gs-json/utils/topos.ts#L34">topos.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/b8d9b01/src/typescript/gs-json/utils/topos.ts#L35">topos.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -448,6 +410,12 @@
 						<a href="../modules/_groups_tests_.html">"groups_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_gs_json_.html">"gs-<wbr>json"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_gs_json_tests_.html">"gs-<wbr>json_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_interfaces_.html">"interfaces"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -489,23 +457,17 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_topos_.face.html#getgeom" class="tsd-kind-icon">get<wbr>Geom</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_topos_.face.html#getgroups" class="tsd-kind-icon">get<wbr>Groups</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="_topos_.face.html#getgeomtype" class="tsd-kind-icon">get<wbr>Geom<wbr>Type</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_topos_.face.html#getid" class="tsd-kind-icon">getID</a>
+								<a href="_topos_.face.html#getgroupnames" class="tsd-kind-icon">get<wbr>Group<wbr>Names</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_topos_.face.html#getmodel" class="tsd-kind-icon">get<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_topos_.face.html#getobj" class="tsd-kind-icon">get<wbr>Obj</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_topos_.face.html#getpath" class="tsd-kind-icon">get<wbr>Path</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_topos_.face.html#getshell" class="tsd-kind-icon">get<wbr>Shell</a>
+								<a href="_topos_.face.html#getobjid" class="tsd-kind-icon">get<wbr>ObjID</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_topos_.face.html#getvertices" class="tsd-kind-icon">get<wbr>Vertices</a>
@@ -520,9 +482,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_topos_.shell.html" class="tsd-kind-icon">Shell</a>
-					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
 						<a href="_topos_.topo.html" class="tsd-kind-icon">Topo</a>
 					</li>

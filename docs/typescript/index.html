@@ -224,11 +224,11 @@
 				<p>Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a <em>root</em> or <em>top-level</em> group. </p>
 				<p>Groups are defined as follows: </p>
 				<ul>
-					<li>{&quot;name&quot;=&quot;my_coll&quot;, &quot;typology&quot;=&quot;xxx&quot;, &quot;objects&quot;=[...], &quot;parent_group&quot;=[...], &quot;properties&quot;={&quot;key1&quot;:value1, &quot;key2&quot;:value2, ...}}</li>
+					<li>{&quot;name&quot;=&quot;my_coll&quot;, &quot;typology&quot;=&quot;xxx&quot;, &quot;objects&quot;=[...], &quot;parent&quot;=[...], &quot;props&quot;={&quot;key1&quot;:value1, &quot;key2&quot;:value2, ...}}</li>
 				</ul>
 				<p><em>typology</em> is either &quot;points&quot;, &quot;vertices&quot;, &quot;edges&quot;, &quot;wires&quot;, &quot;shells&quot;, &quot;collections&quot;, or &quot;none&quot;. </p>
 				<p><em>objects</em> is an integer array of objects indices. </p>
-				<p><em>properties</em> is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. </p>
+				<p><em>props</em> is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. </p>
 				<h1 id="example">Example</h1>
 				<p>There are some examples files here:</p>
 				<ul>
@@ -271,6 +271,12 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_groups_tests_.html">"groups_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_gs_json_.html">"gs-<wbr>json"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_gs_json_tests_.html">"gs-<wbr>json_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_interfaces_.html">"interfaces"</a>
