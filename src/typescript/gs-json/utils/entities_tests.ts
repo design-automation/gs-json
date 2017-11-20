@@ -43,25 +43,13 @@ let data: gsj.IModelData = {
     ]
 };
 
-//let path1:gsj.IGeomPath = new gsj.GeomPath(1, gsj.EGeomType.faces, 2, gsj.EGeomType.vertices, 3);
+    // let m1:gsj.Model = new gsj.Model();
+    // return true;
 
-// let path1: gsj.IPath = {
-//     "id":24,
-//     "topo_type": gsj.ETopoType.points,
-//     "topo_num": 908,
-//     "topo_subtype": gsj.ETopoType.points,
-//     "topo_subnum": 904
-// }
-
-
-export function test1():void{
-    let m1:gsj.Model = new gsj.Model();
-    m1.setData(data);
+    // m1.setData(data);
     // let e1:gsj.Entity = new gsj.Entity(m1.getGeom()); //constructor
     // e1.getGeom(); //method 1
     // e1.getModel(); //method 2
-}
-//test1(); //OK
 
 export function test2():void{
     let m2:gsj.Model = new gsj.Model();
@@ -74,4 +62,79 @@ export function test2():void{
     P1.setAttribValue("Name_1",9);
     P1.getAttribValue("Name_1");
 }
-//test2(); //OK
+
+
+
+// Entities tests, 1 constructor and 8 methods
+export function test_ent_constructor():boolean {
+    return true;
+}
+export function test_ent_getGeom():boolean {
+    return true;
+}
+export function test_ent_getID():boolean {
+    return true;
+}
+export function test_ent_getModel():boolean {
+    return true;
+}
+export function test_ent_getGeomType():boolean {
+    return true;
+}
+export function test_ent_getAttribNames():boolean {
+    return true;
+}
+export function test_ent_getAttribValue():boolean {
+    return true;
+}
+export function test_ent_setAttribValue():boolean {
+    return true;
+}
+export function test_ent_getGroupNames():boolean {
+    return true;
+}
+
+
+// Point tests, extends Entities by 4 complementary methods
+export function test_point_getGeomType():boolean {
+    return true;
+}
+export function test_point_setPosition():boolean {
+    return true;
+}
+export function test_point_getPosition():boolean {
+    return true;
+}
+export function test_point_getVertices():boolean {
+    return true;
+}
+
+// Object tests, extends Entities by 6 complementary methods
+export function test_obj_getGeomType():boolean {
+    return true;
+}
+export function test_obj_getObjType():boolean {
+    return true;
+}
+export function test_obj_getVertices():boolean {
+    return true;
+}
+export function test_obj_getEdges():boolean {
+    return true;
+}
+export function test_obj_getWires():boolean {
+    return true;
+}
+export function test_obj_getFaces():boolean {
+    return true;
+}
+
+// Polyline test, extend Obj by 1 method
+export function test_Pline_getObjType():boolean {
+    return true;
+}
+
+// Polymesh test, extend Obj by 1 method
+export function test_Pmesh_getObjType():boolean {
+    return true;
+}

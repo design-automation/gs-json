@@ -5,6 +5,9 @@ describe('Tests for Arr functions', () => {
     it('test_make', () => {
         expect( tests.test_make() ).toBe(true);
     });
+    it('test_makeSeq', () => {
+        expect( tests.test_makeSeq() ).toBe(true);
+    });
     it ('test_equal', () => {
         expect( tests.test_equal() ).toBe(true);    	
     });

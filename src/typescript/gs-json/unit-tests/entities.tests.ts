@@ -2,23 +2,74 @@ import {} from 'jasmine';
 import * as entities_tests from "../utils/entities_tests";
 
 describe('Tests for Entity class', () => {
-
-});	
-
-describe('Tests for Point class', () => {
-    it('test_setPointPosition', () => {
-        expect( entities_tests.test_setPointPosition() ).toBe(true);
+    it('test_ent_constructor', () => {
+        expect( entities_tests.test_ent_constructor() ).toBe(true);
+    });
+    it('test_ent_xxx', () => {
+        expect( entities_tests.test_ent_getGeom() ).toBe(true);
+    });
+    it('test_ent_xxx', () => {
+        expect( entities_tests.test_ent_getID() ).toBe(true);
+    });
+    it('test_ent_xxx', () => {
+        expect( entities_tests.test_ent_getModel() ).toBe(true);
+    });    it('test_ent_xxx', () => {
+        expect( entities_tests.test_ent_getGeomType() ).toBe(true);
+    });    it('test_ent_xxx', () => {
+        expect( entities_tests.test_ent_getAttribNames() ).toBe(true);
+    });    it('test_ent_xxx', () => {
+        expect( entities_tests.test_ent_getAttribValue() ).toBe(true);
+    });    it('test_ent_xxx', () => {
+        expect( entities_tests.test_ent_setAttribValue() ).toBe(true);
+    });    it('test_ent_xxx', () => {
+        expect( entities_tests.test_ent_getGroupNames() ).toBe(true);
     });
 });	
 
-describe('Tests for Obj class', () => {
-
+describe('Tests for Point class', () => {
+    it('test_point_getGeomType', () => {
+        expect( entities_tests.test_point_getGeomType() ).toBe(true);
+    });
+    it('test_point_setPosition', () => {
+        expect( entities_tests.test_point_setPosition() ).toBe(true);
+    });
+    it('test_point_getPosition', () => {
+        expect( entities_tests.test_point_getPosition() ).toBe(true);
+    });
+    it('test_point_getVertices', () => {
+    expect( entities_tests.test_point_getVertices() ).toBe(true);
+	});
 });	
 
-describe('Tests for Polyline class', () => {
+describe('Tests for Obj class', () => {
+    it('test_obj_getGeomType', () => {
+        expect( entities_tests.test_obj_getGeomType() ).toBe(true);
+    });
+    it('test_obj_getObjType', () => {
+        expect( entities_tests.test_obj_getObjType() ).toBe(true);
+    });    
+    it('test_obj_getVertices', () => {
+        expect( entities_tests.test_obj_getVertices() ).toBe(true);
+    });
+    it('test_obj_getEdges', () => {
+        expect( entities_tests.test_obj_getEdges() ).toBe(true);
+    });
+    it('test_obj_getWires', () => {
+        expect( entities_tests.test_obj_getWires() ).toBe(true);
+    });    
+    it('test_obj_getFaces', () => {
+        expect( entities_tests.test_obj_getFaces() ).toBe(true);
+    });
+});
 
+describe('Tests for Polyline class', () => {
+    it('test_Pline_getObjType', () => {
+        expect( entities_tests.test_Pline_getObjType() ).toBe(true);
+    });
 });
 
 describe('Tests for Polymesh class', () => {
-
-});	
+    it('test_Pmesh_getObjType', () => {
+        expect( entities_tests.test_Pmesh_getObjType() ).toBe(true);
+    });
+});

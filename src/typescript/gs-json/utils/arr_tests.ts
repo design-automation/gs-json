@@ -1,5 +1,9 @@
 import {Arr} from "./arr";
 
+/**
+* Series of tests to verify Array user implemented static methods
+*/
+
 export function test_make():boolean {
 	let a:number[] = Arr.make(10, 5);
 	if (a[0] != 5) {return false;}
@@ -7,6 +11,16 @@ export function test_make():boolean {
 	if (a.length != 10) {return false;}
 	if (Arr.make(0, 5).length != 0) {return false;}
 	if (!Arr.equal(Arr.make(0, 5),[])) {return false;}
+	return true;
+}
+
+export function test_makeSeq():boolean {
+	let a:number[] = Arr.makeSeq(4);
+	if (a[0] != 0) {return false;}
+	if (a[1] != 1) {return false;}
+	if (a[2] != 2) {return false;}
+	if (a[3] != 3) {return false;}
+	if (a.length != 4) {return false;}
 	return true;
 }
 
