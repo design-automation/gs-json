@@ -46,13 +46,17 @@ export class Attrib implements ifs.IAttrib {
     //Attrib Values
     public getValue(path:ifs.IGeomPath):any {
         let index:number;
-        if (this.attrib_type == ifs.EGeomType.points || this.attrib_type == ifs.EGeomType.objs) {
-            index = this.values_map[path.id];
-        } else if (this.attrib_type == ifs.EGeomType.vertices || this.attrib_type == ifs.EGeomType.edges) { 
-            index = this.values_map[path.id][path.ti][path.si]; 
-        } else if (this.attrib_type == ifs.EGeomType.wires || this.attrib_type == ifs.EGeomType.faces){
-            index = this.values_map[path.id][path.ti];
-        } 
+        switch (this.attrib_type) {
+            case ifs.EGeomType.points: case ifs.EGeomType.objs:
+                index = this.values_map[path.id];
+                break;
+            case ifs.EGeomType.wires: case ifs.EGeomType.faces:
+                index = this.values_map[path.id][path.ti];
+                break;
+            case ifs.EGeomType.vertices: case ifs.EGeomType.edges:
+                index = this.values_map[path.id][path.ti][path.si];
+                break;
+        }
         return this.values[index];
     }
     public setValue(path:ifs.IGeomPath, value:any):any {
@@ -61,20 +65,23 @@ export class Attrib implements ifs.IAttrib {
             index = this.values.push(value) - 1;
         }
         let old_value:any;
-        if (this.attrib_type == ifs.EGeomType.points || this.attrib_type == ifs.EGeomType.objs) {
-            old_value = this.values_map[path.id];
-            this.values_map[path.id] = index;
-        } else if (this.attrib_type == ifs.EGeomType.vertices || this.attrib_type == ifs.EGeomType.edges) { 
-            old_value = this.values_map[path.id][path.ti][path.si]
-            this.values_map[path.id][path.ti][path.si] = index;
-        } else if (this.attrib_type == ifs.EGeomType.wires || this.attrib_type == ifs.EGeomType.faces){
-            old_value = this.values_map[path.id][path.ti];
-            this.values_map[path.id][path.ti] = index;
+        switch (this.attrib_type) {
+            case ifs.EGeomType.points: case ifs.EGeomType.objs:
+                old_value = this.values_map[path.id];
+                this.values_map[path.id] = index;
+                break;
+            case ifs.EGeomType.wires: case ifs.EGeomType.faces:
+                old_value = this.values_map[path.id][path.ti];
+                this.values_map[path.id][path.ti] = index;
+                break;
+            case ifs.EGeomType.vertices: case ifs.EGeomType.edges:
+                old_value = this.values_map[path.id][path.ti][path.si]
+                this.values_map[path.id][path.ti][path.si] = index;
+                break;
         }
         return old_value;
     }
     public count():number  {
         return this.values_map.length;
     }
-
 }
