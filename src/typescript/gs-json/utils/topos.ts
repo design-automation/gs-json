@@ -1,17 +1,20 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
-import {Geom} from "./geom";
-import {Entity,Point,Obj,Polyline,Polymesh} from "./entities";
-import {Attrib, Path} from "./attribs";
+import {Geom,GeomPath} from "./geom";
+import {Point,Polyline,Polymesh} from "./entities";
+import {Attrib} from "./attribs";
 import {Group} from "./groups";
 
 // topo class
 export class Topo implements ifs.ITopo{
     private geom:ifs.IGeom;
-    private path:ifs.IPath;
-    constructor(geom:ifs.IGeom, path:ifs.IPath) {
+    private path:ifs.IGeomPath;
+    constructor(geom:ifs.IGeom, path:ifs.IGeomPath) {
         this.geom = geom;
         this.path = path;
+    }
+    public getObjID():number {
+        return this.path.id;
     }
     public getGeom():ifs.IGeom {
         return this.geom;
@@ -19,113 +22,86 @@ export class Topo implements ifs.ITopo{
     public getModel():ifs.IModel {
         return this.geom.getModel();
     }
-    public getID():number {
-        return this.path.id;
+    public getGeomType():ifs.EGeomType {
+        throw new Error ("Method to be overridden by subclass.");
     }
-    public getObj():ifs.IObj {
-        return new Obj(this.geom, this.path.id);
-    }
-    public getPath():ifs.IPath {
-        return this.path;
-    }
+    // attribs
     public getAttribNames():string[] {
-        return this.getModel().getAttribs(this.path.topo_type).map(attrib=>attrib.getName());
-    }
-    public setAttribValue(name:string, value:any):any {;
-        return this.getModel().getAttrib(name, this.path.topo_type).setValue(this.path, value);
+        return this.getModel().getAttribs(this.getGeomType()).map(attrib=>attrib.getName());
     }
     public getAttribValue(name:string):any {
-        return this.getModel().getAttrib(name, this.path.topo_type).getValue(this.path);
+        return this.getModel().getAttrib(name, this.getGeomType()).getValue(this.path);
     }
-    public getGroups():string[] {
-        console.log("not implemented");
-        return [];
+    public setAttribValue(name:string, value:any):any {;
+        return this.getModel().getAttrib(name, this.getGeomType()).setValue(this.path, value);
+    }
+    public getGroupNames():string[] {
+        throw new Error ("Method not implemented.");
     }
 }
 // Vertex class 
 export class Vertex extends Topo implements ifs.IVertex {
+    public getGeomType():ifs.EGeomType {
+        return ifs.EGeomType.vertices;
+    }
     public getPoint():ifs.IPoint {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public next():ifs.IVertex {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public previous():ifs.IVertex {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public getEdge():ifs.IEdge {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
 }
 // Edge class 
 export class Edge extends Topo implements ifs.IEdge {
+    public getGeomType():ifs.EGeomType {
+        return ifs.EGeomType.edges;
+    }
     public getVertices():ifs.IVertex[] {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public next():ifs.IEdge {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public previous():ifs.IEdge {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public neighbours():ifs.IEdge[] {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public getParent():ifs.IWire|ifs.IFace {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
 }
 // Wire class 
 export class Wire extends Topo implements ifs.IWire {
+    public getGeomType():ifs.EGeomType {
+        return ifs.EGeomType.wires;
+    }
     public getVertices():ifs.IVertex[] {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public getEdges():ifs.IEdge[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getShell():ifs.IShell {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
 }
 // Face class 
 export class Face extends Topo implements ifs.IFace {
+    public getGeomType():ifs.EGeomType {
+        return ifs.EGeomType.faces;
+    }
     public getVertices():ifs.IVertex[] {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public getEdges():ifs.IEdge[] {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
     public neighbours():ifs.IFace[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getShell():ifs.IShell {
-        console.log("not implemented");
-        return null;
-    }
-}
-// Shell class 
-export class Shell extends Topo implements ifs.IShell {
-    public getWires():ifs.IWire[] {
-        console.log("not implemented");
-        return null;
-    }
-    public getFaces():ifs.IFace[] {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
 }

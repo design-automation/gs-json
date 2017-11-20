@@ -1,21 +1,23 @@
 // ========================= ENUMS =========================
-export enum ETopoType {
-    points = "points", // this is not a topo, but we still need it in the enum
-    vertices = "vertices",
-    edges = "edges",
-    wires = "wires",
-    faces = "faces",
-    shells = "shells"
+// EGeomType, EDataType, EObjType
+
+export const enum EGeomType {
+    objs,
+    faces,
+    wires, 
+    edges,
+    vertices,
+    points
 }
-export enum EDataType {
-    type_str = "string",
-    type_num = "number",
-    type_bool = "boolean",
-    type_str_arr = "string[]",
-    type_num_arr = "number[]",
-    type_bool_arr = "boolean[]"
+export const enum EDataType {
+    type_str,
+    type_num,
+    type_bool,
+    type_str_arr,
+    type_num_arr,
+    type_bool_arr,
 }
-export enum EObjType {
+export const enum EObjType {
     polyline = 100,
     nurbs_curve = 120,
     bezier_curve = 121,
@@ -23,6 +25,27 @@ export enum EObjType {
     nurbs_surface = 220,
     bezier_surface = 221,
 }
+// ========================= MAPS =========================
+// mapStringToAttribType, mapStringToDataType
+// ========================= MAPS =========================
+export let mapStringToAttribType = new Map<string,EGeomType> ([
+    ["objs",EGeomType.objs],
+    ["faces",EGeomType.faces],
+    ["wires",EGeomType.wires],
+    ["edges",EGeomType.edges],
+    ["vertices",EGeomType.vertices],
+    ["points",EGeomType.points]
+])
+export let mapStringToDataType = new Map<string,EDataType> ([
+    ["string",EDataType.type_str],
+    ["number",EDataType.type_num],
+    ["boolean",EDataType.type_bool],
+    ["string[]",EDataType.type_str_arr],
+    ["number[]",EDataType.type_num_arr],
+    ["boolean[]",EDataType.type_bool_arr]
+])
+// ========================= INTERFACES for reading gsJSON data =========================
+// IMetadata, IAttribData, IGroupData, ISkinData, IModelData
 // ========================= INTERFACES for reading gsJSON data =========================
 export interface IMetadata {
     filetype: "mobius";
@@ -32,7 +55,7 @@ export interface IMetadata {
 }
 export interface IAttribData {
     name: string;
-    topo_type: "points" | "vertices" | "edges" | "wires" | "faces" | "shells"; //enum not working
+    geom_type: "points" | "vertices" | "edges" | "wires" | "faces" | "objs"; //enum not working
     data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]"; //enum not working
     values: any[];
     map: (number|number[]|number[][])[]; //values_map
@@ -50,42 +73,45 @@ export interface ISkinData {
 }
 export interface IModelData {
     metadata: IMetadata;
-    geometry?: any[];
+    points?: [number[],number[][]];
+    objects?: any[];
     attribs?: IAttribData[];
     groups?: IGroupData[];
     skins?: ISkinData[];
 }
-// ========================= INTERFACES for classes =========================
-export interface IDict { //used for group properties
+// ========================= DATA STRUCTURES =========================
+// IDict, IAttribDict, IAttribTypesDict, IGroupsDict
+
+export interface IDict {
     [key: string] : any;
 }
 export interface IAttribDict {
     [key: string] : IAttrib;
 }
 export interface IAttribTypesDict {
+    objs: IAttribDict;
     points: IAttribDict;
-    vertices: IAttribDict;
-    edges: IAttribDict;
-    wires: IAttribDict;
     faces: IAttribDict;
-    shells: IAttribDict;
+    wires: IAttribDict;
+    edges: IAttribDict;
+    vertices: IAttribDict;
 }
 export interface IGroupsDict {
     [key: string] : IGroup;
 }
-// interface for main model
+// ========================= INTERFACES for Model and Geom classes =========================
+// IModel, IGeom, IGeomPath
+
 export interface IModel {
-    //Creation
-    createPoint(xyz:number[]):IPoint;
-    createPolyline(wire_points:IPoint[]):IObj;
-    createPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
+    //constructor()
     //Geometry
     getGeom():IGeom;
+    setData(data:IModelData):void;
     //Attribs
-    getAttribs(topo_type:ETopoType):IAttrib[];
-    getAttrib(name:string, topo_type:ETopoType):IAttrib;
-    addAttrib(name:string, topo_type:ETopoType, data_type:EDataType):IAttrib;
-    delAttrib(name:string, topo_type:ETopoType):boolean;
+    getAttribs(attrib_type:EGeomType):IAttrib[];
+    getAttrib(name:string, attrib_type:EGeomType):IAttrib;
+    addAttrib(name:string, attrib_type:EGeomType, data_type:EDataType):IAttrib;
+    delAttrib(name:string, attrib_type:EGeomType):boolean;
     //Groups
     getGroups():IGroup[];
     getGroup(name:string):IGroup;
@@ -99,68 +125,100 @@ export interface IModel {
 }
 //Class to hold manipulate geometry arrays
 export interface IGeom  {
+    //constructor(model:ifs.IModel, point_data?:any[], obj_data?:any[]) 
     getModel():IModel;
+    //Creation
+    addPoint(xyz:number[]):IPoint;
+    addPolyline(wire_points:IPoint[]):IObj;
+    addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
     //Points
     getPointIDs(obj_type?:EObjType):number[];
     getPoints(obj_type?:EObjType):IPoint[];
     getPoint(point_id:number):IPoint;
     delPoint(point_id:number):boolean;
+    numPoints(obj_type?:EObjType):number;
+    setPointPosition(point_id:number, xyz:number[]):number[];
+    getPointPosition(point_id:number,):number[];
     //Objs
     getObjIDs(obj_type?:EObjType):number[];
     getObjs(obj_type?:EObjType):IObj[];
     getObj(obj_id:number):IObj;
     delObj(obj_id:number):boolean;
-    //Topos
-    getTopoPaths(topo_type:ETopoType, obj_type?:EObjType):IPath[];
-    getTopos(topo_type:ETopoType, obj_type?:EObjType):ITopo[];
-    getTopo(topo_path:IPath):ITopo;
-    getTopoTemplate(topo_type:ETopoType):any[];
-    //Counters
     numObjs(obj_type?:EObjType):number;
-    numPoints(obj_type?:EObjType):number;
-    numTopos(topo_type:ETopoType):number;
+    //Topos
+    getTopos(topo_type:EGeomType):ITopo[];
+    numTopos(topo_type:EGeomType):number;
+    //Attribs
+    getAttribTemplate(attrib_type:EGeomType):any[];
 }
-//Superclass for objects and points
-export interface IEntity  {
+// interface for path to a single topo component
+// This is used by:
+//     attrib.getValue(path) and attrib.setValue(path, value)
+//     ent.getGeomPath()
+export interface IGeomPath {
+    id:number;             //id, point_id or an obj_id
+    tt:EGeomType.wires|EGeomType.faces;          //topo type, wires or faces
+    ti:number;             //topo index
+    st:EGeomType.vertices|EGeomType.edges        //sub topo-type, vertices or edges
+    si:number;             //sub topo-index
+}
+// ========================= INTERFACES for Ent classes and Subclasses =========================
+// IEnt, IPoint, IObj, IPolyline, IPolymesh, 
+
+//interface for ent
+//abstract superclass
+export interface IEnt  {
+    //constructor(geom:ifs.IGeom, id:number) 
+    getID():number;
     getGeom():IGeom;
     getModel():IModel;
+    getGeomType():EGeomType;
+    //attribs
+    getAttribNames():string[];
+    getAttribValue(name:string):any;
+    setAttribValue(name:string, value:any):any;
+    //groups
+    getGroupNames():string[];
 }
-//interfaces for points, that seem to exist somewhere between objs and topos
-export interface IPoint extends IEntity {
-    getPath():IPath;
+//interfaces for points
+export interface IPoint extends IEnt {
+    //constructor cannot be used to create a new point
+    //use the "add" method in Geom class
     getPosition():number[];
     setPosition(xyz:number[]):number[];
-    getAttribNames():string[];
-    setAttribValue(name:string, value:any):any;
-    getAttribValue(name:string):any;
     getVertices():IVertex[];
 }
-//interfaces for geometric objs
-export interface IObj extends IEntity {
-    getID():number;
+//interfaces for objs
+export interface IObj extends IEnt {
+    //constructor cannot be used to create a new point
+    //use the "add" method in Geom class
+    getObjType():EObjType;
     getVertices():IVertex[];
     getEdges():IEdge[];
     getWires():IWire[];
     getFaces():IFace[];
-    getShells():IShell[];
-    getType():EObjType;
-    isPolyline():boolean;
-    isPolymesh():boolean;
 }
 export interface IPolyline  extends IObj {
 }
 export interface IPolymesh extends IObj {
 }
-//interfaces for topological topos
+// ========================= INTERFACES for Topo classes and Subclasses =========================
+// ITopo, IVertex, IEdge, IWire, IFace
+
+//interfaces for topo component
+//abstract superclass
 export interface ITopo {
+    //constructor(geom:ifs.IGeom, geom_path:ifs.IGeomPath)
     getGeom():IGeom;
     getModel():IModel;
-    getObj():IObj;
-    getID():number;
+    getObjID():number;
+    getGeomType():EGeomType;
+    //attribs
     getAttribNames():string[];
     setAttribValue(name:string, value:any):any;
     getAttribValue(name:string):any;
-    getGroups():string[];
+    //groups
+    getGroupNames():string[];
 }
 export interface IVertex extends ITopo {
     getPoint(): IPoint;
@@ -178,40 +236,32 @@ export interface IEdge extends ITopo {
 export interface IWire extends ITopo {
     getVertices():IVertex[];
     getEdges(): IEdge[];
-    getShell():IShell;
 }
 export interface IFace extends ITopo {
     getVertices():IVertex[];
     getEdges(): IEdge[];
     neighbours():IFace[];
-    getShell():IShell;
 }
-export interface IShell extends ITopo {
-    getWires(): IWire[];
-    getFaces(): IFace[];
-}
-// interface for path to a single topo in an attrib array
-export interface IPath {
-    id:number;  //obj_id or point_id number
-    topo_type:ETopoType; //shells, faces, wires, points
-    topo_num:number;
-    topo_subtype: ETopoType; //ETopoType.vertices | ETopoType.edges; //edges, vertices
-    topo_subnum:number;
-    getType():ETopoType;
-}
-// interfcae for attribs
+// ========================= INTERFACES for Attrib and Group classes =========================
+// IAttrib, IGroup
+
+//interface for attrib
 export interface IAttrib {
+    //constructor(model:ifs.IModel, 
+    //    name:string, attrib_type:ifs.EGeomType, data_type:ifs.EDataType, 
+    //    values_map?:any[], values?:any[])
     getName():string;
     setName(name:string):string;
-    getTopoType():ETopoType;
+    getGeomType():EGeomType;
     getDataType():EDataType;
     //Attrib Values
-    getValue(path:IPath):any;
-    setValue(path:IPath, value:any):any;
+    getValue(path:IGeomPath):any;
+    setValue(path:IGeomPath, value:any):any;
     count():number;
 }
 //interface for group
 export interface IGroup {
+    //constructor(model:ifs.IModel, name:string)
     getName():string;
     setName(name:string):string;
     //Parent/child groups
@@ -219,8 +269,14 @@ export interface IGroup {
     getChildGroups():IGroup[];
     setParentGroup(group:IGroup):boolean;
     removeParentGroup(group:IGroup):boolean;
+    //Points in this group
+    getPointIDs():number[];
+    addPoint(point_id:number):boolean;
+    addPoints(point_ids:number[]):boolean;
+    removePoint(point_id:number):boolean;
+    removePoints(point_ids:number[]):boolean;
     //Objs in this group
-    getEntitieIDs(obj_type?:EObjType):number[];
+    getObjIDs(obj_type?:EObjType):number[];
     addObj(obj_id:number):boolean;
     addObjs(obj_ids:number[]):boolean;
     removeObj(obj_id:number):boolean;

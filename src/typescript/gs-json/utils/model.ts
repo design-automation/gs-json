@@ -1,9 +1,9 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
-import {Geom} from "./geom";
-import {Entity,Point,Obj,Polyline,Polymesh} from "./entities";
+import {Geom, GeomPath} from "./geom";
+import {Point,Polyline,Polymesh} from "./entities";
 import {Topo} from "./topos";
-import {Attrib, Path} from "./attribs";
+import {Attrib} from "./attribs";
 import {Group} from "./groups";
 
 //model class
@@ -18,59 +18,44 @@ export class Model implements ifs.IModel{
         //create an empty geometry array
         this.geom = new Geom(this);
         //create one attrib, called "position"
-        this.attrib_types_dict = {points:{}, vertices:{}, edges:{}, wires:{}, faces:{}, shells:{}}
+        this.attrib_types_dict = {objs:{}, points:{}, faces:{}, wires:{}, edges:{}, vertices:{} }
         this.attrib_types_dict.points = {
-            position: new Attrib(this, "position", ifs.ETopoType.points, ifs.EDataType.type_num_arr)
+            position: new Attrib(this, "position", ifs.EGeomType.points, ifs.EDataType.type_num_arr)
         }
         //create empty groups dict
         this.groups_dict = {};
-    }
-    // Set data for the model
-    public setData(data:ifs.IModelData):void {
-        this.geom = new Geom(this, data.geometry);
-        for (let attrib_data of data.attribs) {
-            let topo_type:ifs.ETopoType = ifs.ETopoType[attrib_data.topo_type];
-            let data_type:ifs.EDataType = ifs.ETopoType[attrib_data.data_type];
-            let attrib:Attrib = new Attrib(this, attrib_data.name, topo_type, data_type);
-            this.attrib_types_dict[attrib_data.topo_type][attrib_data.name] = attrib;           
-        }
-        for (let group of data.groups) {
-            this.attrib_types_dict[group.name] = null; //TODO
-        }
-    }
-    //Creation
-    public createPoint(xyz:number[]):ifs.IPoint {
-        let point:Point = new Point(this.geom);
-        point.setPosition(xyz);
-        return point;
-    }
-    public createPolyline(wire_points:ifs.IPoint[]):ifs.IObj {
-        console.log("not implemented");
-        return null;
-    }
-    public createPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IObj {
-        console.log("not implemented");
-        return null;
     }
     //Geom
     public getGeom():ifs.IGeom {
         return this.geom;
     }
+    public setData(data:ifs.IModelData):void {
+        this.geom = new Geom(this, data.points, data.objects);
+        for (let attrib_data of data.attribs) {
+            let geom_type:ifs.EGeomType = ifs.mapStringToAttribType[attrib_data.geom_type];
+            let data_type:ifs.EDataType = ifs.mapStringToDataType[attrib_data.data_type];
+            let attrib:Attrib = new Attrib(this, attrib_data.name, geom_type, data_type);
+            this.attrib_types_dict[attrib_data.geom_type][attrib_data.name] = attrib;           
+        }
+        for (let group of data.groups) {
+            this.attrib_types_dict[group.name] = null; //TODO
+        }
+    }
     //Attribs
-    public getAttribs(topo_type:ifs.ETopoType):ifs.IAttrib[] {
-        let attrib_dict:ifs.IAttribDict =  this.attrib_types_dict[topo_type];
+    public getAttribs(attrib_type:ifs.EGeomType):ifs.IAttrib[] {
+        let attrib_dict:ifs.IAttribDict =  this.attrib_types_dict[attrib_type];
         return Object.keys(attrib_dict).map(key=>attrib_dict[key]);
     }
-    public getAttrib(name:string, topo_type?:ifs.ETopoType):ifs.IAttrib {
-        return this.attrib_types_dict[topo_type][name];
+    public getAttrib(name:string, attrib_type?:ifs.EGeomType):ifs.IAttrib {
+        return this.attrib_types_dict[attrib_type][name];
     }
-    public addAttrib(name:string, topo_type:ifs.ETopoType, data_type:ifs.EDataType):ifs.IAttrib {
-        let attrib:Attrib = new Attrib(this, name, topo_type, data_type);
-        this.attrib_types_dict[topo_type][name] = attrib;
+    public addAttrib(name:string, attrib_type:ifs.EGeomType, data_type:ifs.EDataType):ifs.IAttrib {
+        let attrib:ifs.IAttrib = new Attrib(this, name, attrib_type, data_type);
+        this.attrib_types_dict[attrib_type][name] = attrib;
         return attrib;
     }
-    public delAttrib(name:string, topo_type:ifs.ETopoType):boolean {
-        return delete this.attrib_types_dict[topo_type][name];
+    public delAttrib(name:string, attrib_type:ifs.EGeomType):boolean {
+        return delete this.attrib_types_dict[attrib_type][name];
     }
     //Groups
     public getGroups():ifs.IGroup[] {
@@ -88,16 +73,13 @@ export class Model implements ifs.IModel{
     }
     //Clean up nulls and unused points
     public purgePoints():number {
-        console.log("not implemented");
-        return -1;
+        throw new Error ("Method not implemented.");
     }
     public purgeNulls():number {
-        console.log("not implemented");
-        return -1;
+        throw new Error ("Method not implemented.");
     }
     //Runs some checks
     public validateModel():boolean {
-        console.log("not implemented");
-        return false;
+        throw new Error ("Method not implemented.");
     }
 }

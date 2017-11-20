@@ -1,9 +1,9 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
-import {Geom} from "./geom";
-import {Entity,Point,Obj,Polyline,Polymesh} from "./entities";
+import {Geom, GeomPath} from "./geom";
+import {Point,Polyline,Polymesh} from "./entities";
 import {Topo} from "./topos";
-import {Attrib, Path} from "./attribs";
+import {Attrib} from "./attribs";
 
 //Groups class
 export class Group implements ifs.IGroup {
@@ -23,45 +23,51 @@ export class Group implements ifs.IGroup {
     }
     //Groups
     public getParentGroup():ifs.IGroup {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }   
     public getChildGroups():ifs.IGroup[] {
-        console.log("not implemented");
-        return [];
+        throw new Error ("Method not implemented.");
     }
     public setParentGroup(group:ifs.IGroup):boolean{
-        console.log("not implemented");
-        return false;
+        throw new Error ("Method not implemented.");
     }
     public removeParentGroup(group:ifs.IGroup):boolean{
-        console.log("not implemented");
-        return false;
+        throw new Error ("Method not implemented.");
+    }
+    //Points in this group
+    public getPointIDs():number[] {
+        throw new Error ("Method not implemented.");
+    }
+    public addPoint(point_id:number):boolean {
+        throw new Error ("Method not implemented.");
+    }
+    public addPoints(point_ids:number[]):boolean {
+        throw new Error ("Method not implemented.");
+    }
+    public removePoint(point_id:number):boolean {
+        throw new Error ("Method not implemented.");
+    }
+    public removePoints(point_ids:number[]):boolean {
+        throw new Error ("Method not implemented.");
     }
     //Objs
-    public getEntitieIDs(obj_type?:ifs.EObjType):number[] {
-        console.log("not implemented");
-        return [];
+    public getObjIDs(obj_type?:ifs.EObjType):number[] {
+        throw new Error ("Method not implemented.");
     }
     public addObj(obj_id:number):boolean {
-        console.log("not implemented");
-        return false;
+        throw new Error ("Method not implemented.");
     }
     public addObjs(obj_ids:number[]):boolean {
-        console.log("not implemented");
-        return false;
+        throw new Error ("Method not implemented.");
     }
     public removeObj(obj_id:number):boolean {
-        console.log("not implemented");
-        return false;
+        throw new Error ("Method not implemented.");
     }
     public removeObjs(obj_ids:number[]):boolean {
-        console.log("not implemented");
-        return false;
+        throw new Error ("Method not implemented.");
     }
     //Properties
     public getPropeties():ifs.IDict[] {
-        console.log("not implemented");
-        return [];
+        throw new Error ("Method not implemented.");
     }
 }

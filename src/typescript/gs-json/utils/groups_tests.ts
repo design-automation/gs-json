@@ -1,10 +1,4 @@
-import * as ifs from "../utils/interfaces";
-import {Model} from "../utils/model";
-import {Geom} from "./geom";
-import {Entity,Point,Obj,Polyline,Polymesh} from "./entities";
-import {Topo} from "./topos";
-import {Attrib, Path} from "./attribs";
-import {Group} from "./groups";
+import * as gsj from "./gs-json";
 
 export function test_xxx():boolean {
     return true;
@@ -12,7 +6,7 @@ export function test_xxx():boolean {
 
 
 export function test_group_methods():boolean{
-let Model_1:Model = new Model();
+let Model_1:gsj.Model = new gsj.Model();
     Model_1.addGroup("First_Group");
     Model_1.addGroup("Second_Group");
     Model_1.addGroup("Third_Group");

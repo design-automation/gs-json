@@ -1,108 +1,94 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
-import {Geom} from "./geom";
+import {Geom, GeomPath} from "./geom";
 import {Topo} from "./topos";
-import {Attrib, Path} from "./attribs";
+import {Attrib} from "./attribs";
 import {Group} from "./groups";
 
-//Entity, superclass of points and objects
-export class Entity {
+//Ent, superclass of points and objects
+abstract class Ent {
     protected geom:ifs.IGeom;
-    constructor(geom:ifs.IGeom) {
+    protected id:number;
+    protected path:GeomPath;
+    constructor(geom:ifs.IGeom, id:number) {
         this.geom = geom;
+        this.id = id;
+        this.path = new GeomPath(this.id);
     }
     public getGeom():ifs.IGeom {
         return this.geom;
     }
+    public getID():number {
+        return this.id;
+    }
     public getModel():ifs.IModel {
         return this.geom.getModel();
     }
-}
-// Point class
-export class Point extends Entity implements ifs.IPoint{
-    private path: ifs.IPath;
-    constructor(geom:ifs.IGeom, path?: ifs.IPath) {
-        super(geom);
-        if (path) {
-            this.path = path;
-        } else {
-            //make the point id equal to the list length
-            this.path = new Path(geom.numPoints(), ifs.ETopoType.points);
-            //add one more item to all point attribs
-            for(let attrib of this.getModel().getAttribs(ifs.ETopoType.points)) {
-                attrib.setValue(this.path, null);
-            }
-        }
+    public getGeomType():ifs.EGeomType {
+        throw new Error ("Method to be overridden by subclass.");
     }
-    public getPath():ifs.IPath {
-        return this.path;
-    }
-    public setPosition(xyz:number[]):number[] {
-        return this.setAttribValue("position", xyz);
-    }
-    public getPosition():number[] {
-        return this.getAttribValue("position");
-    }
+    //attribs
     public getAttribNames():string[] {
-        return this.getModel().getAttribs(ifs.ETopoType.points).map(attrib=>attrib.getName());
-    }
-    public setAttribValue(name:string, value:any):any {
-        return this.getModel().getAttrib(name, ifs.ETopoType.points).setValue(this.path, value);
+        return this.getModel().getAttribs(this.getGeomType()).map(attrib=>attrib.getName());
     }
     public getAttribValue(name:string):any {
-        return this.getModel().getAttrib(name, ifs.ETopoType.points).getValue(this.path);
+        return this.getModel().getAttrib(name, this.getGeomType()).getValue(this.path);
+    }
+    public setAttribValue(name:string, value:any):any {
+        return this.getModel().getAttrib(name, this.getGeomType()).setValue(this.path, value);
+    }
+    //groups
+    public getGroupNames():string[] {
+        throw new Error ("Method not implemented.");
+    }
+}
+// Point class
+export class Point extends Ent implements ifs.IPoint{
+    public getGeomType():ifs.EGeomType {
+        return ifs.EGeomType.points;
+    }
+    public setPosition(xyz:number[]):number[] {
+        return this.geom.setPointPosition(this.id, xyz);
+    }
+    public getPosition():number[] {
+        return this.geom.getPointPosition(this.id);
     }
     public getVertices():ifs.IVertex[] {
-        console.log("not implemented");
-        return null;
+        throw new Error ("Method not implemented.");
     }
 }
 // Obj class
-export class Obj extends Entity implements ifs.IObj{
-    private obj_id:number;
-    constructor(geom:ifs.IGeom, obj_id:number) {
-        super(geom);
-        this.obj_id = obj_id; 
+abstract class Obj extends Ent implements ifs.IObj{
+    public getGeomType():ifs.EGeomType {
+        return ifs.EGeomType.objs;
     }
-    public getID():number {
-        console.log("not implemented");
-        return this.obj_id;
+    public getObjType():ifs.EObjType {
+        throw new Error ("Method to be overridden by subclass.");
     }
+    // Get the topo
     public getVertices():ifs.IVertex[] {
-        console.log("not implemented");
-        return [];
+        throw new Error ("Method not implemented.");
     }
     public getEdges():ifs.IEdge[] {
-        console.log("not implemented");
-        return [];
+        throw new Error ("Method not implemented.");
     }
     public getWires():ifs.IWire[] {
-        console.log("not implemented");
-        return [];
+        throw new Error ("Method not implemented.");
     }
     public getFaces():ifs.IFace[] {
-        console.log("not implemented");
-        return [];
-    }
-    public getShells():ifs.IShell[] {
-        console.log("not implemented");
-        return [];
-    }
-    public getType():ifs.EObjType {
-        console.log("not implemented");
-        return null;
-    }
-    public isPolyline():boolean {
-        console.log("not implemented");
-        return false;
-    }
-    public isPolymesh():boolean {
-        console.log("not implemented");
-        return false;
+        throw new Error ("Method not implemented.");
     }
 }
-export class Polyline  extends Obj implements ifs.IPolyline{} 
-export class Polymesh extends Obj implements ifs.IPolymesh{} 
+export class Polyline  extends Obj implements ifs.IPolyline{
+    public getObjType():ifs.EObjType {
+        return ifs.EObjType.polyline;
+    }
+} 
+export class Polymesh extends Obj implements ifs.IPolymesh{
+    public getObjType():ifs.EObjType {
+        return ifs.EObjType.polymesh;
+    }
+} 
 
 
 
