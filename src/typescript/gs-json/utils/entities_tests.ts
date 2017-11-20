@@ -78,9 +78,9 @@ export function test_ent_getID():boolean {
 export function test_ent_getModel():boolean {
     return true;
 }
-export function test_ent_getGeomType():boolean {
-    return true;
-}
+// export function test_ent_getGeomType():boolean { //This method cannot be tested.
+//     return true;
+// }
 export function test_ent_getAttribNames():boolean {
     return true;
 }
@@ -113,9 +113,9 @@ export function test_point_getVertices():boolean {
 export function test_obj_getGeomType():boolean {
     return true;
 }
-export function test_obj_getObjType():boolean {
-    return true;
-}
+// export function test_obj_getObjType():boolean { //This method cannot be tested.
+//     return true;
+// }
 export function test_obj_getVertices():boolean {
     return true;
 }

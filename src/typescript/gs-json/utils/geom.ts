@@ -70,6 +70,51 @@ export class Geom implements ifs.IGeom {
     public addPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IObj {
         throw new Error ("Method not implemented.");
     }
+    // Get data
+    /**
+    * Return the data associated with a path. 
+    * The data  for an object consists of three arrays: [[wires],[faces],[parameters]].
+    * The wires and faces arrays each contain lists of point IDs.
+    * The path may extract a subset of this data. 
+    * @param obj_id The object ID. 
+    * @return The object data.
+    */
+    public getData(path:ifs.IGeomPath):any {
+        if (path.st) { //vertices or edges
+            switch (path.st) {
+                case ifs.EGeomType.vertices:
+                    switch (path.tt) {
+                        case ifs.EGeomType.wires:
+                            return this.objs_data[path.id][0][path.ti][path.si];
+                        case ifs.EGeomType.faces:
+                            return this.objs_data[path.id][1][path.ti][path.si];
+                    }
+                case ifs.EGeomType.edges:
+                    switch (path.tt) {
+                        case ifs.EGeomType.wires:
+                            return [
+                                this.objs_data[path.id][0][path.ti][path.si],
+                                this.objs_data[path.id][0][path.ti][path.si+1],
+                            ];
+                        case ifs.EGeomType.faces:
+                            return [
+                                this.objs_data[path.id][1][path.ti][path.si],
+                                this.objs_data[path.id][1][path.ti][path.si+1],
+                            ];
+                    }
+            }
+        } else if (path.tt) { //wires or faces
+            switch (path.tt) {
+                case ifs.EGeomType.wires:
+                    return this.objs_data[path.id][0][path.ti];
+                case ifs.EGeomType.faces:
+                    return this.objs_data[path.id][1][path.ti];
+            }
+        } else { //objects
+            return this.objs_data[path.id];
+        }
+        return null;
+    }
     //Points
     /**
     * to be completed
@@ -190,8 +235,9 @@ export class Geom implements ifs.IGeom {
     */
     public delObj(obj_id:number):boolean{
         return delete this.objs_data[obj_id];
-        //TODO: update all the attribute arrays
-        //TODO: update the group arrays
+        //TODO: delete the obj from all the attribute arrays
+        //TODO: update the group arrays if they contain this object
+        //TODO: what about the points? Do we keep them or delete them as well?
     }
     /**
     * to be completed

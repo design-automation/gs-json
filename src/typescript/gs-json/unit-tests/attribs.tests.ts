@@ -27,6 +27,3 @@ describe('Tests for Attrib class', () => {
         expect( tests.test_count() ).toBe(true);
     });
 });
-
-describe('Tests for Path class', () => {
-});

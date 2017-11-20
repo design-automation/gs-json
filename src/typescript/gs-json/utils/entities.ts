@@ -51,6 +51,7 @@ abstract class Ent {
     * @return EGeomType Returns the geometry type of the Entity
     */    
     public getGeomType():ifs.EGeomType {
+        //Do not implement this method.
         throw new Error ("Method to be overridden by subclass.");
     }
     //attribs
@@ -141,6 +142,7 @@ abstract class Obj extends Ent implements ifs.IObj{
     * @return
     */
     public getObjType():ifs.EObjType {
+        //Do not implement this method.
         throw new Error ("Method to be overridden by subclass.");
     }
     // Get the topo

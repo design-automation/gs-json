@@ -14,9 +14,9 @@ describe('Tests for Entity class', () => {
     it('test_ent_getModel', () => {
         expect( entities_tests.test_ent_getModel() ).toBe(true);
     });
-    it('test_ent_getGeomType', () => {
-        expect( entities_tests.test_ent_getGeomType() ).toBe(true);
-    });
+    // it('test_ent_getGeomType', () => {
+    //     expect( entities_tests.test_ent_getGeomType() ).toBe(true);
+    // });
     it('test_ent_getAttribNames', () => {
         expect( entities_tests.test_ent_getAttribNames() ).toBe(true);
     });
@@ -50,9 +50,9 @@ describe('Tests for Obj class', () => {
     it('test_obj_getGeomType', () => {
         expect( entities_tests.test_obj_getGeomType() ).toBe(true);
     });
-    it('test_obj_getObjType', () => {
-        expect( entities_tests.test_obj_getObjType() ).toBe(true);
-    });    
+    // it('test_obj_getObjType', () => {
+    //     expect( entities_tests.test_obj_getObjType() ).toBe(true);
+    // });    
     it('test_obj_getVertices', () => {
         expect( entities_tests.test_obj_getVertices() ).toBe(true);
     });

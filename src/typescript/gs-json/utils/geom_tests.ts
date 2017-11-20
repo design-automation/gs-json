@@ -29,6 +29,9 @@ export function test_Geom_addPolyline():boolean {
 export function test_Geom_addPolymesh():boolean {
     return true;
 }
+export function test_Geom_getData():boolean {
+    return true;
+}
 export function test_Geom_getPointIDs():boolean {
     return true;
 }

@@ -14,9 +14,9 @@ describe('Tests for Topo class', () => {
     it('test_Topo_getModel', () => {
         expect( topos_tests.test_Topo_getModel() ).toBe(true);
     });
-    it('test_Topo_getGeomType', () => {
-        expect( topos_tests.test_Topo_getGeomType() ).toBe(true);
-    });
+    // it('test_Topo_getGeomType', () => {
+    //     expect( topos_tests.test_Topo_getGeomType() ).toBe(true);
+    // });
     it('test_Topo_getAttribNames', () => {
         expect( topos_tests.test_Topo_getAttribNames() ).toBe(true);
     });
@@ -62,12 +62,12 @@ describe('Tests for Edge class', () => {
 	it('test_Edge_previous', () => {
         expect( topos_tests.test_Edge_previous() ).toBe(true);
     });
-	it('test_Edge_neighbours', () => {
-        expect( topos_tests.test_Edge_neighbours() ).toBe(true);
-    });
 	it('test_Edge_getParent', () => {
         expect( topos_tests.test_Edge_getParent() ).toBe(true);
-    });    
+    });
+    it('test_Edge_neighbours', () => {
+        expect( topos_tests.test_Edge_neighbours() ).toBe(true);
+    });
 });
 
 describe('Tests for Wire class', () => {
@@ -79,6 +79,15 @@ describe('Tests for Wire class', () => {
     });
 	it('test_Wire_getEdges', () => {
         expect( topos_tests.test_Wire_getEdges() ).toBe(true);
+    });
+    it('test_Wire_numVertices', () => {
+        expect( topos_tests.test_Wire_numVertices() ).toBe(true);
+    });
+    it('test_Wire_numEdges', () => {
+        expect( topos_tests.test_Wire_numEdges() ).toBe(true);
+    });
+    it('test_Wire_isClosed', () => {
+        expect( topos_tests.test_Wire_isClosed() ).toBe(true);
     });
 });	
 
@@ -92,11 +101,17 @@ describe('Tests for Face class', () => {
 	it('test_Face_getEdges', () => {
         expect( topos_tests.test_Face_getEdges() ).toBe(true);
     });
+    it('test_Face_numVertices', () => {
+        expect( topos_tests.test_Face_numVertices() ).toBe(true);
+    });
+    it('test_Face_numEdges', () => {
+        expect( topos_tests.test_Face_numEdges() ).toBe(true);
+    });
+    it('test_Face_isClosed', () => {
+        expect( topos_tests.test_Face_isClosed() ).toBe(true);
+    });
 	it('test_Face_neighbours', () => {
         expect( topos_tests.test_Face_neighbours() ).toBe(true);
     });
 });
 
-describe('Tests for Shell class', () => {
-
-});

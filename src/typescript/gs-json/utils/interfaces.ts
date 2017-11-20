@@ -2,7 +2,10 @@
 // EGeomType, EDataType, EObjType
 
 /**
-* Enum, to be completed
+* Enum, the different types of geometric elements.
+* Objects and Points are entities (see subclasses of the Ent class).
+* Faces, Wires, Edges, and Vertices are topological components (see subclasses of the Topo class).
+* Attributes can be attached to all these elements.
 */
 export const enum EGeomType {
     objs,
@@ -13,7 +16,7 @@ export const enum EGeomType {
     points
 }
 /**
-* Enum, to be completed
+* Enum, the different data types for attributes.
 */
 export const enum EDataType {
     type_str,
@@ -24,7 +27,7 @@ export const enum EDataType {
     type_bool_arr,
 }
 /**
-* Enum, to be completed
+* Enum, the different types of geometric objects (see the subclasses of the Obj class.)
 */
 export const enum EObjType {
     polyline = 100,
@@ -36,9 +39,10 @@ export const enum EObjType {
 }
 // ========================= MAPS =========================
 // mapStringToAttribType, mapStringToDataType
-// ========================= MAPS =========================
+
 /**
-* Map, to be completed
+* Map, from string to EGeomType.
+* This is used when parsing JSON.
 */
 export let mapStringToAttribType = new Map<string,EGeomType> ([
     ["objs",EGeomType.objs],
@@ -49,7 +53,8 @@ export let mapStringToAttribType = new Map<string,EGeomType> ([
     ["points",EGeomType.points]
 ])
 /**
-* Map, to be completed
+* Map, from strings to DataType.
+* This is used when parsing JSON.
 */
 export let mapStringToDataType = new Map<string,EDataType> ([
     ["string",EDataType.type_str],
@@ -61,9 +66,9 @@ export let mapStringToDataType = new Map<string,EDataType> ([
 ])
 // ========================= INTERFACES for reading gsJSON data =========================
 // IMetadata, IAttribData, IGroupData, ISkinData, IModelData
-// ========================= INTERFACES for reading gsJSON data =========================
+
 /**
-* Interface, to be completed
+* Interface, for parsing JSON Metadata.
 */
 export interface IMetadata {
     filetype: "mobius";
@@ -72,7 +77,7 @@ export interface IMetadata {
     location: string;
 }
 /**
-* Interface, to be completed
+* Interface, for parsing JSON AttribData.
 */
 export interface IAttribData {
     name: string;
@@ -82,7 +87,7 @@ export interface IAttribData {
     map: (number|number[]|number[][])[]; //values_map
 }
 /**
-* Interface, to be completed
+* Interface, for parsing JSON GroupData.
 */
 export interface IGroupData {
     name: string;
@@ -91,7 +96,7 @@ export interface IGroupData {
     properties?: { key: string, value: any };
 }
 /**
-* Interface, to be completed
+* Interface, for parsing JSON SkinData.
 */
 export interface ISkinData {
     images: string[];
@@ -99,7 +104,7 @@ export interface ISkinData {
     materials: any[];
 }
 /**
-* Interface, to be completed
+* Interface, for parsing JSON ModelData.
 */
 export interface IModelData {
     metadata: IMetadata;
@@ -113,19 +118,26 @@ export interface IModelData {
 // IDict, IAttribDict, IAttribTypesDict, IGroupsDict
 
 /**
-* Interface, to be completed
+* Interface, a general purpose dictionary.
 */
 export interface IDict {
     [key: string] : any;
 }
 /**
-* Interface, to be completed
+* Interface, a dictionary for storing Attrib instances.
+* The key is the name of the Attrib, and the value is an instance of class Attrib.
+* This is used in the main Model class to store all the attributes in the model.
 */
 export interface IAttribDict {
     [key: string] : IAttrib;
 }
 /**
-* Interface, to be completed
+* Interface, a dictionary for storing Attrib dictionaries.
+* This is used in the main Model class to store attributes.
+* For each Attrib type, there is a dictionary of attributes.
+* This makes finding attributes faster. For example, to find
+* a particular point attribute called "xxx", the format is:
+* "attrib_types_dict.points.xxx"
 */
 export interface IAttribTypesDict {
     objs: IAttribDict;
@@ -136,7 +148,9 @@ export interface IAttribTypesDict {
     vertices: IAttribDict;
 }
 /**
-* Interface, to be completed
+* Interface, a dictionary for storing Group instances.
+* The key is the name of the Group, and the value is an instance of class Group.
+* This is used in the main Model class to store all teh groups in teh model.
 */
 export interface IGroupsDict {
     [key: string] : IGroup;
@@ -145,7 +159,7 @@ export interface IGroupsDict {
 // IModel, IGeom, IGeomPath
 
 /**
-* Interface, to be completed
+* Interface, the main model class.
 */
 export interface IModel {
     //constructor()
@@ -170,7 +184,8 @@ export interface IModel {
 }
 //Class to hold manipulate geometry arrays
 /**
-* Interface, to be completed
+* Interface, for the Geom class, that stores all the geometry in the model.
+* This has arrays for both point data and object data.
 */
 export interface IGeom  {
     //constructor(model:ifs.IModel, point_data?:any[], obj_data?:any[]) 
@@ -179,6 +194,8 @@ export interface IGeom  {
     addPoint(xyz:number[]):IPoint;
     addPolyline(wire_points:IPoint[]):IObj;
     addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
+    //Generic method for getting data
+    getData(path:IGeomPath):any;
     //Points
     getPointIDs(obj_type?:EObjType):number[];
     getPoints(obj_type?:EObjType):IPoint[];
@@ -204,7 +221,10 @@ export interface IGeom  {
 //     attrib.getValue(path) and attrib.setValue(path, value)
 //     ent.getGeomPath()
 /**
-* Interface, to be completed
+* Interface, for the GeomPath class. 
+* This is used to define a path to a particular geometric element.
+* The geometric element could be either an Ent entity (Point or Obj),
+* or it could be a Topo component (Vertex, Edge, Wire, or Face).
 */
 export interface IGeomPath {
     id:number;             //id, point_id or an obj_id
@@ -216,10 +236,9 @@ export interface IGeomPath {
 // ========================= INTERFACES for Ent classes and Subclasses =========================
 // IEnt, IPoint, IObj, IPolyline, IPolymesh, 
 
-//interface for ent
-//abstract superclass
 /**
-* Interface, to be completed
+* Interface, for the abstract Ent class, that represents any geometric entity.
+* The Ent class cannot be instantiated. 
 */
 export interface IEnt  {
     //constructor(geom:ifs.IGeom, id:number) 
@@ -234,9 +253,8 @@ export interface IEnt  {
     //groups
     getGroupNames():string[];
 }
-//interfaces for points
 /**
-* Interface, to be completed
+* Interface, for the Point class, that represents a 3D point with xyz coords.
 */
 export interface IPoint extends IEnt {
     //constructor cannot be used to create a new point
@@ -245,9 +263,9 @@ export interface IPoint extends IEnt {
     setPosition(xyz:number[]):number[];
     getVertices():IVertex[];
 }
-//interfaces for objs
 /**
-* Interface, to be completed
+* Interface, for the abstract Obj class, that represents a geometric object.
+* Subclasses such as Polyline and polymesh can be instantiated.
 */
 export interface IObj extends IEnt {
     //constructor cannot be used to create a new point
@@ -259,22 +277,21 @@ export interface IObj extends IEnt {
     getFaces():IFace[];
 }
 /**
-* Interface, to be completed
+* Interface, for a Polyline class.
 */
 export interface IPolyline  extends IObj {
 }
 /**
-* Interface, to be completed
+* Interface, for a Polymesh class.
 */
 export interface IPolymesh extends IObj {
 }
 // ========================= INTERFACES for Topo classes and Subclasses =========================
 // ITopo, IVertex, IEdge, IWire, IFace
 
-//interfaces for topo component
-//abstract superclass
+
 /**
-* Interface, to be completed
+* Interface, for Topo abstract class, that represents any topological component.
 */
 export interface ITopo {
     //constructor(geom:ifs.IGeom, geom_path:ifs.IGeomPath)
@@ -290,7 +307,7 @@ export interface ITopo {
     getGroupNames():string[];
 }
 /**
-* Interface, to be completed
+* Interface, for Vertex class.
 */
 export interface IVertex extends ITopo {
     getPoint(): IPoint;
@@ -299,36 +316,41 @@ export interface IVertex extends ITopo {
     getEdge():IEdge;
 }
 /**
-* Interface, to be completed
+* Interface, for Edge class.
 */
 export interface IEdge extends ITopo {
     getVertices(): IVertex[];
     next():IEdge;
     previous():IEdge;
-    neighbours():IEdge[];
     getParent():IWire|IFace; //getWireOrFace()
+    neighbours():IEdge[];
 }
 /**
-* Interface, to be completed
+* Interface, for Wire class.
 */
 export interface IWire extends ITopo {
     getVertices():IVertex[];
     getEdges(): IEdge[];
+    numVertices():number;
+    numEdges():number;
+    isClosed():boolean;
 }
 /**
-* Interface, to be completed
+* Interface, for Face class.
 */
 export interface IFace extends ITopo {
     getVertices():IVertex[];
     getEdges(): IEdge[];
+    numVertices():number;
+    numEdges():number;
+    isClosed():boolean;
     neighbours():IFace[];
 }
 // ========================= INTERFACES for Attrib and Group classes =========================
 // IAttrib, IGroup
 
-//interface for attrib
 /**
-* Interface, to be completed
+* Interface, for Attrib class.
 */
 export interface IAttrib {
     //constructor(model:ifs.IModel, 
@@ -343,9 +365,8 @@ export interface IAttrib {
     setValue(path:IGeomPath, value:any):any;
     count():number;
 }
-//interface for group
 /**
-* Interface, to be completed
+* Interface, for Group class.
 */
 export interface IGroup {
     //constructor(model:ifs.IModel, name:string)
