@@ -43,7 +43,7 @@ let data: gsj.IModelData = {
     ]
 };
 
-let path1:gsj.IGeomPath = new gsj.GeomPath(1, gsj.EGeomType.faces, 2, gsj.EGeomType.vertices, 3);
+//let path1:gsj.IGeomPath = new gsj.GeomPath(1, gsj.EGeomType.faces, 2, gsj.EGeomType.vertices, 3);
 
 // let path1: gsj.IPath = {
 //     "id":24,
@@ -61,7 +61,7 @@ export function test1():void{
     // e1.getGeom(); //method 1
     // e1.getModel(); //method 2
 }
-test1(); //OK
+//test1(); //OK
 
 export function test2():void{
     let m2:gsj.Model = new gsj.Model();
@@ -74,4 +74,4 @@ export function test2():void{
     P1.setAttribValue("Name_1",9);
     P1.getAttribValue("Name_1");
 }
-test2(); //OK
+//test2(); //OK

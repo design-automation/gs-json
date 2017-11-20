@@ -23,7 +23,7 @@ export class Geom implements ifs.IGeom {
         if (points_data) {
             this.points_data = points_data;
         } else {
-            this.points_data = [[],[]];
+            this.points_data = [[],[null]];
         }
         if (objs_data) {
             this.objs_data = objs_data;
@@ -119,7 +119,7 @@ export class Geom implements ifs.IGeom {
     */
     public numPoints(obj_type?:ifs.EObjType):number {
         if (obj_type) {return this.getPointIDs(obj_type).length;} 
-        return this.points_data.length; //works also for sparse arrays
+        return this.points_data[0].length; //works also for sparse arrays
     }
     /**
     * to be completed
