@@ -5,23 +5,28 @@ describe('Tests for Entity class', () => {
     it('test_ent_constructor', () => {
         expect( entities_tests.test_ent_constructor() ).toBe(true);
     });
-    it('test_ent_xxx', () => {
+    it('test_ent_getGeom', () => {
         expect( entities_tests.test_ent_getGeom() ).toBe(true);
     });
-    it('test_ent_xxx', () => {
+    it('test_ent_getID', () => {
         expect( entities_tests.test_ent_getID() ).toBe(true);
     });
-    it('test_ent_xxx', () => {
+    it('test_ent_getModel', () => {
         expect( entities_tests.test_ent_getModel() ).toBe(true);
-    });    it('test_ent_xxx', () => {
+    });
+    it('test_ent_getGeomType', () => {
         expect( entities_tests.test_ent_getGeomType() ).toBe(true);
-    });    it('test_ent_xxx', () => {
+    });
+    it('test_ent_getAttribNames', () => {
         expect( entities_tests.test_ent_getAttribNames() ).toBe(true);
-    });    it('test_ent_xxx', () => {
+    });
+    it('test_ent_getAttribValue', () => {
         expect( entities_tests.test_ent_getAttribValue() ).toBe(true);
-    });    it('test_ent_xxx', () => {
+    });
+    it('test_ent_setAttribValue', () => {
         expect( entities_tests.test_ent_setAttribValue() ).toBe(true);
-    });    it('test_ent_xxx', () => {
+    });
+    it('test_ent_getGroupNames', () => {
         expect( entities_tests.test_ent_getGroupNames() ).toBe(true);
     });
 });	
