@@ -53,6 +53,18 @@ export let mapStringToAttribType = new Map<string,EGeomType> ([
     ["points",EGeomType.points]
 ])
 /**
+* Map, EGeomType to String.
+* This is used for printing.
+*/
+export let attribTypeStrings = [
+    "objs",
+    "faces",
+    "wires",
+    "edges",
+    "vertices",
+    "points"
+]
+/**
 * Map, from strings to DataType.
 * This is used when parsing JSON.
 */
@@ -84,14 +96,14 @@ export interface IAttribData {
     geom_type: "points" | "vertices" | "edges" | "wires" | "faces" | "objs"; //enum not working
     data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]"; //enum not working
     values: any[];
-    map: (number|number[]|number[][])[]; //values_map
+    values_map: (number|number[]|number[][])[];
 }
 /**
 * Interface, for parsing JSON GroupData.
 */
 export interface IGroupData {
     name: string;
-    objs?: any[];
+    objects?: any[];
     groups?: string[];
     properties?: { key: string, value: any };
 }
@@ -110,7 +122,7 @@ export interface IModelData {
     metadata: IMetadata;
     points?: [number[],number[][]];
     objects?: any[];
-    attribs?: IAttribData[];
+    attributes?: IAttribData[];
     groups?: IGroupData[];
     skins?: ISkinData[];
 }
@@ -232,6 +244,8 @@ export interface IGeomPath {
     ti:number;             //topo index
     st:EGeomType.vertices|EGeomType.edges        //sub topo-type, vertices or edges
     si:number;             //sub topo-index
+    equals(path:IGeomPath):boolean;
+    toString():string;
 }
 // ========================= INTERFACES for Ent classes and Subclasses =========================
 // IEnt, IPoint, IObj, IPolyline, IPolymesh, 
@@ -314,6 +328,7 @@ export interface IVertex extends ITopo {
     next():IVertex;
     previous():IVertex;    
     getEdge():IEdge;
+    neighbours():IVertex[][];
 }
 /**
 * Interface, for Edge class.
@@ -323,7 +338,7 @@ export interface IEdge extends ITopo {
     next():IEdge;
     previous():IEdge;
     getParent():IWire|IFace; //getWireOrFace()
-    neighbours():IEdge[];
+    neighbours():IEdge[][];
 }
 /**
 * Interface, for Wire class.

@@ -1,7 +1,7 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
 import {Geom, GeomPath} from "./geom";
-import {Topo} from "./topos";
+import {Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";
 import {Group} from "./groups";
 

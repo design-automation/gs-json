@@ -2,7 +2,7 @@ import * as ifs from "./interfaces";
 import {Arr} from "./arr";
 import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
-import {Topo} from "./topos";
+import {Vertex, Edge, Wire, Face} from "./topos";
 import {Group} from "./groups";
 
 // Attrib class

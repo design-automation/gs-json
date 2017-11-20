@@ -1,8 +1,8 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
 import {Geom, GeomPath} from "./geom";
-import {Point,Polyline,Polymesh} from "./entities";
-import {Topo} from "./topos";
+import {Point, Polyline, Polymesh} from "./entities";
+import {Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";
 import {Group} from "./groups";
 
@@ -47,14 +47,18 @@ export class Model implements ifs.IModel{
     */
     public setData(data:ifs.IModelData):void {
         this.geom = new Geom(this, data.points, data.objects);
-        for (let attrib_data of data.attribs) {
-            let geom_type:ifs.EGeomType = ifs.mapStringToAttribType[attrib_data.geom_type];
-            let data_type:ifs.EDataType = ifs.mapStringToDataType[attrib_data.data_type];
-            let attrib:Attrib = new Attrib(this, attrib_data.name, geom_type, data_type);
-            this.attrib_types_dict[attrib_data.geom_type][attrib_data.name] = attrib;           
+        if (data.attributes) {
+            for (let attrib_data of data.attributes) {
+                let geom_type:ifs.EGeomType = ifs.mapStringToAttribType[attrib_data.geom_type];
+                let data_type:ifs.EDataType = ifs.mapStringToDataType[attrib_data.data_type];
+                let attrib:Attrib = new Attrib(this, attrib_data.name, geom_type, data_type);
+                this.attrib_types_dict[attrib_data.geom_type][attrib_data.name] = attrib;           
+            }
         }
-        for (let group of data.groups) {
-            this.attrib_types_dict[group.name] = null; //TODO
+        if (data.groups) {
+            for (let group of data.groups) {
+                this.attrib_types_dict[group.name] = null; //TODO
+            }
         }
     }
     //Attribs

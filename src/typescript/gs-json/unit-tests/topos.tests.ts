@@ -47,6 +47,12 @@ describe('Tests for Vertex class', () => {
 	it('test_Vertex_getEdge', () => {
         expect( topos_tests.test_Vertex_getEdge() ).toBe(true);
     });
+    it('test_Vertex_getParent', () => {
+        expect( topos_tests.test_Vertex_getParent() ).toBe(true);
+    });
+    it('test_Vertex_neighbours', () => {
+        expect( topos_tests.test_Vertex_neighbours() ).toBe(true);
+    });
 });	
 
 describe('Tests for Edge class', () => {

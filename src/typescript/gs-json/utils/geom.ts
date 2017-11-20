@@ -1,7 +1,7 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
 import {Point,Polyline,Polymesh} from "./entities";
-import {Topo} from "./topos";
+import {Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";
 import {Group} from "./groups";
 
@@ -80,7 +80,8 @@ export class Geom implements ifs.IGeom {
     * @return The object data.
     */
     public getData(path:ifs.IGeomPath):any {
-        if (path.st) { //vertices or edges
+        try {
+        //if (path.st) { //vertices or edges
             switch (path.st) {
                 case ifs.EGeomType.vertices:
                     switch (path.tt) {
@@ -103,17 +104,19 @@ export class Geom implements ifs.IGeom {
                             ];
                     }
             }
-        } else if (path.tt) { //wires or faces
+        //} else if (path.tt) { //wires or faces
             switch (path.tt) {
                 case ifs.EGeomType.wires:
                     return this.objs_data[path.id][0][path.ti];
                 case ifs.EGeomType.faces:
                     return this.objs_data[path.id][1][path.ti];
             }
-        } else { //objects
+        //} else { //objects
             return this.objs_data[path.id];
+        //}
+        } catch (ex) {
+            throw new Error("Geom.getData():Could not find geometry with path: " + path as string);
         }
-        return null;
     }
     //Points
     /**
@@ -380,13 +383,19 @@ export class GeomPath implements ifs.IGeomPath {
             tt?:ifs.EGeomType.faces|ifs.EGeomType.wires, ti?:number, 
             st?:ifs.EGeomType.vertices|ifs.EGeomType.edges, si?:number) {
         this.id = id;
-        if (tt && ti) {
+        if (tt) {
             this.tt = tt;
             this.ti = ti;
-            if (st && si) {
+            if (st) {
                 this.st = st;
                 this.si = si;
             }
         }
+    }
+    public equals(path:ifs.IGeomPath) {
+        return this.toString() == path.toString();
+    }
+    public toString() {
+        return "Obj:" + this.id + "/" + ifs.attribTypeStrings[this.tt] + ":" + this.ti + "/" + ifs.attribTypeStrings[this.st] + ":" + this.si;
     }
 }

@@ -168,6 +168,26 @@ export class Vertex extends Topo implements ifs.IVertex {
                 return new Face(this.geom, new GeomPath(this.path.id, this.path.tt, this.path.ti));
         }
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public neighbours():ifs.IVertex[][] {
+        let point_id:number = this.geom.getData(this.path);
+        let obj_data:any = this.geom.getData(new GeomPath(this.path.id));
+        //loop through all wires and extract verts that have same point_id
+        let wire_vertices:ifs.IVertex[] = [];
+        obj_data[0].forEach((w,w_i)=>w.forEach((v,v_i)=>(v==point_id) && wire_vertices.push(
+            new Vertex(this.geom, 
+                new GeomPath(this.path.id,ifs.EGeomType.wires,w_i,this.path.st,v_i)))));
+        //loop through all faces and extract verts that have same point_id
+        let face_vertices:ifs.IVertex[] = [];
+        obj_data[1].forEach((f,f_i)=>f.forEach((v,v_i)=>(v==point_id) && face_vertices.push(
+            new Vertex(this.geom, 
+                new GeomPath(this.path.id,ifs.EGeomType.faces,f_i,this.path.st,v_i)))));
+        return [wire_vertices,face_vertices];//TODO remove dups
+    }
 }
 /**
 * Edge class
@@ -244,8 +264,29 @@ export class Edge extends Topo implements ifs.IEdge {
     * @param
     * @return
     */
-    public neighbours():ifs.IEdge[] {
-        throw new Error ("Method not implemented.");
+    public neighbours():ifs.IEdge[][] {
+        let point_id_0:number = this.geom.getData(this.path) as number;
+        let vertex_index:number = this.path.si+1;
+        if (vertex_index > this.getParent().numVertices()-1) {
+            vertex_index = 0;
+        }
+        let point_id_1:number = this.geom.getData(
+            new GeomPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index)) as number;
+        let points:number[] = [point_id_0, point_id_1].sort();
+        let obj_data:any = this.geom.getData(new GeomPath(this.path.id));
+        //loop through all wires and extract verts that have same point_id
+        let wire_edges:ifs.IEdge[] = [];
+        obj_data[0].forEach((w,w_i)=>w.forEach((v,v_i)=>
+            Arr.equal([v, obj_data[v_i+1]].sort(), points) && 
+                wire_edges.push(new Edge(this.geom, 
+                    new GeomPath(this.path.id,ifs.EGeomType.wires,w_i,this.path.st,v_i)))));
+        //loop through all faces and extract verts that have same point_id
+        let face_edges:ifs.IEdge[] = [];
+        obj_data[0].forEach((f,f_i)=>w.forEach((v,v_i)=>
+            Arr.equal([v, obj_data[v_i+1]].sort(), points) && 
+                face_edges.push(new Edge(this.geom, 
+                    new GeomPath(this.path.id,ifs.EGeomType.faces,f_i,this.path.st,v_i)))));
+        return [wire_edges,face_edges];//TODO remove dups
     }
 }
 /**

@@ -48,12 +48,12 @@ export function test_getDataType():boolean {
 }
 
 export function test_getValue():boolean {
-	console.log("to be implemented");
+	//console.log("to be implemented");
     return true;
 }
 
 export function test_setValue():boolean {
-	console.log("to be implemented");
+	//console.log("to be implemented");
     return true;
 }
 
