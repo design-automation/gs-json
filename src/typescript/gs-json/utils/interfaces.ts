@@ -103,9 +103,10 @@ export interface IAttribData {
 */
 export interface IGroupData {
     name: string;
-    objects?: any[];
+    parent?:string;
+    objs?: any[];//TODO
     groups?: string[];
-    properties?: { key: string, value: any };
+    props?: { key: string, value: any }
 }
 /**
 * Interface, for parsing JSON SkinData.
@@ -121,8 +122,8 @@ export interface ISkinData {
 export interface IModelData {
     metadata: IMetadata;
     points?: [number[],number[][]];
-    objects?: any[];
-    attributes?: IAttribData[];
+    objs?: any[];
+    attribs?: IAttribData[];
     groups?: IGroupData[];
     skins?: ISkinData[];
 }

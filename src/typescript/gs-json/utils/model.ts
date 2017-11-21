@@ -46,9 +46,9 @@ export class Model implements ifs.IModel{
     * @return
     */
     public setData(data:ifs.IModelData):void {
-        this.geom = new Geom(this, data.points, data.objects);
-        if (data.attributes) {
-            for (let attrib_data of data.attributes) {
+        this.geom = new Geom(this, data.points, data.objs);
+        if (data.attribs) {
+            for (let attrib_data of data.attribs) {
                 let geom_type:ifs.EGeomType = ifs.mapStringToAttribType[attrib_data.geom_type];
                 let data_type:ifs.EDataType = ifs.mapStringToDataType[attrib_data.data_type];
                 let attrib:Attrib = new Attrib(this, attrib_data.name, geom_type, data_type);
