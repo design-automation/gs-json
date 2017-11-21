@@ -8,7 +8,7 @@ import {Group} from "./groups";
 /**
 * Topo class
 */
-abstract class Topo implements ifs.ITopo{
+export abstract class Topo implements ifs.ITopo{
     protected geom:ifs.IGeom;
     protected path:ifs.IGeomPath;
     /**
@@ -286,7 +286,7 @@ export class Edge extends Topo implements ifs.IEdge {
             Arr.equal([v, obj_data[v_i+1]].sort(), points) && 
                 face_edges.push(new Edge(this.geom, 
                     new GeomPath(this.path.id,ifs.EGeomType.faces,f_i,this.path.st,v_i)))));
-        return [wire_edges,face_edges];//TODO remove dups
+        return [wire_edges,face_edges];//TODO remove the edge itdelf from the list
     }
 }
 /**

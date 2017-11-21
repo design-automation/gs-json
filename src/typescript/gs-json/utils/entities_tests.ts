@@ -9,10 +9,6 @@ export function test_setPointPosition():boolean {
     return gsj.Arr.equal([4,5,6], pos);
 }
 
-
-
-
-
 // Entities tests, 1 constructor and 8 methods
 export function test_ent_constructor():boolean {
     return true;
