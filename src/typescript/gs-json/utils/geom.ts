@@ -1,7 +1,7 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
 import {Point,Polyline,Polymesh} from "./entities";
-import {Vertex, Edge, Wire, Face} from "./topos";
+import {Topo, Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";
 import {Group} from "./groups";
 
@@ -324,7 +324,19 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public getTopos(geom_type:ifs.EGeomType):ifs.ITopo[] {
-        return this._getPaths(geom_type).map((v,i)=>new Topo(this,v));
+        switch (geom_type) {
+            case ifs.EGeomType.vertices:
+        return this._getPaths(geom_type).map((v,i)=>new Vertex(this,v));
+
+            case ifs.EGeomType.edges:
+        return this._getPaths(geom_type).map((v,i)=>new Edge(this,v));
+
+            case ifs.EGeomType.wires:
+        return this._getPaths(geom_type).map((v,i)=>new Wire(this,v));
+
+            case ifs.EGeomType.faces:
+        return this._getPaths(geom_type).map((v,i)=>new Face(this,v));
+        }
     }
     /**
     * to be completed

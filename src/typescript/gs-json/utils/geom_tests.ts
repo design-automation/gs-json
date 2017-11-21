@@ -1,4 +1,6 @@
 import * as gsj from "./gs-json";
+import {Model} from "./model";
+import {Geom} from "./geom";
 
 export function test_xxx():boolean {
     return true;
@@ -14,12 +16,17 @@ export function test_createPoint():boolean {
 
 // Geom constructor and its 19 public methods are tested
 export function test_Geom_constructor():boolean {
+    let m:Model = new Model();
+    let a:Geom = new Geom(m);
     return true;
 }
 export function test_Geom_getModel():boolean {
     return true;
 }
 export function test_Geom_addPoint():boolean {
+    let m:Model = new Model();
+    let a:Geom = new Geom(m);
+    a.addPoint([1,3,8]);
     return true;
 }
 export function test_Geom_addPolyline():boolean {
@@ -35,9 +42,29 @@ export function test_Geom_getPointIDs():boolean {
     return true;
 }
 export function test_Geom_getPoints():boolean {
+    let m:Model = new Model();
+    let a:Geom = new Geom(m);
+    a.addPoint([1,3,8]);
+    a.addPoint([6,4,3]);
+    a.addPoint([8,8,8]);
+    a.addPoint([3,4,5]);
+    a.addPoint([2,3,5]);
+    a.addPoint([1,5,2]);
+    a.getPoints();
     return true;
 }
 export function test_Geom_getPoint():boolean {
+    let m:Model = new Model();
+    let a:Geom = new Geom(m);
+    a.addPoint([1,3,8]);
+    a.addPoint([6,4,3]);
+    a.addPoint([8,8,8]);
+    a.addPoint([3,4,5]);
+    a.addPoint([2,3,5]);
+    a.addPoint([1,5,2]);
+    for(let i:number=0;i<a.getPoints.length;i++){
+    console.log(a.getPoint(i));
+    }
     return true;
 }
 export function test_Geom_delPoint():boolean {

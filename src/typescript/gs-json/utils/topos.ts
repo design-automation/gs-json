@@ -8,7 +8,7 @@ import {Group} from "./groups";
 /**
 * Topo class
 */
-abstract class Topo implements ifs.ITopo{
+export abstract class Topo implements ifs.ITopo{
     protected geom:ifs.IGeom;
     protected path:ifs.IGeomPath;
     /**
@@ -282,10 +282,10 @@ export class Edge extends Topo implements ifs.IEdge {
                     new GeomPath(this.path.id,ifs.EGeomType.wires,w_i,this.path.st,v_i)))));
         //loop through all faces and extract verts that have same point_id
         let face_edges:ifs.IEdge[] = [];
-        obj_data[0].forEach((f,f_i)=>w.forEach((v,v_i)=>
-            Arr.equal([v, obj_data[v_i+1]].sort(), points) && 
-                face_edges.push(new Edge(this.geom, 
-                    new GeomPath(this.path.id,ifs.EGeomType.faces,f_i,this.path.st,v_i)))));
+        // obj_data[0].forEach((f,f_i)=>w.forEach((v,v_i)=> [THROWS ERROR]
+        //     Arr.equal([v, obj_data[v_i+1]].sort(), points) && 
+        //         face_edges.push(new Edge(this.geom, 
+        //             new GeomPath(this.path.id,ifs.EGeomType.faces,f_i,this.path.st,v_i)))));
         return [wire_edges,face_edges];//TODO remove dups
     }
 }

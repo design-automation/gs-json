@@ -54,12 +54,12 @@ export function test_setData1():boolean {
                 [200]
             ]
         ],
-        "attribs": [
+        "attributes": [
             {
                 "name": "id",
                 "geom_type": "vertices",
                 "data_type":"number",
-                "map": [
+                "values_map": [
                     [[0, 1, 2, 3, 4, 5], []], 
                     [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], []], 
                     [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], []], 
@@ -81,7 +81,7 @@ export function test_setData1():boolean {
                 "name": "shell_id",
                 "geom_type": "wires",
                 "data_type":"number",
-                "map": [
+                "values_map": [
                     [0], 
                     [1], 
                     [2], 
@@ -96,7 +96,7 @@ export function test_setData1():boolean {
                 "name": "shell_id",
                 "geom_type": "faces",
                 "data_type":"number",
-                "map": [
+                "values_map": [
                     [], 
                     [], 
                     [], 
@@ -111,23 +111,23 @@ export function test_setData1():boolean {
         "groups": [
             {
                 "name": "boxes",
-                "objs": [[6], [7]]
+                "objects": [[6], [7]]
             },
             {
                 "name": "floors",
-                "objs": [[6, [], [0]], [7, [], [0]]]
+                "objects": [[6, [], [0]], [7, [], [0]]]
             },
             {
                 "name": "roofs",
-                "objs": [[6, [], [2]], [7, [], [1]]]
+                "objects": [[6, [], [2]], [7, [], [1]]]
             },
             {
                 "name": "text",
-                "objs": [[0], [1], [2], [3], [4], [5]]
+                "objects": [[0], [1], [2], [3], [4], [5]]
             },
             {
                 "name": "walls",
-                "objs": [[6, [], [1, 3, 4]], [7, [], [2, 3]]]
+                "objects": [[6, [], [1, 3, 4]], [7, [], [2, 3]]]
             }
         ]
     }
