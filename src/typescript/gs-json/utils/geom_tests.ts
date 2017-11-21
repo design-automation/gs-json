@@ -1,4 +1,4 @@
-import * as gsj from "./gs-json";
+import * as gs from "./gs-json";
 import {Model} from "./model";
 import {Geom} from "./geom";
 
@@ -7,7 +7,7 @@ export function test_xxx():boolean {
 }
 
 export function test_createPoint():boolean {
-    let model:gsj.IModel = new gsj.Model();
+    let model:gs.IModel = new gs.Model();
     model.getGeom().addPoint([1,2,3]);
     if (model.getGeom().numPoints() != 1) {return false;}
     return true;

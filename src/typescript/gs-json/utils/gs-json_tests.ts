@@ -1,3 +1,3 @@
-import * as gsj from "./gs-json";
+import * as gs from "./gs-json";
 
-//let m:gsj.IModel = new gsj.Model();
+//let m:gs.IModel = new gs.Model();

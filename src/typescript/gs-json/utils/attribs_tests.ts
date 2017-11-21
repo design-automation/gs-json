@@ -1,4 +1,4 @@
-import * as gsj from "./gs-json";
+import * as gs from "./gs-json";
 import {Model} from "./model";
 import {Geom} from "./geom";
 import * as ifs from "./interfaces";

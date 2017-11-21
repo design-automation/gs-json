@@ -1,7 +1,7 @@
 import {} from 'jasmine';
 import * as model_tests from "../utils/model_tests";
 
-describe('test_Model', () => {
+describe('Tests for Model class', () => {
     it('test_Model_constructor', () => {
         expect( model_tests.test_Model_constructor() ).toBe(true);
     });

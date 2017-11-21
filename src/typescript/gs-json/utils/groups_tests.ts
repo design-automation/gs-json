@@ -1,4 +1,4 @@
-import * as gsj from "./gs-json";
+import * as gs from "./gs-json";
 
 export function test_xxx():boolean {
     return true;
@@ -6,7 +6,7 @@ export function test_xxx():boolean {
 
 
 export function test_group_methods():boolean{
-let Model_1:gsj.Model = new gsj.Model();
+let Model_1:gs.Model = new gs.Model();
     Model_1.addGroup("First_Group");
     Model_1.addGroup("Second_Group");
     Model_1.addGroup("Third_Group");

@@ -1,4 +1,4 @@
-import * as gsj from "./gs-json";
+import * as gs from "./gs-json";
 import * as td from "./test_data";
 
 export function test_Topo_constructor():boolean{
@@ -40,66 +40,66 @@ export function test_Topo_getGroupNames():boolean{
 
 // Vertex
 export function test_Vertex_getGeomType():boolean{
-	let m:gsj.IModel = new gsj.Model();
+	let m:gs.IModel = new gs.Model();
 	m.setData(td.box);
-	let path:gsj.IGeomPath = new gsj.GeomPath(0, gsj.EGeomType.faces, 1, gsj.EGeomType.vertices, 1);
-	let v:gsj.IVertex = new gsj.Vertex(m.getGeom(), path);
-	if(v.getGeomType() != gsj.EGeomType.vertices) {return false;}
+	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
+	if(v.getGeomType() != gs.EGeomType.vertices) {return false;}
 	return true;
 }
 export function test_Vertex_getPoint():boolean{
-	let m:gsj.IModel = new gsj.Model();
+	let m:gs.IModel = new gs.Model();
 	m.setData(td.box);
-	let path:gsj.IGeomPath = new gsj.GeomPath(0, gsj.EGeomType.faces, 1, gsj.EGeomType.vertices, 1);
-	let v:gsj.IVertex = new gsj.Vertex(m.getGeom(), path);
+	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	if(v.getPoint().getID() != 6) {return false;}
 	return true;
 }
 export function test_Vertex_next():boolean{
-	let m:gsj.IModel = new gsj.Model();
+	let m:gs.IModel = new gs.Model();
 	m.setData(td.box);
-	let path:gsj.IGeomPath = new gsj.GeomPath(0, gsj.EGeomType.faces, 1, gsj.EGeomType.vertices, 1);
-	let v:gsj.IVertex = new gsj.Vertex(m.getGeom(), path);
+	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	if(v.next().getPoint().getID() != 5) {return false;}
 	if(v.next().next().getPoint().getID() != 1) {return false;}
 	if(v.next().next().next().getPoint().getID() != 2) {return false;}
 	return true;
 }
 export function test_Vertex_previous():boolean{
-	let m:gsj.IModel = new gsj.Model();
+	let m:gs.IModel = new gs.Model();
 	m.setData(td.box);
-	let path:gsj.IGeomPath = new gsj.GeomPath(0, gsj.EGeomType.faces, 1, gsj.EGeomType.vertices, 1);
-	let v:gsj.IVertex = new gsj.Vertex(m.getGeom(), path);
+	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	if(v.previous().getPoint().getID() != 2) {return false;}
 	if(v.previous().previous().getPoint().getID() != 1) {return false;}
 	return true;
 }
 export function test_Vertex_getEdge():boolean{
-	let m:gsj.IModel = new gsj.Model();
+	let m:gs.IModel = new gs.Model();
 	m.setData(td.box);
-	let path:gsj.IGeomPath = new gsj.GeomPath(0, gsj.EGeomType.faces, 1, gsj.EGeomType.vertices, 1);
-	let v:gsj.IVertex = new gsj.Vertex(m.getGeom(), path);
-	let e:gsj.IEdge = v.getEdge();
+	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
+	let e:gs.IEdge = v.getEdge();
 	if (e.getObjID() != 0) {return false;}
-	if (e.getGeomType() != gsj.EGeomType.edges) {return false;}
+	if (e.getGeomType() != gs.EGeomType.edges) {return false;}
 	return true;
 }
 export function test_Vertex_getParent():boolean{
-// 	let m:gsj.IModel = new gsj.Model();
+// 	let m:gs.IModel = new gs.Model();
 // 	m.setData(td.box);
-// 	let path:gsj.IGeomPath = new gsj.GeomPath(0, gsj.EGeomType.faces, 1, gsj.EGeomType.vertices, 1);
-// 	let v:gsj.IVertex = new gsj.Vertex(m.getGeom(), path);
+// 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+// 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 // 	if (v.getParent().getObjID() != 0) {return false;}
-// 	if (v.getParent().getGeomType() != gsj.EGeomType.faces) {return false;}
+// 	if (v.getParent().getGeomType() != gs.EGeomType.faces) {return false;}
 	return true;
 }
 export function test_Vertex_neighbours():boolean{
-	let m:gsj.IModel = new gsj.Model();
+	let m:gs.IModel = new gs.Model();
 	m.setData(td.box);
-	let path:gsj.IGeomPath = new gsj.GeomPath(0, gsj.EGeomType.faces, 1, gsj.EGeomType.vertices, 1);
-	let v:gsj.IVertex = new gsj.Vertex(m.getGeom(), path);
-	let w_v:gsj.IVertex[];//vertices that belong to wires
-	let f_v:gsj.IVertex[];//vertices that belong to faces
+	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
+	let w_v:gs.IVertex[];//vertices that belong to wires
+	let f_v:gs.IVertex[];//vertices that belong to faces
 	[w_v, f_v] = v.neighbours();
 	if (w_v.length != 0) {return false;}
 	if (f_v.length != 3) {return false;}
