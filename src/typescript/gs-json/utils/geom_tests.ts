@@ -79,3 +79,9 @@ export function test_Geom_getAttribTemplate():boolean {
 export function test_GeomPath_constructor():boolean {
     return true;
 }
+export function test_GeomPath_equals():boolean {
+    return true;
+}
+export function test_GeomPath_toString():boolean {
+    return true;
+}

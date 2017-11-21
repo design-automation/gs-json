@@ -70,8 +70,14 @@ describe('Tests for Geom class', () => {
     });
 });
 
-describe('Tests for Geom Path class', () => {
+describe('Tests for GeomPath class', () => {
     it('test_GeomPath_constructor', () => {
         expect( geom_tests.test_GeomPath_constructor() ).toBe(true);
+    });
+    it('test_GeomPath_equals', () => {
+        expect( geom_tests.test_GeomPath_equals() ).toBe(true);
+    });
+    it('test_GeomPath_equals', () => {
+        expect( geom_tests.test_GeomPath_toString() ).toBe(true);
     });
 });

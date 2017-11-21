@@ -72,14 +72,15 @@ export class Geom implements ifs.IGeom {
     }
     // Get data
     /**
-    * Return the data associated with a path. 
+    * Low level method to return the data associated with a path. 
+    * This method should only be used by experts.
     * The data  for an object consists of three arrays: [[wires],[faces],[parameters]].
     * The wires and faces arrays each contain lists of point IDs.
     * The path may extract a subset of this data. 
     * @param obj_id The object ID. 
     * @return The object data.
     */
-    public getData(path:ifs.IGeomPath):any {
+    public getData(path?:ifs.IGeomPath):any {
         try {
         //if (path.st) { //vertices or edges
             switch (path.st) {
@@ -107,9 +108,15 @@ export class Geom implements ifs.IGeom {
         //} else if (path.tt) { //wires or faces
             switch (path.tt) {
                 case ifs.EGeomType.wires:
-                    return this.objs_data[path.id][0][path.ti];
+                    if (path.ti != undefined) {
+                        return this.objs_data[path.id][0][path.ti];
+                    }
+                    return this.objs_data[path.id][0];
                 case ifs.EGeomType.faces:
-                    return this.objs_data[path.id][1][path.ti];
+                    if (path.ti != undefined) {
+                        return this.objs_data[path.id][1][path.ti];
+                    }
+                    return this.objs_data[path.id][1];
             }
         //} else { //objects
             return this.objs_data[path.id];

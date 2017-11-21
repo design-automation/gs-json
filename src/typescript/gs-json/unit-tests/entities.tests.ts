@@ -69,12 +69,12 @@ describe('Tests for Obj class', () => {
 
 describe('Tests for Polyline class', () => {
     it('test_Pline_getObjType', () => {
-        expect( entities_tests.test_Pline_getObjType() ).toBe(true);
+        expect( entities_tests.test_Polyline_getObjType() ).toBe(true);
     });
 });
 
 describe('Tests for Polymesh class', () => {
     it('test_Pmesh_getObjType', () => {
-        expect( entities_tests.test_Pmesh_getObjType() ).toBe(true);
+        expect( entities_tests.test_Polymesh_getObjType() ).toBe(true);
     });
 });

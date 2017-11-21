@@ -1,4 +1,5 @@
 import * as gsj from "./gs-json";
+import * as test_data from "./test_data";
 
 export function test_setPointPosition():boolean {
     let model:gsj.IModel = new gsj.Model();
@@ -8,60 +9,7 @@ export function test_setPointPosition():boolean {
     return gsj.Arr.equal([4,5,6], pos);
 }
 
-let data: gsj.IModelData = {
-    "metadata": {
-            "filetype": "mobius",
-            "version": 0.1,
-            "crs": { "epsg": 3857 },
-            "location": "+40.6894-074.0447"
-        },
-    "points":[
-            [0, 1, 2, 3],
-            [[-0.7794438004493713, -1.0, 0.0], [0.22055619955062866, -1.0, 0.0], [0.22055619955062866, -1.0, 3.0]]
-        ],
-    "objects": [
-        [
-            [[16, 17, 18, 19, 20, 21]],
-            [],
-            [100]
-        ]
-    ],
-    "attribs": [
-        {
-            "name": "Name_3",
-            "geom_type": "vertices",
-            "data_type":"number",
-            "map": [[[0, 1, 2, 3, 4, 5], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], []], [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []]],
-            "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-        }
-    ],
-    "groups": [
-        {
-            "name": "boxes",
-            "objs": [[6], [7]]
-        }
-    ]
-};
 
-    // let m1:gsj.Model = new gsj.Model();
-    // return true;
-
-    // m1.setData(data);
-    // let e1:gsj.Entity = new gsj.Entity(m1.getGeom()); //constructor
-    // e1.getGeom(); //method 1
-    // e1.getModel(); //method 2
-
-export function test2():void{
-    let m2:gsj.Model = new gsj.Model();
-    m2.setData(data);
-    let P1:gsj.Point = new gsj.Point(m2.getGeom(),1); // constructor
-    // P1.getPath(); //set of methods
-    P1.setPosition([2,2,4]);
-    P1.getPosition();
-    P1.getAttribNames();
-    P1.setAttribValue("Name_1",9);
-    P1.getAttribValue("Name_1");
-}
 
 
 
@@ -130,11 +78,15 @@ export function test_obj_getFaces():boolean {
 }
 
 // Polyline test, extend Obj by 1 method
-export function test_Pline_getObjType():boolean {
+export function test_Polyline_getObjType():boolean {
+    let model:gsj.IModel = new gsj.Model();
+    model.setData(test_data.box);
+    let wire:number[] = model.getGeom().getData(new gsj.GeomPath(0, gsj.EGeomType.wires, 2));
+    if (gsj.Arr.equal(wire,[2, 6, 5, 1, 2])) {return false;}
     return true;
 }
 
 // Polymesh test, extend Obj by 1 method
-export function test_Pmesh_getObjType():boolean {
+export function test_Polymesh_getObjType():boolean {
     return true;
 }

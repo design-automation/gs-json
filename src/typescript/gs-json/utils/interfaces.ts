@@ -207,7 +207,7 @@ export interface IGeom  {
     addPolyline(wire_points:IPoint[]):IObj;
     addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
     //Generic method for getting data
-    getData(path:IGeomPath):any;
+    getData(path?:IGeomPath):any;
     //Points
     getPointIDs(obj_type?:EObjType):number[];
     getPoints(obj_type?:EObjType):IPoint[];
@@ -285,10 +285,12 @@ export interface IObj extends IEnt {
     //constructor cannot be used to create a new point
     //use the "add" method in Geom class
     getObjType():EObjType;
-    getVertices():IVertex[];
-    getEdges():IEdge[];
+    //
     getWires():IWire[];
     getFaces():IFace[];
+    //
+    numWires():number;
+    numFaces():number;
 }
 /**
 * Interface, for a Polyline class.
@@ -328,6 +330,7 @@ export interface IVertex extends ITopo {
     next():IVertex;
     previous():IVertex;    
     getEdge():IEdge;
+    getParent():IWire|IFace; //getWireOrFace()
     neighbours():IVertex[][];
 }
 /**

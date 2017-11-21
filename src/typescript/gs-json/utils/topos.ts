@@ -282,7 +282,7 @@ export class Edge extends Topo implements ifs.IEdge {
                     new GeomPath(this.path.id,ifs.EGeomType.wires,w_i,this.path.st,v_i)))));
         //loop through all faces and extract verts that have same point_id
         let face_edges:ifs.IEdge[] = [];
-        obj_data[0].forEach((f,f_i)=>w.forEach((v,v_i)=>
+        obj_data[1].forEach((f,f_i)=>w.forEach((v,v_i)=>
             Arr.equal([v, obj_data[v_i+1]].sort(), points) && 
                 face_edges.push(new Edge(this.geom, 
                     new GeomPath(this.path.id,ifs.EGeomType.faces,f_i,this.path.st,v_i)))));
@@ -326,14 +326,13 @@ export class Wire extends Topo implements ifs.IWire {
     */
     public numVertices():number {
         let points:number[] = this.geom.getData(this.path) as number[];
-        if (points[0] == points[points.length - 1]) { //is closed
+        if (points[points.length - 1] == -1) { //is closed
             return points.length - 1;
-        } else {
-            return points.length;
         }
+        return points.length;
     }
     /**
-    * Return the number of edged in this wire.
+    * Return the number of edges in this wire.
     * @param
     * @return 
     */
@@ -347,7 +346,7 @@ export class Wire extends Topo implements ifs.IWire {
     */
     public isClosed():boolean {
         let points:number[] = this.geom.getData(this.path) as number[];
-        return (points[0] == points[points.length - 1]);
+        return (points[points.length - 1] == -1);
     }
 }
 /**
