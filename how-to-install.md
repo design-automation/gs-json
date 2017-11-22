@@ -3,12 +3,12 @@
 Install the module from the github repository using "npm install"
 
 ```
-npm install --save git+https://git@github.com/phtj/gs-JSON.git
+npm install gs-json
 ```
 
 You can now use gs-json modules by importing them wherever required. For example:  
 ```
-import {gs_utils} from "gs-json";
+import {gs_json} from "gs-json";
 ```
 
 Run npm update to update the package. 
