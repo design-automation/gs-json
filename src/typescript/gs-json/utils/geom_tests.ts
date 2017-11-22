@@ -1,6 +1,8 @@
 import * as gs from "./gs-json";
 import {Model} from "./model";
 import {Geom} from "./geom";
+import {GeomPath} from "./geom";
+import * as ifs from "./interfaces";
 
 export function test_xxx():boolean {
     return true;
@@ -21,6 +23,10 @@ export function test_Geom_constructor():boolean {
     return true;
 }
 export function test_Geom_getModel():boolean {
+    let m:Model = new Model();
+    let a:Geom = new Geom(m);
+    a.addPoint([1,3,8]);
+    a.getModel();
     return true;
 }
 export function test_Geom_addPoint():boolean {
@@ -36,9 +42,28 @@ export function test_Geom_addPolymesh():boolean {
     return true;
 }
 export function test_Geom_getData():boolean {
+    let m:Model = new Model();
+    let a:Geom = new Geom(m);
+    a.addPoint([1,3,8]);
+    a.addPoint([6,4,3]);
+    let b1:ifs.IGeomPath = new GeomPath(0, null, null, null, null)
+    let b2:ifs.IGeomPath = new GeomPath(1, null, null, null, null)
+    console.log(b1.equals(b1));
+    console.log(b1.equals(b2));
+    console.log(a.getData(b1));
+    console.log(a.getData(b2));
     return true;
 }
 export function test_Geom_getPointIDs():boolean {
+    let m:Model = new Model();
+    let a:Geom = new Geom(m);
+    a.addPoint([1,3,8]);
+    a.addPoint([6,4,3]);
+    a.addPoint([8,8,8]);
+    a.addPoint([3,4,5]);
+    a.addPoint([2,3,5]);
+    a.addPoint([1,5,2]);
+    console.log(a.getPointIDs()); //expect to return the number 6, as there are 6 points
     return true;
 }
 export function test_Geom_getPoints():boolean {
