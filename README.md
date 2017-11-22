@@ -1,6 +1,7 @@
+https://travis-ci.org/phtj/gs-json.svg?branch=master
 # gs-JSON
 
-gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs'). 
+gs-json is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs'). 
 
 See the API docs: https://phtj.github.io/gs-JSON
 
