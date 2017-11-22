@@ -21,28 +21,37 @@ The topological component hierarchy is follows:
   * WIRE = a set of one or more connected EDGES, either open or closed.
 * 2D Components
   * FACE = a face bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.
-  * SHELL = a set of one or more connected FACES, either open or closed. 
+
+The most basic types of geometric entities are:
+* Point
+* Objects
+  * Polylines
+  * Polymeshes
 
 ### Points
 The base data to which everything else is connected is a set of points in space. 
+There is a one to many relationship between points and vertices:
+* A point can be associated with many vertices.
+* A vertex is associated with a single point. 
 
-### Wires
+### Polylines
+The topology of a polyline consists of a single wire.
 Each wire has:
-* a set of connected edges (implicit), and
-* a sequence of vertices (implicit), each of which is
-* associated with a single (implicit) point.
+* a set of connected edges, and
+* a sequence of vertices, each of which is
 
-### Shells
-Each shell has topological sub-components: wires and faces.
+### Polymeshes
+The topology of a polymesh consists of wires and faces.
 
-The wires represent the naked edges of the shell. Since a shell can have holes, there may be more than one. A shell can also have no naked edges, in which case it is closed. Wires have:
-* a set of connected edges (implicit), and
-* a sequence of vertices (implicit), each of which is
-* associated with a single (implicit) point.
+The wires represent the naked edges of the polymesh. Since a polymesh can have holes, there may be more than one naked edge. A polymesh can also have no naked edges, in which case it is a closed solid. 
+
+Wires have:
+* a set of connected edges, and
+* a sequence of vertices, each of which is
 
 The faces have:
-* a set of connected edges (implicit) forming a closed loop, each of which has
-* a sequence of vertices (implicit).
+* a set of connected edges forming a closed loop, each of which has
+* a sequence of vertices.
 
 ### Shared Points and Vertices
 Vertices can share points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each point is therefore referenced by three vertices. 
@@ -53,15 +62,15 @@ Hhigher level components cannot be shared. For example, an edge cannot be part o
 
 ## Geomety
 The geometric objects together with their type identifiers are as follows:
-* 0D VERTEX objects:
+* 0D Objects:
   * 0 - Acorn //not implemented
   * 1 - Ray //not implemented
   * 2 - Plane //not implemented
-* 1D WIRE objects:
+* 1D Objects:
   * 100 - Polyline
   * 120 - NURBS curve //not implemented
   * 121 - Bezier curve //not implemented
-* 2D SHELL objects:
+* 2D Objects:
   * 200 - Polymesh
   * 220 - NURBS Surface //not implemented
   * 221 - Bezier Surface //not implemented
@@ -146,7 +155,7 @@ The attributes and groups arrays each define the semantics.
 Attributes are defined as follows:
 * {"name"="my_attrib", "geom_type"="xxx", "data_type"="xxx", "values"=[...], "values_map"=[...] }
 
-*geom_type* can be "points", "vertices", "edges", "wires", "faces", and "shells".
+*geom_type* can be "points", "vertices", "edges", "wires", "faces".
 
 *data_type* can be "string", "number","boolean","string[]","number[]","boolean[]".
 
