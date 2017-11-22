@@ -2,7 +2,7 @@
   "name": "gs-json",
   "version": "0.1.0",
   "description": "gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs').",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "karma start ./.config/karma.conf.ts",
     "docs": "typedoc --out  ./docs/typescript ./src/typescript/gs-json/utils --module commonjs"
