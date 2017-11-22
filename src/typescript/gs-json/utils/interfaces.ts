@@ -206,7 +206,8 @@ export interface IGeom  {
     //Creation
 //    addPoint(xyz:number[]):IPoint;
     addPoint(xyz:number[]):void;
-    addPolyline(wire_points:IPoint[]):IObj;
+//    addPolyline(wire_points:IPoint[]):IObj;
+    addPolyline(wire_points:IPoint[]):void;
     addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
     //Generic method for getting data
     getData(path?:IGeomPath):any;

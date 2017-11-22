@@ -39,12 +39,7 @@ export class Geom implements ifs.IGeom {
     public getModel():ifs.IModel {
     return this.model;
     }
-    //Creation
-    /**
-    * to be completed
-    * @param
-    * @return
-    */
+
     // public addPoint(xyz:number[]):ifs.IPoint {
     //     let point:Point = new Point(this, this.numPoints());
     //     //append a point to the points array
@@ -56,6 +51,12 @@ export class Geom implements ifs.IGeom {
     //     return point;
     // }
 
+    //Creation
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
     public addPoint(xyz:number[]):void {
         this.points_data[0].push(this.points_data[0].length);
         this.points_data[1].push(xyz);
@@ -66,9 +67,17 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public addPolyline(wire_points:ifs.IPoint[]):ifs.IObj {
-        throw new Error ("Method not implemented.");
+    // public addPolyline(wire_points:ifs.IPoint[]):ifs.IObj {
+    //     throw new Error ("Method not implemented.");
+    // }
+
+    public addPolyline(wire_points:ifs.IPoint[]):void {
+        for (let k:number = 0 ; k < wire_points.length ; k++){
+            this.objs_data[0].push([wire_points[k].getPosition(),[], ifs.EObjType.polyline])
+        }
     }
+
+
     /**
     * to be completed
     * @param
