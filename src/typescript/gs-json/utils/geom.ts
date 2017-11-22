@@ -45,15 +45,22 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public addPoint(xyz:number[]):ifs.IPoint {
-        let point:Point = new Point(this, this.numPoints());
-        //append a point to the points array
-        this.points_data[0].push(0);//points to null
-        point.setPosition(xyz);
-        //TODO extend all point attributes by one item
+    // public addPoint(xyz:number[]):ifs.IPoint {
+    //     let point:Point = new Point(this, this.numPoints());
+    //     //append a point to the points array
+    //     this.points_data[0].push(0);//points to null
+    //     point.setPosition(xyz);
 
-        return point;
+    //     this.points_data[0].push(this.points_data[0].length);
+    //     this.points_data[1].push(xyz);
+    //     return point;
+    // }
+
+    public addPoint(xyz:number[]):void {
+        this.points_data[0].push(this.points_data[0].length);
+        this.points_data[1].push(xyz);
     }
+
     /**
     * to be completed
     * @param

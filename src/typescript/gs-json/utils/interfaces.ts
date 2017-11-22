@@ -204,7 +204,8 @@ export interface IGeom  {
     //constructor(model:ifs.IModel, point_data?:any[], obj_data?:any[]) 
     getModel():IModel;
     //Creation
-    addPoint(xyz:number[]):IPoint;
+//    addPoint(xyz:number[]):IPoint;
+    addPoint(xyz:number[]):void;
     addPolyline(wire_points:IPoint[]):IObj;
     addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
     //Generic method for getting data
