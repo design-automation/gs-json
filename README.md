@@ -6,7 +6,7 @@ gs-json is a domain agnostic unifying 3D file format for geometric and semantic 
 See the API docs: https://phtj.github.io/gs-json
 
 # Conceptual Model
-The gs-JSON conceptual model uses topology as the organising framework for defining both geometry and semantics.
+The gs-json conceptual model uses topology as the organising framework for defining both geometry and semantics.
 
 Geometry consists of objects, and includes both polygonal and spline based geometry. Semantics consists of data linked to objects and groups of objects in the model.
 
@@ -79,15 +79,21 @@ Semantic information can be added to the model in two ways:
 1. by specifying *attributes* linked to the topological components inside obejcts, and/or
 1. by specifying *properties* linked to nested groups of geometric objects.   
 
-These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.
+These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-json, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-json does not specify any domain-specific semantics.
 
 # JSON Encoding of Geometry
-Within a gs-JSON file, the all geometry is defined in a single *geometry* array, where each element in the array specified a geometric object, as follows:
+Within a gs-json file, the geometry is defined in two arrays. Points aee specified in the "points" array. Objects are specified in the "objs" array.
 ```javascript
-"geometry": [
-	[...],
-	[...],
-	[...],
+"ponts": [
+	[...], //values_map
+	[...]  //values
+],
+"objs": [
+	[
+		[...], //wires
+		[...], //faces
+		[...] //parameters
+	],
 	//...
 ]
 ```
@@ -97,10 +103,10 @@ Objects are represented using integer arrays, consisting of three sub-arrays as 
 
 ### Polylines
 A example of a polyline:
-* [[[0,1,2,3,0]], [], [100]]
+* [[[0,1,2,3,-1]], [], [100]]
 
 This represents the following:
-1. a single wire, with point indices 0,1,2,3,0 (since the first and last are the same, it must be closed.)
+1. a single wire, with point indices 0,1,2,3,-1 (the last vertex being -1 indicates that it must be closed.)
 1. no faces
 1. one parameter, type = 100, i.e. polyline.
 
@@ -108,7 +114,7 @@ Polylines can be open or closed. A closed polyline is not the same as a polygon.
 
 ### Polygon Meshes
 An example of a polygon mesh:
-* [[[60,61,62,63,60]], [[60,61,63,60], [61,62,63,61]], [200]]
+* [[[60,61,62,63,-1]], [[60,61,63,-1], [61,62,63,-1]], [200]]
 
 This represents the following:
 1. a single closed wire with 4 point indices 60,61,62,63,60
@@ -120,7 +126,7 @@ Polygon meshes have faces and wires, both of which are always closed. The wires 
 # JSON Encoding of Semantics
 Within a js-JSON file, all semantics is defined in a two arrays, as follows:
 ```javascript
-"attributes":  [ 
+"attribs":  [ 
 	{...},
 	{...},
 	{...},
@@ -138,9 +144,9 @@ The attributes and groups arrays each define the semantics.
 
 ## Attributes
 Attributes are defined as follows:
-* {"name"="my_attrib", "topo_type"="xxx", "data_type"="xxx", "values"=[...], "values_map"=[...] }
+* {"name"="my_attrib", "geom_type"="xxx", "data_type"="xxx", "values"=[...], "values_map"=[...] }
 
-*topo_type* can be "points", "vertices", "edges", "wires", "faces", and "shells".
+*geom_type* can be "points", "vertices", "edges", "wires", "faces", and "shells".
 
 *data_type* can be "string", "number","boolean","string[]","number[]","boolean[]".
 
@@ -161,17 +167,17 @@ A group can contain geometric objects. Geometric objects may be contained in mor
 Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a *root* or *top-level* group. 
 
 Groups are defined as follows: 
-* {"name"="my_coll", "typology"="xxx", "objects"=[...], "parent"=[...], "props"={"key1":value1, "key2":value2, ...}}
+* {"name"="my_coll", "objs"=[...], "parent"=[...], "props"={"key1":value1, "key2":value2, ...}}
 
-*typology* is either "points", "vertices", "edges", "wires", "shells", "collections", or "none". 
+*objs* is an integer array of objects indices. 
 
-*objects* is an integer array of objects indices. 
+*parent* is the name of teh parent group (i.e. a striing). 
 
 *props* is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. 
 
 # Example
 
 There are some examples files here:
-* https://github.com/phtj/gs-JSON/tree/master/src/assets/gs-json
+* https://github.com/phtj/gs-json/tree/master/src/assets/gs-json
 
 
