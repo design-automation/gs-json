@@ -1,14 +1,6 @@
 import * as gs from "./gs-json";
 import * as test_data from "./test_data";
 
-export function test_setPointPosition():boolean {
-    let model:gs.IModel = new gs.Model();
-    // let point:gs.IPoint = model.getGeom().addPoint([11,22,33]);
-    // point.setPosition([4,5,6]);
-    // let pos:number[] = point.getPosition();
-    // return gs.Arr.equal([4,5,6], pos);
-    return true;
-}
 
 // Entities tests, 1 constructor and 8 methods
 export function test_ent_constructor():boolean {
@@ -38,13 +30,20 @@ export function test_ent_setAttribValue():boolean {
 export function test_ent_getGroupNames():boolean {
     return true;
 }
-
+export function test_ent_addToGroup():boolean {
+    return true;
+}
 
 // Point tests, extends Entities by 4 complementary methods
 export function test_point_getGeomType():boolean {
     return true;
 }
 export function test_point_setPosition():boolean {
+    let model:gs.IModel = new gs.Model();
+    // let point:gs.IPoint = model.getGeom().addPoint([11,22,33]);
+    // point.setPosition([4,5,6]);
+    // let pos:number[] = point.getPosition();
+    // return gs.Arr.equal([4,5,6], pos);
     return true;
 }
 export function test_point_getPosition():boolean {
@@ -78,7 +77,7 @@ export function test_obj_getFaces():boolean {
 export function test_Polyline_getObjType():boolean {
     let model:gs.IModel = new gs.Model();
     model.setData(test_data.box);
-    let wire:number[] = model.getGeom().getData(new gs.GeomPath(0, gs.EGeomType.wires, 2));
+    let wire:number[] = model.getGeom().getObjData(new gs.GeomPath(0, gs.EGeomType.wires, 2));
     if (gs.Arr.equal(wire,[2, 6, 5, 1, 2])) {return false;}
     return true;
 }

@@ -72,7 +72,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Interface, to be completed</p>
+						<p>Interface, for parsing JSON GroupData.</p>
 					</div>
 				</div>
 			</section>
@@ -94,7 +94,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#groups" class="tsd-kind-icon">groups</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#objs" class="tsd-kind-icon">objs</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#properties" class="tsd-kind-icon">properties</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#parent" class="tsd-kind-icon">parent</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#props" class="tsd-kind-icon">props</a></li>
 							</ul>
 						</section>
 					</div>
@@ -108,7 +109,7 @@
 					<div class="tsd-signature tsd-kind-icon">groups<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L90">interfaces.ts:90</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L108">interfaces.ts:108</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -118,7 +119,7 @@
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L88">interfaces.ts:88</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L105">interfaces.ts:105</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -128,17 +129,27 @@
 					<div class="tsd-signature tsd-kind-icon">objs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L89">interfaces.ts:89</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L107">interfaces.ts:107</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="properties" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> properties</h3>
-					<div class="tsd-signature tsd-kind-icon">properties<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<a name="parent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> parent</h3>
+					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L91">interfaces.ts:91</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L106">interfaces.ts:106</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="props" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> props</h3>
+					<div class="tsd-signature tsd-kind-icon">props<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L109">interfaces.ts:109</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -207,6 +218,9 @@
 						<a href="../modules/_model_tests_.html">"model_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_test_data_.html">"test_<wbr>data"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_topos_.html">"topos"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -273,7 +287,10 @@
 								<a href="_interfaces_.igroupdata.html#objs" class="tsd-kind-icon">objs</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.igroupdata.html#properties" class="tsd-kind-icon">properties</a>
+								<a href="_interfaces_.igroupdata.html#parent" class="tsd-kind-icon">parent</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.igroupdata.html#props" class="tsd-kind-icon">props</a>
 							</li>
 						</ul>
 					</li>
@@ -314,6 +331,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.iwire.html" class="tsd-kind-icon">IWire</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#attribtypestrings" class="tsd-kind-icon">attrib<wbr>Type<wbr>Strings</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/_interfaces_.html#mapstringtoattribtype" class="tsd-kind-icon">map<wbr>String<wbr>ToAttrib<wbr>Type</a>

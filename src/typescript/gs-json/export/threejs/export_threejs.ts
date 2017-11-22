@@ -23,7 +23,6 @@ export function exportThreejsUrl(url:string):boolean {
 /**
 * This is an example function that goes through a gs-json file and extracts some entities. 
 */
-
 export function exportThreejsData(model:gs.IModel):void {
 	for (let p of model.getGeom().getPoints()) {
 		//Do something here with your points

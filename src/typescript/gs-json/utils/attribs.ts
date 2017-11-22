@@ -40,7 +40,7 @@ export class Attrib implements ifs.IAttrib {
     public getGeomType():ifs.EGeomType {
         return this.attrib_type;
     }
-    public getDataType():ifs.EDataType {
+    public getObjDataType():ifs.EDataType {
         return this.data_type;
     }
     //Attrib Values

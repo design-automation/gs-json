@@ -64,11 +64,12 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="gs-json">gs-JSON</h1>
-				<p>gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the &#39;gs&#39;). </p>
-				<p>See the API docs: <a href="https://phtj.github.io/gs-JSON">https://phtj.github.io/gs-JSON</a></p>
+				<p>[<img src="https://travis-ci.org/phtj/gs-json.svg?branch=master" alt="Build Status">]</p>
+				<h1 id="gs-json">gs-json</h1>
+				<p>gs-json is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the &#39;gs&#39;). </p>
+				<p>See the API docs: <a href="https://phtj.github.io/gs-json">https://phtj.github.io/gs-json</a></p>
 				<h1 id="conceptual-model">Conceptual Model</h1>
-				<p>The gs-JSON conceptual model uses topology as the organising framework for defining both geometry and semantics.</p>
+				<p>The gs-json conceptual model uses topology as the organising framework for defining both geometry and semantics.</p>
 				<p>Geometry consists of objects, and includes both polygonal and spline based geometry. Semantics consists of data linked to objects and groups of objects in the model.</p>
 				<h2 id="topology">Topology</h2>
 				<p>Each geometric object consists of a set of topological components.
@@ -86,31 +87,44 @@
 					</li>
 					<li>2D Components<ul>
 							<li>FACE = a face bounded by a closed WIRE, with zero or more holes each bounded by a closed WIRE.</li>
-							<li>SHELL = a set of one or more connected FACES, either open or closed. </li>
+						</ul>
+					</li>
+				</ul>
+				<p>The most basic types of geometric entities are:</p>
+				<ul>
+					<li>Point</li>
+					<li>Objects<ul>
+							<li>Polylines</li>
+							<li>Polymeshes</li>
 						</ul>
 					</li>
 				</ul>
 				<h3 id="points">Points</h3>
-				<p>The base data to which everything else is connected is a set of points in space. </p>
-				<h3 id="wires">Wires</h3>
-				<p>Each wire has:</p>
+				<p>The base data to which everything else is connected is a set of points in space.
+				There is a one to many relationship between points and vertices:</p>
 				<ul>
-					<li>a set of connected edges (implicit), and</li>
-					<li>a sequence of vertices (implicit), each of which is</li>
-					<li>associated with a single (implicit) point.</li>
+					<li>A point can be associated with many vertices.</li>
+					<li>A vertex is associated with a single point. </li>
 				</ul>
-				<h3 id="shells">Shells</h3>
-				<p>Each shell has topological sub-components: wires and faces.</p>
-				<p>The wires represent the naked edges of the shell. Since a shell can have holes, there may be more than one. A shell can also have no naked edges, in which case it is closed. Wires have:</p>
+				<h3 id="polylines">Polylines</h3>
+				<p>The topology of a polyline consists of a single wire.
+				Each wire has:</p>
 				<ul>
-					<li>a set of connected edges (implicit), and</li>
-					<li>a sequence of vertices (implicit), each of which is</li>
-					<li>associated with a single (implicit) point.</li>
+					<li>a set of connected edges, and</li>
+					<li>a sequence of vertices.</li>
+				</ul>
+				<h3 id="polymeshes">Polymeshes</h3>
+				<p>The topology of a polymesh consists of wires and faces.</p>
+				<p>The wires represent the naked edges of the polymesh. Since a polymesh can have holes, there may be more than one naked edge. A polymesh can also have no naked edges, in which case it is a closed solid. </p>
+				<p>Wires have:</p>
+				<ul>
+					<li>a set of connected edges, and</li>
+					<li>a sequence of vertices.</li>
 				</ul>
 				<p>The faces have:</p>
 				<ul>
-					<li>a set of connected edges (implicit) forming a closed loop, each of which has</li>
-					<li>a sequence of vertices (implicit).</li>
+					<li>a set of connected edges forming a closed loop, each of which has</li>
+					<li>a sequence of vertices.</li>
 				</ul>
 				<h3 id="shared-points-and-vertices">Shared Points and Vertices</h3>
 				<p>Vertices can share points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each point is therefore referenced by three vertices. </p>
@@ -119,19 +133,19 @@
 				<h2 id="geomety">Geomety</h2>
 				<p>The geometric objects together with their type identifiers are as follows:</p>
 				<ul>
-					<li>0D VERTEX objects:<ul>
+					<li>0D Objects:<ul>
 							<li>0 - Acorn //not implemented</li>
 							<li>1 - Ray //not implemented</li>
 							<li>2 - Plane //not implemented</li>
 						</ul>
 					</li>
-					<li>1D WIRE objects:<ul>
+					<li>1D Objects:<ul>
 							<li>100 - Polyline</li>
 							<li>120 - NURBS curve //not implemented</li>
 							<li>121 - Bezier curve //not implemented</li>
 						</ul>
 					</li>
-					<li>2D SHELL objects:<ul>
+					<li>2D Objects:<ul>
 							<li>200 - Polymesh</li>
 							<li>220 - NURBS Surface //not implemented</li>
 							<li>221 - Bezier Surface //not implemented</li>
@@ -148,13 +162,19 @@
 					<li>by specifying <em>attributes</em> linked to the topological components inside obejcts, and/or</li>
 					<li>by specifying <em>properties</em> linked to nested groups of geometric objects.   </li>
 				</ol>
-				<p>These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-JSON, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-JSON does not specify any domain-specific semantics.</p>
+				<p>These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-json, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-json does not specify any domain-specific semantics.</p>
 				<h1 id="json-encoding-of-geometry">JSON Encoding of Geometry</h1>
-				<p>Within a gs-JSON file, the all geometry is defined in a single <em>geometry</em> array, where each element in the array specified a geometric object, as follows:</p>
-				<pre><code class="lang-javascript"><span class="hljs-string">"geometry"</span>: [
-    [...],
-    [...],
-    [...],
+				<p>Within a gs-json file, the geometry is defined in two arrays. Points aee specified in the &quot;points&quot; array. Objects are specified in the &quot;objs&quot; array.</p>
+				<pre><code class="lang-javascript"><span class="hljs-string">"ponts"</span>: [
+    [...], <span class="hljs-comment">//values_map</span>
+    [...]  <span class="hljs-comment">//values</span>
+],
+<span class="hljs-string">"objs"</span>: [
+    [
+        [...], <span class="hljs-comment">//wires</span>
+        [...], <span class="hljs-comment">//faces</span>
+        [...] <span class="hljs-comment">//parameters</span>
+    ],
     <span class="hljs-comment">//...</span>
 ]
 </code></pre>
@@ -166,11 +186,11 @@
 				<h3 id="polylines">Polylines</h3>
 				<p>A example of a polyline:</p>
 				<ul>
-					<li>[[[0,1,2,3,0]], [], [100]]</li>
+					<li>[[[0,1,2,3,-1]], [], [100]]</li>
 				</ul>
 				<p>This represents the following:</p>
 				<ol>
-					<li>a single wire, with point indices 0,1,2,3,0 (since the first and last are the same, it must be closed.)</li>
+					<li>a single wire, with point indices 0,1,2,3,-1 (the last vertex being -1 indicates that it must be closed.)</li>
 					<li>no faces</li>
 					<li>one parameter, type = 100, i.e. polyline.</li>
 				</ol>
@@ -178,7 +198,7 @@
 				<h3 id="polygon-meshes">Polygon Meshes</h3>
 				<p>An example of a polygon mesh:</p>
 				<ul>
-					<li>[[[60,61,62,63,60]], [[60,61,63,60], [61,62,63,61]], [200]]</li>
+					<li>[[[60,61,62,63,-1]], [[60,61,63,-1], [61,62,63,-1]], [200]]</li>
 				</ul>
 				<p>This represents the following:</p>
 				<ol>
@@ -189,7 +209,7 @@
 				<p>Polygon meshes have faces and wires, both of which are always closed. The wires represent the naked edges of the mesh. A mesh with no wires is a solid. </p>
 				<h1 id="json-encoding-of-semantics">JSON Encoding of Semantics</h1>
 				<p>Within a js-JSON file, all semantics is defined in a two arrays, as follows:</p>
-				<pre><code class="lang-javascript"><span class="hljs-string">"attributes"</span>:  [
+				<pre><code class="lang-javascript"><span class="hljs-string">"attribs"</span>:  [
     {...},
     {...},
     {...},
@@ -206,9 +226,9 @@
 				<h2 id="attributes">Attributes</h2>
 				<p>Attributes are defined as follows:</p>
 				<ul>
-					<li>{&quot;name&quot;=&quot;my_attrib&quot;, &quot;topo_type&quot;=&quot;xxx&quot;, &quot;data_type&quot;=&quot;xxx&quot;, &quot;values&quot;=[...], &quot;values_map&quot;=[...] }</li>
+					<li>{&quot;name&quot;=&quot;my_attrib&quot;, &quot;geom_type&quot;=&quot;xxx&quot;, &quot;data_type&quot;=&quot;xxx&quot;, &quot;values&quot;=[...], &quot;values_map&quot;=[...] }</li>
 				</ul>
-				<p><em>topo_type</em> can be &quot;points&quot;, &quot;vertices&quot;, &quot;edges&quot;, &quot;wires&quot;, &quot;faces&quot;, and &quot;shells&quot;.</p>
+				<p><em>geom_type</em> can be &quot;points&quot;, &quot;vertices&quot;, &quot;edges&quot;, &quot;wires&quot;, &quot;faces&quot;.</p>
 				<p><em>data_type</em> can be &quot;string&quot;, &quot;number&quot;,&quot;boolean&quot;,&quot;string[]&quot;,&quot;number[]&quot;,&quot;boolean[]&quot;.</p>
 				<p><em>values</em> is an array the defines the set of unique values that will be assigned to the geometric objects. The values must follow the data type specified in <em>data_type</em>.</p>
 				<p><em>values_map</em> is an array of indices, whose length is equal to the number of elements.  </p>
@@ -224,15 +244,15 @@
 				<p>Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a <em>root</em> or <em>top-level</em> group. </p>
 				<p>Groups are defined as follows: </p>
 				<ul>
-					<li>{&quot;name&quot;=&quot;my_coll&quot;, &quot;typology&quot;=&quot;xxx&quot;, &quot;objects&quot;=[...], &quot;parent&quot;=[...], &quot;props&quot;={&quot;key1&quot;:value1, &quot;key2&quot;:value2, ...}}</li>
+					<li>{&quot;name&quot;=&quot;my_coll&quot;, &quot;objs&quot;=[...], &quot;parent&quot;=[...], &quot;props&quot;={&quot;key1&quot;:value1, &quot;key2&quot;:value2, ...}}</li>
 				</ul>
-				<p><em>typology</em> is either &quot;points&quot;, &quot;vertices&quot;, &quot;edges&quot;, &quot;wires&quot;, &quot;shells&quot;, &quot;collections&quot;, or &quot;none&quot;. </p>
-				<p><em>objects</em> is an integer array of objects indices. </p>
+				<p><em>objs</em> is an integer array of objects indices. </p>
+				<p><em>parent</em> is the name of teh parent group (i.e. a striing). </p>
 				<p><em>props</em> is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. </p>
 				<h1 id="example">Example</h1>
 				<p>There are some examples files here:</p>
 				<ul>
-					<li><a href="https://github.com/phtj/gs-JSON/tree/master/src/assets/gs-json">https://github.com/phtj/gs-JSON/tree/master/src/assets/gs-json</a></li>
+					<li><a href="https://github.com/phtj/gs-json/tree/master/src/assets/gs-json">https://github.com/phtj/gs-json/tree/master/src/assets/gs-json</a></li>
 				</ul>
 			</div>
 		</div>
@@ -286,6 +306,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_model_tests_.html">"model_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_test_data_.html">"test_<wbr>data"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_topos_.html">"topos"</a>

@@ -210,7 +210,8 @@ export interface IGeom  {
     addPolyline(wire_points:IPoint[]):void;
     addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
     //Generic method for getting data
-    getData(path?:IGeomPath):any;
+    getPointData(id:number):any[];
+    getObjData(path?:IGeomPath):any;
     //Points
     getPointIDs(obj_type?:EObjType):number[];
     getPoints(obj_type?:EObjType):IPoint[];
@@ -269,6 +270,7 @@ export interface IEnt  {
     setAttribValue(name:string, value:any):any;
     //groups
     getGroupNames():string[];
+    addToGroup(name:string):boolean;
 }
 /**
 * Interface, for the Point class, that represents a 3D point with xyz coords.
@@ -330,21 +332,22 @@ export interface ITopo {
 */
 export interface IVertex extends ITopo {
     getPoint(): IPoint;
+    getEdge():IEdge;
+    getWireOrFace():IWire|IFace; 
     next():IVertex;
     previous():IVertex;    
-    getEdge():IEdge;
-    getParent():IWire|IFace; //getWireOrFace()
-    neighbours():IVertex[][];
+    verticesSharedPoint():IVertex[][];
+    verticesSamePosition():IVertex[][];
 }
 /**
 * Interface, for Edge class.
 */
 export interface IEdge extends ITopo {
     getVertices(): IVertex[];
+    getWireOrFace():IWire|IFace;
     next():IEdge;
     previous():IEdge;
-    getParent():IWire|IFace; //getWireOrFace()
-    neighbours():IEdge[][];
+    edgesSharedPoints():IEdge[][];
 }
 /**
 * Interface, for Wire class.
@@ -364,8 +367,8 @@ export interface IFace extends ITopo {
     getEdges(): IEdge[];
     numVertices():number;
     numEdges():number;
+    facesSharedPoints(num_shared_points?:number):IFace[];
     isClosed():boolean;
-    neighbours():IFace[];
 }
 // ========================= INTERFACES for Attrib and Group classes =========================
 // IAttrib, IGroup
@@ -380,7 +383,7 @@ export interface IAttrib {
     getName():string;
     setName(name:string):string;
     getGeomType():EGeomType;
-    getDataType():EDataType;
+    getObjDataType():EDataType;
     //Attrib Values
     getValue(path:IGeomPath):any;
     setValue(path:IGeomPath, value:any):any;

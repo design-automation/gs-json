@@ -41,7 +41,10 @@ export function test_Geom_addPolyline():boolean {
 export function test_Geom_addPolymesh():boolean {
     return true;
 }
-export function test_Geom_getData():boolean {
+export function test_Geom_getPointData():boolean {
+    return true;
+}
+export function test_Geom_getObjData():boolean {
     let m:Model = new Model();
     let a:Geom = new Geom(m);
     a.addPoint([1,3,8]);
@@ -50,8 +53,8 @@ export function test_Geom_getData():boolean {
     let b2:ifs.IGeomPath = new GeomPath(1, null, null, null, null)
     console.log(b1.equals(b1));
     console.log(b1.equals(b2));
-    console.log(a.getData(b1));
-    console.log(a.getData(b2));
+    console.log(a.getObjData(b1));
+    console.log(a.getObjData(b2));
     return true;
 }
 export function test_Geom_getPointIDs():boolean {

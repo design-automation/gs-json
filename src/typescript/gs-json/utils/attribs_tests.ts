@@ -39,11 +39,11 @@ export function test_getGeomType():boolean {
     return true;
 }
 
-export function test_getDataType():boolean {
+export function test_getObjDataType():boolean {
 	let m:Model = new Model();
 	let a:Geom = new Geom(m);
 	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [2,2,3], [4,4,6] );
-	b.getDataType();
+	b.getObjDataType();
     return true;
 }
 

@@ -72,7 +72,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A class for instances of the class Object.</p>
+						<p>Abstract class Obj.
+							The superclass for all geometric objects,
+						including Polyline and Polymesh.</p>
 					</div>
 				</div>
 			</section>
@@ -118,15 +120,14 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-not-exported"><a href="_entities_.obj.html#geom" class="tsd-kind-icon">geom</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-not-exported"><a href="_entities_.obj.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-not-exported"><a href="_entities_.obj.html#path" class="tsd-kind-icon">path</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported"><a href="_entities_.obj.html#addtogroup" class="tsd-kind-icon">add<wbr>ToGroup</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported"><a href="_entities_.obj.html#getattribnames" class="tsd-kind-icon">get<wbr>Attrib<wbr>Names</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported"><a href="_entities_.obj.html#getattribvalue" class="tsd-kind-icon">get<wbr>Attrib<wbr>Value</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_entities_.obj.html#getedges" class="tsd-kind-icon">get<wbr>Edges</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_entities_.obj.html#getfaces" class="tsd-kind-icon">get<wbr>Faces</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported"><a href="_entities_.obj.html#getgeom" class="tsd-kind-icon">get<wbr>Geom</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-not-exported"><a href="_entities_.obj.html#getgeomtype" class="tsd-kind-icon">get<wbr>Geom<wbr>Type</a></li>
@@ -134,8 +135,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported"><a href="_entities_.obj.html#getid" class="tsd-kind-icon">getID</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported"><a href="_entities_.obj.html#getmodel" class="tsd-kind-icon">get<wbr>Model</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_entities_.obj.html#getobjtype" class="tsd-kind-icon">get<wbr>Obj<wbr>Type</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_entities_.obj.html#getvertices" class="tsd-kind-icon">get<wbr>Vertices</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_entities_.obj.html#getwires" class="tsd-kind-icon">get<wbr>Wires</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_entities_.obj.html#numfaces" class="tsd-kind-icon">num<wbr>Faces</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-not-exported"><a href="_entities_.obj.html#numwires" class="tsd-kind-icon">num<wbr>Wires</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported"><a href="_entities_.obj.html#setattribvalue" class="tsd-kind-icon">set<wbr>Attrib<wbr>Value</a></li>
 							</ul>
 						</section>
@@ -155,12 +157,15 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L16">entities.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L14">entities.ts:14</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates an instance of the class Entity.</p>
+									<p>Creates an instance of one of the subclasses of Ent.
+										The entity must already exists in the geometry.
+										Do not use this constructor if you want to add a new entity to the geometry.
+									For that, you should use one of the &#39;add&#39; methods in the geometry class.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -169,7 +174,7 @@
 									<h5>geom: <a href="../interfaces/_interfaces_.igeom.html" class="tsd-signature-type">IGeom</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The constructor requires a preliminary geometry to create the instance</p>
+											<p>The Geom object to which the point ID belongs.</p>
 										</div>
 									</div>
 								</li>
@@ -177,13 +182,13 @@
 									<h5>id: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>Required identity number which allows to further on identify the entity</p>
+											<p>The ID of the entity. This ID must already exist in the geometry.</p>
 										</div>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_entities_.obj.html" class="tsd-signature-type">Obj</a></h4>
-							<p>An instance of the class Ent is created</p>
+							<p>The Ent object.</p>
 						</li>
 					</ul>
 				</section>
@@ -197,7 +202,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#geom">geom</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L14">entities.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L13">entities.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -208,24 +213,47 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#id">id</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L15">entities.ts:15</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-not-exported">
-					<a name="path" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> path</h3>
-					<div class="tsd-signature tsd-kind-icon">path<span class="tsd-signature-symbol">:</span> <a href="_geom_.geompath.html" class="tsd-signature-type">GeomPath</a></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#path">path</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L16">entities.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L14">entities.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported">
+					<a name="addtogroup" class="tsd-anchor"></a>
+					<h3>add<wbr>ToGroup</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>ToGroup<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#addtogroup">addToGroup</a></p>
+								<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#addtogroup">addToGroup</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L102">entities.ts:102</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add this entity to a group.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The group name.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>boolean True if the entity was added, False is the entity was already in the group.</p>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported">
 					<a name="getattribnames" class="tsd-anchor"></a>
 					<h3>get<wbr>Attrib<wbr>Names</h3>
@@ -238,16 +266,16 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getattribnames">getAttribNames</a></p>
 								<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#getattribnames">getAttribNames</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L61">entities.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L62">entities.ts:62</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Public method that allows to access names of the attributes</p>
+									<p>Get the attribute names for this entity.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
-							<p>string[] Returns the attribute names</p>
+							<p>string[] The array of attribute names.</p>
 						</li>
 					</ul>
 				</section>
@@ -263,12 +291,12 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getattribvalue">getAttribValue</a></p>
 								<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#getattribvalue">getAttribValue</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L69">entities.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L72">entities.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Public method that allows to access the attributes value</p>
+									<p>Get an attribute value for this entity.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -276,35 +304,12 @@
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Specifies the name of the attribute to access</p>
+										<p>The attribute name.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-							<p>any Returns the attribute value</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-					<a name="getedges" class="tsd-anchor"></a>
-					<h3>get<wbr>Edges</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Edges<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.iedge.html" class="tsd-signature-type">IEdge</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getedges">getEdges</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L158">entities.ts:158</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>TO BE COMPLETED</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.iedge.html" class="tsd-signature-type">IEdge</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>any The attribute value.</p>
 						</li>
 					</ul>
 				</section>
@@ -319,15 +324,16 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getfaces">getFaces</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L172">entities.ts:172</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L197">entities.ts:197</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>TO BE COMPLETED</p>
+									<p>Get the faces for this object.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.iface.html" class="tsd-signature-type">IFace</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>ifs.IFace[] The array of faces.</p>
 						</li>
 					</ul>
 				</section>
@@ -343,16 +349,16 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getgeom">getGeom</a></p>
 								<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#getgeom">getGeom</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L32">entities.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L32">entities.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Public method that allows to access the geometry</p>
+									<p>Get the geometry object to which this entity belongs.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.igeom.html" class="tsd-signature-type">IGeom</a></h4>
-							<p>ifs.IGeom Returns the geometry</p>
+							<p>ifs.IGeom The Geom object.</p>
 						</li>
 					</ul>
 				</section>
@@ -368,13 +374,17 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getgeomtype">getGeomType</a></p>
 								<p>Overrides <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#getgeomtype">getGeomType</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L136">entities.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L172">entities.ts:172</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the geometry type.
+									This method overrides the method in the Ent class.</p>
+								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h4>
-							<p>ifs.EGeomType</p>
+							<p>ifs.EGeomType The geometry type.</p>
 						</li>
 					</ul>
 				</section>
@@ -390,16 +400,16 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getgroupnames">getGroupNames</a></p>
 								<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#getgroupnames">getGroupNames</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L86">entities.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L92">entities.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Public method which enable to access groups names</p>
+									<p>Get the group names for all the groups for which this entity is a member.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
-							<p>string[] Arrays containg the group names</p>
+							<p>string[] The array of group names.</p>
 						</li>
 					</ul>
 				</section>
@@ -415,16 +425,16 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getid">getID</a></p>
 								<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#getid">getID</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L39">entities.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L39">entities.ts:39</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Public method that allows to access the ID number</p>
+									<p>Get the ID number of this entity.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>number Returns the ID number</p>
+							<p>number The entity ID number.</p>
 						</li>
 					</ul>
 				</section>
@@ -440,16 +450,16 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getmodel">getModel</a></p>
 								<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#getmodel">getModel</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L46">entities.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L46">entities.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Public method that allows to access the Model</p>
+									<p>Get the model object to which this entity belongs.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.imodel.html" class="tsd-signature-type">IModel</a></h4>
-							<p>ifs.IModel Returns the model</p>
+							<p>ifs.IModel The model object.</p>
 						</li>
 					</ul>
 				</section>
@@ -464,38 +474,17 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getobjtype">getObjType</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L143">entities.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L180">entities.ts:180</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>TO BE COMPLETED</p>
+									<p>Get the object type.
+									This method mst be overridden by the sub-classes.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-					<a name="getvertices" class="tsd-anchor"></a>
-					<h3>get<wbr>Vertices</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Vertices<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.ivertex.html" class="tsd-signature-type">IVertex</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getvertices">getVertices</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L151">entities.ts:151</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>TO BE COMPLETED</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.ivertex.html" class="tsd-signature-type">IVertex</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>ifs.EObjType The object type.</p>
 						</li>
 					</ul>
 				</section>
@@ -510,15 +499,64 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#getwires">getWires</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L165">entities.ts:165</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L189">entities.ts:189</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>TO BE COMPLETED</p>
+									<p>Get the wires for this object.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.iwire.html" class="tsd-signature-type">IWire</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>ifs.IWire[] The array of wires.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<a name="numfaces" class="tsd-anchor"></a>
+					<h3>num<wbr>Faces</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">num<wbr>Faces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#numfaces">numFaces</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L212">entities.ts:212</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the number of faces for this object.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>number The number of faces.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+					<a name="numwires" class="tsd-anchor"></a>
+					<h3>num<wbr>Wires</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">num<wbr>Wires<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#numwires">numWires</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L205">entities.ts:205</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the number of wires for this object.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>number The number of wires.</p>
 						</li>
 					</ul>
 				</section>
@@ -534,12 +572,12 @@
 								<p>Implementation of <a href="../interfaces/_interfaces_.iobj.html">IObj</a>.<a href="../interfaces/_interfaces_.iobj.html#setattribvalue">setAttribValue</a></p>
 								<p>Inherited from <a href="_entities_.ent.html">Ent</a>.<a href="_entities_.ent.html#setattribvalue">setAttribValue</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/entities.ts#L78">entities.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/entities.ts#L83">entities.ts:83</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Public method that allows to modify an attribute value</p>
+									<p>Set an attribute value for this entity.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -547,18 +585,18 @@
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Specifies the name of the attribute to access</p>
+										<p>The attribute name.</p>
 									</div>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>New value to which the attribute will be set</p>
+										<p>The new attribute value.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-							<p>any Sets the attribute value to the new value</p>
+							<p>any The old attribute value.</p>
 						</li>
 					</ul>
 				</section>
@@ -616,6 +654,9 @@
 						<a href="../modules/_model_tests_.html">"model_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_test_data_.html">"test_<wbr>data"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_topos_.html">"topos"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -642,17 +683,14 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-not-exported">
 								<a href="_entities_.obj.html#id" class="tsd-kind-icon">id</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-not-exported">
-								<a href="_entities_.obj.html#path" class="tsd-kind-icon">path</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported">
+								<a href="_entities_.obj.html#addtogroup" class="tsd-kind-icon">add<wbr>ToGroup</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported">
 								<a href="_entities_.obj.html#getattribnames" class="tsd-kind-icon">get<wbr>Attrib<wbr>Names</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported">
 								<a href="_entities_.obj.html#getattribvalue" class="tsd-kind-icon">get<wbr>Attrib<wbr>Value</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_entities_.obj.html#getedges" class="tsd-kind-icon">get<wbr>Edges</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
 								<a href="_entities_.obj.html#getfaces" class="tsd-kind-icon">get<wbr>Faces</a>
@@ -676,10 +714,13 @@
 								<a href="_entities_.obj.html#getobjtype" class="tsd-kind-icon">get<wbr>Obj<wbr>Type</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_entities_.obj.html#getvertices" class="tsd-kind-icon">get<wbr>Vertices</a>
+								<a href="_entities_.obj.html#getwires" class="tsd-kind-icon">get<wbr>Wires</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
-								<a href="_entities_.obj.html#getwires" class="tsd-kind-icon">get<wbr>Wires</a>
+								<a href="_entities_.obj.html#numfaces" class="tsd-kind-icon">num<wbr>Faces</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-not-exported">
+								<a href="_entities_.obj.html#numwires" class="tsd-kind-icon">num<wbr>Wires</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-not-exported">
 								<a href="_entities_.obj.html#setattribvalue" class="tsd-kind-icon">set<wbr>Attrib<wbr>Value</a>

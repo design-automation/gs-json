@@ -84,28 +84,30 @@ export function test_Vertex_getEdge():boolean{
 	if (e.getGeomType() != gs.EGeomType.edges) {return false;}
 	return true;
 }
-export function test_Vertex_getParent():boolean{
+export function test_Vertex_getWireOrFace():boolean{
 // 	let m:gs.IModel = new gs.Model();
 // 	m.setData(td.box);
 // 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
 // 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
-// 	if (v.getParent().getObjID() != 0) {return false;}
-// 	if (v.getParent().getGeomType() != gs.EGeomType.faces) {return false;}
+// 	if (v.getWireOrFace().getObjID() != 0) {return false;}
+// 	if (v.getWireOrFace().getGeomType() != gs.EGeomType.faces) {return false;}
 	return true;
 }
-export function test_Vertex_neighbours():boolean{
+export function test_Vertex_verticesSharedPoint():boolean{
 	let m:gs.IModel = new gs.Model();
 	m.setData(td.box);
 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	let w_v:gs.IVertex[];//vertices that belong to wires
 	let f_v:gs.IVertex[];//vertices that belong to faces
-	[w_v, f_v] = v.neighbours();
+	[w_v, f_v] = v.verticesSharedPoint();
 	if (w_v.length != 0) {return false;}
-	if (f_v.length != 3) {return false;}
+	if (f_v.length != 2) {return false;}
 	return true;
 }
-
+export function test_Vertex_verticesSamePosition():boolean{
+	return true;
+}
 
 // Edge
 export function test_Edge_getGeomType():boolean{
@@ -114,16 +116,16 @@ export function test_Edge_getGeomType():boolean{
 export function test_Edge_getVertices():boolean{
 	return true;
 }
+export function test_Edge_getWireOrFace():boolean{
+	return true;
+}
 export function test_Edge_next():boolean{
 	return true;
 }
 export function test_Edge_previous():boolean{
 	return true;
 }	
-export function test_Edge_getParent():boolean{
-	return true;
-}
-export function test_Edge_neighbours():boolean{
+export function test_Edge_edgesSharedPoints():boolean{
 	return true;
 }
 
@@ -168,6 +170,6 @@ export function test_Face_numEdges():boolean{
 export function test_Face_isClosed():boolean{
 	return true;
 }
-export function test_Face_neighbours():boolean{
+export function test_Face_facesSharedPoints():boolean{
 	return true;
 }

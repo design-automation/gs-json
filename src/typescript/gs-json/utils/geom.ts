@@ -73,7 +73,7 @@ export class Geom implements ifs.IGeom {
 
     public addPolyline(wire_points:ifs.IPoint[]):void {
         for (let k:number = 0 ; k < wire_points.length ; k++){
-            this.objs_data[0].push([wire_points[k].getPosition(),[], ifs.EObjType.polyline])
+            this.objs_data[0].push([wire_points[k].getPosition(),[], ifs.EObjType.polyline]);
         }
     }
 
@@ -86,9 +86,20 @@ export class Geom implements ifs.IGeom {
     public addPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IObj {
         throw new Error ("Method not implemented.");
     }
-    // Get data
+
     /**
-    * Low level method to return the data associated with a path. 
+    * Low level method to return the data associated with a point. 
+    * This method should only be used by experts.
+    * The data  for an object consists of an array with two values:
+    * 1) The point position index, and 2) the point position.
+    * @param obj_id The object ID. 
+    * @return The object data.
+    */
+    public getPointData(id:number):any[] {
+        return [this.points_data[0][id], this.points_data[1][this.points_data[0][id]]];
+    }
+    /**
+    * Low level method to return the data associated with an object. 
     * This method should only be used by experts.
     * The data  for an object consists of three arrays: [[wires],[faces],[parameters]].
     * The wires and faces arrays each contain lists of point IDs.
@@ -96,7 +107,7 @@ export class Geom implements ifs.IGeom {
     * @param obj_id The object ID. 
     * @return The object data.
     */
-    public getData(path?:ifs.IGeomPath):any {
+    public getObjData(path?:ifs.IGeomPath):any {
         try {
         //if (path.st) { //vertices or edges
             switch (path.st) {
@@ -138,7 +149,7 @@ export class Geom implements ifs.IGeom {
             return this.objs_data[path.id];
         //}
         } catch (ex) {
-            throw new Error("Geom.getData():Could not find geometry with path: " + path as string);
+            throw new Error("Geom.getObjData():Could not find geometry with path: " + path as string);
         }
     }
     //Points
@@ -216,7 +227,6 @@ export class Geom implements ifs.IGeom {
     public getPointPosition(point_id:number,):number[] {
         return this.points_data[1][this.points_data[0][point_id]];
     }
-    //Objs
     /**
     * to be completed
     * @param

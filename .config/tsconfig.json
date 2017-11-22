@@ -4,7 +4,14 @@
         "baseUrl": ".",
         "outDir": "..dist",
         "paths": {
-            "utils/*": ["../src/typescript/gs-json/tests/utils/*"],
+            "utils/arr": ["../src/typescript/gs-json/tests/utils/arr"],
+            "utils/attribs": ["../src/typescript/gs-json/tests/utils/attribs"],
+            "utils/entities": ["../src/typescript/gs-json/tests/utils/entities"],
+            "utils/geom": ["../src/typescript/gs-json/tests/utils/geom"],
+            "utils/groups": ["../src/typescript/gs-json/tests/utils/groups"],
+            "utils/models": ["../src/typescript/gs-json/tests/utils/models"],
+            "utils/topos": ["../src/typescript/gs-json/tests/utils/topos"],
+            "utils/interfaces": ["../src/typescript/gs-json/tests/utils/interfaces"],
             "utils": ["../src/typescript/gs-json/tests/utils/"]
         },
         "module": "ES6",

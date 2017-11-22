@@ -38,20 +38,23 @@ describe('Tests for Vertex class', () => {
 	it('test_Vertex_getPoint', () => {
         expect( topos_tests.test_Vertex_getPoint() ).toBe(true);
     });
+    it('test_Vertex_getWireOrFace', () => {
+        expect( topos_tests.test_Vertex_getWireOrFace() ).toBe(true);
+    });
+    it('test_Vertex_getEdge', () => {
+        expect( topos_tests.test_Vertex_getEdge() ).toBe(true);
+    });    
 	it('test_Vertex_next', () => {
         expect( topos_tests.test_Vertex_next() ).toBe(true);
     });
 	it('test_Vertex_previous', () => {
         expect( topos_tests.test_Vertex_previous() ).toBe(true);
     });
-	it('test_Vertex_getEdge', () => {
-        expect( topos_tests.test_Vertex_getEdge() ).toBe(true);
+    it('test_Vertex_verticesSharedPoint', () => {
+        expect( topos_tests.test_Vertex_verticesSharedPoint() ).toBe(true);
     });
-    it('test_Vertex_getParent', () => {
-        expect( topos_tests.test_Vertex_getParent() ).toBe(true);
-    });
-    it('test_Vertex_neighbours', () => {
-        expect( topos_tests.test_Vertex_neighbours() ).toBe(true);
+    it('test_Vertex_verticesSamePosition', () => {
+        expect( topos_tests.test_Vertex_verticesSamePosition() ).toBe(true);
     });
 });	
 
@@ -62,17 +65,17 @@ describe('Tests for Edge class', () => {
 	it('test_Edge_getVertices', () => {
         expect( topos_tests.test_Edge_getVertices() ).toBe(true);
     });
+    it('test_Edge_getWireOrFace', () => {
+        expect( topos_tests.test_Edge_getWireOrFace() ).toBe(true);
+    });
 	it('test_Edge_next', () => {
         expect( topos_tests.test_Edge_next() ).toBe(true);
     });
 	it('test_Edge_previous', () => {
         expect( topos_tests.test_Edge_previous() ).toBe(true);
     });
-	it('test_Edge_getParent', () => {
-        expect( topos_tests.test_Edge_getParent() ).toBe(true);
-    });
-    it('test_Edge_neighbours', () => {
-        expect( topos_tests.test_Edge_neighbours() ).toBe(true);
+    it('test_Edge_edgesSharedPoints', () => {
+        expect( topos_tests.test_Edge_edgesSharedPoints() ).toBe(true);
     });
 });
 
@@ -116,8 +119,8 @@ describe('Tests for Face class', () => {
     it('test_Face_isClosed', () => {
         expect( topos_tests.test_Face_isClosed() ).toBe(true);
     });
-	it('test_Face_neighbours', () => {
-        expect( topos_tests.test_Face_neighbours() ).toBe(true);
+	it('test_Face_facesSharedPoints', () => {
+        expect( topos_tests.test_Face_facesSharedPoints() ).toBe(true);
     });
 });
 

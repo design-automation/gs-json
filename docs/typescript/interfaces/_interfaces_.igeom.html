@@ -72,7 +72,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Interface, to be completed</p>
+						<p>Interface, for the Geom class, that stores all the geometry in the model.
+						This has arrays for both point data and object data.</p>
 					</div>
 				</div>
 			</section>
@@ -105,9 +106,11 @@
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getattribtemplate" class="tsd-kind-icon">get<wbr>Attrib<wbr>Template</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getmodel" class="tsd-kind-icon">get<wbr>Model</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getobj" class="tsd-kind-icon">get<wbr>Obj</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getobjdata" class="tsd-kind-icon">get<wbr>Obj<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getobjids" class="tsd-kind-icon">get<wbr>ObjIDs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getobjs" class="tsd-kind-icon">get<wbr>Objs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getpoint" class="tsd-kind-icon">get<wbr>Point</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getpointdata" class="tsd-kind-icon">get<wbr>Point<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getpointids" class="tsd-kind-icon">get<wbr>PointIDs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getpointposition" class="tsd-kind-icon">get<wbr>Point<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.igeom.html#getpoints" class="tsd-kind-icon">get<wbr>Points</a></li>
@@ -127,13 +130,13 @@
 					<a name="addpoint" class="tsd-anchor"></a>
 					<h3>add<wbr>Point</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Point<span class="tsd-signature-symbol">(</span>xyz<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Point<span class="tsd-signature-symbol">(</span>xyz<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L179">interfaces.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L208">interfaces.ts:208</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -142,7 +145,7 @@
 									<h5>xyz: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -150,13 +153,13 @@
 					<a name="addpolyline" class="tsd-anchor"></a>
 					<h3>add<wbr>Polyline</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Polyline<span class="tsd-signature-symbol">(</span>wire_points<span class="tsd-signature-symbol">: </span><a href="_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_interfaces_.iobj.html" class="tsd-signature-type">IObj</a></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Polyline<span class="tsd-signature-symbol">(</span>wire_points<span class="tsd-signature-symbol">: </span><a href="_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L180">interfaces.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L210">interfaces.ts:210</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -165,7 +168,7 @@
 									<h5>wire_points: <a href="_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_interfaces_.iobj.html" class="tsd-signature-type">IObj</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -179,7 +182,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L181">interfaces.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L211">interfaces.ts:211</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -205,7 +208,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L194">interfaces.ts:194</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L227">interfaces.ts:227</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -228,7 +231,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L186">interfaces.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L219">interfaces.ts:219</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -251,7 +254,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L200">interfaces.ts:200</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L233">interfaces.ts:233</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -274,7 +277,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L177">interfaces.ts:177</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L205">interfaces.ts:205</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_interfaces_.imodel.html" class="tsd-signature-type">IModel</a></h4>
@@ -291,7 +294,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L193">interfaces.ts:193</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L226">interfaces.ts:226</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -305,6 +308,29 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="getobjdata" class="tsd-anchor"></a>
+					<h3>get<wbr>Obj<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Obj<wbr>Data<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">?: </span><a href="_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L214">interfaces.ts:214</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> path: <a href="_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="getobjids" class="tsd-anchor"></a>
 					<h3>get<wbr>ObjIDs</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -314,7 +340,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L191">interfaces.ts:191</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L224">interfaces.ts:224</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -337,7 +363,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L192">interfaces.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L225">interfaces.ts:225</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -360,7 +386,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L185">interfaces.ts:185</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L218">interfaces.ts:218</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -374,6 +400,29 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="getpointdata" class="tsd-anchor"></a>
+					<h3>get<wbr>Point<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Point<wbr>Data<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L213">interfaces.ts:213</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>id: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="getpointids" class="tsd-anchor"></a>
 					<h3>get<wbr>PointIDs</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -383,7 +432,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L183">interfaces.ts:183</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L216">interfaces.ts:216</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -406,7 +455,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L189">interfaces.ts:189</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L222">interfaces.ts:222</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -429,7 +478,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L184">interfaces.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L217">interfaces.ts:217</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -452,7 +501,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L197">interfaces.ts:197</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L230">interfaces.ts:230</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -475,7 +524,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L195">interfaces.ts:195</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L228">interfaces.ts:228</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -498,7 +547,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L187">interfaces.ts:187</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L220">interfaces.ts:220</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -521,7 +570,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L198">interfaces.ts:198</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L231">interfaces.ts:231</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -544,7 +593,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L188">interfaces.ts:188</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L221">interfaces.ts:221</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -612,6 +661,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_model_tests_.html">"model_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_test_data_.html">"test_<wbr>data"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_topos_.html">"topos"</a>
@@ -686,6 +738,9 @@
 								<a href="_interfaces_.igeom.html#getobj" class="tsd-kind-icon">get<wbr>Obj</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_interfaces_.igeom.html#getobjdata" class="tsd-kind-icon">get<wbr>Obj<wbr>Data</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="_interfaces_.igeom.html#getobjids" class="tsd-kind-icon">get<wbr>ObjIDs</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
@@ -693,6 +748,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="_interfaces_.igeom.html#getpoint" class="tsd-kind-icon">get<wbr>Point</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_interfaces_.igeom.html#getpointdata" class="tsd-kind-icon">get<wbr>Point<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="_interfaces_.igeom.html#getpointids" class="tsd-kind-icon">get<wbr>PointIDs</a>
@@ -766,6 +824,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.iwire.html" class="tsd-kind-icon">IWire</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#attribtypestrings" class="tsd-kind-icon">attrib<wbr>Type<wbr>Strings</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/_interfaces_.html#mapstringtoattribtype" class="tsd-kind-icon">map<wbr>String<wbr>ToAttrib<wbr>Type</a>

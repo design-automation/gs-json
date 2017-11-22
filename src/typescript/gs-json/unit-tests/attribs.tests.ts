@@ -14,8 +14,8 @@ describe('Tests for Attrib class', () => {
 	    it('test_getGeomType', () => {
         expect( tests.test_getGeomType() ).toBe(true);
     });
-	    it('test_getDataType', () => {
-        expect( tests.test_getDataType() ).toBe(true);
+	    it('test_getObjDataType', () => {
+        expect( tests.test_getObjDataType() ).toBe(true);
     });
 	    it('test_getValue', () => {
         expect( tests.test_getValue() ).toBe(true);

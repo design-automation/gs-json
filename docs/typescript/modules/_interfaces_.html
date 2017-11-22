@@ -110,6 +110,7 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_interfaces_.html#attribtypestrings" class="tsd-kind-icon">attrib<wbr>Type<wbr>Strings</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_interfaces_.html#mapstringtoattribtype" class="tsd-kind-icon">map<wbr>String<wbr>ToAttrib<wbr>Type</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_interfaces_.html#mapstringtodatatype" class="tsd-kind-icon">map<wbr>String<wbr>ToData<wbr>Type</a></li>
 							</ul>
@@ -120,17 +121,34 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
+					<a name="attribtypestrings" class="tsd-anchor"></a>
+					<h3>attrib<wbr>Type<wbr>Strings</h3>
+					<div class="tsd-signature tsd-kind-icon">attrib<wbr>Type<wbr>Strings<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[&quot;objs&quot;,&quot;faces&quot;,&quot;wires&quot;,&quot;edges&quot;,&quot;vertices&quot;,&quot;points&quot;]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L59">interfaces.ts:59</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Map, EGeomType to String.
+							This is used for printing.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
 					<a name="mapstringtoattribtype" class="tsd-anchor"></a>
 					<h3>map<wbr>String<wbr>ToAttrib<wbr>Type</h3>
 					<div class="tsd-signature tsd-kind-icon">map<wbr>String<wbr>ToAttrib<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map&lt;string,EGeomType&gt; ([[&quot;objs&quot;,EGeomType.objs],[&quot;faces&quot;,EGeomType.faces],[&quot;wires&quot;,EGeomType.wires],[&quot;edges&quot;,EGeomType.edges],[&quot;vertices&quot;,EGeomType.vertices],[&quot;points&quot;,EGeomType.points]])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L43">interfaces.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L47">interfaces.ts:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Map, to be completed</p>
+							<p>Map, from string to EGeomType.
+							This is used when parsing JSON.</p>
 						</div>
 					</div>
 				</section>
@@ -140,12 +158,13 @@
 					<div class="tsd-signature tsd-kind-icon">map<wbr>String<wbr>ToData<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../enums/_interfaces_.edatatype.html" class="tsd-signature-type">EDataType</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map&lt;string,EDataType&gt; ([[&quot;string&quot;,EDataType.type_str],[&quot;number&quot;,EDataType.type_num],[&quot;boolean&quot;,EDataType.type_bool],[&quot;string[]&quot;,EDataType.type_str_arr],[&quot;number[]&quot;,EDataType.type_num_arr],[&quot;boolean[]&quot;,EDataType.type_bool_arr]])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/06e647b/src/typescript/gs-json/utils/interfaces.ts#L54">interfaces.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/69dc7fe/src/typescript/gs-json/utils/interfaces.ts#L71">interfaces.ts:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Map, to be completed</p>
+							<p>Map, from strings to DataType.
+							This is used when parsing JSON.</p>
 						</div>
 					</div>
 				</section>
@@ -201,6 +220,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_model_tests_.html">"model_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_test_data_.html">"test_<wbr>data"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_topos_.html">"topos"</a>
@@ -292,6 +314,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_interfaces_.iwire.html" class="tsd-kind-icon">IWire</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="_interfaces_.html#attribtypestrings" class="tsd-kind-icon">attrib<wbr>Type<wbr>Strings</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="_interfaces_.html#mapstringtoattribtype" class="tsd-kind-icon">map<wbr>String<wbr>ToAttrib<wbr>Type</a>
