@@ -1,4 +1,4 @@
-https://travis-ci.org/phtj/gs-json.svg?branch=master
+[![Build Status](https://travis-ci.org/phtj/gs-json.svg?branch=master)]
 # gs-JSON
 
 gs-json is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs'). 
