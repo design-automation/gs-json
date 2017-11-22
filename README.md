@@ -3,7 +3,7 @@
 
 gs-json is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs'). 
 
-See the API docs: https://phtj.github.io/gs-JSON
+See the API docs: https://phtj.github.io/gs-json
 
 # Conceptual Model
 The gs-JSON conceptual model uses topology as the organising framework for defining both geometry and semantics.
