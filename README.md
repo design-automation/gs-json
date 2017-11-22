@@ -38,7 +38,7 @@ There is a one to many relationship between points and vertices:
 The topology of a polyline consists of a single wire.
 Each wire has:
 * a set of connected edges, and
-* a sequence of vertices, each of which is
+* a sequence of vertices.
 
 ### Polymeshes
 The topology of a polymesh consists of wires and faces.
@@ -47,7 +47,7 @@ The wires represent the naked edges of the polymesh. Since a polymesh can have h
 
 Wires have:
 * a set of connected edges, and
-* a sequence of vertices, each of which is
+* a sequence of vertices.
 
 The faces have:
 * a set of connected edges forming a closed loop, each of which has
