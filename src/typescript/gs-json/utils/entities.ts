@@ -130,7 +130,7 @@ export class Point extends Ent implements ifs.IPoint{
                 vertices.push(new Vertex(this.geom, 
                     new GeomPath(this.path.id,ifs.EGeomType.wires,w_i,this.path.st,v_i)))));
             //loop through all faces and extract verts that have same point_id
-            obj_data[1].forEach((f,f_i)=>w.forEach((v,v_i)=>(v == this.id) && 
+            obj_data[1].forEach((f,f_i)=>f.forEach((v,v_i)=>(v == this.id) && 
                 vertices.push(new Vertex(this.geom, 
                     new GeomPath(this.path.id,ifs.EGeomType.faces,f_i,this.path.st,v_i)))));
         }

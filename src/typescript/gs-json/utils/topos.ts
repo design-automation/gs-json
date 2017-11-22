@@ -282,7 +282,7 @@ export class Edge extends Topo implements ifs.IEdge {
                     new GeomPath(this.path.id,ifs.EGeomType.wires,w_i,this.path.st,v_i)))));
         //loop through all faces and extract verts that have same point_id
         let face_edges:ifs.IEdge[] = [];
-        obj_data[1].forEach((f,f_i)=>w.forEach((v,v_i)=>
+        obj_data[1].forEach((f,f_i)=>f.forEach((v,v_i)=>
             Arr.equal([v, obj_data[v_i+1]].sort(), points) && 
                 face_edges.push(new Edge(this.geom, 
                     new GeomPath(this.path.id,ifs.EGeomType.faces,f_i,this.path.st,v_i)))));
