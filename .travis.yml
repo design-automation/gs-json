@@ -5,7 +5,7 @@ branches:
   only: 
     - master
 script:
-  - ng test
+  - npm test
 notifications:
   email:
     on_failure: change
@@ -36,6 +36,5 @@ before_install:
 before_script:
 - npm install -g karma
 - npm install
-- ng build
 
 script: karma start ./.config/karma.conf.ts --single-run
