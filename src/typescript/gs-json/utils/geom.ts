@@ -40,51 +40,47 @@ export class Geom implements ifs.IGeom {
     return this.model;
     }
 
-    // public addPoint(xyz:number[]):ifs.IPoint {
-    //     let point:Point = new Point(this, this.numPoints());
-    //     //append a point to the points array
-    //     this.points_data[0].push(0);//points to null
-    //     point.setPosition(xyz);
-
-    //     this.points_data[0].push(this.points_data[0].length);
-    //     this.points_data[1].push(xyz);
-    //     return point;
-    // }
-
     //Creation
     /**
-    * to be completed
-    * @param
-    * @return
+    * The purpose of this method consists in creating a Point in the Geometry.
+    * The geometry class has two private properties which include points_data.
+    * points_data array gathers pointers and cartesian xyz coordinates.
+    * The addPoint creates a point of coordinates xyz, and modifies the points_data array
+    * by pointing to an already existing xyz value or by creating it if not referenced.
+    * @param cartesian xyz coordinates are required to create a point
+    * @return a instance of type Point is returned
     */
-    public addPoint(xyz:number[]):void {
-        this.points_data[0].push(this.points_data[0].length);
-        this.points_data[1].push(xyz);
+    public addPoint(xyz:number[]):ifs.IPoint {
+        let point:Point = new Point(this, this.numPoints()); // create the point and its ID (which actually is defined by points_data[0].length)
+        // now, the point is created, we allocation a xyz position into that instance.
+        this.points_data[0].push(0);//points to null
+        point.setPosition(xyz); // switches the old_xyz (points_data[1][0] to the new xyz by pointing it if existing or creating it if not.
+        return point;
+    }
+
+    /**
+    * The purpose of this method is similar to addPoint except that
+    * it takes as input a collection of Point as opposed to a single Point.
+    * @param wire_points, which is a collection of Points
+    * @return Object of type Polyline
+    */
+    public addPolyline(wire_points:ifs.IPoint[]):ifs.IPolyline {
+        let pline:ifs.IPolyline = new Polyline(this, this.numObjs());
+        this.objs_data[0].push(0);//points to null
+        pline.setPosition(wire_points);
+        return pline;
     }
 
     /**
     * to be completed
     * @param
-    * @return
+    * @return Object of type Polymesh
     */
-    // public addPolyline(wire_points:ifs.IPoint[]):ifs.IObj {
-    //     throw new Error ("Method not implemented.");
-    // }
-
-    public addPolyline(wire_points:ifs.IPoint[]):void {
-        for (let k:number = 0 ; k < wire_points.length ; k++){
-            this.objs_data[0].push([wire_points[k].getPosition(),[], ifs.EObjType.polyline]);
-        }
-    }
-
-
-    /**
-    * to be completed
-    * @param
-    * @return
-    */
-    public addPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IObj {
-        throw new Error ("Method not implemented.");
+    public addPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IPolymesh {
+        let pmesh:ifs.IPolymesh = new Polymesh(this, this.numObjs());
+        this.objs_data[0].push(0);//points to null
+        pmesh.setPosition(wire_points, face_points);
+        return pmesh;
     }
 
     /**
@@ -100,7 +96,7 @@ export class Geom implements ifs.IGeom {
     }
     /**
     * Low level method to return the data associated with an object. 
-    * This method should only be used by experts.
+    * 0This method should only be used by experts.
     * The data  for an object consists of three arrays: [[wires],[faces],[parameters]].
     * The wires and faces arrays each contain lists of point IDs.
     * The path may extract a subset of this data. 
@@ -224,7 +220,7 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public getPointPosition(point_id:number,):number[] {
+    public getPointPosition(point_id:number):number[] {
         return this.points_data[1][this.points_data[0][point_id]];
     }
     /**
@@ -284,6 +280,35 @@ export class Geom implements ifs.IGeom {
         if (obj_type) {return this.getObjIDs(obj_type).length;} 
         return this.objs_data.length; //works also for sparse arrays
     }
+
+    /**
+    * This methods acts on geometric instances and allows to set an object position that has an identification number
+    * @param obj_id requires a number, which corresponds to the object identifier
+    * @param obj_data requires the data format, which is an array of type any
+    * @return returns the first object data in the object data
+    */
+    public setObjPosition(obj_id:number, obj_data:any[]):any[]{
+        let old_any:any[] = this.objs_data[0][0];
+        if (Arr.equal(obj_data, old_any)) {return old_any;}
+
+        let value_index:number = Arr.indexOf(obj_data, this.objs_data[0]);
+        if (value_index == -1) { //we create, in case a similar object is not present in the data frame
+            value_index = this.objs_data[0].length;
+            this.objs_data[0][0].push(obj_data);
+        }
+        return old_any;
+    }
+
+    /**
+    * This method reads a private property of a geometric instanciated object which is called object data.
+    * The object data contains a collection of objects which is accessible through an identification number.
+    * @param Identification number of the object
+    * @return Returns the description of the identified object
+    */
+    public getObjPosition(obj_id:number,):any[]{
+        return this.objs_data[0][obj_id];
+    }
+
     // Topo
     /**
     * to be completed

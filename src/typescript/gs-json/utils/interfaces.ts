@@ -202,10 +202,8 @@ export interface IGeom  {
     //constructor(model:ifs.IModel, point_data?:any[], obj_data?:any[]) 
     getModel():IModel;
     //Creation
-//    addPoint(xyz:number[]):IPoint;
-    addPoint(xyz:number[]):void;
-//    addPolyline(wire_points:IPoint[]):IObj;
-    addPolyline(wire_points:IPoint[]):void;
+    addPoint(xyz:number[]):IPoint;
+    addPolyline(wire_points:IPoint[]):IObj;
     addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
     //Generic method for getting data
     getPointData(id:number):any[];
@@ -217,13 +215,15 @@ export interface IGeom  {
     delPoint(point_id:number):boolean;
     numPoints(obj_type?:EObjType):number;
     setPointPosition(point_id:number, xyz:number[]):number[];
-    getPointPosition(point_id:number,):number[];
+    getPointPosition(point_id:number):number[];
     //Objs
     getObjIDs(obj_type?:EObjType):number[];
     getObjs(obj_type?:EObjType):IObj[];
     getObj(obj_id:number):IObj;
     delObj(obj_id:number):boolean;
     numObjs(obj_type?:EObjType):number;
+    setObjPosition(obj_id:number, obj_data:any[]):any[];
+    getObjPosition(obj_id:number):any[];
     //Topos
     getTopos(topo_type:EGeomType):ITopo[];
     numTopos(topo_type:EGeomType):number;
@@ -287,7 +287,6 @@ export interface IPoint extends IEnt {
 export interface IObj extends IEnt {
     //constructor cannot be used to create a new point
     //use the "add" method in Geom class
-    getObjType():EObjType;
     //
     getWires():IWire[];
     getFaces():IFace[];
@@ -299,11 +298,17 @@ export interface IObj extends IEnt {
 * Interface, for a Polyline class.
 */
 export interface IPolyline  extends IObj {
+    getObjType():EObjType;
+    setPosition(wire_points:IPoint[]):any[];
 }
+
 /**
 * Interface, for a Polymesh class.
 */
 export interface IPolymesh extends IObj {
+    getObjType():EObjType;
+    setPosition(wire_points:IPoint[], face_points:IFace[]):any[]
+
 }
 // ========================= INTERFACES for Topo classes and Subclasses =========================
 // ITopo, IVertex, IEdge, IWire, IFace

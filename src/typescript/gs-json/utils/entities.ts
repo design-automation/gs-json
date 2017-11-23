@@ -172,15 +172,6 @@ abstract class Obj extends Ent implements ifs.IObj{
     public getGeomType():ifs.EGeomType {
         return ifs.EGeomType.objs;
     }
-    /**
-    * Get the object type.
-    * This method mst be overridden by the sub-classes.
-    * @return The object type.
-    */
-    public getObjType():ifs.EObjType {
-        //Do not implement this method.
-        throw new Error ("Method to be overridden by subclass.");
-    }
     // Get the topo
     /**
     * Get the wires for this object.
@@ -222,14 +213,21 @@ abstract class Obj extends Ent implements ifs.IObj{
 */ 
 export class Polyline  extends Obj implements ifs.IPolyline{
     /**
+    * @param 
+    * @return
+    */
+    public setPosition(wire_points:ifs.IPoint[]):any[]{
+        return this.geom.setObjPosition(this.id, this.geom.getObjData());
+    }
+    /**
     * Get the object type: "polyline".
-    * This method overrides the method in the Obj class.
-    * @return The object type.
+    * @return Polyline is returned as an object type.
     */
     public getObjType():ifs.EObjType {
         return ifs.EObjType.polyline;
     }
 }
+
 /**
 * Class Polymesh.
 * A polymesh is defined by a set of polygonal faces. 
@@ -243,9 +241,21 @@ export class Polyline  extends Obj implements ifs.IPolyline{
 */ 
 export class Polymesh extends Obj implements ifs.IPolymesh{
     /**
+    * @param 
+    * @return
+    */
+    public setPosition(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):any[]{
+        let tab:number[][];
+        for(let k:number =0; k<wire_points.length; k++){
+            tab[0][k] = wire_points[k].getID();
+            tab[1][k] = face_points[k].getObjID();          
+        }
+        tab[3][0] = ifs.EObjType.polymesh;
+        return this.geom.setObjPosition(this.id, tab);
+    }
+    /**
     * Get the object type: "polymesh".
-    * This method overrides the method in the Obj class.
-    * @return The object type.
+    * @return The polymesh as an object type.
     */
     public getObjType():ifs.EObjType {
         return ifs.EObjType.polymesh;
