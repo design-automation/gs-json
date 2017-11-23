@@ -4,9 +4,8 @@ import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
 import {Group} from "./groups";
-
 /**
- * Attrib Ent.
+ * Attrib class.
  * An class that represents a semantic attribute.
  * An attribute is data that is attached to a specific type of geometry, which includes
  * geometric entities and or topological component.
