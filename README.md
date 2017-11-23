@@ -153,15 +153,14 @@ The attributes and groups arrays each define the semantics.
 
 ## Attributes
 Attributes are defined as follows:
-* {"name"="my_attrib", "geom_type"="xxx", "data_type"="xxx", "values"=[...], "values_map"=[...] }
+* {"name"="my_attrib", "geom_type"="xxx", "data_type"="xxx", "values"=[...]}
 
 *geom_type* can be "points", "vertices", "edges", "wires", "faces".
 
 *data_type* can be "string", "number","boolean","string[]","number[]","boolean[]".
 
-*values* is an array the defines the set of unique values that will be assigned to the geometric objects. The values must follow the data type specified in *data_type*.
-
-*values_map* is an array of indices, whose length is equal to the number of elements.  
+*values* is an array the defines the values for the attribute. These values are associated with the geometry based on the "geom_type" setting. It consists of two sub arrays, one with a an array of indexes, and the other with an array of unique values. The indexes point to the unique values. The values must follow the data type specified in *data_type*.
+ 
 
 ### Viewer Attributes
 Certain attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)
