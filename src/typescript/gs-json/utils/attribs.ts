@@ -5,7 +5,14 @@ import {Point,Polyline,Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
 import {Group} from "./groups";
 
-// Attrib class
+/**
+ * Attrib Ent.
+ * An class that represents a semantic attribute.
+ * An attribute is data that is attached to a specific type of geometry, which includes
+ * geometric entities and or topological component.
+ * The geometric types are: "points", "vertices", "edges", "wires", "faces", and "objs".
+ * An instance of this class stores a list of attributes values. 
+ */
 export class Attrib implements ifs.IAttrib {
     private model:ifs.IModel;
     private name:string;
@@ -13,6 +20,16 @@ export class Attrib implements ifs.IAttrib {
     private data_type:ifs.EDataType;
     private values_map:any[];
     private values:any[];
+    /**
+    * Creates an instance of the Attrib class.
+    * @param model The Model object in which this attribute will be created.
+    * @param name The attribute name.
+    * @param attrib_type The type of geometry to which the attribute will be attached. 
+    * @param data_type The data type for the attribute values.
+    * @param values_map A list of indexes point to values.
+    * @param values A list of values, where the data type matches the data_type arg.
+    * @return The Attrib object.
+    */
     constructor(model:ifs.IModel, name:string, attrib_type:ifs.EGeomType, data_type:ifs.EDataType, values_map?:any[], values?:any[]) {
         this.model = model;
         this.name = name;
@@ -29,22 +46,44 @@ export class Attrib implements ifs.IAttrib {
             this.values = [null];//first value in the list is always null
         }
     }
+    /**
+    * Get the name of the attribute. 
+    * @return The name.
+    */
     public getName():string {
         return this.name;
     }
+    /**
+    * Set the name of the attribute. 
+    * @param name The new name.
+    * @return The old name.
+    */
     public setName(name:string):string {
         let old_name:string = this.name;
         this.name = name;
         return old_name;
     }
+    /**
+    * Set the geometry type for the attribute. 
+    * @return The geometry type.
+    */
     public getGeomType():ifs.EGeomType {
         return this.attrib_type;
     }
+    /**
+    * Set the data type for the attribute values. 
+    * @return The data type.
+    */
     public getObjDataType():ifs.EDataType {
         return this.data_type;
     }
-    //Attrib Values
-    public getValue(path:ifs.IGeomPath):any {
+    /**
+    * Get a single attribute value. 
+    * The data type of the attribute value can be found using the getDataType() method.
+    * @param path The path to a geometric entity or topological component.
+    * @return The value.
+    */
+    public getValue(path:ifs.IGeomPath):any {//TODO for points and objs, no path required
         let index:number;
         switch (this.attrib_type) {
             case ifs.EGeomType.points: case ifs.EGeomType.objs:
@@ -59,7 +98,14 @@ export class Attrib implements ifs.IAttrib {
         }
         return this.values[index];
     }
-    public setValue(path:ifs.IGeomPath, value:any):any {
+    /**
+    * Set a single attribute value. 
+    * The data type of the attribute value can be found using the getDataType() method.
+    * @param path The path to a geometric entity or topological component.
+    * @param value The new value.
+    * @return The old value.
+    */
+    public setValue(path:ifs.IGeomPath, value:any):any {//TODO for points and objs, no path required
         let index:number = Arr.indexOf(value, this.values);
         if (index == -1) {
             index = this.values.push(value) - 1;
@@ -81,6 +127,10 @@ export class Attrib implements ifs.IAttrib {
         }
         return old_value;
     }
+    /**
+    * Get the number of attribute values. 
+    * @return The number of attribute values.
+    */
     public count():number  {
         return this.values_map.length;
     }
