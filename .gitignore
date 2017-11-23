@@ -38,8 +38,11 @@ testem.log
 Thumbs.db
 
 # houdini
-*/backup
+/backup
 
 # test reports
 /karma_html
 /coverage
+
+# javascript
+.js

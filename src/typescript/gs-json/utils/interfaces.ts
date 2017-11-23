@@ -85,8 +85,8 @@ export let mapStringToDataType = new Map<string,EDataType> ([
 export interface IMetadata {
     filetype: "gs-json";
     version: string;
-    crs: any;
-    location: string;
+    crs?: any;
+    location?: string;
 }
 /**
 * Interface, for parsing JSON AttribData.
@@ -103,7 +103,7 @@ export interface IAttribData {
 export interface IGroupData {
     name: string;
     parent?:string;
-    objs?: any[];//TODO
+    objs?: any[];
     props?: { key: string, value: any }
 }
 /**
@@ -121,7 +121,14 @@ export interface IModelData {
     metadata: IMetadata;
     points?: [number[],number[][]];
     objs?: any[];
-    attribs?: IAttribData[];
+    attribs?: {
+        points?: IAttribData[],
+        vertices?: IAttribData[],
+        edges?: IAttribData[],
+        wires?: IAttribData[],
+        faces?: IAttribData[],
+        objs?: IAttribData[]
+    };
     groups?: IGroupData[];
     skins?: ISkinData[];
 }
@@ -178,7 +185,7 @@ export interface IModel {
     getGeom():IGeom;
     setData(data:IModelData):void;
     //Attribs
-    getAttribs(attrib_type:EGeomType):IAttrib[];
+    getAttribs(attrib_type?:EGeomType):IAttrib[];
     getAttrib(name:string, attrib_type:EGeomType):IAttrib;
     addAttrib(name:string, attrib_type:EGeomType, data_type:EDataType):IAttrib;
     delAttrib(name:string, attrib_type:EGeomType):boolean;
@@ -400,10 +407,9 @@ export interface IGroup {
     getName():string;
     setName(name:string):string;
     //Parent/child groups
-    getParentGroup():IGroup;
-    getChildGroups():IGroup[];
-    setParentGroup(group:IGroup):boolean;
-    removeParentGroup(group:IGroup):boolean;
+    getParentGroup():string;
+    getChildGroups():string[];
+    setParentGroup(name:string):string;
     //Points in this group
     getPointIDs():number[];
     addPoint(point_id:number):boolean;

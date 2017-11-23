@@ -16,7 +16,14 @@
             [200]
         ]
     ],
-    "attribs":[
+    "attribs":{
+        "points":[
+        ],
+        "vertices":[
+        ],
+        "wires":[
+        ],
+        "faces":[
         {
             "name":"shell_id",
             "geom_type":"faces",
@@ -26,5 +33,9 @@
                 [0]
             ]
         }
-    ]
+        ],
+        "objs":[
+        ]
+    }
+
 }

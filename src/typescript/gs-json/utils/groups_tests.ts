@@ -11,8 +11,8 @@ let Model_1:gs.Model = new gs.Model();
     Model_1.addGroup("Second_Group");
     Model_1.addGroup("Third_Group");
     Model_1.delGroup("Second_Group");
-    Model_1.getGroup("Third_Group").setName("Third, renamed as Second");
-    Model_1.getGroups(); // Get Groups show two names per group
+    Model_1.getGroup("Third_Group");//.setName("Third, renamed as Second");
+    // Model_1.getGroups(); // Get Groups show two names per group
     return true;
 }
 

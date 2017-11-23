@@ -55,6 +55,7 @@ export class Geom implements ifs.IGeom {
         // now, the point is created, we allocation a xyz position into that instance.
         this.points_data[0].push(0);//points to null
         point.setPosition(xyz); // switches the old_xyz (points_data[1][0] to the new xyz by pointing it if existing or creating it if not.
+        //update point attributes
         return point;
     }
 
@@ -68,6 +69,10 @@ export class Geom implements ifs.IGeom {
         let pline:ifs.IPolyline = new Polyline(this, this.numObjs());
         this.objs_data[0].push(0);//points to null
         pline.setPosition(wire_points);
+        //update all attributes except points
+        //for (let attribute of this.model.getAttribs()) {
+            //attribute.add(pline.getTemplate(attribute.getGeomType()))
+        //}
         return pline;
     }
 
@@ -76,10 +81,11 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return Object of type Polymesh
     */
-    public addPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IPolymesh {
+    public addPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IPolymesh {//double arrays
         let pmesh:ifs.IPolymesh = new Polymesh(this, this.numObjs());
         this.objs_data[0].push(0);//points to null
         pmesh.setPosition(wire_points, face_points);
+        //update all attributes except points
         return pmesh;
     }
 

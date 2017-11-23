@@ -48,42 +48,48 @@ export let box_with_attribs: gs.IModelData = {
             [200]
         ]
     ],
-    "attribs":[
-        {
-            "name":"test1",
-            "geom_type":"points",
-            "data_type":"number",
-            "values": [
-                [0, 1, 2, 3, 4, 5, 6, 7],
-                [641.600585938, 800.463806152, 510.895019531, 775.474304199, 879.505859375, 205.040100098, 522.06060791, 885.056274414]
-            ]
-        },
-        {
-            "name":"test2",
-            "geom_type":"vertices",
-            "data_type":"string",
-            "values": [
-                [[[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []]],
-                ["id_0", "id_1", "id_2", "id_3"]
-            ]
-        },
-        {
-            "name":"shell_id",
-            "geom_type":"faces",
-            "data_type":"number",
-            "values": [
-                [[0, 0, 0, 0, 0, 0]],
-                [0]
-            ]
-        },
-        {
-            "name":"test3",
-            "geom_type":"faces",
-            "data_type":"number",
-            "values": [
-                [[0, 1, 2, 3, 4, 5]],
-                [2.0, 12.0, 22.0, 32.0, 42.0, 52.0]
-            ]
-        }
-    ]
+    "attribs": {
+        "points": [
+            {
+                "name":"test1",
+                "geom_type":"points",
+                "data_type":"number",
+                "values": [
+                    [0, 1, 2, 3, 4, 5, 6, 7],
+                    [641.600585938, 800.463806152, 510.895019531, 775.474304199, 879.505859375, 205.040100098, 522.06060791, 885.056274414]
+                ]
+            }
+        ],
+        "vertices":[
+            {
+                "name":"test2",
+                "geom_type":"vertices",
+                "data_type":"string",
+                "values": [
+                    [[[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []]],
+                    ["id_0", "id_1", "id_2", "id_3"]
+                ]
+            }
+        ],
+        "faces":[
+            {
+                "name":"shell_id", 
+                "geom_type":"faces",
+                "data_type":"number",
+                "values": [
+                    [[0, 0, 0, 0, 0, 0]],
+                    [0]
+                ]
+            },
+            {
+                "name":"test3",
+                "geom_type":"faces",
+                "data_type":"number",
+                "values": [
+                    [[0, 1, 2, 3, 4, 5]],
+                    [2.0, 12.0, 22.0, 32.0, 42.0, 52.0]
+                ]
+            }
+        ]
+    }
 }

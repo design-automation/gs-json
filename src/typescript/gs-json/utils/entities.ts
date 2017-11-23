@@ -203,6 +203,24 @@ abstract class Obj extends Ent implements ifs.IObj{
     public numFaces():number {
         return this.geom.getObjData(new GeomPath(this.id, ifs.EGeomType.faces)).length;
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public getTemplate(geom_type:ifs.EGeomType):any[] {
+        throw new Error("not implemented");
+        // switch (geom_type) {
+        //     case ifs.EGeomType.points:
+        //         // code...
+        //         break;
+            
+        //     default:
+        //         // code...
+        //         break;
+        // }
+
+    }
 }
 /**
 * Class Polyline.
