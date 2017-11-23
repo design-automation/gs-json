@@ -7,24 +7,24 @@
 * Faces, Wires, Edges, and Vertices are topological components (see subclasses of the Topo class).
 * Attributes can be attached to all these elements.
 */
-export const enum EGeomType {
-    objs,
-    faces,
-    wires, 
-    edges,
-    vertices,
-    points
+export enum EGeomType {
+    objs="objs",
+    faces="faces",
+    wires="wires", 
+    edges="edges",
+    vertices="vertices",
+    points="points"
 }
 /**
 * Enum, the different data types for attributes.
 */
-export const enum EDataType {
-    type_str,
-    type_num,
-    type_bool,
-    type_str_arr,
-    type_num_arr,
-    type_bool_arr,
+export enum EDataType {
+    type_str="string",
+    type_num="number",
+    type_bool="boolean",
+    type_str_arr="string[]",
+    type_num_arr="number[]",
+    type_bool_arr="boolean[]",
 }
 /**
 * Enum, the different types of geometric objects (see the subclasses of the Obj class.)
@@ -44,7 +44,7 @@ export const enum EObjType {
 * Map, from string to EGeomType.
 * This is used when parsing JSON.
 */
-export let mapStringToAttribType = new Map<string,EGeomType> ([
+export let mapStringToGeomType = new Map<string,EGeomType> ([
     ["objs",EGeomType.objs],
     ["faces",EGeomType.faces],
     ["wires",EGeomType.wires],
@@ -83,8 +83,8 @@ export let mapStringToDataType = new Map<string,EDataType> ([
 * Interface, for parsing JSON Metadata.
 */
 export interface IMetadata {
-    filetype: "mobius";
-    version: number;
+    filetype: "gs-json";
+    version: string;
     crs: any;
     location: string;
 }
@@ -96,7 +96,6 @@ export interface IAttribData {
     geom_type: "points" | "vertices" | "edges" | "wires" | "faces" | "objs"; //enum not working
     data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]"; //enum not working
     values: any[];
-    values_map: (number|number[]|number[][])[];
 }
 /**
 * Interface, for parsing JSON GroupData.
@@ -105,7 +104,6 @@ export interface IGroupData {
     name: string;
     parent?:string;
     objs?: any[];//TODO
-    groups?: string[];
     props?: { key: string, value: any }
 }
 /**

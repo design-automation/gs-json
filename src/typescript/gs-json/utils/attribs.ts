@@ -7,9 +7,9 @@ import {Group} from "./groups";
 /**
  * Attrib class.
  * An class that represents a semantic attribute.
- * An attribute is data that is attached to a specific type of geometry, which includes
- * geometric entities and or topological component.
- * The geometric types are: "points", "vertices", "edges", "wires", "faces", and "objs".
+ * An attribute is data that is attached to a specific type of geometry.
+ * The geometric types to which attributes can be attached are: 
+ * "points", "vertices", "edges", "wires", "faces", and "objs".
  * An instance of this class stores a list of attributes values. 
  */
 export class Attrib implements ifs.IAttrib {
@@ -17,8 +17,7 @@ export class Attrib implements ifs.IAttrib {
     private name:string;
     private attrib_type:ifs.EGeomType;
     private data_type:ifs.EDataType;
-    private values_map:any[];
-    private values:any[];
+    private values:any[]; //values[0] is the map, values[1] is the array of unique values
     /**
     * Creates an instance of the Attrib class.
     * @param model The Model object in which this attribute will be created.
@@ -29,20 +28,15 @@ export class Attrib implements ifs.IAttrib {
     * @param values A list of values, where the data type matches the data_type arg.
     * @return The Attrib object.
     */
-    constructor(model:ifs.IModel, name:string, attrib_type:ifs.EGeomType, data_type:ifs.EDataType, values_map?:any[], values?:any[]) {
+    constructor(model:ifs.IModel, name:string, attrib_type:ifs.EGeomType, data_type:ifs.EDataType, values?:any[]) {
         this.model = model;
         this.name = name;
         this.attrib_type = attrib_type;
         this.data_type = data_type;
-        if (values_map) {
-            this.values_map = values_map;
-        } else {
-            this.values_map = this.model.getGeom().getAttribTemplate(this.attrib_type);
-        }
         if (values) {
             this.values = values;
         } else {
-            this.values = [null];//first value in the list is always null
+            this.values = [this.model.getGeom().getAttribTemplate(this.attrib_type), [null]];
         }
     }
     /**
@@ -79,32 +73,36 @@ export class Attrib implements ifs.IAttrib {
     /**
     * Get a single attribute value. 
     * The data type of the attribute value can be found using the getDataType() method.
+    * If getGeomType() returns "points" or "objs", then path should be the entity id (a number).
+    * If getGeomType() returns "vertices", "edges", "wires", or "faces",
+    * then path should be a path to a topo component (an instance of GeomPath).
     * @param path The path to a geometric entity or topological component.
     * @return The value.
     */
-    public getValue(path:ifs.IGeomPath):any {//TODO for points and objs, no path required
-        let index:number;
+    public getValue(path:number|ifs.IGeomPath):any {
         switch (this.attrib_type) {
             case ifs.EGeomType.points: case ifs.EGeomType.objs:
-                index = this.values_map[path.id];
-                break;
+                path = path as number;
+                return this.values[1][this.values[0][path]];//TODO check by reference or by value?
             case ifs.EGeomType.wires: case ifs.EGeomType.faces:
-                index = this.values_map[path.id][path.ti];
-                break;
+                path = path as ifs.IGeomPath;
+                return this.values[1][this.values[0][path.id][path.ti]];
             case ifs.EGeomType.vertices: case ifs.EGeomType.edges:
-                index = this.values_map[path.id][path.ti][path.si];
-                break;
+                path = path as ifs.IGeomPath;
+                return this.values[1][this.values[0][path.id][path.ti][path.si]];
         }
-        return this.values[index];
     }
     /**
     * Set a single attribute value. 
     * The data type of the attribute value can be found using the getDataType() method.
+    * If getGeomType() returns "points" or "objs", then path should be the entity id (a number).
+    * If getGeomType() returns "vertices", "edges", "wires", or "faces",
+    * then path should be a path to a topo component (an instance of GeomPath).
     * @param path The path to a geometric entity or topological component.
     * @param value The new value.
     * @return The old value.
     */
-    public setValue(path:ifs.IGeomPath, value:any):any {//TODO for points and objs, no path required
+    public setValue(path:number|ifs.IGeomPath, value:any):any {
         let index:number = Arr.indexOf(value, this.values);
         if (index == -1) {
             index = this.values.push(value) - 1;
@@ -112,25 +110,27 @@ export class Attrib implements ifs.IAttrib {
         let old_value:any;
         switch (this.attrib_type) {
             case ifs.EGeomType.points: case ifs.EGeomType.objs:
-                old_value = this.values_map[path.id];
-                this.values_map[path.id] = index;
-                break;
+                path = path as number;
+                old_value = this.values[1][this.values[0][path]];
+                this.values[0][path] = index;
+                return old_value;
             case ifs.EGeomType.wires: case ifs.EGeomType.faces:
-                old_value = this.values_map[path.id][path.ti];
-                this.values_map[path.id][path.ti] = index;
-                break;
+                path = path as ifs.IGeomPath;
+                old_value = this.values[1][this.values[0][path.id][path.ti]];
+                this.values[0][path.id][path.ti] = index;
+                return old_value;
             case ifs.EGeomType.vertices: case ifs.EGeomType.edges:
-                old_value = this.values_map[path.id][path.ti][path.si]
-                this.values_map[path.id][path.ti][path.si] = index;
-                break;
+                path = path as ifs.IGeomPath;
+                old_value = this.values[1][this.values[0][path.id][path.ti][path.si]];
+                this.values[0][path.id][path.ti][path.si] = index;
+                return old_value;
         }
-        return old_value;
     }
     /**
     * Get the number of attribute values. 
     * @return The number of attribute values.
     */
     public count():number  {
-        return this.values_map.length;
+        return this.values[0].length;
     }
 }

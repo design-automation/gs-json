@@ -22,12 +22,11 @@ export class Model implements ifs.IModel{
     */
     constructor() {
         //create default metadata
-        this.metadata = {filetype: "mobius", version:  0.1, crs:{"epsg":3857}, location: "+0-0"}
+        this.metadata = {filetype: "gs-json", version:  "0.1.1", crs:{"epsg":3857}, location: "+0-0"}
         //create an empty geometry array
         this.geom = new Geom(this);
         //create one attrib, called "position"
         this.attrib_types_dict = {objs:{}, points:{}, faces:{}, wires:{}, edges:{}, vertices:{} }
-        this.attrib_types_dict.points = {}
         //create empty groups dict
         this.groups_dict = {};
     }
@@ -49,15 +48,17 @@ export class Model implements ifs.IModel{
         this.geom = new Geom(this, data.points, data.objs);
         if (data.attribs) {
             for (let attrib_data of data.attribs) {
-                let geom_type:ifs.EGeomType = ifs.mapStringToAttribType[attrib_data.geom_type];
-                let data_type:ifs.EDataType = ifs.mapStringToDataType[attrib_data.data_type];
-                let attrib:Attrib = new Attrib(this, attrib_data.name, geom_type, data_type);
-                this.attrib_types_dict[attrib_data.geom_type][attrib_data.name] = attrib;           
+                let attrib:ifs.IAttrib = 
+                    new Attrib(this, attrib_data.name, 
+                        ifs.EGeomType[attrib_data.geom_type], 
+                        ifs.EDataType[attrib_data.data_type], attrib_data.values);
+                this.attrib_types_dict[attrib_data.geom_type][attrib_data.name] = attrib;  
             }
         }
         if (data.groups) {
-            for (let group of data.groups) {
-                this.attrib_types_dict[group.name] = null; //TODO
+            for (let group_data of data.groups) {
+                let group:ifs.IGroup = new Group(this, group_data.name);
+                this.groups_dict[group_data.name] = group; 
             }
         }
     }
@@ -67,8 +68,8 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public getAttribs(attrib_type:ifs.EGeomType):ifs.IAttrib[] {
-        let attrib_dict:ifs.IAttribDict =  this.attrib_types_dict[attrib_type];
+    public getAttribs(geom_type:ifs.EGeomType):ifs.IAttrib[] {
+        let attrib_dict:ifs.IAttribDict =  this.attrib_types_dict[geom_type];
         return Object.keys(attrib_dict).map(key=>attrib_dict[key]);
     }
     /**
@@ -76,17 +77,17 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public getAttrib(name:string, attrib_type?:ifs.EGeomType):ifs.IAttrib {
-        return this.attrib_types_dict[attrib_type][name];
+    public getAttrib(name:string, geom_type?:ifs.EGeomType):ifs.IAttrib {
+        return this.attrib_types_dict[geom_type][name];
     }
     /**
     * to be completed
     * @param
     * @return
     */
-    public addAttrib(name:string, attrib_type:ifs.EGeomType, data_type:ifs.EDataType):ifs.IAttrib {
-        let attrib:ifs.IAttrib = new Attrib(this, name, attrib_type, data_type);
-        this.attrib_types_dict[attrib_type][name] = attrib;
+    public addAttrib(name:string, geom_type:ifs.EGeomType, data_type:ifs.EDataType):ifs.IAttrib {
+        let attrib:ifs.IAttrib = new Attrib(this, name, geom_type, data_type);
+        this.attrib_types_dict[geom_type][name] = attrib;
         return attrib;
     }
     /**
@@ -94,8 +95,8 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public delAttrib(name:string, attrib_type:ifs.EGeomType):boolean {
-        return delete this.attrib_types_dict[attrib_type][name];
+    public delAttrib(name:string, geom_type:ifs.EGeomType):boolean {
+        return delete this.attrib_types_dict[geom_type][name];
     }
     //Groups
     /**

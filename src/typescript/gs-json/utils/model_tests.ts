@@ -27,6 +27,7 @@ export function test_Model_getGeom():boolean {
 }
 export function test_Model_setData():boolean {
     let model:gs.IModel = new gs.Model();
+    //model with no attribs
     model.setData(test_data.box);
     if (model.getGeom().numObjs() != 1) {return false;}
     if (model.getGeom().numPoints() != 8) {return false;}
@@ -34,6 +35,11 @@ export function test_Model_setData():boolean {
     if (! gs.Arr.equal(
         model.getGeom().getObj(0).getFaces()[4].getVertices().
             map((v,i)=>v.getPoint().getID()), [5, 6, 7, 4])) {return false;}
+    //model with attribs
+    model.setData(test_data.box_with_attribs);
+    let attribs:gs.IAttrib[] = model.getAttribs(gs.EGeomType.vertices);
+    if (attribs[0].getName() != "test2") {return false;}
+    if (model.getGeom().getObj(0).getFaces()[0].getAttribValue("test3") != 2.0) {return false;}
     return true;
 }
 export function test_Model_getAttribs():boolean {

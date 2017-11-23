@@ -239,9 +239,9 @@ export class Edge extends Topo implements ifs.IEdge {
         }
         return [
             new Vertex(this.geom, 
-                new GeomPath(this.path.id, this.path.tt, ifs.EGeomType.vertices, this.path.si)),
+                new GeomPath(this.path.id, this.path.tt, this.path.ti, ifs.EGeomType.vertices, this.path.si)),
             new Vertex(this.geom, 
-                new GeomPath(this.path.id, this.path.tt, ifs.EGeomType.vertices, vertex_index))
+                new GeomPath(this.path.id, this.path.tt, this.path.ti, ifs.EGeomType.vertices, vertex_index))
         ]
     }
     /**

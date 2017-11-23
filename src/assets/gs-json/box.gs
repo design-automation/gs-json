@@ -1,7 +1,7 @@
 {
     "metadata": {
-        "filetype":"mobius",
-        "version": 0.1,
+        "filetype":"gs-json",
+        "version": "0.1.1",
         "crs": {"epsg":3857},
         "location": "+40.6894-074.0447" 
     },
@@ -26,8 +26,10 @@
             "name":"shell_id",
             "geom_type":"faces",
             "data_type":"number",
-            "values_map": [[0, 0, 0, 0, 0], [1, 1, 1, 1]],
-            "values":[0, 1]
+            "values": [
+                [[0, 0, 0, 0, 0], [1, 1, 1, 1]],
+                [0, 1]
+            ]
         }
     ]
 }

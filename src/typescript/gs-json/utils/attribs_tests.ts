@@ -11,14 +11,14 @@ export function test_xxx():boolean {
 export function test_constructor():boolean{
 	let m:Model = new Model();
 	let a:Geom = new Geom(m);
-	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [2,2,3], [4,4,6] );
+	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [[2,2,3], [4,4,6]] );
 	return true;
 }
 
 export function test_getName():boolean {
 	let m:Model = new Model();
 	let a:Geom = new Geom(m);
-	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [2,2,3], [4,4,6] );
+	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [[2,2,3], [4,4,6]] );
 	b.getName();
     return true;
 }
@@ -26,7 +26,7 @@ export function test_getName():boolean {
 export function test_setName():boolean {
 	let m:Model = new Model();
 	let a:Geom = new Geom(m);
-	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [2,2,3], [4,4,6] );
+	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [[2,2,3], [4,4,6]] );
 	b.setName('test2');
     return true;
 }
@@ -34,7 +34,7 @@ export function test_setName():boolean {
 export function test_getGeomType():boolean {
 	let m:Model = new Model();
 	let a:Geom = new Geom(m);
-	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [2,2,3], [4,4,6] );
+	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [[2,2,3], [4,4,6]] );
 	b.getGeomType();
     return true;
 }
@@ -42,7 +42,7 @@ export function test_getGeomType():boolean {
 export function test_getObjDataType():boolean {
 	let m:Model = new Model();
 	let a:Geom = new Geom(m);
-	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [2,2,3], [4,4,6] );
+	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [[2,2,3], [4,4,6]] );
 	b.getObjDataType();
     return true;
 }
@@ -60,7 +60,7 @@ export function test_setValue():boolean {
 export function test_count():boolean {
 	let m:Model = new Model();
 	let a:Geom = new Geom(m);
-	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [2,2,3], [4,4,6] );
+	let b:Attrib = new Attrib(m, "test1", ifs.EGeomType.objs, ifs.EDataType.type_num, [[2,2,3], [4,4,6]] );
 	b.count();
     return true;
 }
