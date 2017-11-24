@@ -10,8 +10,11 @@ export function test_xxx():boolean {
 
 export function test_createPoint():boolean {
     let model:gs.IModel = new gs.Model();
-    model.getGeom().addPoint([1,2,3]);
+    let a:number[] = [1,2,3];
+    model.getGeom().addPoint(a);
     if (model.getGeom().numPoints() != 1) {return false;}
+    let k:number = 1;
+    if(model.getGeom().getPointData(0)[1][k] != a[k] ) {return false};
     return true;
 }
 

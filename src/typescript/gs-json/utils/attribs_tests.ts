@@ -3,7 +3,6 @@ import * as gs from "./gs-json";
 export function test_xxx():boolean {
     return true;
 }
-
 export function test_constructor():boolean{
 	let m:gs.IModel = new gs.Model();
 	let b:gs.IAttrib = m.addAttrib("test1", gs.EGeomType.objs, gs.EDataType.type_num);
