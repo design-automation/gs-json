@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;entities&quot; | gs-json</title>
+	<title>IGroupData | gs-json</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,30 +56,101 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_entities_.html">&quot;entities&quot;</a>
+					<a href="../modules/_ifaces_json_.html">&quot;ifaces_json&quot;</a>
+				</li>
+				<li>
+					<a href="_ifaces_json_.igroupdata.html">IGroupData</a>
 				</li>
 			</ul>
-			<h1>External module &quot;entities&quot;</h1>
+			<h1>Interface IGroupData</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Interface, for parsing JSON GroupData.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">IGroupData</span>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Classes</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported"><a href="../classes/_entities_.ent.html" class="tsd-kind-icon">Ent</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported"><a href="../classes/_entities_.obj.html" class="tsd-kind-icon">Obj</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_entities_.point.html" class="tsd-kind-icon">Point</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_entities_.polyline.html" class="tsd-kind-icon">Polyline</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_entities_.polymesh.html" class="tsd-kind-icon">Polymesh</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_json_.igroupdata.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_json_.igroupdata.html#objs" class="tsd-kind-icon">objs</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_json_.igroupdata.html#parent" class="tsd-kind-icon">parent</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_json_.igroupdata.html#props" class="tsd-kind-icon">props</a></li>
 							</ul>
 						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in ifaces_json.ts:39</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="objs" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> objs</h3>
+					<div class="tsd-signature tsd-kind-icon">objs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in ifaces_json.ts:41</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="parent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> parent</h3>
+					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in ifaces_json.ts:40</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="props" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> props</h3>
+					<div class="tsd-signature tsd-kind-icon">props<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in ifaces_json.ts:42</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+							</li>
+						</ul>
 					</div>
 				</section>
 			</section>
@@ -91,83 +162,98 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_arr_.html">"arr"</a>
+						<a href="../modules/_arr_.html">"arr"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_arr_tests_.html">"arr_<wbr>tests"</a>
+						<a href="../modules/_arr_tests_.html">"arr_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_attribs_.html">"attribs"</a>
+						<a href="../modules/_attribs_.html">"attribs"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_attribs_tests_.html">"attribs_<wbr>tests"</a>
+						<a href="../modules/_attribs_tests_.html">"attribs_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_entities_.html">"entities"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_entities_tests_.html">"entities_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_enums_.html">"enums"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_geom_.html">"geom"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_geom_tests_.html">"geom_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_groups_.html">"groups"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_groups_tests_.html">"groups_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_gs_json_.html">"gs-<wbr>json"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_gs_json_tests_.html">"gs-<wbr>json_<wbr>tests"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ifaces_gs_.html">"ifaces_<wbr>gs"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_entities_.html">"entities"</a>
+						<a href="../modules/_ifaces_json_.html">"ifaces_<wbr>json"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_entities_tests_.html">"entities_<wbr>tests"</a>
+						<a href="../modules/_model_.html">"model"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_enums_.html">"enums"</a>
+						<a href="../modules/_model_tests_.html">"model_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_geom_.html">"geom"</a>
+						<a href="../modules/_test_data_.html">"test_<wbr>data"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_geom_tests_.html">"geom_<wbr>tests"</a>
+						<a href="../modules/_topos_.html">"topos"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_groups_.html">"groups"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_groups_tests_.html">"groups_<wbr>tests"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_gs_json_.html">"gs-<wbr>json"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_gs_json_tests_.html">"gs-<wbr>json_<wbr>tests"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_ifaces_gs_.html">"ifaces_<wbr>gs"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_ifaces_json_.html">"ifaces_<wbr>json"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_model_.html">"model"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_model_tests_.html">"model_<wbr>tests"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_test_data_.html">"test_<wbr>data"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_topos_.html">"topos"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_topos_tests_.html">"topos_<wbr>tests"</a>
+						<a href="../modules/_topos_tests_.html">"topos_<wbr>tests"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_entities_.ent.html" class="tsd-kind-icon">Ent</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_json_.iattribdata.html" class="tsd-kind-icon">IAttrib<wbr>Data</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../classes/_entities_.obj.html" class="tsd-kind-icon">Obj</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_json_.igroupdata.html" class="tsd-kind-icon">IGroup<wbr>Data</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_json_.igroupdata.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_json_.igroupdata.html#objs" class="tsd-kind-icon">objs</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_json_.igroupdata.html#parent" class="tsd-kind-icon">parent</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_json_.igroupdata.html#props" class="tsd-kind-icon">props</a>
+							</li>
+						</ul>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_entities_.point.html" class="tsd-kind-icon">Point</a>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_json_.imodeldata.html" class="tsd-kind-icon">IModel<wbr>Data</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_entities_.polyline.html" class="tsd-kind-icon">Polyline</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_entities_.polymesh.html" class="tsd-kind-icon">Polymesh</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_json_.iskindata.html" class="tsd-kind-icon">ISkin<wbr>Data</a>
 					</li>
 				</ul>
 			</nav>

@@ -165,18 +165,20 @@
 				<p>These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-json, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-json does not specify any domain-specific semantics.</p>
 				<h1 id="json-encoding-of-geometry">JSON Encoding of Geometry</h1>
 				<p>Within a gs-json file, the geometry is defined in two arrays. Points aee specified in the &quot;points&quot; array. Objects are specified in the &quot;objs&quot; array.</p>
-				<pre><code class="lang-javascript"><span class="hljs-string">"ponts"</span>: [
-    [...], <span class="hljs-comment">//values_map</span>
-    [...]  <span class="hljs-comment">//values</span>
-],
-<span class="hljs-string">"objs"</span>: [
-    [
-        [...], <span class="hljs-comment">//wires</span>
-        [...], <span class="hljs-comment">//faces</span>
-        [...] <span class="hljs-comment">//parameters</span>
+				<pre><code class="lang-javascript">&quot;geom&quot;:{
+    ponts&quot;: [
+        [...], //values_map
+        [...]  //values
     ],
-    <span class="hljs-comment">//...</span>
-]
+    &quot;objs&quot;: [
+        [
+            [...], //wires
+            [...], //faces
+            [...]  //parameters
+        ],
+        //...
+    ]
+}
 </code></pre>
 				<h2 id="geometric-objects">Geometric Objects</h2>
 				<p>Objects are represented using integer arrays, consisting of three sub-arrays as follows: </p>
@@ -208,30 +210,24 @@
 				</ol>
 				<p>Polygon meshes have faces and wires, both of which are always closed. The wires represent the naked edges of the mesh. A mesh with no wires is a solid. </p>
 				<h1 id="json-encoding-of-semantics">JSON Encoding of Semantics</h1>
-				<p>Within a js-JSON file, all semantics is defined in a two arrays, as follows:</p>
-				<pre><code class="lang-javascript"><span class="hljs-string">"attribs"</span>:  [
-    {...},
-    {...},
-    {...},
-    <span class="hljs-comment">//...</span>
-],
-<span class="hljs-string">"groups"</span>: [ 
-    {...},
-    {...},
-    {...},
-    <span class="hljs-comment">//...</span>
-]
-</code></pre>
-				<p>The attributes and groups arrays each define the semantics.</p>
+				<p>Within a js-JSON file, all semantics is defined in attributes and groups.</p>
 				<h2 id="attributes">Attributes</h2>
+				<pre><code class="lang-javascript"><span class="hljs-string">"attribs"</span>:  {
+    <span class="hljs-string">"points"</span>:[{...}, ...],
+    <span class="hljs-string">"vertices"</span>:[{...},...],
+    <span class="hljs-string">"edges"</span>:[{...},...],
+    <span class="hljs-string">"wires"</span>:[{...}, ...],
+    <span class="hljs-string">"faces"</span>:[{...}, ...],
+    <span class="hljs-string">"objs"</span>:[{...}, ...]
+}
+</code></pre>
 				<p>Attributes are defined as follows:</p>
 				<ul>
-					<li>{&quot;name&quot;=&quot;my_attrib&quot;, &quot;geom_type&quot;=&quot;xxx&quot;, &quot;data_type&quot;=&quot;xxx&quot;, &quot;values&quot;=[...], &quot;values_map&quot;=[...] }</li>
+					<li>{&quot;name&quot;=&quot;my_attrib&quot;, &quot;geom_type&quot;=&quot;xxx&quot;, &quot;data_type&quot;=&quot;xxx&quot;, &quot;values&quot;=[...]}</li>
 				</ul>
 				<p><em>geom_type</em> can be &quot;points&quot;, &quot;vertices&quot;, &quot;edges&quot;, &quot;wires&quot;, &quot;faces&quot;.</p>
 				<p><em>data_type</em> can be &quot;string&quot;, &quot;number&quot;,&quot;boolean&quot;,&quot;string[]&quot;,&quot;number[]&quot;,&quot;boolean[]&quot;.</p>
-				<p><em>values</em> is an array the defines the set of unique values that will be assigned to the geometric objects. The values must follow the data type specified in <em>data_type</em>.</p>
-				<p><em>values_map</em> is an array of indices, whose length is equal to the number of elements.  </p>
+				<p><em>values</em> consists of two arrays the define the values for the attribute. These values are associated with the geometry based on the &quot;geom_type&quot; setting. One array contains a set of indexes, and the other a set of unique values. The indexes point to the unique values. The values must follow the data type specified in <em>data_type</em>.</p>
 				<h3 id="viewer-attributes">Viewer Attributes</h3>
 				<p>Certain attributes may be recognised by the viewer. (This of course dpeends on the implementation of the viewer.)</p>
 				<ul>
@@ -240,6 +236,13 @@
 					<li>colour - the point colour, as [r,g,b].</li>
 				</ul>
 				<h2 id="groups">Groups</h2>
+				<pre><code class="lang-javascript"><span class="hljs-string">"groups"</span>: [
+    {...},
+    {...},
+    {...},
+    <span class="hljs-comment">//...</span>
+]
+</code></pre>
 				<p>A group can contain geometric objects. Geometric objects may be contained in more than one group.</p>
 				<p>Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a <em>root</em> or <em>top-level</em> group. </p>
 				<p>Groups are defined as follows: </p>
@@ -281,6 +284,9 @@
 						<a href="modules/_entities_tests_.html">"entities_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="modules/_enums_.html">"enums"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="modules/_geom_.html">"geom"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -299,7 +305,10 @@
 						<a href="modules/_gs_json_tests_.html">"gs-<wbr>json_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_interfaces_.html">"interfaces"</a>
+						<a href="modules/_ifaces_gs_.html">"ifaces_<wbr>gs"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_ifaces_json_.html">"ifaces_<wbr>json"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_model_.html">"model"</a>

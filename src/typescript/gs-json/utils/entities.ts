@@ -1,6 +1,7 @@
-import * as ifs from "./interfaces";
+import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
-import {EGeomType, EDataType, EObjType} from "./enums";
+import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";

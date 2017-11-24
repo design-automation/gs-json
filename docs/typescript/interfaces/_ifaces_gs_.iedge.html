@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IObj | gs-json</title>
+	<title>IEdge | gs-json</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
+					<a href="../modules/_ifaces_gs_.html">&quot;ifaces_gs&quot;</a>
 				</li>
 				<li>
-					<a href="_interfaces_.iobj.html">IObj</a>
+					<a href="_ifaces_gs_.iedge.html">IEdge</a>
 				</li>
 			</ul>
-			<h1>Interface IObj</h1>
+			<h1>Interface IEdge</h1>
 		</div>
 	</div>
 </header>
@@ -72,8 +72,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Interface, for the abstract Obj class, that represents a geometric object.
-						Subclasses such as Polyline and polymesh can be instantiated.</p>
+						<p>Interface, for Edge class.</p>
 					</div>
 				</div>
 			</section>
@@ -81,18 +80,10 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_interfaces_.ient.html" class="tsd-signature-type">IEnt</a>
+						<a href="_ifaces_gs_.itopo.html" class="tsd-signature-type">ITopo</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">IObj</span>
-								<ul class="tsd-hierarchy">
-									<li>
-										<a href="_interfaces_.ipolyline.html" class="tsd-signature-type">IPolyline</a>
-									</li>
-									<li>
-										<a href="_interfaces_.ipolymesh.html" class="tsd-signature-type">IPolymesh</a>
-									</li>
-								</ul>
+								<span class="target">IEdge</span>
 							</li>
 						</ul>
 					</li>
@@ -101,9 +92,7 @@
 			<section class="tsd-panel">
 				<h3>Implemented by</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../classes/_entities_.obj.html" class="tsd-signature-type">Obj</a></li>
-					<li><a href="../classes/_entities_.polyline.html" class="tsd-signature-type">Polyline</a></li>
-					<li><a href="../classes/_entities_.polymesh.html" class="tsd-signature-type">Polymesh</a></li>
+					<li><a href="../classes/_topos_.edge.html" class="tsd-signature-type">Edge</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -113,20 +102,19 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.iobj.html#addtogroup" class="tsd-kind-icon">add<wbr>ToGroup</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.iobj.html#getattribnames" class="tsd-kind-icon">get<wbr>Attrib<wbr>Names</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.iobj.html#getattribvalue" class="tsd-kind-icon">get<wbr>Attrib<wbr>Value</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.iobj.html#getfaces" class="tsd-kind-icon">get<wbr>Faces</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.iobj.html#getgeom" class="tsd-kind-icon">get<wbr>Geom</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.iobj.html#getgeomtype" class="tsd-kind-icon">get<wbr>Geom<wbr>Type</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.iobj.html#getgroupnames" class="tsd-kind-icon">get<wbr>Group<wbr>Names</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.iobj.html#getid" class="tsd-kind-icon">getID</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.iobj.html#getmodel" class="tsd-kind-icon">get<wbr>Model</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.iobj.html#getobjtype" class="tsd-kind-icon">get<wbr>Obj<wbr>Type</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.iobj.html#getwires" class="tsd-kind-icon">get<wbr>Wires</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.iobj.html#numfaces" class="tsd-kind-icon">num<wbr>Faces</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_interfaces_.iobj.html#numwires" class="tsd-kind-icon">num<wbr>Wires</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_interfaces_.iobj.html#setattribvalue" class="tsd-kind-icon">set<wbr>Attrib<wbr>Value</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.iedge.html#edgessharedpoints" class="tsd-kind-icon">edges<wbr>Shared<wbr>Points</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_ifaces_gs_.iedge.html#getattribnames" class="tsd-kind-icon">get<wbr>Attrib<wbr>Names</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_ifaces_gs_.iedge.html#getattribvalue" class="tsd-kind-icon">get<wbr>Attrib<wbr>Value</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_ifaces_gs_.iedge.html#getgeom" class="tsd-kind-icon">get<wbr>Geom</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_ifaces_gs_.iedge.html#getgeomtype" class="tsd-kind-icon">get<wbr>Geom<wbr>Type</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_ifaces_gs_.iedge.html#getgroupnames" class="tsd-kind-icon">get<wbr>Group<wbr>Names</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_ifaces_gs_.iedge.html#getmodel" class="tsd-kind-icon">get<wbr>Model</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_ifaces_gs_.iedge.html#getobjid" class="tsd-kind-icon">get<wbr>ObjID</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.iedge.html#getvertices" class="tsd-kind-icon">get<wbr>Vertices</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.iedge.html#getwireorface" class="tsd-kind-icon">get<wbr>Wire<wbr>OrFace</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.iedge.html#next" class="tsd-kind-icon">next</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.iedge.html#previous" class="tsd-kind-icon">previous</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_ifaces_gs_.iedge.html#setattribvalue" class="tsd-kind-icon">set<wbr>Attrib<wbr>Value</a></li>
 							</ul>
 						</section>
 					</div>
@@ -134,27 +122,20 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="addtogroup" class="tsd-anchor"></a>
-					<h3>add<wbr>ToGroup</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>ToGroup<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="edgessharedpoints" class="tsd-anchor"></a>
+					<h3>edges<wbr>Shared<wbr>Points</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">edges<wbr>Shared<wbr>Points<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iedge.html" class="tsd-signature-type">IEdge</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_interfaces_.ient.html">IEnt</a>.<a href="_interfaces_.ient.html#addtogroup">addToGroup</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L271">interfaces.ts:271</a></li>
+									<li>Defined in ifaces_gs.ts:228</li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.iedge.html" class="tsd-signature-type">IEdge</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -167,9 +148,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_interfaces_.ient.html">IEnt</a>.<a href="_interfaces_.ient.html#getattribnames">getAttribNames</a></p>
+								<p>Inherited from <a href="_ifaces_gs_.itopo.html">ITopo</a>.<a href="_ifaces_gs_.itopo.html#getattribnames">getAttribNames</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L266">interfaces.ts:266</a></li>
+									<li>Defined in ifaces_gs.ts:202</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -185,9 +166,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_interfaces_.ient.html">IEnt</a>.<a href="_interfaces_.ient.html#getattribvalue">getAttribValue</a></p>
+								<p>Inherited from <a href="_ifaces_gs_.itopo.html">ITopo</a>.<a href="_ifaces_gs_.itopo.html#getattribvalue">getAttribValue</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L267">interfaces.ts:267</a></li>
+									<li>Defined in ifaces_gs.ts:204</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -200,38 +181,21 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="getfaces" class="tsd-anchor"></a>
-					<h3>get<wbr>Faces</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Faces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_interfaces_.iface.html" class="tsd-signature-type">IFace</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L293">interfaces.ts:293</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_interfaces_.iface.html" class="tsd-signature-type">IFace</a><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="getgeom" class="tsd-anchor"></a>
 					<h3>get<wbr>Geom</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Geom<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_interfaces_.igeom.html" class="tsd-signature-type">IGeom</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Geom<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.igeom.html" class="tsd-signature-type">IGeom</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_interfaces_.ient.html">IEnt</a>.<a href="_interfaces_.ient.html#getgeom">getGeom</a></p>
+								<p>Inherited from <a href="_ifaces_gs_.itopo.html">ITopo</a>.<a href="_ifaces_gs_.itopo.html#getgeom">getGeom</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L262">interfaces.ts:262</a></li>
+									<li>Defined in ifaces_gs.ts:197</li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_interfaces_.igeom.html" class="tsd-signature-type">IGeom</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.igeom.html" class="tsd-signature-type">IGeom</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -239,17 +203,17 @@
 					<a name="getgeomtype" class="tsd-anchor"></a>
 					<h3>get<wbr>Geom<wbr>Type</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Geom<wbr>Type<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Geom<wbr>Type<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_interfaces_.ient.html">IEnt</a>.<a href="_interfaces_.ient.html#getgeomtype">getGeomType</a></p>
+								<p>Inherited from <a href="_ifaces_gs_.itopo.html">ITopo</a>.<a href="_ifaces_gs_.itopo.html#getgeomtype">getGeomType</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L264">interfaces.ts:264</a></li>
+									<li>Defined in ifaces_gs.ts:200</li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -262,9 +226,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_interfaces_.ient.html">IEnt</a>.<a href="_interfaces_.ient.html#getgroupnames">getGroupNames</a></p>
+								<p>Inherited from <a href="_ifaces_gs_.itopo.html">ITopo</a>.<a href="_ifaces_gs_.itopo.html#getgroupnames">getGroupNames</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L270">interfaces.ts:270</a></li>
+									<li>Defined in ifaces_gs.ts:206</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -272,86 +236,35 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="getid" class="tsd-anchor"></a>
-					<h3>getID</h3>
+					<a name="getmodel" class="tsd-anchor"></a>
+					<h3>get<wbr>Model</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">getID<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Model<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.imodel.html" class="tsd-signature-type">IModel</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_interfaces_.ient.html">IEnt</a>.<a href="_interfaces_.ient.html#getid">getID</a></p>
+								<p>Inherited from <a href="_ifaces_gs_.itopo.html">ITopo</a>.<a href="_ifaces_gs_.itopo.html#getmodel">getModel</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L261">interfaces.ts:261</a></li>
+									<li>Defined in ifaces_gs.ts:198</li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.imodel.html" class="tsd-signature-type">IModel</a></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="getmodel" class="tsd-anchor"></a>
-					<h3>get<wbr>Model</h3>
+					<a name="getobjid" class="tsd-anchor"></a>
+					<h3>get<wbr>ObjID</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Model<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_interfaces_.imodel.html" class="tsd-signature-type">IModel</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>ObjID<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_interfaces_.ient.html">IEnt</a>.<a href="_interfaces_.ient.html#getmodel">getModel</a></p>
+								<p>Inherited from <a href="_ifaces_gs_.itopo.html">ITopo</a>.<a href="_ifaces_gs_.itopo.html#getobjid">getObjID</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L263">interfaces.ts:263</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_interfaces_.imodel.html" class="tsd-signature-type">IModel</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="getobjtype" class="tsd-anchor"></a>
-					<h3>get<wbr>Obj<wbr>Type</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Obj<wbr>Type<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L290">interfaces.ts:290</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="getwires" class="tsd-anchor"></a>
-					<h3>get<wbr>Wires</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Wires<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_interfaces_.iwire.html" class="tsd-signature-type">IWire</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L292">interfaces.ts:292</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_interfaces_.iwire.html" class="tsd-signature-type">IWire</a><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="numfaces" class="tsd-anchor"></a>
-					<h3>num<wbr>Faces</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">num<wbr>Faces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L296">interfaces.ts:296</a></li>
+									<li>Defined in ifaces_gs.ts:199</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -359,19 +272,73 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="numwires" class="tsd-anchor"></a>
-					<h3>num<wbr>Wires</h3>
+					<a name="getvertices" class="tsd-anchor"></a>
+					<h3>get<wbr>Vertices</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">num<wbr>Wires<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Vertices<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ivertex.html" class="tsd-signature-type">IVertex</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L295">interfaces.ts:295</a></li>
+									<li>Defined in ifaces_gs.ts:224</li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.ivertex.html" class="tsd-signature-type">IVertex</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="getwireorface" class="tsd-anchor"></a>
+					<h3>get<wbr>Wire<wbr>OrFace</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Wire<wbr>OrFace<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iwire.html" class="tsd-signature-type">IWire</a><span class="tsd-signature-symbol"> | </span><a href="_ifaces_gs_.iface.html" class="tsd-signature-type">IFace</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in ifaces_gs.ts:225</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.iwire.html" class="tsd-signature-type">IWire</a>
+								<span class="tsd-signature-symbol"> | </span>
+								<a href="_ifaces_gs_.iface.html" class="tsd-signature-type">IFace</a>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="next" class="tsd-anchor"></a>
+					<h3>next</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">next<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iedge.html" class="tsd-signature-type">IEdge</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in ifaces_gs.ts:226</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.iedge.html" class="tsd-signature-type">IEdge</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="previous" class="tsd-anchor"></a>
+					<h3>previous</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">previous<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iedge.html" class="tsd-signature-type">IEdge</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in ifaces_gs.ts:227</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.iedge.html" class="tsd-signature-type">IEdge</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -384,9 +351,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_interfaces_.ient.html">IEnt</a>.<a href="_interfaces_.ient.html#setattribvalue">setAttribValue</a></p>
+								<p>Inherited from <a href="_ifaces_gs_.itopo.html">ITopo</a>.<a href="_ifaces_gs_.itopo.html#setattribvalue">setAttribValue</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L268">interfaces.ts:268</a></li>
+									<li>Defined in ifaces_gs.ts:203</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -429,6 +396,9 @@
 						<a href="../modules/_entities_tests_.html">"entities_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_enums_.html">"enums"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_geom_.html">"geom"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -447,7 +417,10 @@
 						<a href="../modules/_gs_json_tests_.html">"gs-<wbr>json_<wbr>tests"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_interfaces_.html">"interfaces"</a>
+						<a href="../modules/_ifaces_gs_.html">"ifaces_<wbr>gs"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ifaces_json_.html">"ifaces_<wbr>json"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_model_.html">"model"</a>
@@ -468,143 +441,107 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="../enums/_interfaces_.edatatype.html" class="tsd-kind-icon">EData<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="../enums/_interfaces_.egeomtype.html" class="tsd-kind-icon">EGeom<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="../enums/_interfaces_.eobjtype.html" class="tsd-kind-icon">EObj<wbr>Type</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_gs_.iattrib.html" class="tsd-kind-icon">IAttrib</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iattrib.html" class="tsd-kind-icon">IAttrib</a>
+						<a href="_ifaces_gs_.iattribdict.html" class="tsd-kind-icon">IAttrib<wbr>Dict</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iattribdata.html" class="tsd-kind-icon">IAttrib<wbr>Data</a>
+						<a href="_ifaces_gs_.iattribtypesdict.html" class="tsd-kind-icon">IAttrib<wbr>Types<wbr>Dict</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iattribdict.html" class="tsd-kind-icon">IAttrib<wbr>Dict</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iattribtypesdict.html" class="tsd-kind-icon">IAttrib<wbr>Types<wbr>Dict</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.idict.html" class="tsd-kind-icon">IDict</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iedge.html" class="tsd-kind-icon">IEdge</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ient.html" class="tsd-kind-icon">IEnt</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iface.html" class="tsd-kind-icon">IFace</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igeom.html" class="tsd-kind-icon">IGeom</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igeompath.html" class="tsd-kind-icon">IGeom<wbr>Path</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igroup.html" class="tsd-kind-icon">IGroup</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igroupdata.html" class="tsd-kind-icon">IGroup<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igroupsdict.html" class="tsd-kind-icon">IGroups<wbr>Dict</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.imetadata.html" class="tsd-kind-icon">IMetadata</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.imodel.html" class="tsd-kind-icon">IModel</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.imodeldata.html" class="tsd-kind-icon">IModel<wbr>Data</a>
+						<a href="_ifaces_gs_.idict.html" class="tsd-kind-icon">IDict</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iobj.html" class="tsd-kind-icon">IObj</a>
+						<a href="_ifaces_gs_.iedge.html" class="tsd-kind-icon">IEdge</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.iobj.html#addtogroup" class="tsd-kind-icon">add<wbr>ToGroup</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_ifaces_gs_.iedge.html#edgessharedpoints" class="tsd-kind-icon">edges<wbr>Shared<wbr>Points</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.iobj.html#getattribnames" class="tsd-kind-icon">get<wbr>Attrib<wbr>Names</a>
+								<a href="_ifaces_gs_.iedge.html#getattribnames" class="tsd-kind-icon">get<wbr>Attrib<wbr>Names</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.iobj.html#getattribvalue" class="tsd-kind-icon">get<wbr>Attrib<wbr>Value</a>
+								<a href="_ifaces_gs_.iedge.html#getattribvalue" class="tsd-kind-icon">get<wbr>Attrib<wbr>Value</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_ifaces_gs_.iedge.html#getgeom" class="tsd-kind-icon">get<wbr>Geom</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_ifaces_gs_.iedge.html#getgeomtype" class="tsd-kind-icon">get<wbr>Geom<wbr>Type</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_ifaces_gs_.iedge.html#getgroupnames" class="tsd-kind-icon">get<wbr>Group<wbr>Names</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_ifaces_gs_.iedge.html#getmodel" class="tsd-kind-icon">get<wbr>Model</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="_ifaces_gs_.iedge.html#getobjid" class="tsd-kind-icon">get<wbr>ObjID</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_interfaces_.iobj.html#getfaces" class="tsd-kind-icon">get<wbr>Faces</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.iobj.html#getgeom" class="tsd-kind-icon">get<wbr>Geom</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.iobj.html#getgeomtype" class="tsd-kind-icon">get<wbr>Geom<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.iobj.html#getgroupnames" class="tsd-kind-icon">get<wbr>Group<wbr>Names</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.iobj.html#getid" class="tsd-kind-icon">getID</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.iobj.html#getmodel" class="tsd-kind-icon">get<wbr>Model</a>
+								<a href="_ifaces_gs_.iedge.html#getvertices" class="tsd-kind-icon">get<wbr>Vertices</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_interfaces_.iobj.html#getobjtype" class="tsd-kind-icon">get<wbr>Obj<wbr>Type</a>
+								<a href="_ifaces_gs_.iedge.html#getwireorface" class="tsd-kind-icon">get<wbr>Wire<wbr>OrFace</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_interfaces_.iobj.html#getwires" class="tsd-kind-icon">get<wbr>Wires</a>
+								<a href="_ifaces_gs_.iedge.html#next" class="tsd-kind-icon">next</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_interfaces_.iobj.html#numfaces" class="tsd-kind-icon">num<wbr>Faces</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_interfaces_.iobj.html#numwires" class="tsd-kind-icon">num<wbr>Wires</a>
+								<a href="_ifaces_gs_.iedge.html#previous" class="tsd-kind-icon">previous</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_interfaces_.iobj.html#setattribvalue" class="tsd-kind-icon">set<wbr>Attrib<wbr>Value</a>
+								<a href="_ifaces_gs_.iedge.html#setattribvalue" class="tsd-kind-icon">set<wbr>Attrib<wbr>Value</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ipoint.html" class="tsd-kind-icon">IPoint</a>
+						<a href="_ifaces_gs_.ient.html" class="tsd-kind-icon">IEnt</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ipolyline.html" class="tsd-kind-icon">IPolyline</a>
+						<a href="_ifaces_gs_.iface.html" class="tsd-kind-icon">IFace</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ipolymesh.html" class="tsd-kind-icon">IPolymesh</a>
+						<a href="_ifaces_gs_.igeom.html" class="tsd-kind-icon">IGeom</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iskindata.html" class="tsd-kind-icon">ISkin<wbr>Data</a>
+						<a href="_ifaces_gs_.igeompath.html" class="tsd-kind-icon">IGeom<wbr>Path</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.itopo.html" class="tsd-kind-icon">ITopo</a>
+						<a href="_ifaces_gs_.igroup.html" class="tsd-kind-icon">IGroup</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ivertex.html" class="tsd-kind-icon">IVertex</a>
+						<a href="_ifaces_gs_.igroupsdict.html" class="tsd-kind-icon">IGroups<wbr>Dict</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iwire.html" class="tsd-kind-icon">IWire</a>
+						<a href="_ifaces_gs_.imodel.html" class="tsd-kind-icon">IModel</a>
 					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#attribtypestrings" class="tsd-kind-icon">attrib<wbr>Type<wbr>Strings</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_gs_.iobj.html" class="tsd-kind-icon">IObj</a>
 					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#mapstringtodatatype" class="tsd-kind-icon">map<wbr>String<wbr>ToData<wbr>Type</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_gs_.ipoint.html" class="tsd-kind-icon">IPoint</a>
 					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#mapstringtogeomtype" class="tsd-kind-icon">map<wbr>String<wbr>ToGeom<wbr>Type</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_gs_.ipolyline.html" class="tsd-kind-icon">IPolyline</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_gs_.ipolymesh.html" class="tsd-kind-icon">IPolymesh</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_gs_.itopo.html" class="tsd-kind-icon">ITopo</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_gs_.ivertex.html" class="tsd-kind-icon">IVertex</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_gs_.iwire.html" class="tsd-kind-icon">IWire</a>
 					</li>
 				</ul>
 			</nav>

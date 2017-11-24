@@ -1,6 +1,7 @@
-import * as ifs from "./interfaces";
+import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
-import {EGeomType, EDataType, EObjType} from "./enums";
+import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
 import {Point,Polyline,Polymesh} from "./entities";
 import {Topo, Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";
@@ -473,6 +474,6 @@ export class GeomPath implements ifs.IGeomPath {
         return this.toString() == path.toString();
     }
     public toString() {
-        return "Obj:" + this.id + "/" + ifs.attribTypeStrings[this.tt] + ":" + this.ti + "/" + ifs.attribTypeStrings[this.st] + ":" + this.si;
+        return "Obj:" + this.id + "/" + attribTypeStrings[this.tt] + ":" + this.ti + "/" + attribTypeStrings[this.st] + ":" + this.si;
     }
 }

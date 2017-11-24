@@ -34,3 +34,43 @@ export const enum EObjType {
     nurbs_surface = 220,
     bezier_surface = 221,
 }
+
+// ========================= MAPS =========================
+// mapStringToAttribType, mapStringToDataType
+
+/**
+* Map, from string to EGeomType.
+* This is used when parsing JSON.
+*/
+export let mapStringToGeomType = new Map<string,EGeomType> ([
+    ["objs",EGeomType.objs],
+    ["faces",EGeomType.faces],
+    ["wires",EGeomType.wires],
+    ["edges",EGeomType.edges],
+    ["vertices",EGeomType.vertices],
+    ["points",EGeomType.points]
+])
+/**
+* Map, EGeomType to String.
+* This is used for printing.
+*/
+export let attribTypeStrings = [
+    "objs",
+    "faces",
+    "wires",
+    "edges",
+    "vertices",
+    "points"
+]
+/**
+* Map, from strings to DataType.
+* This is used when parsing JSON.
+*/
+export let mapStringToDataType = new Map<string,EDataType> ([
+    ["string",EDataType.type_str],
+    ["number",EDataType.type_num],
+    ["boolean",EDataType.type_bool],
+    ["string[]",EDataType.type_str_arr],
+    ["number[]",EDataType.type_num_arr],
+    ["boolean[]",EDataType.type_bool_arr]
+])

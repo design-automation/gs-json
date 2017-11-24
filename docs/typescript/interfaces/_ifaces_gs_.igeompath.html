@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IGroupData | gs-json</title>
+	<title>IGeomPath | gs-json</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
+					<a href="../modules/_ifaces_gs_.html">&quot;ifaces_gs&quot;</a>
 				</li>
 				<li>
-					<a href="_interfaces_.igroupdata.html">IGroupData</a>
+					<a href="_ifaces_gs_.igeompath.html">IGeomPath</a>
 				</li>
 			</ul>
-			<h1>Interface IGroupData</h1>
+			<h1>Interface IGeomPath</h1>
 		</div>
 	</div>
 </header>
@@ -72,7 +72,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Interface, for parsing JSON GroupData.</p>
+						<p>Interface, for the GeomPath class.
+							This is used to define a path to a particular geometric element.
+							The geometric element could be either an Ent entity (Point or Obj),
+						or it could be a Topo component (Vertex, Edge, Wire, or Face).</p>
 					</div>
 				</div>
 			</section>
@@ -80,8 +83,14 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IGroupData</span>
+						<span class="target">IGeomPath</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../classes/_geom_.geompath.html" class="tsd-signature-type">GeomPath</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -91,10 +100,18 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#objs" class="tsd-kind-icon">objs</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#parent" class="tsd-kind-icon">parent</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.igroupdata.html#props" class="tsd-kind-icon">props</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_gs_.igeompath.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_gs_.igeompath.html#si" class="tsd-kind-icon">si</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_gs_.igeompath.html#st" class="tsd-kind-icon">st</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_gs_.igeompath.html#ti" class="tsd-kind-icon">ti</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_gs_.igeompath.html#tt" class="tsd-kind-icon">tt</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeompath.html#equals" class="tsd-kind-icon">equals</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeompath.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,55 +120,97 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="id" class="tsd-anchor"></a>
+					<h3>id</h3>
+					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L104">interfaces.ts:104</a></li>
+							<li>Defined in ifaces_gs.ts:119</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="objs" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> objs</h3>
-					<div class="tsd-signature tsd-kind-icon">objs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="si" class="tsd-anchor"></a>
+					<h3>si</h3>
+					<div class="tsd-signature tsd-kind-icon">si<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L106">interfaces.ts:106</a></li>
+							<li>Defined in ifaces_gs.ts:123</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="parent" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> parent</h3>
-					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="st" class="tsd-anchor"></a>
+					<h3>st</h3>
+					<div class="tsd-signature tsd-kind-icon">st<span class="tsd-signature-symbol">:</span> <a href="../enums/_enums_.egeomtype.html#vertices" class="tsd-signature-type">vertices</a><span class="tsd-signature-symbol"> | </span><a href="../enums/_enums_.egeomtype.html#edges" class="tsd-signature-type">edges</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L105">interfaces.ts:105</a></li>
+							<li>Defined in ifaces_gs.ts:122</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="props" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> props</h3>
-					<div class="tsd-signature tsd-kind-icon">props<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<a name="ti" class="tsd-anchor"></a>
+					<h3>ti</h3>
+					<div class="tsd-signature tsd-kind-icon">ti<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L107">interfaces.ts:107</a></li>
+							<li>Defined in ifaces_gs.ts:121</li>
 						</ul>
 					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
-							</li>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="tt" class="tsd-anchor"></a>
+					<h3>tt</h3>
+					<div class="tsd-signature tsd-kind-icon">tt<span class="tsd-signature-symbol">:</span> <a href="../enums/_enums_.egeomtype.html#wires" class="tsd-signature-type">wires</a><span class="tsd-signature-symbol"> | </span><a href="../enums/_enums_.egeomtype.html#faces" class="tsd-signature-type">faces</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in ifaces_gs.ts:120</li>
 						</ul>
-					</div>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="equals" class="tsd-anchor"></a>
+					<h3>equals</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in ifaces_gs.ts:124</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>path: <a href="_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="tostring" class="tsd-anchor"></a>
+					<h3>to<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in ifaces_gs.ts:125</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -180,6 +239,9 @@
 						<a href="../modules/_entities_tests_.html">"entities_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_enums_.html">"enums"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_geom_.html">"geom"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -198,7 +260,10 @@
 						<a href="../modules/_gs_json_tests_.html">"gs-<wbr>json_<wbr>tests"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_interfaces_.html">"interfaces"</a>
+						<a href="../modules/_ifaces_gs_.html">"ifaces_<wbr>gs"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ifaces_json_.html">"ifaces_<wbr>json"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_model_.html">"model"</a>
@@ -219,113 +284,89 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="../enums/_interfaces_.edatatype.html" class="tsd-kind-icon">EData<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="../enums/_interfaces_.egeomtype.html" class="tsd-kind-icon">EGeom<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="../enums/_interfaces_.eobjtype.html" class="tsd-kind-icon">EObj<wbr>Type</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_gs_.iattrib.html" class="tsd-kind-icon">IAttrib</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iattrib.html" class="tsd-kind-icon">IAttrib</a>
+						<a href="_ifaces_gs_.iattribdict.html" class="tsd-kind-icon">IAttrib<wbr>Dict</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iattribdata.html" class="tsd-kind-icon">IAttrib<wbr>Data</a>
+						<a href="_ifaces_gs_.iattribtypesdict.html" class="tsd-kind-icon">IAttrib<wbr>Types<wbr>Dict</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iattribdict.html" class="tsd-kind-icon">IAttrib<wbr>Dict</a>
+						<a href="_ifaces_gs_.idict.html" class="tsd-kind-icon">IDict</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iattribtypesdict.html" class="tsd-kind-icon">IAttrib<wbr>Types<wbr>Dict</a>
+						<a href="_ifaces_gs_.iedge.html" class="tsd-kind-icon">IEdge</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.idict.html" class="tsd-kind-icon">IDict</a>
+						<a href="_ifaces_gs_.ient.html" class="tsd-kind-icon">IEnt</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iedge.html" class="tsd-kind-icon">IEdge</a>
+						<a href="_ifaces_gs_.iface.html" class="tsd-kind-icon">IFace</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ient.html" class="tsd-kind-icon">IEnt</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iface.html" class="tsd-kind-icon">IFace</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igeom.html" class="tsd-kind-icon">IGeom</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igeompath.html" class="tsd-kind-icon">IGeom<wbr>Path</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igroup.html" class="tsd-kind-icon">IGroup</a>
+						<a href="_ifaces_gs_.igeom.html" class="tsd-kind-icon">IGeom</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igroupdata.html" class="tsd-kind-icon">IGroup<wbr>Data</a>
+						<a href="_ifaces_gs_.igeompath.html" class="tsd-kind-icon">IGeom<wbr>Path</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.igroupdata.html#name" class="tsd-kind-icon">name</a>
+								<a href="_ifaces_gs_.igeompath.html#id" class="tsd-kind-icon">id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.igroupdata.html#objs" class="tsd-kind-icon">objs</a>
+								<a href="_ifaces_gs_.igeompath.html#si" class="tsd-kind-icon">si</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.igroupdata.html#parent" class="tsd-kind-icon">parent</a>
+								<a href="_ifaces_gs_.igeompath.html#st" class="tsd-kind-icon">st</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.igroupdata.html#props" class="tsd-kind-icon">props</a>
+								<a href="_ifaces_gs_.igeompath.html#ti" class="tsd-kind-icon">ti</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_gs_.igeompath.html#tt" class="tsd-kind-icon">tt</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_ifaces_gs_.igeompath.html#equals" class="tsd-kind-icon">equals</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_ifaces_gs_.igeompath.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.igroupsdict.html" class="tsd-kind-icon">IGroups<wbr>Dict</a>
+						<a href="_ifaces_gs_.igroup.html" class="tsd-kind-icon">IGroup</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.imetadata.html" class="tsd-kind-icon">IMetadata</a>
+						<a href="_ifaces_gs_.igroupsdict.html" class="tsd-kind-icon">IGroups<wbr>Dict</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.imodel.html" class="tsd-kind-icon">IModel</a>
+						<a href="_ifaces_gs_.imodel.html" class="tsd-kind-icon">IModel</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.imodeldata.html" class="tsd-kind-icon">IModel<wbr>Data</a>
+						<a href="_ifaces_gs_.iobj.html" class="tsd-kind-icon">IObj</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iobj.html" class="tsd-kind-icon">IObj</a>
+						<a href="_ifaces_gs_.ipoint.html" class="tsd-kind-icon">IPoint</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ipoint.html" class="tsd-kind-icon">IPoint</a>
+						<a href="_ifaces_gs_.ipolyline.html" class="tsd-kind-icon">IPolyline</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ipolyline.html" class="tsd-kind-icon">IPolyline</a>
+						<a href="_ifaces_gs_.ipolymesh.html" class="tsd-kind-icon">IPolymesh</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ipolymesh.html" class="tsd-kind-icon">IPolymesh</a>
+						<a href="_ifaces_gs_.itopo.html" class="tsd-kind-icon">ITopo</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iskindata.html" class="tsd-kind-icon">ISkin<wbr>Data</a>
+						<a href="_ifaces_gs_.ivertex.html" class="tsd-kind-icon">IVertex</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.itopo.html" class="tsd-kind-icon">ITopo</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.ivertex.html" class="tsd-kind-icon">IVertex</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.iwire.html" class="tsd-kind-icon">IWire</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#attribtypestrings" class="tsd-kind-icon">attrib<wbr>Type<wbr>Strings</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#mapstringtodatatype" class="tsd-kind-icon">map<wbr>String<wbr>ToData<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#mapstringtogeomtype" class="tsd-kind-icon">map<wbr>String<wbr>ToGeom<wbr>Type</a>
+						<a href="_ifaces_gs_.iwire.html" class="tsd-kind-icon">IWire</a>
 					</li>
 				</ul>
 			</nav>

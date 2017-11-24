@@ -1,5 +1,6 @@
-import * as ifs from "./interfaces";
+import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
+import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
@@ -11,7 +12,7 @@ import {Attrib} from "./attribs";
 */
 export class Group implements ifs.IGroup {
     private model:ifs.IModel;
-    private _data:ifs.IGroupData;
+    private _data:IGroupData;
     /**
     * Creates an instance of the Group class.
     * The group data must already exists in the model. 
@@ -21,7 +22,7 @@ export class Group implements ifs.IGroup {
     * @param data The attribute data in the model.
     * @return The Group object.
     */
-    constructor(model:ifs.IModel, data:ifs.IGroupData) {
+    constructor(model:ifs.IModel, data:IGroupData) {
         this.model = model;
         this._data = data;
     }

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>EDataType | gs-json</title>
+	<title>IModelData | gs-json</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
+					<a href="../modules/_ifaces_json_.html">&quot;ifaces_json&quot;</a>
 				</li>
 				<li>
-					<a href="_interfaces_.edatatype.html">EDataType</a>
+					<a href="_ifaces_json_.imodeldata.html">IModelData</a>
 				</li>
 			</ul>
-			<h1>Enumeration EDataType</h1>
+			<h1>Interface IModelData</h1>
 		</div>
 	</div>
 </header>
@@ -72,87 +72,135 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Enum, the different data types for attributes.</p>
+						<p>Interface, for parsing JSON ModelData.</p>
 					</div>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">IModelData</span>
+					</li>
+				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Enumeration members</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_interfaces_.edatatype.html#type_bool" class="tsd-kind-icon">type_<wbr>bool</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_interfaces_.edatatype.html#type_bool_arr" class="tsd-kind-icon">type_<wbr>bool_<wbr>arr</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_interfaces_.edatatype.html#type_num" class="tsd-kind-icon">type_<wbr>num</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_interfaces_.edatatype.html#type_num_arr" class="tsd-kind-icon">type_<wbr>num_<wbr>arr</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_interfaces_.edatatype.html#type_str" class="tsd-kind-icon">type_<wbr>str</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_interfaces_.edatatype.html#type_str_arr" class="tsd-kind-icon">type_<wbr>str_<wbr>arr</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_json_.imodeldata.html#attribs" class="tsd-kind-icon">attribs</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_json_.imodeldata.html#geom" class="tsd-kind-icon">geom</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_json_.imodeldata.html#groups" class="tsd-kind-icon">groups</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_json_.imodeldata.html#metadata" class="tsd-kind-icon">metadata</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_ifaces_json_.imodeldata.html#skins" class="tsd-kind-icon">skins</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Enumeration members</h2>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="type_bool" class="tsd-anchor"></a>
-					<h3>type_<wbr>bool</h3>
-					<div class="tsd-signature tsd-kind-icon">type_<wbr>bool<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;boolean&quot;</span></div>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="attribs" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> attribs</h3>
+					<div class="tsd-signature tsd-kind-icon">attribs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L24">interfaces.ts:24</a></li>
+							<li>Defined in ifaces_json.ts:15</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> edges<span class="tsd-signature-symbol">?: </span><a href="_ifaces_json_.iattribdata.html" class="tsd-signature-type">IAttribData</a><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> faces<span class="tsd-signature-symbol">?: </span><a href="_ifaces_json_.iattribdata.html" class="tsd-signature-type">IAttribData</a><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> objs<span class="tsd-signature-symbol">?: </span><a href="_ifaces_json_.iattribdata.html" class="tsd-signature-type">IAttribData</a><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> points<span class="tsd-signature-symbol">?: </span><a href="_ifaces_json_.iattribdata.html" class="tsd-signature-type">IAttribData</a><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> vertices<span class="tsd-signature-symbol">?: </span><a href="_ifaces_json_.iattribdata.html" class="tsd-signature-type">IAttribData</a><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> wires<span class="tsd-signature-symbol">?: </span><a href="_ifaces_json_.iattribdata.html" class="tsd-signature-type">IAttribData</a><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="geom" class="tsd-anchor"></a>
+					<h3>geom</h3>
+					<div class="tsd-signature tsd-kind-icon">geom<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in ifaces_json.ts:11</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> objs<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> points<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="groups" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> groups</h3>
+					<div class="tsd-signature tsd-kind-icon">groups<span class="tsd-signature-symbol">:</span> <a href="_ifaces_json_.igroupdata.html" class="tsd-signature-type">IGroupData</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in ifaces_json.ts:23</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="type_bool_arr" class="tsd-anchor"></a>
-					<h3>type_<wbr>bool_<wbr>arr</h3>
-					<div class="tsd-signature tsd-kind-icon">type_<wbr>bool_<wbr>arr<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;boolean[]&quot;</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="metadata" class="tsd-anchor"></a>
+					<h3>metadata</h3>
+					<div class="tsd-signature tsd-kind-icon">metadata<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L27">interfaces.ts:27</a></li>
+							<li>Defined in ifaces_json.ts:5</li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="type_num" class="tsd-anchor"></a>
-					<h3>type_<wbr>num</h3>
-					<div class="tsd-signature tsd-kind-icon">type_<wbr>num<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;number&quot;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L23">interfaces.ts:23</a></li>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> crs<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>filetype<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"gs-json"</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> location<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
 						</ul>
-					</aside>
+					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="type_num_arr" class="tsd-anchor"></a>
-					<h3>type_<wbr>num_<wbr>arr</h3>
-					<div class="tsd-signature tsd-kind-icon">type_<wbr>num_<wbr>arr<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;number[]&quot;</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="skins" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> skins</h3>
+					<div class="tsd-signature tsd-kind-icon">skins<span class="tsd-signature-symbol">:</span> <a href="_ifaces_json_.iskindata.html" class="tsd-signature-type">ISkinData</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L26">interfaces.ts:26</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="type_str" class="tsd-anchor"></a>
-					<h3>type_<wbr>str</h3>
-					<div class="tsd-signature tsd-kind-icon">type_<wbr>str<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;string&quot;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L22">interfaces.ts:22</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="type_str_arr" class="tsd-anchor"></a>
-					<h3>type_<wbr>str_<wbr>arr</h3>
-					<div class="tsd-signature tsd-kind-icon">type_<wbr>str_<wbr>arr<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;string[]&quot;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/interfaces.ts#L25">interfaces.ts:25</a></li>
+							<li>Defined in ifaces_json.ts:24</li>
 						</ul>
 					</aside>
 				</section>
@@ -183,6 +231,9 @@
 						<a href="../modules/_entities_tests_.html">"entities_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_enums_.html">"enums"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_geom_.html">"geom"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -200,8 +251,11 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_gs_json_tests_.html">"gs-<wbr>json_<wbr>tests"</a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ifaces_gs_.html">"ifaces_<wbr>gs"</a>
+					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_interfaces_.html">"interfaces"</a>
+						<a href="../modules/_ifaces_json_.html">"ifaces_<wbr>json"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_model_.html">"model"</a>
@@ -222,119 +276,38 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_json_.iattribdata.html" class="tsd-kind-icon">IAttrib<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_json_.igroupdata.html" class="tsd-kind-icon">IGroup<wbr>Data</a>
+					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="_interfaces_.edatatype.html" class="tsd-kind-icon">EData<wbr>Type</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_ifaces_json_.imodeldata.html" class="tsd-kind-icon">IModel<wbr>Data</a>
 						<ul>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_interfaces_.edatatype.html#type_bool" class="tsd-kind-icon">type_<wbr>bool</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_json_.imodeldata.html#attribs" class="tsd-kind-icon">attribs</a>
 							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_interfaces_.edatatype.html#type_bool_arr" class="tsd-kind-icon">type_<wbr>bool_<wbr>arr</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_json_.imodeldata.html#geom" class="tsd-kind-icon">geom</a>
 							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_interfaces_.edatatype.html#type_num" class="tsd-kind-icon">type_<wbr>num</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_json_.imodeldata.html#groups" class="tsd-kind-icon">groups</a>
 							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_interfaces_.edatatype.html#type_num_arr" class="tsd-kind-icon">type_<wbr>num_<wbr>arr</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_json_.imodeldata.html#metadata" class="tsd-kind-icon">metadata</a>
 							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_interfaces_.edatatype.html#type_str" class="tsd-kind-icon">type_<wbr>str</a>
-							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_interfaces_.edatatype.html#type_str_arr" class="tsd-kind-icon">type_<wbr>str_<wbr>arr</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_ifaces_json_.imodeldata.html#skins" class="tsd-kind-icon">skins</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="_interfaces_.egeomtype.html" class="tsd-kind-icon">EGeom<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="_interfaces_.eobjtype.html" class="tsd-kind-icon">EObj<wbr>Type</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.iattrib.html" class="tsd-kind-icon">IAttrib</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.iattribdata.html" class="tsd-kind-icon">IAttrib<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.iattribdict.html" class="tsd-kind-icon">IAttrib<wbr>Dict</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.iattribtypesdict.html" class="tsd-kind-icon">IAttrib<wbr>Types<wbr>Dict</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.idict.html" class="tsd-kind-icon">IDict</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.iedge.html" class="tsd-kind-icon">IEdge</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.ient.html" class="tsd-kind-icon">IEnt</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.iface.html" class="tsd-kind-icon">IFace</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.igeom.html" class="tsd-kind-icon">IGeom</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.igeompath.html" class="tsd-kind-icon">IGeom<wbr>Path</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.igroup.html" class="tsd-kind-icon">IGroup</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.igroupdata.html" class="tsd-kind-icon">IGroup<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.igroupsdict.html" class="tsd-kind-icon">IGroups<wbr>Dict</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.imetadata.html" class="tsd-kind-icon">IMetadata</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.imodel.html" class="tsd-kind-icon">IModel</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.imodeldata.html" class="tsd-kind-icon">IModel<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.iobj.html" class="tsd-kind-icon">IObj</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.ipoint.html" class="tsd-kind-icon">IPoint</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.ipolyline.html" class="tsd-kind-icon">IPolyline</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.ipolymesh.html" class="tsd-kind-icon">IPolymesh</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.iskindata.html" class="tsd-kind-icon">ISkin<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.itopo.html" class="tsd-kind-icon">ITopo</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.ivertex.html" class="tsd-kind-icon">IVertex</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_interfaces_.iwire.html" class="tsd-kind-icon">IWire</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#attribtypestrings" class="tsd-kind-icon">attrib<wbr>Type<wbr>Strings</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#mapstringtodatatype" class="tsd-kind-icon">map<wbr>String<wbr>ToData<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_interfaces_.html#mapstringtogeomtype" class="tsd-kind-icon">map<wbr>String<wbr>ToGeom<wbr>Type</a>
+						<a href="_ifaces_json_.iskindata.html" class="tsd-kind-icon">ISkin<wbr>Data</a>
 					</li>
 				</ul>
 			</nav>

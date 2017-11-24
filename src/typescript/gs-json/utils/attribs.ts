@@ -1,6 +1,7 @@
-import * as ifs from "./interfaces";
+import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
-import {EGeomType, EDataType, EObjType} from "./enums";
+import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
@@ -15,7 +16,7 @@ import {Group} from "./groups";
  */
 export class Attrib implements ifs.IAttrib {
     private model:ifs.IModel;
-    private _data:ifs.IAttribData;
+    private _data:IAttribData;
     // private name:string;
     // private attrib_type:EGeomType;
     // private data_type:EDataType;
@@ -29,7 +30,7 @@ export class Attrib implements ifs.IAttrib {
     * @param data The attribute data in the model.
     * @return The Attrib object.
     */
-    constructor(model:ifs.IModel, data:ifs.IAttribData) {
+    constructor(model:ifs.IModel, data:IAttribData) {
         this.model = model;
         this._data = data;
 
@@ -63,14 +64,14 @@ export class Attrib implements ifs.IAttrib {
     * @return The geometry type.
     */
     public getGeomType():EGeomType {
-        return ifs.mapStringToGeomType[this._data.geom_type];
+        return mapStringToGeomType[this._data.geom_type];
     }
     /**
     * Set the data type for the attribute values. 
     * @return The data type.
     */
     public getObjDataType():EDataType {
-        return ifs.mapStringToDataType[this._data.data_type];
+        return mapStringToDataType[this._data.data_type];
     }
     /**
     * Get a single attribute value. 
