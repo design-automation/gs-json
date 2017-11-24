@@ -1,5 +1,6 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
+import {EGeomType, EDataType, EObjType} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";
@@ -51,7 +52,7 @@ abstract class Ent {
     * This method mst be overridden by the sub-classes.
     * @return The geometry type.
     */    
-    public getGeomType():ifs.EGeomType {
+    public getGeomType():EGeomType {
         //Do not implement this method.
         throw new Error ("Method to be overridden by subclass.");
     }
@@ -101,9 +102,9 @@ abstract class Ent {
     */
     public addToGroup(name:string):boolean {
         switch (this.getGeomType()) {
-            case ifs.EGeomType.points:
+            case EGeomType.points:
                 return this.getModel().getGroup(name).addPoint(this.id);
-            case ifs.EGeomType.objs:
+            case EGeomType.objs:
                 return this.getModel().getGroup(name).addObj(this.id);
         }
         
@@ -120,8 +121,8 @@ export class Point extends Ent implements ifs.IPoint{
     * This method overrides the method in the Ent class.
     * @return The geometry type.
     */
-    public getGeomType():ifs.EGeomType {
-        return ifs.EGeomType.points;
+    public getGeomType():EGeomType {
+        return EGeomType.points;
     }
     /**
     * Set the cartesian x,y,z coordinates of a point.
@@ -149,11 +150,11 @@ export class Point extends Ent implements ifs.IPoint{
             //loop through all wires and extract verts that have same point_id
             obj_data[0].forEach((w,w_i)=>w.forEach((v,v_i)=>(v == this.id) && 
                 vertices.push(new Vertex(this.geom, 
-                    new GeomPath(this.id,ifs.EGeomType.wires,w_i,ifs.EGeomType.vertices,v_i)))));
+                    new GeomPath(this.id,EGeomType.wires,w_i,EGeomType.vertices,v_i)))));
             //loop through all faces and extract verts that have same point_id
             obj_data[1].forEach((f,f_i)=>f.forEach((v,v_i)=>(v == this.id) && 
                 vertices.push(new Vertex(this.geom, 
-                    new GeomPath(this.id,ifs.EGeomType.faces,f_i,ifs.EGeomType.vertices,v_i)))));
+                    new GeomPath(this.id,EGeomType.faces,f_i,EGeomType.vertices,v_i)))));
         }
         return vertices;
     }
@@ -169,8 +170,8 @@ abstract class Obj extends Ent implements ifs.IObj{
     * This method overrides the method in the Ent class.
     * @return The geometry type.
     */
-    public getGeomType():ifs.EGeomType {
-        return ifs.EGeomType.objs;
+    public getGeomType():EGeomType {
+        return EGeomType.objs;
     }
     // Get the topo
     /**
@@ -179,7 +180,7 @@ abstract class Obj extends Ent implements ifs.IObj{
     */
     public getWires():ifs.IWire[] {
         return Arr.makeSeq(this.numWires()).map((v,i)=>new Wire(this.geom, 
-            new GeomPath(this.id, ifs.EGeomType.wires, v)));
+            new GeomPath(this.id, EGeomType.wires, v)));
     }
     /**
     * Get the faces for this object.
@@ -187,31 +188,31 @@ abstract class Obj extends Ent implements ifs.IObj{
     */
     public getFaces():ifs.IFace[] {
         return Arr.makeSeq(this.numFaces()).map((v,i)=>new Face(this.geom, 
-            new GeomPath(this.id, ifs.EGeomType.faces, v)));
+            new GeomPath(this.id, EGeomType.faces, v)));
     }
     /**
     * Get the number of wires for this object.
     * @return The number of wires.
     */
     public numWires():number {
-        return this.geom.getObjData(new GeomPath(this.id, ifs.EGeomType.wires)).length;
+        return this.geom.getObjData(new GeomPath(this.id, EGeomType.wires)).length;
     }    
     /**
     * Get the number of faces for this object.
     * @return The number of faces.
     */
     public numFaces():number {
-        return this.geom.getObjData(new GeomPath(this.id, ifs.EGeomType.faces)).length;
+        return this.geom.getObjData(new GeomPath(this.id, EGeomType.faces)).length;
     }
     /**
     * to be completed
     * @param
     * @return
     */
-    public getTemplate(geom_type:ifs.EGeomType):any[] {
+    public getTemplate(geom_type:EGeomType):any[] {
         throw new Error("not implemented");
         // switch (geom_type) {
-        //     case ifs.EGeomType.points:
+        //     case EGeomType.points:
         //         // code...
         //         break;
             
@@ -241,8 +242,8 @@ export class Polyline  extends Obj implements ifs.IPolyline{
     * Get the object type: "polyline".
     * @return Polyline is returned as an object type.
     */
-    public getObjType():ifs.EObjType {
-        return ifs.EObjType.polyline;
+    public getObjType():EObjType {
+        return EObjType.polyline;
     }
 }
 
@@ -268,14 +269,14 @@ export class Polymesh extends Obj implements ifs.IPolymesh{
             tab[0][k] = wire_points[k].getID();
             tab[1][k] = face_points[k].getObjID();          
         }
-        tab[3][0] = ifs.EObjType.polymesh;
+        tab[3][0] = EObjType.polymesh;
         return this.geom.setObjPosition(this.id, tab);
     }
     /**
     * Get the object type: "polymesh".
     * @return The polymesh as an object type.
     */
-    public getObjType():ifs.EObjType {
-        return ifs.EObjType.polymesh;
+    public getObjType():EObjType {
+        return EObjType.polymesh;
     }
 }

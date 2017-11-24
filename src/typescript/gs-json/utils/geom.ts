@@ -1,5 +1,6 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
+import {EGeomType, EDataType, EObjType} from "./enums";
 import {Point,Polyline,Polymesh} from "./entities";
 import {Topo, Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";
@@ -113,21 +114,21 @@ export class Geom implements ifs.IGeom {
         try {
         //if (path.st) { //vertices or edges
             switch (path.st) {
-                case ifs.EGeomType.vertices:
+                case EGeomType.vertices:
                     switch (path.tt) {
-                        case ifs.EGeomType.wires:
+                        case EGeomType.wires:
                             return this.objs_data[path.id][0][path.ti][path.si];
-                        case ifs.EGeomType.faces:
+                        case EGeomType.faces:
                             return this.objs_data[path.id][1][path.ti][path.si];
                     }
-                case ifs.EGeomType.edges:
+                case EGeomType.edges:
                     switch (path.tt) {
-                        case ifs.EGeomType.wires:
+                        case EGeomType.wires:
                             return [
                                 this.objs_data[path.id][0][path.ti][path.si],
                                 this.objs_data[path.id][0][path.ti][path.si+1],
                             ];
-                        case ifs.EGeomType.faces:
+                        case EGeomType.faces:
                             return [
                                 this.objs_data[path.id][1][path.ti][path.si],
                                 this.objs_data[path.id][1][path.ti][path.si+1],
@@ -136,12 +137,12 @@ export class Geom implements ifs.IGeom {
             }
         //} else if (path.tt) { //wires or faces
             switch (path.tt) {
-                case ifs.EGeomType.wires:
+                case EGeomType.wires:
                     if (path.ti != undefined) {
                         return this.objs_data[path.id][0][path.ti];
                     }
                     return this.objs_data[path.id][0];
-                case ifs.EGeomType.faces:
+                case EGeomType.faces:
                     if (path.ti != undefined) {
                         return this.objs_data[path.id][1][path.ti];
                     }
@@ -160,7 +161,7 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public getPointIDs(obj_type?:ifs.EObjType):number[] {
+    public getPointIDs(obj_type?:EObjType):number[] {
         if (obj_type) {
             let geom_filtered:any[] = this.objs_data.filter((n)=>n!=undefined);
             geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type).map((v,i)=>[v[0],v[1]]);//mpt sure if this works
@@ -173,7 +174,7 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public getPoints(obj_type?:ifs.EObjType):ifs.IPoint[] {
+    public getPoints(obj_type?:EObjType):ifs.IPoint[] {
         return this.getPointIDs(obj_type).map((v,i)=>this.getPoint(v));
     }
     /**
@@ -201,7 +202,7 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public numPoints(obj_type?:ifs.EObjType):number {
+    public numPoints(obj_type?:EObjType):number {
         if (obj_type) {return this.getPointIDs(obj_type).length;} 
         return this.points_data[0].length; //works also for sparse arrays
     }
@@ -234,7 +235,7 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public getObjIDs(obj_type?:ifs.EObjType):number[] {
+    public getObjIDs(obj_type?:EObjType):number[] {
         let geom_filtered:any[] = this.objs_data.filter((n)=>n!=undefined);
         if (obj_type) {
             geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type);
@@ -246,7 +247,7 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public getObjs(obj_type?:ifs.EObjType):ifs.IObj[] {
+    public getObjs(obj_type?:EObjType):ifs.IObj[] {
         return this.getObjIDs(obj_type).map((v,i)=>this.getObj(v));
     }
     /**
@@ -257,9 +258,9 @@ export class Geom implements ifs.IGeom {
     public getObj(obj_id:number):ifs.IObj {
         try {
             switch (this.objs_data[obj_id][2][0]) {
-                case ifs.EObjType.polyline:
+                case EObjType.polyline:
                     return new Polyline(this, obj_id);
-                case ifs.EObjType.polymesh:
+                case EObjType.polymesh:
                     return new Polymesh(this, obj_id);
             }
         } catch (ex) {
@@ -282,7 +283,7 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public numObjs(obj_type?:ifs.EObjType):number {
+    public numObjs(obj_type?:EObjType):number {
         if (obj_type) {return this.getObjIDs(obj_type).length;} 
         return this.objs_data.length; //works also for sparse arrays
     }
@@ -322,8 +323,8 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     private _getVEPathsFromWF(path_arr:ifs.IGeomPath[], obj_id:number, wf_data:any[], w_or_f:number, v_or_e:number):void {
-        let wf_type = [ifs.EGeomType.wires,ifs.EGeomType.faces][w_or_f] as ifs.EGeomType.wires|ifs.EGeomType.faces;
-        let ve_type = [ifs.EGeomType.vertices,ifs.EGeomType.edges][v_or_e] as ifs.EGeomType.vertices|ifs.EGeomType.edges;
+        let wf_type = [EGeomType.wires,EGeomType.faces][w_or_f] as EGeomType.wires|EGeomType.faces;
+        let ve_type = [EGeomType.vertices,EGeomType.edges][v_or_e] as EGeomType.vertices|EGeomType.edges;
         //loop through all the wire or faces, and create paths for all the vertices or edges
         for (let wf_index=0;wf_index<wf_data.length;wf_index++) {
             for (let ve_index=0;ve_index<wf_data[wf_index].length - v_or_e;ve_index++) {
@@ -353,7 +354,7 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     private _getWFPathsFromObjsData(objs_data:any[], w_or_f:number):ifs.IGeomPath[] {
-        let wf_type = [ifs.EGeomType.wires,ifs.EGeomType.faces][w_or_f] as ifs.EGeomType.faces|ifs.EGeomType.wires;
+        let wf_type = [EGeomType.wires,EGeomType.faces][w_or_f] as EGeomType.faces|EGeomType.wires;
         let path_arr:ifs.IGeomPath[] = [];
         //loop through all the objects, and create paths for wires or faces
         for (let obj_id in objs_data) {//TODO: check this works with sparse arrays
@@ -369,16 +370,16 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    private _getPaths(geom_type:ifs.EGeomType):ifs.IGeomPath[] {
+    private _getPaths(geom_type:EGeomType):ifs.IGeomPath[] {
         let objs_data:any[] = this.objs_data.filter((n)=>n!=undefined);
         switch (geom_type) {
-            case ifs.EGeomType.vertices:
+            case EGeomType.vertices:
                 return this._getVEPathsFromObjsData(objs_data, 0);
-            case ifs.EGeomType.edges:
+            case EGeomType.edges:
                 return this._getVEPathsFromObjsData(objs_data, 1);
-            case ifs.EGeomType.wires:
+            case EGeomType.wires:
                 return this._getWFPathsFromObjsData(objs_data, 0);
-            case ifs.EGeomType.faces:
+            case EGeomType.faces:
                 return this._getWFPathsFromObjsData(objs_data, 1);
         }
     }
@@ -387,18 +388,18 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public getTopos(geom_type:ifs.EGeomType):ifs.ITopo[] {
+    public getTopos(geom_type:EGeomType):ifs.ITopo[] {
         switch (geom_type) {
-            case ifs.EGeomType.vertices:
+            case EGeomType.vertices:
         return this._getPaths(geom_type).map((v,i)=>new Vertex(this,v));
 
-            case ifs.EGeomType.edges:
+            case EGeomType.edges:
         return this._getPaths(geom_type).map((v,i)=>new Edge(this,v));
 
-            case ifs.EGeomType.wires:
+            case EGeomType.wires:
         return this._getPaths(geom_type).map((v,i)=>new Wire(this,v));
 
-            case ifs.EGeomType.faces:
+            case EGeomType.faces:
         return this._getPaths(geom_type).map((v,i)=>new Face(this,v));
         }
     }
@@ -407,7 +408,7 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public numTopos(geom_type:ifs.EGeomType):number {
+    public numTopos(geom_type:EGeomType):number {
         return this._getPaths(geom_type).length;    
     }
     //Template is an array full of zeros, but with the right structure for the attribute data
@@ -416,25 +417,25 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public getAttribTemplate(geom_type:ifs.EGeomType):any[] {
+    public getAttribTemplate(geom_type:EGeomType):any[] {
         switch (geom_type) {
-            case ifs.EGeomType.objs:
+            case EGeomType.objs:
                 return Arr.make(this.numObjs(), 0);
-            case ifs.EGeomType.faces:
+            case EGeomType.faces:
                 return this.objs_data.map((v,i)=>
                         [v[1].map((v2,i2)=>Arr.make(v2.length, 0))]);
-            case ifs.EGeomType.wires:
+            case EGeomType.wires:
                 return this.objs_data.map((v,i)=>
                         [v[0].map((v2,i2)=>Arr.make(v2.length, 0))]);
-            case ifs.EGeomType.edges:
+            case EGeomType.edges:
                 return this.objs_data.map((v,i)=>[
                         [v[0].map((v2,i2)=>Arr.make(v2.length-1, 0))],
                         [v[1].map((v2,i2)=>Arr.make(v2.length-1, 0))]]);
-            case ifs.EGeomType.vertices:
+            case EGeomType.vertices:
                 return this.objs_data.map((v,i)=>[
                         [v[0].map((v2,i2)=>Arr.make(v2.length, 0))],
                         [v[1].map((v2,i2)=>Arr.make(v2.length, 0))]]);
-            case ifs.EGeomType.points:
+            case EGeomType.points:
                 return Arr.make(this.numPoints(), 0);
         }
     }
@@ -445,9 +446,9 @@ export class Geom implements ifs.IGeom {
     */
 export class GeomPath implements ifs.IGeomPath {
     id:number;                    //obj id or point id
-    tt:ifs.EGeomType.faces|ifs.EGeomType.wires = null;      //topo type
+    tt:EGeomType.faces|EGeomType.wires = null;      //topo type
     ti:number = null;             //topo index
-    st:ifs.EGeomType.vertices|ifs.EGeomType.edges = null;   //sub topo-type
+    st:EGeomType.vertices|EGeomType.edges = null;   //sub topo-type
     si:number = null;             //sub topo-index
     //for example, new Path([ifs.ETopoType.obj, 22], )
     /**
@@ -456,8 +457,8 @@ export class GeomPath implements ifs.IGeomPath {
     * @return
     */
     constructor(id:number, 
-            tt?:ifs.EGeomType.faces|ifs.EGeomType.wires, ti?:number, 
-            st?:ifs.EGeomType.vertices|ifs.EGeomType.edges, si?:number) {
+            tt?:EGeomType.faces|EGeomType.wires, ti?:number, 
+            st?:EGeomType.vertices|EGeomType.edges, si?:number) {
         this.id = id;
         if (tt) {
             this.tt = tt;

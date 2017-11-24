@@ -1,5 +1,6 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
+import {EGeomType, EDataType, EObjType} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
@@ -116,7 +117,7 @@ export class Group implements ifs.IGroup {
     * @param
     * @return
     */
-    public getObjIDs(obj_type?:ifs.EObjType):number[] {
+    public getObjIDs(obj_type?:EObjType):number[] {
         throw new Error ("Method not implemented.");
     }
     /**

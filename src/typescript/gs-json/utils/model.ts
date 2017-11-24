@@ -1,5 +1,6 @@
 import * as ifs from "./interfaces";
 import {Arr} from "./arr";
+import {EGeomType, EDataType, EObjType} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Point, Polyline, Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
@@ -53,7 +54,7 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public getAttribs(geom_type?:ifs.EGeomType):ifs.IAttrib[] {
+    public getAttribs(geom_type?:EGeomType):ifs.IAttrib[] {
         if (!this._data.attribs[geom_type]) {return null;}
         return this._data.attribs[geom_type].filter((v)=>v != undefined).map((v,i)=>new Attrib(this, v));
     }
@@ -62,7 +63,7 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public getAttrib(name:string, geom_type?:ifs.EGeomType):ifs.IAttrib {
+    public getAttrib(name:string, geom_type?:EGeomType):ifs.IAttrib {
         let data:ifs.IAttribData = 
             this._data.attribs[geom_type].filter((v)=>v != undefined).find((v) => (v.name == name));
         if (data) {return new Attrib(this, data);}
@@ -73,7 +74,7 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public addAttrib(name:string, geom_type:ifs.EGeomType, data_type:ifs.EDataType):ifs.IAttrib {
+    public addAttrib(name:string, geom_type:EGeomType, data_type:EDataType):ifs.IAttrib {
         if (this._data.attribs[geom_type].filter((v)=>v != undefined).find((v) => (v.name == name))) 
             { return null ;}
         let data:ifs.IAttribData = {name:name, geom_type:geom_type, data_type:data_type, 
@@ -86,7 +87,7 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public delAttrib(name:string, geom_type:ifs.EGeomType):boolean {
+    public delAttrib(name:string, geom_type:EGeomType):boolean {
         let index:number;
         this._data.attribs[geom_type].forEach((v,i) => (v.name == name) && (index = i));
         if (index) {delete this._data.attribs[geom_type][index]; return true;}
