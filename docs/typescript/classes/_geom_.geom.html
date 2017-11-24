@@ -87,7 +87,7 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/_interfaces_.igeom.html" class="tsd-signature-type">IGeom</a></li>
+					<li><a href="../interfaces/_ifaces_gs_.igeom.html" class="tsd-signature-type">IGeom</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -125,6 +125,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#getobj" class="tsd-kind-icon">get<wbr>Obj</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#getobjdata" class="tsd-kind-icon">get<wbr>Obj<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#getobjids" class="tsd-kind-icon">get<wbr>ObjIDs</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#getobjposition" class="tsd-kind-icon">get<wbr>Obj<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#getobjs" class="tsd-kind-icon">get<wbr>Objs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#getpoint" class="tsd-kind-icon">get<wbr>Point</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#getpointdata" class="tsd-kind-icon">get<wbr>Point<wbr>Data</a></li>
@@ -135,6 +136,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#numobjs" class="tsd-kind-icon">num<wbr>Objs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#numpoints" class="tsd-kind-icon">num<wbr>Points</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#numtopos" class="tsd-kind-icon">num<wbr>Topos</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#setobjposition" class="tsd-kind-icon">set<wbr>Obj<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#setpointposition" class="tsd-kind-icon">set<wbr>Point<wbr>Position</a></li>
 							</ul>
 						</section>
@@ -147,13 +149,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Geom<span class="tsd-signature-symbol">(</span>model<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.imodel.html" class="tsd-signature-type">IModel</a>, points_data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span>, objs_data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_geom_.geom.html" class="tsd-signature-type">Geom</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Geom<span class="tsd-signature-symbol">(</span>model<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.imodel.html" class="tsd-signature-type">IModel</a>, points_data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span>, objs_data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_geom_.geom.html" class="tsd-signature-type">Geom</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L15">geom.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L17">geom.ts:17</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -164,7 +166,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>model: <a href="../interfaces/_interfaces_.imodel.html" class="tsd-signature-type">IModel</a></h5>
+									<h5>model: <a href="../interfaces/_ifaces_gs_.imodel.html" class="tsd-signature-type">IModel</a></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> points_data: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span></h5>
@@ -183,10 +185,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="model" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> model</h3>
-					<div class="tsd-signature tsd-kind-icon">model<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_interfaces_.imodel.html" class="tsd-signature-type">IModel</a></div>
+					<div class="tsd-signature tsd-kind-icon">model<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_ifaces_gs_.imodel.html" class="tsd-signature-type">IModel</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L13">geom.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L15">geom.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -196,7 +198,7 @@
 					<div class="tsd-signature tsd-kind-icon">objs_<wbr>data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L15">geom.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L17">geom.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -206,7 +208,7 @@
 					<div class="tsd-signature tsd-kind-icon">points_<wbr>data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L14">geom.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L16">geom.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -217,13 +219,13 @@
 					<a name="_getpaths" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _get<wbr>Paths</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_get<wbr>Paths<span class="tsd-signature-symbol">(</span>geom_type<span class="tsd-signature-symbol">: </span><a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">_get<wbr>Paths<span class="tsd-signature-symbol">(</span>geom_type<span class="tsd-signature-symbol">: </span><a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L341">geom.ts:341</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L374">geom.ts:374</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -234,10 +236,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>geom_type: <a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h5>
+									<h5>geom_type: <a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -245,13 +247,13 @@
 					<a name="_getvepathsfromobjsdata" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _getVEPaths<wbr>From<wbr>Objs<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_getVEPaths<wbr>From<wbr>Objs<wbr>Data<span class="tsd-signature-symbol">(</span>objs_data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, v_or_e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">_getVEPaths<wbr>From<wbr>Objs<wbr>Data<span class="tsd-signature-symbol">(</span>objs_data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, v_or_e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L308">geom.ts:308</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L341">geom.ts:341</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -268,7 +270,7 @@
 									<h5>v_or_e: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -276,13 +278,13 @@
 					<a name="_getvepathsfromwf" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _getVEPaths<wbr>FromWF</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_getVEPaths<wbr>FromWF<span class="tsd-signature-symbol">(</span>path_arr<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span>, obj_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, wf_data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, w_or_f<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, v_or_e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">_getVEPaths<wbr>FromWF<span class="tsd-signature-symbol">(</span>path_arr<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span>, obj_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, wf_data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, w_or_f<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, v_or_e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L293">geom.ts:293</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L326">geom.ts:326</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -293,7 +295,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>path_arr: <a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>path_arr: <a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
 									<h5>obj_id: <span class="tsd-signature-type">number</span></h5>
@@ -316,13 +318,13 @@
 					<a name="_getwfpathsfromobjsdata" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _getWFPaths<wbr>From<wbr>Objs<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_getWFPaths<wbr>From<wbr>Objs<wbr>Data<span class="tsd-signature-symbol">(</span>objs_data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, w_or_f<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">_getWFPaths<wbr>From<wbr>Objs<wbr>Data<span class="tsd-signature-symbol">(</span>objs_data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, w_or_f<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L324">geom.ts:324</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L357">geom.ts:357</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -339,7 +341,7 @@
 									<h5>w_or_f: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -347,19 +349,23 @@
 					<a name="addpoint" class="tsd-anchor"></a>
 					<h3>add<wbr>Point</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Point<span class="tsd-signature-symbol">(</span>xyz<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Point<span class="tsd-signature-symbol">(</span>xyz<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#addpoint">addPoint</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addpoint">addPoint</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L60">geom.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L55">geom.ts:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>to be completed</p>
+									<p>The purpose of this method consists in creating a Point in the Geometry.
+										The geometry class has two private properties which include points_data.
+										points_data array gathers pointers and cartesian xyz coordinates.
+										The addPoint creates a point of coordinates xyz, and modifies the points_data array
+									by pointing to an already existing xyz value or by creating it if not referenced.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -368,7 +374,8 @@
 									<h5>xyz: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></h4>
+							<p>a instance of type Point is returned</p>
 						</li>
 					</ul>
 				</section>
@@ -376,28 +383,30 @@
 					<a name="addpolyline" class="tsd-anchor"></a>
 					<h3>add<wbr>Polyline</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Polyline<span class="tsd-signature-symbol">(</span>wire_points<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Polyline<span class="tsd-signature-symbol">(</span>wire_points<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipolyline.html" class="tsd-signature-type">IPolyline</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#addpolyline">addPolyline</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addpolyline">addPolyline</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L74">geom.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L70">geom.ts:70</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>to be completed</p>
+									<p>The purpose of this method is similar to addPoint except that
+									it takes as input a collection of Point as opposed to a single Point.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>wire_points: <a href="../interfaces/_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>wire_points: <a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.ipolyline.html" class="tsd-signature-type">IPolyline</a></h4>
+							<p>Object of type Polyline</p>
 						</li>
 					</ul>
 				</section>
@@ -405,14 +414,14 @@
 					<a name="addpolymesh" class="tsd-anchor"></a>
 					<h3>add<wbr>Polymesh</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Polymesh<span class="tsd-signature-symbol">(</span>wire_points<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span>, face_points<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.iface.html" class="tsd-signature-type">IFace</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.iobj.html" class="tsd-signature-type">IObj</a></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Polymesh<span class="tsd-signature-symbol">(</span>wire_points<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span>, face_points<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.iface.html" class="tsd-signature-type">IFace</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipolymesh.html" class="tsd-signature-type">IPolymesh</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#addpolymesh">addPolymesh</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addpolymesh">addPolymesh</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L86">geom.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L86">geom.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -423,13 +432,14 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>wire_points: <a href="../interfaces/_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>wire_points: <a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>face_points: <a href="../interfaces/_interfaces_.iface.html" class="tsd-signature-type">IFace</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>face_points: <a href="../interfaces/_ifaces_gs_.iface.html" class="tsd-signature-type">IFace</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.iobj.html" class="tsd-signature-type">IObj</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.ipolymesh.html" class="tsd-signature-type">IPolymesh</a></h4>
+							<p>Object of type Polymesh</p>
 						</li>
 					</ul>
 				</section>
@@ -442,9 +452,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#delobj">delObj</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#delobj">delObj</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L272">geom.ts:272</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L276">geom.ts:276</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -471,9 +481,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#delpoint">delPoint</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#delpoint">delPoint</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L190">geom.ts:190</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L194">geom.ts:194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -495,14 +505,14 @@
 					<a name="getattribtemplate" class="tsd-anchor"></a>
 					<h3>get<wbr>Attrib<wbr>Template</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Attrib<wbr>Template<span class="tsd-signature-symbol">(</span>geom_type<span class="tsd-signature-symbol">: </span><a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Attrib<wbr>Template<span class="tsd-signature-symbol">(</span>geom_type<span class="tsd-signature-symbol">: </span><a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getattribtemplate">getAttribTemplate</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getattribtemplate">getAttribTemplate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L388">geom.ts:388</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L421">geom.ts:421</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -513,7 +523,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>geom_type: <a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h5>
+									<h5>geom_type: <a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -524,14 +534,14 @@
 					<a name="getmodel" class="tsd-anchor"></a>
 					<h3>get<wbr>Model</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Model<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.imodel.html" class="tsd-signature-type">IModel</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Model<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.imodel.html" class="tsd-signature-type">IModel</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getmodel">getModel</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getmodel">getModel</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L39">geom.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L41">geom.ts:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -539,7 +549,7 @@
 									<p>to be completed</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.imodel.html" class="tsd-signature-type">IModel</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.imodel.html" class="tsd-signature-type">IModel</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -547,14 +557,14 @@
 					<a name="getobj" class="tsd-anchor"></a>
 					<h3>get<wbr>Obj</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Obj<span class="tsd-signature-symbol">(</span>obj_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.iobj.html" class="tsd-signature-type">IObj</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Obj<span class="tsd-signature-symbol">(</span>obj_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getobj">getObj</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getobj">getObj</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L255">geom.ts:255</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L259">geom.ts:259</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -568,7 +578,7 @@
 									<h5>obj_id: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.iobj.html" class="tsd-signature-type">IObj</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -576,20 +586,20 @@
 					<a name="getobjdata" class="tsd-anchor"></a>
 					<h3>get<wbr>Obj<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Obj<wbr>Data<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">?: </span><a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Obj<wbr>Data<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">?: </span><a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getobjdata">getObjData</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getobjdata">getObjData</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L110">geom.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L114">geom.ts:114</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Low level method to return the data associated with an object.
-										This method should only be used by experts.
+										0This method should only be used by experts.
 										The data  for an object consists of three arrays: [[wires],[faces],[parameters]].
 										The wires and faces arrays each contain lists of point IDs.
 									The path may extract a subset of this data.</p>
@@ -598,7 +608,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> path: <a href="../interfaces/_interfaces_.igeompath.html" class="tsd-signature-type">IGeomPath</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> path: <a href="../interfaces/_ifaces_gs_.igeompath.html" class="tsd-signature-type">IGeomPath</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -610,14 +620,14 @@
 					<a name="getobjids" class="tsd-anchor"></a>
 					<h3>get<wbr>ObjIDs</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>ObjIDs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>ObjIDs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getobjids">getObjIDs</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getobjids">getObjIDs</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L235">geom.ts:235</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L239">geom.ts:239</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -628,7 +638,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -636,17 +646,48 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getobjs" class="tsd-anchor"></a>
-					<h3>get<wbr>Objs</h3>
+					<a name="getobjposition" class="tsd-anchor"></a>
+					<h3>get<wbr>Obj<wbr>Position</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Objs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Obj<wbr>Position<span class="tsd-signature-symbol">(</span>obj_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getobjs">getObjs</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getobjposition">getObjPosition</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L247">geom.ts:247</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L316">geom.ts:316</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>This method reads a private property of a geometric instanciated object which is called object data.
+									The object data contains a collection of objects which is accessible through an identification number.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj_id: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
+							<p>Returns the description of the identified object</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getobjs" class="tsd-anchor"></a>
+					<h3>get<wbr>Objs</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Objs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getobjs">getObjs</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L251">geom.ts:251</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -657,10 +698,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -668,14 +709,14 @@
 					<a name="getpoint" class="tsd-anchor"></a>
 					<h3>get<wbr>Point</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Point<span class="tsd-signature-symbol">(</span>point_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Point<span class="tsd-signature-symbol">(</span>point_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getpoint">getPoint</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getpoint">getPoint</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L182">geom.ts:182</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L186">geom.ts:186</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -689,7 +730,7 @@
 									<h5>point_id: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -702,9 +743,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getpointdata">getPointData</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getpointdata">getPointData</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L98">geom.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L102">geom.ts:102</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -730,14 +771,14 @@
 					<a name="getpointids" class="tsd-anchor"></a>
 					<h3>get<wbr>PointIDs</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>PointIDs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>PointIDs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getpointids">getPointIDs</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getpointids">getPointIDs</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L161">geom.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L165">geom.ts:165</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -748,7 +789,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -764,9 +805,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getpointposition">getPointPosition</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getpointposition">getPointPosition</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L227">geom.ts:227</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L231">geom.ts:231</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -788,14 +829,14 @@
 					<a name="getpoints" class="tsd-anchor"></a>
 					<h3>get<wbr>Points</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Points<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Points<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#getpoints">getPoints</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getpoints">getPoints</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L174">geom.ts:174</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L178">geom.ts:178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -806,10 +847,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -817,14 +858,14 @@
 					<a name="gettopos" class="tsd-anchor"></a>
 					<h3>get<wbr>Topos</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Topos<span class="tsd-signature-symbol">(</span>geom_type<span class="tsd-signature-symbol">: </span><a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.itopo.html" class="tsd-signature-type">ITopo</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Topos<span class="tsd-signature-symbol">(</span>geom_type<span class="tsd-signature-symbol">: </span><a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.itopo.html" class="tsd-signature-type">ITopo</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#gettopos">getTopos</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#gettopos">getTopos</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L359">geom.ts:359</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L392">geom.ts:392</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -835,10 +876,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>geom_type: <a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h5>
+									<h5>geom_type: <a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_interfaces_.itopo.html" class="tsd-signature-type">ITopo</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.itopo.html" class="tsd-signature-type">ITopo</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -846,14 +887,14 @@
 					<a name="numobjs" class="tsd-anchor"></a>
 					<h3>num<wbr>Objs</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">num<wbr>Objs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">num<wbr>Objs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#numobjs">numObjs</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#numobjs">numObjs</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L283">geom.ts:283</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L287">geom.ts:287</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -864,7 +905,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -875,14 +916,14 @@
 					<a name="numpoints" class="tsd-anchor"></a>
 					<h3>num<wbr>Points</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">num<wbr>Points<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">num<wbr>Points<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#numpoints">numPoints</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#numpoints">numPoints</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L202">geom.ts:202</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L206">geom.ts:206</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -893,7 +934,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_interfaces_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -904,14 +945,14 @@
 					<a name="numtopos" class="tsd-anchor"></a>
 					<h3>num<wbr>Topos</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">num<wbr>Topos<span class="tsd-signature-symbol">(</span>geom_type<span class="tsd-signature-symbol">: </span><a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">num<wbr>Topos<span class="tsd-signature-symbol">(</span>geom_type<span class="tsd-signature-symbol">: </span><a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#numtopos">numTopos</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#numtopos">numTopos</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L379">geom.ts:379</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L412">geom.ts:412</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -922,10 +963,49 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>geom_type: <a href="../enums/_interfaces_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h5>
+									<h5>geom_type: <a href="../enums/_enums_.egeomtype.html" class="tsd-signature-type">EGeomType</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setobjposition" class="tsd-anchor"></a>
+					<h3>set<wbr>Obj<wbr>Position</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Obj<wbr>Position<span class="tsd-signature-symbol">(</span>obj_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, obj_data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#setobjposition">setObjPosition</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L298">geom.ts:298</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>This methods acts on geometric instances and allows to set an object position that has an identification number</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj_id: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>requires a number, which corresponds to the object identifier</p>
+									</div>
+								</li>
+								<li>
+									<h5>obj_data: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>requires the data format, which is an array of type any</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
+							<p>returns the first object data in the object data</p>
 						</li>
 					</ul>
 				</section>
@@ -938,9 +1018,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_interfaces_.igeom.html">IGeom</a>.<a href="../interfaces/_interfaces_.igeom.html#setpointposition">setPointPosition</a></p>
+								<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#setpointposition">setPointPosition</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/aeb09e0/src/typescript/gs-json/utils/geom.ts#L211">geom.ts:211</a></li>
+									<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/a6a079b/src/typescript/gs-json/utils/geom.ts#L215">geom.ts:215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -987,6 +1067,9 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_entities_tests_.html">"entities_<wbr>tests"</a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_enums_.html">"enums"</a>
+					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/_geom_.html">"geom"</a>
 					</li>
@@ -1006,7 +1089,10 @@
 						<a href="../modules/_gs_json_tests_.html">"gs-<wbr>json_<wbr>tests"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_interfaces_.html">"interfaces"</a>
+						<a href="../modules/_ifaces_gs_.html">"ifaces_<wbr>gs"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_ifaces_json_.html">"ifaces_<wbr>json"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_model_.html">"model"</a>
@@ -1087,6 +1173,9 @@
 								<a href="_geom_.geom.html#getobjids" class="tsd-kind-icon">get<wbr>ObjIDs</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_geom_.geom.html#getobjposition" class="tsd-kind-icon">get<wbr>Obj<wbr>Position</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_geom_.geom.html#getobjs" class="tsd-kind-icon">get<wbr>Objs</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -1115,6 +1204,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_geom_.geom.html#numtopos" class="tsd-kind-icon">num<wbr>Topos</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_geom_.geom.html#setobjposition" class="tsd-kind-icon">set<wbr>Obj<wbr>Position</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_geom_.geom.html#setpointposition" class="tsd-kind-icon">set<wbr>Point<wbr>Position</a>

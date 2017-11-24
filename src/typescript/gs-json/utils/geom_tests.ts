@@ -2,7 +2,7 @@ import * as gs from "./gs-json";
 import {Model} from "./model";
 import {Geom} from "./geom";
 import {GeomPath} from "./geom";
-import * as ifs from "./interfaces";
+import * as ifs from "./ifaces_gs";
 
 export function test_xxx():boolean {
     return true;

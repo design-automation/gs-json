@@ -1,5 +1,7 @@
-import * as ifs from "./interfaces";
+import * as ifs from "./ifaces_gs";
+import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {Arr} from "./arr";
+import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Point, Polyline, Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
@@ -11,14 +13,13 @@ import {Group} from "./groups";
 * Model Class
 */
 export class Model implements ifs.IModel{
-    private _empty_model_data:ifs.IModelData  = {
+    private _empty_model_data:IModelData  = {
         "metadata": {"filetype":"gs-json","version": "0.1.1"},
-        "points":[[],[]],
-        "objs":[], 
+        "geom": {"points":[[],[]], "objs":[]}, 
         "attribs":{"points": [],"vertices": [],"edges": [],"wires": [],"faces": [],"objs": []}, 
         "groups":[]}
 
-    private _data:ifs.IModelData;
+    private _data:IModelData;
     private geom:ifs.IGeom;
     /**
     * to be completed
@@ -44,9 +45,9 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public setData(model_data:ifs.IModelData):void {
+    public setData(model_data:IModelData):void {
         Object.assign(this._data,model_data);
-        this.geom = new Geom(this, model_data.points, model_data.objs);
+        this.geom = new Geom(this, model_data.geom.points, model_data.geom.objs);
     }
     //Attribs
     /**
@@ -54,7 +55,7 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public getAttribs(geom_type?:ifs.EGeomType):ifs.IAttrib[] {
+    public getAttribs(geom_type?:EGeomType):ifs.IAttrib[] {
         if (!this._data.attribs[geom_type]) {return null;}
         return this._data.attribs[geom_type].filter((v)=>v != undefined).map((v,i)=>new Attrib(this, v));
     }
@@ -63,8 +64,8 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public getAttrib(name:string, geom_type?:ifs.EGeomType):ifs.IAttrib {
-        let data:ifs.IAttribData = 
+    public getAttrib(name:string, geom_type?:EGeomType):ifs.IAttrib {
+        let data:IAttribData = 
             this._data.attribs[geom_type].filter((v)=>v != undefined).find((v) => (v.name == name));
         if (data) {return new Attrib(this, data);}
         return null;
@@ -74,10 +75,10 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public addAttrib(name:string, geom_type:ifs.EGeomType, data_type:ifs.EDataType):ifs.IAttrib {
+    public addAttrib(name:string, geom_type:EGeomType, data_type:EDataType):ifs.IAttrib {
         if (this._data.attribs[geom_type].filter((v)=>v != undefined).find((v) => (v.name == name))) 
             { return null ;}
-        let data:ifs.IAttribData = {name:name, geom_type:geom_type, data_type:data_type, 
+        let data:IAttribData = {name:name, geom_type:geom_type, data_type:data_type, 
             values:[this.geom.getAttribTemplate(geom_type),[null]]};
         this._data.attribs[geom_type].push(data);
         return new Attrib(this, data);
@@ -87,7 +88,7 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public delAttrib(name:string, geom_type:ifs.EGeomType):boolean {
+    public delAttrib(name:string, geom_type:EGeomType):boolean {
         let index:number;
         this._data.attribs[geom_type].forEach((v,i) => (v.name == name) && (index = i));
         if (index) {delete this._data.attribs[geom_type][index]; return true;}
@@ -110,7 +111,7 @@ export class Model implements ifs.IModel{
     */
     public getGroup(name:string):ifs.IGroup {
         console.log(this._data.groups);
-        let data:ifs.IGroupData = 
+        let data:IGroupData = 
             this._data.groups.filter((v)=>v != undefined).find((v) => v.name == name);
         console.log(data);
         if (data) {return new Group(this, data);}
@@ -124,7 +125,7 @@ export class Model implements ifs.IModel{
     public addGroup(name:string):ifs.IGroup {
         if (this._data.groups.filter((v)=>v != undefined).find((v) => (v.name == name))) 
             { return null ;}
-        let data:ifs.IGroupData = {name:name};
+        let data:IGroupData = {name:name};
         this._data.groups.push(data);
         return new Group(this, data);
     }
