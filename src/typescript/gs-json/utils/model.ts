@@ -13,8 +13,7 @@ import {Group} from "./groups";
 export class Model implements ifs.IModel{
     private _empty_model_data:ifs.IModelData  = {
         "metadata": {"filetype":"gs-json","version": "0.1.1"},
-        "points":[[],[]],
-        "objs":[], 
+        "geom": {"points":[[],[]], "objs":[]}, 
         "attribs":{"points": [],"vertices": [],"edges": [],"wires": [],"faces": [],"objs": []}, 
         "groups":[]}
 
@@ -46,7 +45,7 @@ export class Model implements ifs.IModel{
     */
     public setData(model_data:ifs.IModelData):void {
         Object.assign(this._data,model_data);
-        this.geom = new Geom(this, model_data.points, model_data.objs);
+        this.geom = new Geom(this, model_data.geom.points, model_data.geom.objs);
     }
     //Attribs
     /**

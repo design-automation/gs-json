@@ -12,9 +12,13 @@ export class Group implements ifs.IGroup {
     private model:ifs.IModel;
     private _data:ifs.IGroupData;
     /**
-    * to be completed
-    * @param
-    * @return
+    * Creates an instance of the Group class.
+    * The group data must already exists in the model. 
+    * Do not use this constructor if you want to add a new group to the model.
+    * Instead, you should use the "addGroup()" methdod in the model class.
+    * @param model The Model object in which this attribute will be created.
+    * @param data The attribute data in the model.
+    * @return The Group object.
     */
     constructor(model:ifs.IModel, data:ifs.IGroupData) {
         this.model = model;

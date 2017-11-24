@@ -21,12 +21,11 @@ export class Attrib implements ifs.IAttrib {
     // private values:any[]; //values[0] is the map, values[1] is the array of unique values
     /**
     * Creates an instance of the Attrib class.
+    * The attribute data must already exists in the model. 
+    * Do not use this constructor if you want to add a new attribute to the model.
+    * Instead, you should use the "addAttrib()" methdod in the model class.
     * @param model The Model object in which this attribute will be created.
-    * @param name The attribute name.
-    * @param attrib_type The type of geometry to which the attribute will be attached. 
-    * @param data_type The data type for the attribute values.
-    * @param values_map A list of indexes point to values.
-    * @param values A list of values, where the data type matches the data_type arg.
+    * @param data The attribute data in the model.
     * @return The Attrib object.
     */
     constructor(model:ifs.IModel, data:ifs.IAttribData) {

@@ -40,14 +40,20 @@ export function test_point_getGeomType():boolean {
 }
 export function test_point_setPosition():boolean {
     let model:gs.IModel = new gs.Model();
-    // let point:gs.IPoint = model.getGeom().addPoint([11,22,33]);
-    // point.setPosition([4,5,6]);
-    // let pos:number[] = point.getPosition();
-    // return gs.Arr.equal([4,5,6], pos);
+    let point:gs.IPoint = model.getGeom().addPoint([11,22,33]);
+    point.setPosition([4,5,6]);
+    point.setPosition(null); //what should this do?
+    point.setPosition([1,2]); //what should this do?
+    point.setPosition([1,2,3,4]); //what should this do?
+    point.setPosition([1,,2]); //sparse array
     return true;
 }
 export function test_point_getPosition():boolean {
-    return true;
+    let model:gs.IModel = new gs.Model();
+    let point:gs.IPoint = model.getGeom().addPoint([11,22,33]);
+    point.setPosition([4,5,6]);
+    let pos:number[] = point.getPosition();
+    return gs.Arr.equal([4,5,6], pos);
 }
 export function test_point_getVertices():boolean {
     return true;

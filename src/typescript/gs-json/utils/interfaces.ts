@@ -80,15 +80,6 @@ export let mapStringToDataType = new Map<string,EDataType> ([
 // IMetadata, IAttribData, IGroupData, ISkinData, IModelData
 
 /**
-* Interface, for parsing JSON Metadata.
-*/
-export interface IMetadata {
-    filetype: "gs-json";
-    version: string;
-    crs?: any;
-    location?: string;
-}
-/**
 * Interface, for parsing JSON AttribData.
 */
 export interface IAttribData {
@@ -118,17 +109,24 @@ export interface ISkinData {
 * Interface, for parsing JSON ModelData.
 */
 export interface IModelData {
-    metadata: IMetadata;
-    points?: [number[],number[][]];
-    objs?: any[];
+    metadata: {
+        filetype: "gs-json";
+        version: string;
+        crs?: any;
+        location?: string;
+    },
+    geom: {
+        points?: [number[],number[][]];
+        objs?: any[];
+    },
     attribs?: {
-        points?: IAttribData[],
-        vertices?: IAttribData[],
-        edges?: IAttribData[],
-        wires?: IAttribData[],
-        faces?: IAttribData[],
-        objs?: IAttribData[]
-    };
+        points?: IAttribData[];
+        vertices?: IAttribData[];
+        edges?: IAttribData[];
+        wires?: IAttribData[];
+        faces?: IAttribData[];
+        objs?: IAttribData[];
+    },
     groups?: IGroupData[];
     skins?: ISkinData[];
 }

@@ -93,18 +93,20 @@ These two approaches to adding semantics to a model are based on existing approa
 # JSON Encoding of Geometry
 Within a gs-json file, the geometry is defined in two arrays. Points aee specified in the "points" array. Objects are specified in the "objs" array.
 ```javascript
-"ponts": [
-	[...], //values_map
-	[...]  //values
-],
-"objs": [
-	[
-		[...], //wires
-		[...], //faces
-		[...] //parameters
+"geom":{
+	ponts": [
+		[...], //values_map
+		[...]  //values
 	],
-	//...
-]
+	"objs": [
+		[
+			[...], //wires
+			[...], //faces
+			[...]  //parameters
+		],
+		//...
+	]
+}
 ```
 ## Geometric Objects
 Objects are represented using integer arrays, consisting of three sub-arrays as follows: 
@@ -133,25 +135,19 @@ This represents the following:
 Polygon meshes have faces and wires, both of which are always closed. The wires represent the naked edges of the mesh. A mesh with no wires is a solid. 
 
 # JSON Encoding of Semantics
-Within a js-JSON file, all semantics is defined in a two arrays, as follows:
-```javascript
-"attribs":  [ 
-	{...},
-	{...},
-	{...},
-	//...
-],
-"groups": [ 
-	{...},
-	{...},
-	{...},
-	//...
-]
-```
-
-The attributes and groups arrays each define the semantics.
+Within a js-JSON file, all semantics is defined in attributes and groups.
 
 ## Attributes
+```javascript
+"attribs":  {
+	"points":[{...}, ...],
+	"vertices":[{...},...],
+	"edges":[{...},...],
+	"wires":[{...}, ...],
+	"faces":[{...}, ...],
+	"objs":[{...}, ...]
+}
+```
 Attributes are defined as follows:
 * {"name"="my_attrib", "geom_type"="xxx", "data_type"="xxx", "values"=[...]}
 
@@ -159,7 +155,7 @@ Attributes are defined as follows:
 
 *data_type* can be "string", "number","boolean","string[]","number[]","boolean[]".
 
-*values* is an array the defines the values for the attribute. These values are associated with the geometry based on the "geom_type" setting. It consists of two sub arrays, one with a an array of indexes, and the other with an array of unique values. The indexes point to the unique values. The values must follow the data type specified in *data_type*.
+*values* consists of two arrays the define the values for the attribute. These values are associated with the geometry based on the "geom_type" setting. One array contains a set of indexes, and the other a set of unique values. The indexes point to the unique values. The values must follow the data type specified in *data_type*.
  
 
 ### Viewer Attributes
@@ -170,6 +166,14 @@ Certain attributes may be recognised by the viewer. (This of course dpeends on t
 * colour - the point colour, as [r,g,b].
  
 ## Groups
+```javascript
+"groups": [ 
+	{...},
+	{...},
+	{...},
+	//...
+]
+```
 A group can contain geometric objects. Geometric objects may be contained in more than one group.
 
 Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a *root* or *top-level* group. 
