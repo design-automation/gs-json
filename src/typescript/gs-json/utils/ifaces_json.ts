@@ -1,4 +1,12 @@
 /**
+* Types, for parsing JSON ModelData.
+*/
+type UTGeomType = "points" | "vertices" | "edges" | "wires" | "faces" | "objs";
+type UTDataType = "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]";
+type UT_v_or_e_subpath = [(0 | 1)] | [(0 | 1) | number] | [(0 | 1) | number | number[]];
+type UT_v_or_e_path = [number] | [number, UT_v_or_e_subpath[]];
+type UT_f_or_w_path = [number]|[number, number[]];
+/**
 * Interface, for parsing JSON ModelData.
 */
 export interface IModelData {
@@ -10,7 +18,7 @@ export interface IModelData {
     },
     geom: {
         points?: [number[],number[][]];
-        objs?: any[];
+        objs?: [number[][],number[][],any[]][];
     },
     attribs?: {
         points?: IAttribData[];
@@ -28,8 +36,8 @@ export interface IModelData {
 */
 export interface IAttribData {
     name: string;
-    geom_type: "points" | "vertices" | "edges" | "wires" | "faces" | "objs"; //enum not working
-    data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]"; //enum not working
+    geom_type: UTGeomType;
+    data_type: UTDataType;
     values: any[];
 }
 /**
@@ -38,9 +46,19 @@ export interface IAttribData {
 export interface IGroupData {
     name: string;
     parent?:string;
-    objs?: any[];
-    props?: { key: string, value: any }
+    objs?: number[];
+    faces?:UT_f_or_w_path[];
+    wires?:UT_f_or_w_path[];
+    edges?:UT_v_or_e_path[];
+    vertices?:UT_v_or_e_path[];
+    points?:number[];
+    topos?:any[];
+    props?: IPropData
 }
+/**
+* Interface, for parsing JSON PropData.
+*/
+export interface IPropData { [key: string]: any }
 /**
 * Interface, for parsing JSON SkinData.
 */

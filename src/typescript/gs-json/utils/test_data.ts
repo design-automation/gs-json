@@ -1,6 +1,8 @@
 import * as gs from "./gs-json";
 
-
+/**
+* A box with one side open.
+*/
 export let box: gs.IModelData = {
     "metadata": {
         "filetype":"gs-json",
@@ -12,26 +14,38 @@ export let box: gs.IModelData = {
         "points":[
             [0, 1, 2, 3, 4, 5, 6, 7],
             [
-                [-0.7794438004493713, -1.0, 0.0], 
-                [0.22055619955062866, -1.0, 0.0], 
-                [0.22055619955062866, -1.0, 3.0], 
-                [-0.7794438004493713, -1.0, 3.0], 
-                [-0.7794438004493713, 1.0, 0.0], 
-                [0.22055619955062866, 1.0, 0.0], 
-                [0.22055619955062866, 1.0, 3.0], 
-                [-0.7794438004493713, 1.0, 3.0]
+                [-0.7, -1.0, 0.0], 
+                [0.2, -1.0, 0.0], 
+                [0.2, -1.0, 3.0], 
+                [-0.7, -1.0, 3.0], 
+                [-0.7, 1.0, 0.0], 
+                [0.2, 1.0, 0.0], 
+                [0.2, 1.0, 3.0], 
+                [-0.7, 1.0, 3.0]
             ]
         ],
         "objs":[
             [
                 [[0, 1, 2, 3, -1]],
-                [[1, 5, 4, 0, -1], [2, 6, 5, 1, -1], [3, 7, 6, 2, -1], [0, 4, 7, 3, -1], [5, 6, 7, 4, -1]],
+                [
+                    [1, 5, 4, 0, -1], 
+                    [2, 6, 5, 1, -1], 
+                    [3, 7, 6, 2, -1], 
+                    [0, 4, 7, 3, -1], 
+                    [5, 6, 7, 4, -1]
+                ],
                 [200]
             ]
         ]
     }
 }
-
+/**
+* A box with one side open, with some attributes:
+* "test1" is a point attribute of type "number". 
+* "test2" is a vertex attribute of type "string". 
+* "shell_id" is a faces attribute of type "number". 
+* "test3" is a faces attribute of type "number". 
+*/
 export let box_with_attribs: gs.IModelData = {
     "metadata": {
         "filetype":"gs-json",
@@ -42,12 +56,28 @@ export let box_with_attribs: gs.IModelData = {
     "geom": {
         "points":[
             [0, 1, 2, 3, 4, 5, 6, 7],
-            [[-0.7794438004493713, -1.0, 0.0], [0.22055619955062866, -1.0, 0.0], [0.22055619955062866, -1.0, 3.0], [-0.7794438004493713, -1.0, 3.0], [-0.7794438004493713, 1.0, 0.0], [0.22055619955062866, 1.0, 0.0], [0.22055619955062866, 1.0, 3.0], [-0.7794438004493713, 1.0, 3.0]]
+            [
+                [-0.7, -1.0, 0.0], 
+                [0.2, -1.0, 0.0], 
+                [0.2, -1.0, 3.0], 
+                [-0.7, -1.0, 3.0], 
+                [-0.7, 1.0, 0.0], 
+                [0.2, 1.0, 0.0], 
+                [0.2, 1.0, 3.0], 
+                [-0.7, 1.0, 3.0]
+            ]
         ],
         "objs":[
             [
                 [[5, 4, 5]],
-                [[1, 5, 4, 0, -1], [2, 6, 5, 1, -1], [3, 7, 6, 2, -1], [0, 4, 7, 3, -1], [2, 1, 0, 3, -1], [5, 6, 7, 4, -1]],
+                [
+                    [1, 5, 4, 0, -1], 
+                    [2, 6, 5, 1, -1], 
+                    [3, 7, 6, 2, -1], 
+                    [0, 4, 7, 3, -1], 
+                    [2, 1, 0, 3, -1], 
+                    [5, 6, 7, 4, -1]
+                ],
                 [200]
             ]
         ]
@@ -96,4 +126,114 @@ export let box_with_attribs: gs.IModelData = {
             }
         ]
     }
+}
+/**
+* A box with one side open, with some groups.
+*/
+export let box_with_groups: gs.IModelData = {
+    "metadata": {
+        "filetype":"gs-json",
+        "version": "0.1.1",
+        "crs": {"epsg":3857},
+        "location": "+40.6894-074.0447" 
+    },
+    "geom": {
+        "points":[
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            [
+                [-0.7, -1.0, 0.0],//0
+                [0.2, -1.0, 0.0], //1
+                [0.2, -1.0, 3.0], //2
+                [-0.7, -1.0, 3.0],//3
+                [-0.7, 1.0, 0.0], //4
+                [0.2, 1.0, 0.0],  //5
+                [0.2, 1.0, 3.0],  //6
+                [-0.7, 1.0, 3.0]  //7
+            ]
+        ],
+        "objs":[
+            [
+                [[0, 1, 2, 3, -1]], //opening 0
+                [
+                    [1, 5, 4, 0, -1], //floor 0
+                    [2, 6, 5, 1, -1], //wall  1
+                    [3, 7, 6, 2, -1], //roof  2
+                    [0, 4, 7, 3, -1], //wall  3
+                    [5, 6, 7, 4, -1]  //wall  4
+                ],
+                [200]
+            ]
+        ]
+    },
+    "groups": [
+        {
+            "name":"building_obj",
+            "objs": [0],
+            "props":{"descr":"The building object, that has wire and faces."}
+        },
+        {
+            "name":"building_all_faces",
+            "faces": [[0]], 
+            "props":{"descr":"Three walls, a floor and a roof."}
+        },
+        {
+            "name":"walls",
+            "parent":"building_obj",
+            "faces": [[0,[1,3,4]]],
+            "props":{"descr":"Three walls."}
+        },
+        {
+            "name":"floor",
+            "parent":"building_obj",
+            "faces": [[0,[0]]]
+        },
+        {
+            "name":"roof",
+            "parent":"building_obj",
+            "faces": [[0,[2]]]
+        },
+        {
+            "name":"winodw_openings",
+            "parent":"building_obj",
+            "wires": [[0,[0]]]
+        },
+        {
+            "name":"wire_edges",
+            "parent":"building_obj",
+            "edges": [
+                [0, [//obj 0
+                    [0] //all edges in all wires
+                ]]
+            ]
+        },
+        {
+            "name":"vertical_edges_of_faces",
+            "parent":"building_obj",
+            "edges": [
+                [0, [ //obj 0
+                    [1,1,[1,3]], //edges 1,3 in face 1
+                    [1,3,[1,3]], //edges 1,3 in face 3
+                    [1,4,[0,2]]  //edges 0,2 in face 4
+                ]]
+            ]
+        },
+        {
+            "name":"vertices_on_ground",
+            "parent":"building_obj",
+            "vertices": [
+                [0, [//obj 0
+                    [0,0,[0,1]], //vertices 0,1 in wire 0
+                    [1,0],       //all vertices in face 0 (the floor)
+                    [1,1,[2,3]], //vertices 2,3 in face 1
+                    [1,3,[0,1]], //vertices 0,1 in face 3
+                    [1,4,[0,3]], //vertices 0,3 in face 4
+                ]]
+            ]
+        },
+        {
+            "name":"points_on_ground",
+            "parent":"building_obj",
+            "points": [0,1,4,5]
+        }
+    ]
 }
