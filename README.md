@@ -93,11 +93,10 @@ These two approaches to adding semantics to a model are based on existing approa
 # JSON Encoding of Geometry
 Within a gs-json file, the geometry is defined in two arrays. Points are specified in the "points" array. 
 ```javascript
-points": [
+"points": [
 	[...], //values_map
 	[...]  //values
-],
-}
+]
 ```
 Objects are specified in the "objs" array.
 ```javascript
@@ -105,8 +104,8 @@ Objects are specified in the "objs" array.
 	[...], //obj0
 	[...], //obj1
 	[...]  //obj2
-}
-``
+]
+```
 ## Geometric Objects
 Objects are represented using integer arrays, consisting of three sub-arrays as follows: 
 * [[wires], [faces], [parameters]]
