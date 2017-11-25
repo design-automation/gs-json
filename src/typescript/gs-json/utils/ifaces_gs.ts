@@ -278,18 +278,25 @@ export interface IGroup {
     getParentGroup():string;
     getChildGroups():string[];
     setParentGroup(name:string):string;
-    //Points in this group
-    getPointIDs():number[];
-    addPoint(point_id:number):boolean;
-    addPoints(point_ids:number[]):boolean;
-    removePoint(point_id:number):boolean;
-    removePoints(point_ids:number[]):boolean;
     //Objs in this group
     getObjIDs(obj_type?:EObjType):number[];
-    addObj(obj_id:number):boolean;
-    addObjs(obj_ids:number[]):boolean;
-    removeObj(obj_id:number):boolean;
-    removeObjs(obj_ids:number[]):boolean;
+    addObj(id:number):boolean;
+    addObjs(ids:number[]):boolean;
+    removeObj(id:number):boolean;
+    removeObjs(ids:number[]):boolean;
+    //Topos in this group
+    getTopoPaths(geom_type?:EGeomType):IGeomPath[];
+    addTopo(path:IGeomPath):boolean;
+    addTopos(paths:IGeomPath[]):boolean;
+    removeTopo(path:IGeomPath):boolean;
+    removeTopos(paths:IGeomPath[]):boolean;
+    containsTopo(path:IGeomPath):boolean;
+    //Points in this group
+    getPointIDs():number[];
+    addPoint(id:number):boolean;
+    addPoints(ids:number[]):boolean;
+    removePoint(id:number):boolean;
+    removePoints(ids:number[]):boolean;
     //Properties for this group (key-value pairs)
     getPropeties():IDict;
 }

@@ -1,5 +1,5 @@
-import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
+import * as ifs from "./ifaces_gs";
 import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType} from "./enums";
 import {Geom, GeomPath} from "./geom";
@@ -71,47 +71,7 @@ export class Group implements ifs.IGroup {
     public getChildGroups():string[] {
         return this.model.getGroups().filter((v)=>v.getParentGroup() == this._data.name).map((v,i)=>v.getName());
     }
-    //Points in this group
-    /**
-    * to be completed
-    * @param
-    * @return
-    */
-    public getPointIDs():number[] {
-        throw new Error ("Method not implemented.");
-    }
-    /**
-    * to be completed
-    * @param
-    * @return
-    */
-    public addPoint(point_id:number):boolean {
-        throw new Error ("Method not implemented.");
-    }
-    /**
-    * to be completed
-    * @param
-    * @return
-    */    
-    public addPoints(point_ids:number[]):boolean {
-        throw new Error ("Method not implemented.");
-    }
-    /**
-    * to be completed
-    * @param
-    * @return
-    */
-    public removePoint(point_id:number):boolean {
-        throw new Error ("Method not implemented.");
-    }
-    /**
-    * to be completed
-    * @param
-    * @return
-    */
-    public removePoints(point_ids:number[]):boolean {
-        throw new Error ("Method not implemented.");
-    }
+
     //Objs
     /**
     * to be completed
@@ -151,6 +111,95 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public removeObjs(obj_ids:number[]):boolean {
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+        public getTopoPaths(geom_type?:EGeomType):ifs.IGeomPath[]{
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+        public addTopo(path:ifs.IGeomPath):boolean{
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+        public addTopos(paths:ifs.IGeomPath[]):boolean{
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+        public removeTopo(path:ifs.IGeomPath):boolean{
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+        public removeTopos(paths:ifs.IGeomPath[]):boolean{
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+        public containsTopo(path:ifs.IGeomPath):boolean{
+        throw new Error ("Method not implemented.");
+    }
+    //Points in this group
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public getPointIDs():number[] {
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public addPoint(point_id:number):boolean {
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */    
+    public addPoints(point_ids:number[]):boolean {
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public removePoint(point_id:number):boolean {
+        throw new Error ("Method not implemented.");
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public removePoints(point_ids:number[]):boolean {
         throw new Error ("Method not implemented.");
     }
     //Properties
