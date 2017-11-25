@@ -91,24 +91,22 @@ Semantic information can be added to the model in two ways:
 These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-json, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-json does not specify any domain-specific semantics.
 
 # JSON Encoding of Geometry
-Within a gs-json file, the geometry is defined in two arrays. Points aee specified in the "points" array. Objects are specified in the "objs" array.
+Within a gs-json file, the geometry is defined in two arrays. Points are specified in the "points" array. 
 ```javascript
-"geom":{
-	points": [
-		[...], //values_map
-		[...]  //values
-	],
-	"objs": [
-		[
-			[...], //wires
-			[...], //faces
-			[...]  //parameters
-		],
-		//...
-	]
+points": [
+	[...], //values_map
+	[...]  //values
+],
 }
 ```
-
+Objects are specified in the "objs" array.
+```javascript
+"objs": [
+	[...], //obj0
+	[...], //obj1
+	[...]  //obj2
+}
+``
 ## Geometric Objects
 Objects are represented using integer arrays, consisting of three sub-arrays as follows: 
 * [[wires], [faces], [parameters]]
