@@ -1,9 +1,5 @@
 import * as gs from "./gs-json";
 
-export function test_xxx():boolean {
-    return true;
-}
-
 export function test_createPoint():boolean {
    let model:gs.IModel = new gs.Model();
    let a:number[] = [1,2,3];
@@ -119,32 +115,33 @@ export function test_Geom_getPointIDs():boolean {
 }
 export function test_Geom_getPoints():boolean {
     let m:gs.Model = new gs.Model();
-        let g1:gs.Geom = new gs.Geom(m);
-            let p1:number[] = [1,3,9] ;
-                g1.addPoint(p1);
-            let p2:number[] = [2,1,6] ;
-                g1.addPoint(p2);
-            let p3:number[] = [4,9,2] ;
-                g1.addPoint(p3);
-            let p4:number[] = [2,3,4] ;
-                g1.addPoint(p4);
-            let p5:number[] = [8,4,3] ;
-                g1.addPoint(p5);
-            let p6:number[] = [6,1,7] ;
-                g1.addPoint(p6);
-            let p7:number[] = [9,0,4] ;
-                g1.addPoint(p7);
-            let p8:number[] = [4,0,8] ;
-                g1.addPoint(p8);
+    let g1:gs.Geom = new gs.Geom(m);
 
-if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[0].getID())[1] != p1 ) {return false;}
-if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[1].getID())[1] != p2 ) {return false;}
-if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[2].getID())[1] != p3 ) {return false;}
-if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[3].getID())[1] != p4 ) {return false;}
-if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[4].getID())[1] != p5 ) {return false;}
-if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[5].getID())[1] != p6 ) {return false;}
-if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[6].getID())[1] != p7 ) {return false;}
-if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[7].getID())[1] != p8 ) {return false;}
+    let p1:number[] = [1,3,9] ;
+        g1.addPoint(p1);
+    let p2:number[] = [2,1,6] ;
+        g1.addPoint(p2);
+    let p3:number[] = [4,9,2] ;
+        g1.addPoint(p3);
+    let p4:number[] = [2,3,4] ;
+        g1.addPoint(p4);
+    let p5:number[] = [8,4,3] ;
+        g1.addPoint(p5);
+    let p6:number[] = [6,1,7] ;
+        g1.addPoint(p6);
+    let p7:number[] = [9,0,4] ;
+        g1.addPoint(p7);
+    let p8:number[] = [4,0,8] ;
+        g1.addPoint(p8);
+
+    if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[0].getID())[1] != p1 ) {return false;}
+    if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[1].getID())[1] != p2 ) {return false;}
+    if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[2].getID())[1] != p3 ) {return false;}
+    if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[3].getID())[1] != p4 ) {return false;}
+    if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[4].getID())[1] != p5 ) {return false;}
+    if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[5].getID())[1] != p6 ) {return false;}
+    if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[6].getID())[1] != p7 ) {return false;}
+    if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[7].getID())[1] != p8 ) {return false;}
 
     return true;
 }
