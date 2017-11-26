@@ -1,5 +1,5 @@
 import * as ifs from "./ifaces_gs";
-import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {IMetadata, IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {Arr} from "./arr";
 import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
 import {Geom, GeomPath} from "./geom";
@@ -7,29 +7,77 @@ import {Point, Polyline, Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";
 import {Group} from "./groups";
-
-//model class
 /**
 * Model Class
 */
 export class Model implements ifs.IModel{
-    private _empty_model_data:IModelData  = {
-        "metadata": {"filetype":"gs-json","version": "0.1.1"},
-        "geom": {"points":[[],[]], "objs":[]}, 
-        "attribs":{"points": [],"vertices": [],"edges": [],"wires": [],"faces": [],"objs": []}, 
-        "groups":[]}
-
-    private _data:IModelData;
-    private geom:ifs.IGeom;
+    private _metadata:IMetadata;
+    private _geom:ifs.IGeom;
+    private _attribs:Map<string, Map<string, ifs.IAttrib>>;
+    private _groups:Map<string, ifs.IGroup>;
     /**
     * to be completed
     * @param
     * @return
     */
-    constructor() {
-        this._data = this._empty_model_data;
-        //create an empty geometry array
-        this.geom = new Geom(this);
+    constructor(data?:IModelData) {
+        this._attribs = new Map();
+        this._attribs.set("points", new Map());
+        this._attribs.set("vertices", new Map());
+        this._attribs.set("edges", new Map());
+        this._attribs.set("wires", new Map());
+        this._attribs.set("faces", new Map());
+        this._attribs.set("objs", new Map());
+        this._groups = new Map();
+        //Metadata
+        if (data && data.metadata != undefined) {
+            this._metadata = data.metadata;
+        } else {
+            this._metadata = {"filetype":"gs-json","version": "0.1.1"};
+        } 
+        //Geom
+        if (data && data.geom != undefined) {
+            this._geom = new Geom(this, data.geom);
+        } else {
+            this._geom = new Geom(this, {"points":[[],[null]],"objs":[]});
+        }
+        //Attributes
+        if (data && data.attribs && data.attribs.points != undefined) {
+            for (let attrib_data of data.attribs.points) {
+                this._attribs.get("points").set(attrib_data.name, new Attrib(this, attrib_data));
+            }
+        }
+        if (data && data.attribs && data.attribs.vertices != undefined) {
+            for (let attrib_data of data.attribs.vertices) {
+                this._attribs.get("vertices").set(attrib_data.name, new Attrib(this, attrib_data));
+            }
+        }
+        if (data && data.attribs && data.attribs.edges != undefined) {
+            for (let attrib_data of data.attribs.edges) {
+                this._attribs.get("edges").set(attrib_data.name, new Attrib(this, attrib_data));
+            }
+        }
+        if (data && data.attribs && data.attribs.wires != undefined) {
+            for (let attrib_data of data.attribs.wires) {
+                this._attribs.get("wires").set(attrib_data.name, new Attrib(this, attrib_data));
+            }
+        }
+        if (data && data.attribs && data.attribs.faces != undefined) {
+            for (let attrib_data of data.attribs.faces) {
+                this._attribs.get("faces").set(attrib_data.name, new Attrib(this, attrib_data));
+            }
+        }
+        if (data && data.attribs && data.attribs.objs != undefined) {
+            for (let attrib_data of data.attribs.objs) {
+                this._attribs.get("objects").set(attrib_data.name, new Attrib(this, attrib_data));
+            }
+        }
+        //Groups
+        if (data && data.attribs && data.groups != undefined) {
+            for (let group_data of data.groups) {
+                this._groups.set(group_data.name, new Group(this, group_data));
+            }
+        }
     }
     //Geom
     /**
@@ -38,17 +86,9 @@ export class Model implements ifs.IModel{
     * @return
     */
     public getGeom():ifs.IGeom {
-        return this.geom;
+        return this._geom;
     }
-    /**
-    * to be completed
-    * @param
-    * @return
-    */
-    public setData(model_data:IModelData):void {
-        Object.assign(this._data,model_data);
-        this.geom = new Geom(this, model_data.geom.points, model_data.geom.objs);
-    }
+
     //Attribs
     /**
     * to be completed
@@ -56,8 +96,7 @@ export class Model implements ifs.IModel{
     * @return
     */
     public getAttribs(geom_type?:EGeomType):ifs.IAttrib[] {
-        if (!this._data.attribs[geom_type]) {return null;}
-        return this._data.attribs[geom_type].filter((v)=>v != undefined).map((v,i)=>new Attrib(this, v));
+        return Array.from(this._attribs.get(geom_type).values());
     }
     /**
     * to be completed
@@ -65,10 +104,7 @@ export class Model implements ifs.IModel{
     * @return
     */
     public getAttrib(name:string, geom_type?:EGeomType):ifs.IAttrib {
-        let data:IAttribData = 
-            this._data.attribs[geom_type].filter((v)=>v != undefined).find((v) => (v.name == name));
-        if (data) {return new Attrib(this, data);}
-        return null;
+        return this._attribs.get(geom_type).get(name);
     }
     /**
     * to be completed
@@ -76,12 +112,11 @@ export class Model implements ifs.IModel{
     * @return
     */
     public addAttrib(name:string, geom_type:EGeomType, data_type:EDataType):ifs.IAttrib {
-        if (this._data.attribs[geom_type].filter((v)=>v != undefined).find((v) => (v.name == name))) 
-            { return null ;}
-        let data:IAttribData = {name:name, geom_type:geom_type, data_type:data_type, 
-            values:[this.geom.getAttribTemplate(geom_type),[null]]};
-        this._data.attribs[geom_type].push(data);
-        return new Attrib(this, data);
+        name = name.replace(/\s/g, "_");
+        let data:IAttribData = {name:name, geom_type:geom_type, data_type:data_type};
+        let attrib:ifs.IAttrib = new Attrib(this, data);
+        this._attribs.get(geom_type).set(name, attrib);
+        return attrib; 
     }
     /**
     * to be completed
@@ -89,10 +124,7 @@ export class Model implements ifs.IModel{
     * @return
     */
     public delAttrib(name:string, geom_type:EGeomType):boolean {
-        let index:number;
-        this._data.attribs[geom_type].forEach((v,i) => (v.name == name) && (index = i));
-        if (index) {delete this._data.attribs[geom_type][index]; return true;}
-        return false;
+        return this._attribs.get(geom_type).delete(name);
     }
     //Groups
     /**
@@ -101,8 +133,7 @@ export class Model implements ifs.IModel{
     * @return
     */
     public getGroups():ifs.IGroup[] {
-        if (!this._data.groups) {return null;}
-        return this._data.groups.filter((v)=>v != undefined).map((v,i)=>new Group(this, v));
+        return Array.from(this._groups.values());
     }
     /**
     * to be completed
@@ -110,24 +141,23 @@ export class Model implements ifs.IModel{
     * @return
     */
     public getGroup(name:string):ifs.IGroup {
-        console.log(this._data.groups);
-        let data:IGroupData = 
-            this._data.groups.filter((v)=>v != undefined).find((v) => v.name == name);
-        console.log(data);
-        if (data) {return new Group(this, data);}
-        return null;
+        return this._groups.get(name);
     }
     /**
     * to be completed
     * @param
     * @return
     */
-    public addGroup(name:string):ifs.IGroup {
-        if (this._data.groups.filter((v)=>v != undefined).find((v) => (v.name == name))) 
-            { return null ;}
+    public addGroup(name:string, parent?:string):ifs.IGroup {
+        name = name.replace(/\s/g, "_");
         let data:IGroupData = {name:name};
-        this._data.groups.push(data);
-        return new Group(this, data);
+        if (parent != undefined && this.hasGroup(parent)) {
+            parent = parent.replace(/\s/g, "_");
+            data = {name:name, parent:parent};
+        }
+        let new_group = new Group(this, data);
+        this._groups.set(name, new_group);
+        return new_group;
     }
     /**
     * to be completed
@@ -135,11 +165,20 @@ export class Model implements ifs.IModel{
     * @return
     */
     public delGroup(name:string):boolean {
-        let index:number;
-        this._data.groups.forEach((v,i) => (v.name == name) && (index = i));
-        if (index) {delete this._data.groups[index]; return true;}
-        return false;
+        return this._groups.delete(name);;
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public hasGroup(name:string):boolean {
+        return this._groups.has(name);;
+    }
+
+
+
+
     //Clean up nulls and unused points
     /**
     * to be completed
@@ -165,8 +204,8 @@ export class Model implements ifs.IModel{
     */
     public validateModel():boolean {
         //check that the attributes match the geometry
-        let num_points = this.geom.numPoints();
-        let num_objs = this.geom.numObjs();
+        let num_points = this._geom.numPoints();
+        let num_objs = this._geom.numObjs();
        
         //TODO
 

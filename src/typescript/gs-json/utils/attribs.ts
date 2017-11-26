@@ -1,6 +1,6 @@
 import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
-import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {IModelData, IAttribsData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
@@ -15,12 +15,11 @@ import {Group} from "./groups";
  * An instance of this class stores a list of attributes values. 
  */
 export class Attrib implements ifs.IAttrib {
-    private model:ifs.IModel;
-    private _data:IAttribData;
-    // private name:string;
-    // private attrib_type:EGeomType;
-    // private data_type:EDataType;
-    // private values:any[]; //values[0] is the map, values[1] is the array of unique values
+    private _model:ifs.IModel;
+    private _name:string;
+    private _geom_type:EGeomType;
+    private _data_type:EDataType;
+    private _values:any[]; //values[0] is the map, values[1] is the array of unique values
     /**
     * Creates an instance of the Attrib class.
     * The attribute data must already exists in the model. 
@@ -31,23 +30,38 @@ export class Attrib implements ifs.IAttrib {
     * @return The Attrib object.
     */
     constructor(model:ifs.IModel, data:IAttribData) {
-        this.model = model;
-        this._data = data;
-
-
-        // this._data_type = data_type;
-        // if (values) {
-        //     this.values = values;
-        // } else {
-        //     this.values = [this.model.getGeom().getAttribTemplate(this.attrib_type), [null]];
-        // }
+        console.log();
+        this._model = model;
+        if (data == undefined) {
+            throw new Error("Data must be defined.")
+        }
+        if (data.name != undefined) {
+            this._name = data.name;
+        } else {
+            throw new Error("Attribute name must be defined.")
+        }
+        if (data.geom_type != undefined) {
+            this._geom_type = data.geom_type as EGeomType; //data.geom_type is a str
+        } else {
+            throw new Error("Geometry type must be defined.")
+        }
+        if (data.data_type != undefined) {
+            this._data_type =  data.data_type as EDataType; //data.geom_type is a str
+        } else {
+            throw new Error("Data type must be defined.")
+        }
+        if (data.values != undefined) {
+            this._values = data.values;
+        } else {
+            this._values = [this._model.getGeom().getAttribTemplate(this._geom_type), [null]];
+        }
     }
     /**
     * Get the name of the attribute. 
     * @return The name.
     */
     public getName():string {
-        return this._data.name;
+        return this._name;
     }
     /**
     * Set the name of the attribute. 
@@ -55,8 +69,8 @@ export class Attrib implements ifs.IAttrib {
     * @return The old name.
     */
     public setName(name:string):string {
-        let old_name:string = this._data.name;
-        this._data.name = name;
+        let old_name:string = this._name;
+        this._name = name;
         return old_name;
     }
     /**
@@ -64,14 +78,14 @@ export class Attrib implements ifs.IAttrib {
     * @return The geometry type.
     */
     public getGeomType():EGeomType {
-        return mapStringToGeomType[this._data.geom_type];
+        return mapStringToGeomType[this._geom_type];
     }
     /**
     * Set the data type for the attribute values. 
     * @return The data type.
     */
     public getObjDataType():EDataType {
-        return mapStringToDataType[this._data.data_type];
+        return mapStringToDataType[this._data_type];
     }
     /**
     * Get a single attribute value. 
@@ -83,16 +97,16 @@ export class Attrib implements ifs.IAttrib {
     * @return The value.
     */
     public getValue(path:number|ifs.IGeomPath):any {
-        switch (this._data.geom_type) {
+        switch (this._geom_type) {
             case EGeomType.points: case EGeomType.objs:
                 path = path as number;
-                return this._data.values[1][this._data.values[0][path]];//TODO check by reference or by value?
+                return this._values[1][this._values[0][path]];//TODO check by reference or by value?
             case EGeomType.wires: case EGeomType.faces:
                 path = path as ifs.IGeomPath;
-                return this._data.values[1][this._data.values[0][path.id][path.ti]];
+                return this._values[1][this._values[0][path.id][path.ti]];
             case EGeomType.vertices: case EGeomType.edges:
                 path = path as ifs.IGeomPath;
-                return this._data.values[1][this._data.values[0][path.id][path.ti][path.si]];
+                return this._values[1][this._values[0][path.id][path.ti][path.si]];
         }
     }
     /**
@@ -106,26 +120,26 @@ export class Attrib implements ifs.IAttrib {
     * @return The old value.
     */
     public setValue(path:number|ifs.IGeomPath, value:any):any {
-        let index:number = Arr.indexOf(value, this._data.values);
+        let index:number = Arr.indexOf(value, this._values);
         if (index == -1) {
-            index = this._data.values.push(value) - 1;
+            index = this._values.push(value) - 1;
         }
         let old_value:any;
-        switch (this._data.geom_type) {
+        switch (this._geom_type) {
             case EGeomType.points: case EGeomType.objs:
                 path = path as number;
-                old_value = this._data.values[1][this._data.values[0][path]];
-                this._data.values[0][path] = index;
+                old_value = this._values[1][this._values[0][path]];
+                this._values[0][path] = index;
                 return old_value;
             case EGeomType.wires: case EGeomType.faces:
                 path = path as ifs.IGeomPath;
-                old_value = this._data.values[1][this._data.values[0][path.id][path.ti]];
-                this._data.values[0][path.id][path.ti] = index;
+                old_value = this._values[1][this._values[0][path.id][path.ti]];
+                this._values[0][path.id][path.ti] = index;
                 return old_value;
             case EGeomType.vertices: case EGeomType.edges:
                 path = path as ifs.IGeomPath;
-                old_value = this._data.values[1][this._data.values[0][path.id][path.ti][path.si]];
-                this._data.values[0][path.id][path.ti][path.si] = index;
+                old_value = this._values[1][this._values[0][path.id][path.ti][path.si]];
+                this._values[0][path.id][path.ti][path.si] = index;
                 return old_value;
         }
     }
@@ -134,6 +148,6 @@ export class Attrib implements ifs.IAttrib {
     * @return The number of attribute values.
     */
     public count():number  {
-        return this._data.values[0].length;
+        return this._values[0].length;
     }
 }

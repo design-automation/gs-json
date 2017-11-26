@@ -8,9 +8,6 @@ describe('Tests for Model class', () => {
     it('test_Model_getGeom', () => {
         expect( model_tests.test_Model_getGeom() ).toBe(true);
     });
-    it('test_Model_setData', () => {
-        expect( model_tests.test_Model_setData() ).toBe(true);
-    });
     it('test_Model_getAttribs', () => {
         expect( model_tests.test_Model_getAttribs() ).toBe(true);
     });
@@ -34,6 +31,9 @@ describe('Tests for Model class', () => {
     });
     it('test_Model_delGroup', () => {
         expect( model_tests.test_Model_delGroup() ).toBe(true);
+    });
+    it('test_Model_delGroup', () => {
+        expect( model_tests.test_Model_hasGroup() ).toBe(true);
     });
     it('test_Model_purgePoints', () => {
         expect( model_tests.test_Model_purgePoints() ).toBe(true);

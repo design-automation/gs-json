@@ -11,8 +11,7 @@ export function exportThreejsUrl(url:string):boolean {
 	xmlhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 	        data = JSON.parse(this.responseText);
-	        let model:gs.IModel = new gs.Model();
-	        model.setData(data);
+	        let model:gs.IModel = new gs.Model(data);
 	        exportThreejsData(model);
 	    }
 	};

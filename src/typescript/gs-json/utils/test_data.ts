@@ -8,7 +8,7 @@ export let box: gs.IModelData = {
         "filetype":"gs-json",
         "version": "0.1.1",
         "crs": {"epsg":3857},
-        "location": "+40.6894-074.0447" 
+        "location": "+0-0" 
     },
     "geom": {
         "points":[
@@ -26,7 +26,9 @@ export let box: gs.IModelData = {
         ],
         "objs":[
             [
-                [[0, 1, 2, 3, -1]],
+                [
+                    [0, 1, 2, 3, -1]
+                ],
                 [
                     [1, 5, 4, 0, -1], 
                     [2, 6, 5, 1, -1], 
@@ -51,7 +53,7 @@ export let box_with_attribs: gs.IModelData = {
         "filetype":"gs-json",
         "version": "0.1.1",
         "crs": {"epsg":3857},
-        "location": "+40.6894-074.0447" 
+        "location": "+0-0" 
     },
     "geom": {
         "points":[
@@ -69,7 +71,9 @@ export let box_with_attribs: gs.IModelData = {
         ],
         "objs":[
             [
-                [[5, 4, 5]],
+                [
+                    [5, 4, 5]
+                ],
                 [
                     [1, 5, 4, 0, -1], 
                     [2, 6, 5, 1, -1], 
@@ -135,7 +139,7 @@ export let box_with_groups: gs.IModelData = {
         "filetype":"gs-json",
         "version": "0.1.1",
         "crs": {"epsg":3857},
-        "location": "+40.6894-074.0447" 
+        "location": "+0-0" 
     },
     "geom": {
         "points":[
@@ -153,7 +157,9 @@ export let box_with_groups: gs.IModelData = {
         ],
         "objs":[
             [
-                [[0, 1, 2, 3, -1]], //opening 0
+                [
+                    [0, 1, 2, 3, -1]  //opening 0
+                ], 
                 [
                     [1, 5, 4, 0, -1], //floor 0
                     [2, 6, 5, 1, -1], //wall  1
@@ -169,67 +175,90 @@ export let box_with_groups: gs.IModelData = {
         {
             "name":"building_obj",
             "objs": [0],
-            "props":{"descr":"The building object, that has wire and faces."}
+            "props":[["descr","The building object, that has wire and faces."]]
         },
+        //groups with topo
         {
             "name":"building_all_faces",
-            "faces": [[0]], 
+            "topos": [
+                [[0,[0,1,2,3,4]]], //obj 0, all faces
+                [],
+                [],
+                [],
+                [],
+                []
+            ], 
             "props":{"descr":"Three walls, a floor and a roof."}
         },
-        {
-            "name":"walls",
-            "parent":"building_obj",
-            "faces": [[0,[1,3,4]]],
-            "props":{"descr":"Three walls."}
-        },
-        {
-            "name":"floor",
-            "parent":"building_obj",
-            "faces": [[0,[0]]]
-        },
-        {
-            "name":"roof",
-            "parent":"building_obj",
-            "faces": [[0,[2]]]
-        },
-        {
-            "name":"winodw_openings",
-            "parent":"building_obj",
-            "wires": [[0,[0]]]
-        },
-        {
-            "name":"wire_edges",
-            "parent":"building_obj",
-            "edges": [
-                [0, [//obj 0
-                    [0] //all edges in all wires
-                ]]
-            ]
-        },
-        {
-            "name":"vertical_edges_of_faces",
-            "parent":"building_obj",
-            "edges": [
-                [0, [ //obj 0
-                    [1,1,[1,3]], //edges 1,3 in face 1
-                    [1,3,[1,3]], //edges 1,3 in face 3
-                    [1,4,[0,2]]  //edges 0,2 in face 4
-                ]]
-            ]
-        },
-        {
-            "name":"vertices_on_ground",
-            "parent":"building_obj",
-            "vertices": [
-                [0, [//obj 0
-                    [0,0,[0,1]], //vertices 0,1 in wire 0
-                    [1,0],       //all vertices in face 0 (the floor)
-                    [1,1,[2,3]], //vertices 2,3 in face 1
-                    [1,3,[0,1]], //vertices 0,1 in face 3
-                    [1,4,[0,3]], //vertices 0,3 in face 4
-                ]]
-            ]
-        },
+        // {
+        //     "name":"walls",
+        //     "parent":"building_obj",
+        //     "topos": [
+        //         [[0,[1,3,4]]], //obj 0, faces 1,3,4
+        //         [],
+        //         [],
+        //         [],
+        //         [],
+        //         []
+        //     ], 
+        //     "props":{"descr":"Three walls."}
+        // },
+        // {
+        //     "name":"floor",
+        //     "parent":"building_obj",
+        //     "topos": [
+        //         [[0,[0]]], //obj 0, face 0
+        //         [],
+        //         [],
+        //         [],
+        //         [],
+        //         []
+        //     ] 
+        // },
+        // {
+        //     "name":"roof",
+        //     "parent":"building_obj",
+        //     "topos": [
+        //         [[0,[2]]], //obj 0, face 2
+        //         [],
+        //         [],
+        //         [],
+        //         [],
+        //         []
+        //     ] 
+        // },
+        // {
+        //     "name":"winodw_openings",
+        //     "parent":"building_obj",
+        //     "topos": [
+        //         [],
+        //         [[0,[0]]], //obj 0, wire 0
+        //         [],
+        //         [],
+        //         [],
+        //         []
+        //     ] 
+        // },
+        // {
+        //     "name":"vertical_edges_of_faces",
+        //     "parent":"building_obj",
+        //     "edges": [
+        //         [0,1,1,1,3], //obj 0, edges 1,3 in face 1
+        //         [0,1,3,1,3], //obj 0, edges 1,3 in face 3
+        //         [0,1,4,0,2]  //obj 0, edges 0,2 in face 4
+        //     ]
+        // },
+        // {
+        //     "name":"vertices_on_ground",
+        //     "parent":"building_obj",
+        //     "vertices": [
+        //         [0,0,0,0,1], //obj 0, wires, wire 0, vertices 0,1
+        //         [0,1,0],     //obj 0, faces, face 0, all vertices
+        //         [0,1,1,2,3], //obj 0, faces, face 1, vertices 2,3
+        //         [0,1,3,0,1], //obj 0, faces, face 3, vertices 0,1
+        //         [0,1,4,0,3]  //obj 0, faces, face 4, vertices 0,3
+        //     ]
+        // },
         {
             "name":"points_on_ground",
             "parent":"building_obj",

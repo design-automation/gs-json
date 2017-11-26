@@ -1,7 +1,8 @@
 import {Arr} from "./arr";
 import * as ifs from "./ifaces_gs";
 import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
-import {EGeomType, EDataType, EObjType} from "./enums";
+import {EGeomType, EDataType, EObjType, mapGeomTypeToNumber} from "./enums";
+import {TopoTree} from "./topo_trees";;
 import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
@@ -11,8 +12,14 @@ import {Attrib} from "./attribs";
 * Group class.
 */
 export class Group implements ifs.IGroup {
-    private model:ifs.IModel;
-    private _data:IGroupData;
+    private _model:ifs.IModel;
+    private _name:string;
+    private _parent:string;
+    private _points:number[]; 
+    private _topos:TopoTree;
+    private _objs:number[];
+    private _props:Map<string,any>;
+
     /**
     * Creates an instance of the Group class.
     * The group data must already exists in the model. 
@@ -23,8 +30,40 @@ export class Group implements ifs.IGroup {
     * @return The Group object.
     */
     constructor(model:ifs.IModel, data:IGroupData) {
-        this.model = model;
-        this._data = data;
+        this._model = model;
+        if (data == undefined) {
+            throw new Error("Data must be defined.")
+        }
+        if (data.name != undefined) {
+            this._name = data.name;
+        } else {
+            throw new Error("Attribute name must be defined.")
+        }
+        if (data.parent != undefined) {
+            this._parent = data.parent; 
+        } else {
+            this._parent = null;
+        }
+        if (data.points != undefined) {
+            this._points = data.points; 
+        } else {
+            this._points = [];
+        }
+        if (data.topos != undefined) {
+            this._topos = new TopoTree(model, data.topos); 
+        } else {
+            this._topos = new TopoTree(model);
+        }
+        if (data.objs != undefined) {
+            this._objs = data.objs; 
+        } else {
+            this._objs = [];
+        }
+        if (data.props != undefined) {
+            this._props = new Map(data.props); 
+        } else {
+            this._props = new Map();
+        }
     }
     /**
     * to be completed
@@ -32,7 +71,7 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public getName():string {
-        return this._data.name;
+        return this._name;
     }
     /**
     * to be completed
@@ -40,8 +79,9 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public setName(name:string):string {
-        let old_name:string = this._data.name;
-        this._data.name = name;
+        let old_name:string = this._name;  //TODO this does not change the "key"
+        //this._model.addGroup(name, this) //How to do this?
+        this._name = name;
         return old_name;
     }
     //Groups
@@ -51,7 +91,7 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public getParentGroup():string {
-        return this._data.parent;
+        return this._parent;
     }  
     /**
     * to be completed
@@ -59,8 +99,8 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public setParentGroup(name:string):string{
-        let old_parent_name:string = this._data.parent;
-        this._data.parent = name;
+        let old_parent_name:string = this._parent;
+        this._parent = name;
         return old_parent_name;
     }
     /**
@@ -69,7 +109,7 @@ export class Group implements ifs.IGroup {
     * @return
     */ 
     public getChildGroups():string[] {
-        return this.model.getGroups().filter((v)=>v.getParentGroup() == this._data.name).map((v,i)=>v.getName());
+        return this._model.getGroups().filter((v)=>v.getParentGroup() == this._name).map((v,i)=>v.getName());
     }
 
     //Objs
@@ -79,88 +119,128 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public getObjIDs(obj_type?:EObjType):number[] {
-        throw new Error ("Method not implemented.");
+        if (obj_type == undefined) {return this._objs;}
+        return this._objs.filter((v)=>
+            this._model.getGeom().getObj(v).getObjType() == obj_type);
     }
     /**
     * to be completed
     * @param
     * @return
     */
-    public addObj(obj_id:number):boolean {
-        throw new Error ("Method not implemented.");
+    public addObj(id:number):boolean {
+        if (id in this._objs) {return false;}
+        this._objs.push(id);
+        return true;
     }
     /**
     * to be completed
+    * 
     * @param
-    * @return
+    * @return Returns true if all obj IDs were added, false otherwise. 
     */
-    public addObjs(obj_ids:number[]):boolean {
-        throw new Error ("Method not implemented.");
+    public addObjs(ids:number[]):boolean {
+        let ok:boolean = true;
+        for (let id of ids) {
+            ok = this.addObj(id);
+        }
+        return ok;
     }
     /**
     * to be completed
     * @param
     * @return
     */    
-    public removeObj(obj_id:number):boolean {
-        throw new Error ("Method not implemented.");
+    public removeObj(id:number):boolean {
+        let index = this._objs.indexOf(id);
+        if (index == -1) {return false;}
+        this._objs.splice(index, 1);
+        return true;
     }
     /**
     * to be completed
     * @param
     * @return
     */
-    public removeObjs(obj_ids:number[]):boolean {
-        throw new Error ("Method not implemented.");
+    public removeObjs(ids:number[]):boolean {
+        let ok:boolean = true;
+        for (let id of ids) {
+            ok = this.removeObj(id);
+        }
+        return ok;
     }
     /**
     * to be completed
     * @param
     * @return
     */
-        public getTopoPaths(geom_type?:EGeomType):ifs.IGeomPath[]{
-        throw new Error ("Method not implemented.");
+    public hasObj(id:number):boolean{
+        let index = this._objs.indexOf(id);
+        if (index == -1) {return false;}
+        return true;
     }
     /**
     * to be completed
     * @param
     * @return
     */
-        public addTopo(path:ifs.IGeomPath):boolean{
-        throw new Error ("Method not implemented.");
+    public getTopos(geom_type?:EGeomType):ifs.ITopo[]{
+        return this._topos.getTopos(geom_type);
     }
     /**
     * to be completed
     * @param
     * @return
     */
-        public addTopos(paths:ifs.IGeomPath[]):boolean{
-        throw new Error ("Method not implemented.");
+    public addTopo(topo:ifs.ITopo):void{
+        this._topos.addTopo(topo);
     }
     /**
     * to be completed
     * @param
     * @return
     */
-        public removeTopo(path:ifs.IGeomPath):boolean{
-        throw new Error ("Method not implemented.");
+    public addTopos(topos:ifs.ITopo[]):void{
+        topos.forEach((v,i)=>this.addTopo(v));
     }
     /**
     * to be completed
     * @param
     * @return
     */
-        public removeTopos(paths:ifs.IGeomPath[]):boolean{
-        throw new Error ("Method not implemented.");
+    public removeTopo(topo:ifs.ITopo):boolean{
+        return this._topos.removeTopo(topo);
     }
     /**
     * to be completed
     * @param
     * @return
     */
-        public containsTopo(path:ifs.IGeomPath):boolean{
-        throw new Error ("Method not implemented.");
+    public removeTopos(topos:ifs.ITopo[]):boolean{
+        let ok:boolean = true;
+        for (let topo of topos) {
+            if (!this.removeTopo(topo)) {ok = false;}
+        }
+        return ok;
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public hasTopo(topo:ifs.ITopo):boolean{
+        return this._topos.hasTopo(topo);
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public topoToArray():any[]{
+        return this._topos.toArray();
+    }
+
+
     //Points in this group
     /**
     * to be completed
@@ -168,39 +248,62 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public getPointIDs():number[] {
-        throw new Error ("Method not implemented.");
+        return this._points;
     }
     /**
     * to be completed
     * @param
     * @return
     */
-    public addPoint(point_id:number):boolean {
-        throw new Error ("Method not implemented.");
+    public addPoint(id:number):boolean {
+        if (id in this._points) {return false;}
+        this._points.push(id);
+        return true;
     }
     /**
     * to be completed
     * @param
     * @return
     */    
-    public addPoints(point_ids:number[]):boolean {
-        throw new Error ("Method not implemented.");
+    public addPoints(ids:number[]):boolean {
+        let ok:boolean = true;
+        for (let id of ids) {
+            if (!this.addPoint(id)) {ok = false;}
+        }
+        return ok;
     }
     /**
     * to be completed
     * @param
     * @return
     */
-    public removePoint(point_id:number):boolean {
-        throw new Error ("Method not implemented.");
+    public removePoint(id:number):boolean {
+        let index = this._points.indexOf(id);
+        if (index == -1) {return false;}
+        this._points.splice(index, 1);
+        return true;
     }
     /**
     * to be completed
     * @param
     * @return
     */
-    public removePoints(point_ids:number[]):boolean {
-        throw new Error ("Method not implemented.");
+    public removePoints(ids:number[]):boolean {
+        let ok:boolean = true;
+        for (let id of ids) {
+            if (!this.removePoint(id)) {ok = false;}
+        }
+        return ok;
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public hasPoint(id:number):boolean{
+        let index = this._points.indexOf(id);
+        if (index == -1) {return false;}
+        return true;
     }
     //Properties
     /**
@@ -208,7 +311,7 @@ export class Group implements ifs.IGroup {
     * @param
     * @return
     */
-    public getPropeties():ifs.IDict[] {
-        throw new Error ("Method not implemented.");
+    public getProps():Map<string, any> {
+        return this._props;
     }
 }

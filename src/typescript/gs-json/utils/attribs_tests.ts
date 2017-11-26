@@ -56,16 +56,18 @@ export function test_setValue():boolean {
 
 export function test_count():boolean {
 	let m:gs.IModel = new gs.Model();
-		let a1:number[] = [Math.floor(Math.random()*10),Math.floor(Math.random()*10),Math.floor(Math.random()*10)] ;
-		let a2:number[] = [Math.floor(Math.random()*10),Math.floor(Math.random()*10),Math.floor(Math.random()*10)] ;
-		let a3:number[] = [Math.floor(Math.random()*10),Math.floor(Math.random()*10),Math.floor(Math.random()*10)] ;
-		let a4:number[] = [Math.floor(Math.random()*10),Math.floor(Math.random()*10),Math.floor(Math.random()*10)] ;
-			m.getGeom().addPoint(a1);
-			m.getGeom().addPoint(a2);
-			m.getGeom().addPoint(a3);
-			m.getGeom().addPoint(a4);
-
+	let a1:number[] = [Math.floor(Math.random()*10),Math.floor(Math.random()*10),Math.floor(Math.random()*10)] ;
+	let a2:number[] = [Math.floor(Math.random()*10),Math.floor(Math.random()*10),Math.floor(Math.random()*10)] ;
+	let a3:number[] = [Math.floor(Math.random()*10),Math.floor(Math.random()*10),Math.floor(Math.random()*10)] ;
+	let a4:number[] = [Math.floor(Math.random()*10),Math.floor(Math.random()*10),Math.floor(Math.random()*10)] ;
+	//add 4 points
+	m.getGeom().addPoint(a1);
+	m.getGeom().addPoint(a2);
+	m.getGeom().addPoint(a3);
+	m.getGeom().addPoint(a4);
+	//create a point attribute, all values should be null
 	let b:gs.IAttrib = m.addAttrib("Color of points", gs.EGeomType.points, gs.EDataType.type_str);
+	console.log(m);
 	if(b.count() != 4){return false;}
     return true;
 }

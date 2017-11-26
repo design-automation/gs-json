@@ -48,10 +48,9 @@ export interface IGroupsDict {
 * Interface, the main model class.
 */
 export interface IModel {
-    //constructor()
+    //constructor(data:IModelData)
     //Geometry
     getGeom():IGeom;
-    setData(data:IModelData):void;
     //Attribs
     getAttribs(attrib_type?:EGeomType):IAttrib[];
     getAttrib(name:string, attrib_type:EGeomType):IAttrib;
@@ -62,6 +61,7 @@ export interface IModel {
     getGroup(name:string):IGroup;
     addGroup(name:string):IGroup;
     delGroup(name:string):boolean;
+    hasGroup(name:string):boolean;
     //Clean up nulls and unused points
     purgePoints():number;
     purgeNulls():number;
@@ -162,7 +162,11 @@ export interface IPoint extends IEnt {
 export interface IObj extends IEnt {
     //constructor cannot be used to create a new point
     //use the "add" method in Geom class
+    //to be overriden by subclass
+    getObjType():EObjType;
     //
+    getVertices(vertex_type?:EGeomType.wires|EGeomType.faces):IVertex[][][];
+    getEdges(edge_type?:EGeomType.wires|EGeomType.faces):IEdge[][][];
     getWires():IWire[];
     getFaces():IFace[];
     //
@@ -198,12 +202,13 @@ export interface ITopo {
     getModel():IModel;
     getObjID():number;
     getGeomType():EGeomType;
+    getGeomPath():IGeomPath;
     //attribs
     getAttribNames():string[];
     setAttribValue(name:string, value:any):any;
     getAttribValue(name:string):any;
     //groups
-    getGroupNames():string[];
+    getGroups():IGroup[];
 }
 /**
 * Interface, for Vertex class.
@@ -284,19 +289,22 @@ export interface IGroup {
     addObjs(ids:number[]):boolean;
     removeObj(id:number):boolean;
     removeObjs(ids:number[]):boolean;
+    hasObj(id:number):boolean;
     //Topos in this group
-    getTopoPaths(geom_type?:EGeomType):IGeomPath[];
-    addTopo(path:IGeomPath):boolean;
-    addTopos(paths:IGeomPath[]):boolean;
-    removeTopo(path:IGeomPath):boolean;
-    removeTopos(paths:IGeomPath[]):boolean;
-    containsTopo(path:IGeomPath):boolean;
+    getTopos(geom_type?:EGeomType):ITopo[];
+    addTopo(path:ITopo):void;
+    addTopos(paths:ITopo[]):void;
+    removeTopo(path:ITopo):boolean;
+    removeTopos(paths:ITopo[]):boolean;
+    hasTopo(path:ITopo):boolean;
+    topoToArray():any[];
     //Points in this group
     getPointIDs():number[];
     addPoint(id:number):boolean;
     addPoints(ids:number[]):boolean;
     removePoint(id:number):boolean;
     removePoints(ids:number[]):boolean;
+    hasPoint(id:number):boolean;
     //Properties for this group (key-value pairs)
-    getPropeties():IDict;
+    getProps():IDict;
 }

@@ -174,7 +174,48 @@ abstract class Obj extends Ent implements ifs.IObj{
     public getGeomType():EGeomType {
         return EGeomType.objs;
     }
+    /**
+    * Get the object type.
+    * This method will be overridden by subclasses.
+    * @return The object type.
+    */
+    public getObjType():EObjType {
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
     // Get the topo
+    /**
+    * Get the vertices for this object. If the vertex_type is not specified, then 
+    * vertices for both wires and faces are returned. 
+    * @return The array of vertices.
+    */
+    public getVertices(vertex_type?:EGeomType.wires|EGeomType.faces):ifs.IVertex[][][] {
+        let w_vertices:ifs.IVertex[][] = [];
+        if (vertex_type == undefined || vertex_type == EGeomType.wires) {
+            this.getWires().forEach((v,i)=>w_vertices.push(v.getVertices()));
+        }
+        let f_vertices:ifs.IVertex[][] = [];
+        if (vertex_type == undefined || vertex_type == EGeomType.faces) {
+            this.getFaces().forEach((v,i)=>f_vertices.push(v.getVertices()));
+        }
+        return [w_vertices, f_vertices];
+    }
+    /**
+    * Get the edges for this object. If the edge_type is not specified, then 
+    * edges for both wires and faces are returned. 
+    * @return The array of edges.
+    */
+    public getEdges(edge_type?:EGeomType.wires|EGeomType.faces):ifs.IEdge[][][] {
+        let w_edges:ifs.IEdge[][] = [];
+        if (edge_type == undefined || edge_type == EGeomType.wires) {
+            this.getWires().forEach((v,i)=>w_edges.push(v.getEdges()));
+        }
+        let f_edges:ifs.IEdge[][] = [];
+        if (edge_type == undefined || edge_type == EGeomType.faces) {
+            this.getFaces().forEach((v,i)=>f_edges.push(v.getEdges()));
+        }
+        return [w_edges, f_edges];
+    }
     /**
     * Get the wires for this object.
     * @return The array of wires.
@@ -205,6 +246,7 @@ abstract class Obj extends Ent implements ifs.IObj{
     public numFaces():number {
         return this.geom.getObjData(new GeomPath(this.id, EGeomType.faces)).length;
     }
+
     /**
     * to be completed
     * @param

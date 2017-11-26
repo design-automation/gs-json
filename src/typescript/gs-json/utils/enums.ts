@@ -51,18 +51,6 @@ export let mapStringToGeomType = new Map<string,EGeomType> ([
     ["points",EGeomType.points]
 ])
 /**
-* Map, EGeomType to String.
-* This is used for printing.
-*/
-export let attribTypeStrings = [
-    "objs",
-    "faces",
-    "wires",
-    "edges",
-    "vertices",
-    "points"
-]
-/**
 * Map, from strings to DataType.
 * This is used when parsing JSON.
 */
@@ -74,3 +62,30 @@ export let mapStringToDataType = new Map<string,EDataType> ([
     ["number[]",EDataType.type_num_arr],
     ["boolean[]",EDataType.type_bool_arr]
 ])
+/**
+* Map, from EGeomType to number.
+* This is used by groups.
+*/
+export let mapGeomTypeToNumber = new Map<EGeomType, number> ([
+    [EGeomType.objs, 0],
+    [EGeomType.faces, 1],
+    [EGeomType.wires, 2],
+    [EGeomType.edges, 3],
+    [EGeomType.vertices, 4],
+    [EGeomType.points, 5]
+])
+/**
+* Map, EGeomType to String.
+* This is used for printing.
+*/
+export let attribTypeStrings = [
+    "objs",
+    "faces",
+    "wires",
+    "edges",
+    "vertices",
+    "points"
+]
+
+
+

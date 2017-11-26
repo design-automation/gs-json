@@ -1,6 +1,6 @@
 import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
-import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {IModelData, IGeomData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
 import {Point,Polyline,Polymesh} from "./entities";
 import {Topo, Vertex, Edge, Wire, Face} from "./topos";
@@ -12,25 +12,25 @@ import {Group} from "./groups";
 * Class Geom
 */
 export class Geom implements ifs.IGeom {
-    private model:ifs.IModel;
-    private points_data:[number[],number[][]];
-    private objs_data:any[];
+    private _model:ifs.IModel;
+    private _points:[number[],number[][]];
+    private _objs:any[];
     /**
     * to be completed
     * @param
     * @return
     */
-    constructor(model:ifs.IModel, points_data?:[number[],number[][]], objs_data?:any[]) {
-        this.model = model;
-        if (points_data) {
-            this.points_data = points_data;
+    constructor(model:ifs.IModel, data:IGeomData) {
+        this._model = model;
+        if (data.points != undefined) {
+            this._points = data.points;
         } else {
-            this.points_data = [[],[null]];
+            this._points = [[],[null]];
         }
-        if (objs_data) {
-            this.objs_data = objs_data;
+        if (data.objs != undefined) {
+            this._objs = data.objs;
         } else {
-            this.objs_data = [];
+            this._objs = [];
         }
     }
     /**
@@ -39,7 +39,7 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public getModel():ifs.IModel {
-    return this.model;
+    return this._model;
     }
 
     //Creation
@@ -55,7 +55,7 @@ export class Geom implements ifs.IGeom {
     public addPoint(xyz:number[]):ifs.IPoint {
         let point:Point = new Point(this, this.numPoints()); // create the point and its ID (which actually is defined by points_data[0].length)
         // now, the point is created, we allocation a xyz position into that instance.
-        this.points_data[0].push(0);//points to null
+        this._points[0].push(0);//points to null
         point.setPosition(xyz); // switches the old_xyz (points_data[1][0] to the new xyz by pointing it if existing or creating it if not.
         //update point attributes
         return point;
@@ -69,10 +69,10 @@ export class Geom implements ifs.IGeom {
     */
     public addPolyline(wire_points:ifs.IPoint[]):ifs.IPolyline {
         let pline:ifs.IPolyline = new Polyline(this, this.numObjs());
-        this.objs_data[0].push(0);//points to null
+        this._objs[0].push(0);//points to null
         pline.setPosition(wire_points);
         //update all attributes except points
-        //for (let attribute of this.model.getAttribs()) {
+        //for (let attribute of this._model.getAttribs()) {
             //attribute.add(pline.getTemplate(attribute.getGeomType()))
         //}
         return pline;
@@ -85,7 +85,7 @@ export class Geom implements ifs.IGeom {
     */
     public addPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IPolymesh {//double arrays
         let pmesh:ifs.IPolymesh = new Polymesh(this, this.numObjs());
-        this.objs_data[0].push(0);//points to null
+        this._objs[0].push(0);//points to null
         pmesh.setPosition(wire_points, face_points);
         //update all attributes except points
         return pmesh;
@@ -100,7 +100,7 @@ export class Geom implements ifs.IGeom {
     * @return The object data.
     */
     public getPointData(id:number):any[] {
-        return [this.points_data[0][id], this.points_data[1][this.points_data[0][id]]];
+        return [this._points[0][id], this._points[1][this._points[0][id]]];
     }
     /**
     * Low level method to return the data associated with an object. 
@@ -118,21 +118,21 @@ export class Geom implements ifs.IGeom {
                 case EGeomType.vertices:
                     switch (path.tt) {
                         case EGeomType.wires:
-                            return this.objs_data[path.id][0][path.ti][path.si];
+                            return this._objs[path.id][0][path.ti][path.si];
                         case EGeomType.faces:
-                            return this.objs_data[path.id][1][path.ti][path.si];
+                            return this._objs[path.id][1][path.ti][path.si];
                     }
                 case EGeomType.edges:
                     switch (path.tt) {
                         case EGeomType.wires:
                             return [
-                                this.objs_data[path.id][0][path.ti][path.si],
-                                this.objs_data[path.id][0][path.ti][path.si+1],
+                                this._objs[path.id][0][path.ti][path.si],
+                                this._objs[path.id][0][path.ti][path.si+1],
                             ];
                         case EGeomType.faces:
                             return [
-                                this.objs_data[path.id][1][path.ti][path.si],
-                                this.objs_data[path.id][1][path.ti][path.si+1],
+                                this._objs[path.id][1][path.ti][path.si],
+                                this._objs[path.id][1][path.ti][path.si+1],
                             ];
                     }
             }
@@ -140,17 +140,17 @@ export class Geom implements ifs.IGeom {
             switch (path.tt) {
                 case EGeomType.wires:
                     if (path.ti != undefined) {
-                        return this.objs_data[path.id][0][path.ti];
+                        return this._objs[path.id][0][path.ti];
                     }
-                    return this.objs_data[path.id][0];
+                    return this._objs[path.id][0];
                 case EGeomType.faces:
                     if (path.ti != undefined) {
-                        return this.objs_data[path.id][1][path.ti];
+                        return this._objs[path.id][1][path.ti];
                     }
-                    return this.objs_data[path.id][1];
+                    return this._objs[path.id][1];
             }
         //} else { //objects
-            return this.objs_data[path.id];
+            return this._objs[path.id];
         //}
         } catch (ex) {
             throw new Error("Geom.getObjData():Could not find geometry with path: " + path as string);
@@ -164,7 +164,7 @@ export class Geom implements ifs.IGeom {
     */
     public getPointIDs(obj_type?:EObjType):number[] {
         if (obj_type) {
-            let geom_filtered:any[] = this.objs_data.filter((n)=>n!=undefined);
+            let geom_filtered:any[] = this._objs.filter((n)=>n!=undefined);
             geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type).map((v,i)=>[v[0],v[1]]);//mpt sure if this works
             return Array.from(new Set(Arr.flatten(geom_filtered)));
         }
@@ -205,7 +205,7 @@ export class Geom implements ifs.IGeom {
     */
     public numPoints(obj_type?:EObjType):number {
         if (obj_type) {return this.getPointIDs(obj_type).length;} 
-        return this.points_data[0].length; //works also for sparse arrays
+        return this._points[0].length; //works also for sparse arrays
     }
     /**
     * to be completed
@@ -213,14 +213,14 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public setPointPosition(point_id:number, xyz:number[]):number[] {
-        let old_xyz:number[] = this.points_data[1][this.points_data[0][point_id]];
+        let old_xyz:number[] = this._points[1][this._points[0][point_id]];
         if (Arr.equal(xyz, old_xyz)) {return old_xyz;}
-        let value_index:number = Arr.indexOf(xyz, this.points_data[1]);
+        let value_index:number = Arr.indexOf(xyz, this._points[1]);
         if (value_index == -1) {
-            value_index = this.points_data[1].length;
-            this.points_data[1].push(xyz);
+            value_index = this._points[1].length;
+            this._points[1].push(xyz);
         }
-        this.points_data[0][point_id] = value_index;
+        this._points[0][point_id] = value_index;
         return old_xyz;
     }
     /**
@@ -229,7 +229,7 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public getPointPosition(point_id:number):number[] {
-        return this.points_data[1][this.points_data[0][point_id]];
+        return this._points[1][this._points[0][point_id]];
     }
     /**
     * to be completed
@@ -237,7 +237,7 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public getObjIDs(obj_type?:EObjType):number[] {
-        let geom_filtered:any[] = this.objs_data.filter((n)=>n!=undefined);
+        let geom_filtered:any[] = this._objs.filter((n)=>n!=undefined);
         if (obj_type) {
             geom_filtered = geom_filtered.filter((n)=>n[2][0]==obj_type);
         }
@@ -258,7 +258,7 @@ export class Geom implements ifs.IGeom {
     */
     public getObj(obj_id:number):ifs.IObj {
         try {
-            switch (this.objs_data[obj_id][2][0]) {
+            switch (this._objs[obj_id][2][0]) {
                 case EObjType.polyline:
                     return new Polyline(this, obj_id);
                 case EObjType.polymesh:
@@ -274,7 +274,7 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public delObj(obj_id:number):boolean{
-        return delete this.objs_data[obj_id];
+        return delete this._objs[obj_id];
         //TODO: delete the obj from all the attribute arrays
         //TODO: update the group arrays if they contain this object
         //TODO: what about the points? Do we keep them or delete them as well?
@@ -286,7 +286,7 @@ export class Geom implements ifs.IGeom {
     */
     public numObjs(obj_type?:EObjType):number {
         if (obj_type) {return this.getObjIDs(obj_type).length;} 
-        return this.objs_data.length; //works also for sparse arrays
+        return this._objs.length; //works also for sparse arrays
     }
 
     /**
@@ -296,13 +296,13 @@ export class Geom implements ifs.IGeom {
     * @return returns the first object data in the object data
     */
     public setObjPosition(obj_id:number, obj_data:any[]):any[]{
-        let old_any:any[] = this.objs_data[0][0];
+        let old_any:any[] = this._objs[0][0];
         if (Arr.equal(obj_data, old_any)) {return old_any;}
 
-        let value_index:number = Arr.indexOf(obj_data, this.objs_data[0]);
+        let value_index:number = Arr.indexOf(obj_data, this._objs[0]);
         if (value_index == -1) { //we create, in case a similar object is not present in the data frame
-            value_index = this.objs_data[0].length;
-            this.objs_data[0][0].push(obj_data);
+            value_index = this._objs[0].length;
+            this._objs[0][0].push(obj_data);
         }
         return old_any;
     }
@@ -314,7 +314,7 @@ export class Geom implements ifs.IGeom {
     * @return Returns the description of the identified object
     */
     public getObjPosition(obj_id:number,):any[]{
-        return this.objs_data[0][obj_id];
+        return this._objs[0][obj_id];
     }
 
     // Topo
@@ -372,7 +372,7 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     private _getPaths(geom_type:EGeomType):ifs.IGeomPath[] {
-        let objs_data:any[] = this.objs_data.filter((n)=>n!=undefined);
+        let objs_data:any[] = this._objs.filter((n)=>n!=undefined);
         switch (geom_type) {
             case EGeomType.vertices:
                 return this._getVEPathsFromObjsData(objs_data, 0);
@@ -419,21 +419,22 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public getAttribTemplate(geom_type:EGeomType):any[] {
+                    console.log(this.numPoints());
         switch (geom_type) {
             case EGeomType.objs:
                 return Arr.make(this.numObjs(), 0);
             case EGeomType.faces:
-                return this.objs_data.map((v,i)=>
+                return this._objs.map((v,i)=>
                         [v[1].map((v2,i2)=>Arr.make(v2.length, 0))]);
             case EGeomType.wires:
-                return this.objs_data.map((v,i)=>
+                return this._objs.map((v,i)=>
                         [v[0].map((v2,i2)=>Arr.make(v2.length, 0))]);
             case EGeomType.edges:
-                return this.objs_data.map((v,i)=>[
+                return this._objs.map((v,i)=>[
                         [v[0].map((v2,i2)=>Arr.make(v2.length-1, 0))],
                         [v[1].map((v2,i2)=>Arr.make(v2.length-1, 0))]]);
             case EGeomType.vertices:
-                return this.objs_data.map((v,i)=>[
+                return this._objs.map((v,i)=>[
                         [v[0].map((v2,i2)=>Arr.make(v2.length, 0))],
                         [v[1].map((v2,i2)=>Arr.make(v2.length, 0))]]);
             case EGeomType.points:

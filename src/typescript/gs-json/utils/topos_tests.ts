@@ -40,24 +40,21 @@ export function test_Topo_getGroupNames():boolean{
 
 // Vertex
 export function test_Vertex_getGeomType():boolean{
-	let m:gs.IModel = new gs.Model();
-	m.setData(td.box);
+	let m:gs.IModel = new gs.Model(td.box);
 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	if(v.getGeomType() != gs.EGeomType.vertices) {return false;}
 	return true;
 }
 export function test_Vertex_getPoint():boolean{
-	let m:gs.IModel = new gs.Model();
-	m.setData(td.box);
+	let m:gs.IModel = new gs.Model(td.box);
 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	if(v.getPoint().getID() != 6) {return false;}
 	return true;
 }
 export function test_Vertex_next():boolean{
-	let m:gs.IModel = new gs.Model();
-	m.setData(td.box);
+	let m:gs.IModel = new gs.Model(td.box);
 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	if(v.next().getPoint().getID() != 5) {return false;}
@@ -66,8 +63,7 @@ export function test_Vertex_next():boolean{
 	return true;
 }
 export function test_Vertex_previous():boolean{
-	let m:gs.IModel = new gs.Model();
-	m.setData(td.box);
+	let m:gs.IModel = new gs.Model(td.box);
 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	if(v.previous().getPoint().getID() != 2) {return false;}
@@ -75,8 +71,7 @@ export function test_Vertex_previous():boolean{
 	return true;
 }
 export function test_Vertex_getEdge():boolean{
-	let m:gs.IModel = new gs.Model();
-	m.setData(td.box);
+	let m:gs.IModel = new gs.Model(td.box);
 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	let e:gs.IEdge = v.getEdge();
@@ -85,17 +80,15 @@ export function test_Vertex_getEdge():boolean{
 	return true;
 }
 export function test_Vertex_getWireOrFace():boolean{
-// 	let m:gs.IModel = new gs.Model();
-// 	m.setData(td.box);
-// 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-// 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
-// 	if (v.getWireOrFace().getObjID() != 0) {return false;}
-// 	if (v.getWireOrFace().getGeomType() != gs.EGeomType.faces) {return false;}
+	let m:gs.IModel = new gs.Model(td.box);
+	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
+	if (v.getWireOrFace().getObjID() != 0) {return false;}
+	if (v.getWireOrFace().getGeomType() != gs.EGeomType.faces) {return false;}
 	return true;
 }
 export function test_Vertex_verticesSharedPoint():boolean{
-	let m:gs.IModel = new gs.Model();
-	m.setData(td.box);
+	let m:gs.IModel = new gs.Model(td.box);
 	let path:gs.IGeomPath = new gs.GeomPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
 	let v:gs.IVertex = new gs.Vertex(m.getGeom(), path);
 	let w_v:gs.IVertex[];//vertices that belong to wires

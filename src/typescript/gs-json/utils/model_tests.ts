@@ -14,21 +14,10 @@ export function test_setData2 (url:string):boolean {
 	return true;
 }
 
-export function test_constructor():boolean {
-    let model:gs.IModel = new gs.Model();
-    if (!model) {return false;}
-    return true;
-}
 export function test_Model_constructor():boolean {
-    return true;
-}
-export function test_Model_getGeom():boolean {
-    return true;
-}
-export function test_Model_setData():boolean {
-    let model:gs.IModel = new gs.Model();
+    let model:gs.IModel 
+    model = new gs.Model(test_data.box);
     //model with no attribs
-    model.setData(test_data.box);
     if (model.getGeom().numObjs() != 1) {return false;}
     if (model.getGeom().numPoints() != 8) {return false;}
     if (model.getGeom().getObj(0).numFaces() != 5) {return false;}
@@ -36,10 +25,19 @@ export function test_Model_setData():boolean {
         model.getGeom().getObj(0).getFaces()[4].getVertices().
             map((v,i)=>v.getPoint().getID()), [5, 6, 7, 4])) {return false;}
     //model with attribs
-    model.setData(test_data.box_with_attribs);
+    model = new gs.Model(test_data.box_with_attribs);
     let attribs:gs.IAttrib[] = model.getAttribs(gs.EGeomType.vertices);
     if (attribs[0].getName() != "test2") {return false;}
     if (model.getGeom().getObj(0).getFaces()[0].getAttribValue("test3") != 2.0) {return false;}
+    //model with groups
+    model = new gs.Model(test_data.box_with_groups);
+    model.getGroups();
+    let grp:gs.IGroup = model.getGroup("building_obj");
+    return true;
+}
+export function test_Model_getGeom():boolean {
+    let m:gs.Model = new gs.Model();
+    m.getGeom();
     return true;
 }
 export function test_Model_getAttribs():boolean {
@@ -58,9 +56,25 @@ export function test_Model_getGroups():boolean {
     return true;
 }
 export function test_Model_getGroup():boolean {
+    let m:gs.Model = new gs.Model();
+    m.addGroup("first_group");
+    m.getGroup("first_group");
+    m.getGroup("non_existent_group");
     return true;
 }
 export function test_Model_addGroup():boolean {
+    let m:gs.Model = new gs.Model();
+    m.addGroup("First_Group");
+    m.addGroup("Second_Group");
+    m.addGroup("Third_Group");
+    m.delGroup("Second_Group");
+    return true;
+}
+
+export function test_Model_hasGroup():boolean {
+    let m:gs.Model = new gs.Model();
+    m.addGroup("First_Group");
+    if (!m.hasGroup("First_Group")) {return false;}
     return true;
 }
 export function test_Model_delGroup():boolean {

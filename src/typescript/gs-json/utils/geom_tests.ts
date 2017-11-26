@@ -27,17 +27,17 @@ export function test_Geom_constructor():boolean {
 // let g2:Geom = new Geom(m2, m1.getGeom().getPointData(0), []);
 
 // tester le constructeur
- console.log(m2.getGeom().numPoints());
- console.log(m2.getGeom().getPointData(0)[1]);
+// console.log(m2.getGeom().numPoints());
+// console.log(m2.getGeom().getPointData(0)[1]);
     return true;
 }
 
 export function test_Geom_getModel():boolean {
-   let m:gs.Model = new gs.Model();
-   let a:gs.Geom = new gs.Geom(m);
-   a.addPoint([1,2,7]);
-   console.log(a);
-   console.log(a.getModel().getGeom().getPointData(0));
+   let m:gs.IModel = new gs.Model();
+   let g:gs.IGeom = m.getGeom();
+   g.addPoint([1,2,7]);
+//   console.log(g);
+//   console.log(g.getModel().getGeom().getPointData(0));
 //   console.log(a.getModel().getGeom().getPointIDs());
    return true;
 }
@@ -89,10 +89,10 @@ export function test_Geom_getPointData():boolean {
     return true;
 }
 export function test_Geom_getObjData():boolean {
-    let m:gs.Model = new gs.Model();
-    let a:gs.Geom = new gs.Geom(m);
-    a.addPoint([1,3,8]);
-    a.addPoint([6,4,3]);
+    let m:gs.IModel = new gs.Model();
+    let g:gs.IGeom = m.getGeom();
+    g.addPoint([1,3,8]);
+    g.addPoint([6,4,3]);
     let b1:gs.IGeomPath = new gs.GeomPath(0, null, null, null, null)
     let b2:gs.IGeomPath = new gs.GeomPath(1, null, null, null, null)
     // console.log(b1.equals(b1));
@@ -102,20 +102,20 @@ export function test_Geom_getObjData():boolean {
     return true;
 }
 export function test_Geom_getPointIDs():boolean {
-    let m:gs.Model = new gs.Model();
-    let a:gs.Geom = new gs.Geom(m);
-    a.addPoint([1,3,8]);
-    a.addPoint([6,4,3]);
-    a.addPoint([8,8,8]);
-    a.addPoint([3,4,5]);
-    a.addPoint([2,3,5]);
-    a.addPoint([1,5,2]);
+    let m:gs.IModel = new gs.Model();
+    let g:gs.IGeom = m.getGeom();
+    g.addPoint([1,3,8]);
+    g.addPoint([6,4,3]);
+    g.addPoint([8,8,8]);
+    g.addPoint([3,4,5]);
+    g.addPoint([2,3,5]);
+    g.addPoint([1,5,2]);
 //    console.log(a.getPointIDs()); //expect to return the number 6, as there are 6 points
     return true;
 }
 export function test_Geom_getPoints():boolean {
     let m:gs.Model = new gs.Model();
-    let g1:gs.Geom = new gs.Geom(m);
+    let g1:gs.IGeom = m.getGeom();
 
     let p1:number[] = [1,3,9] ;
         g1.addPoint(p1);
@@ -147,14 +147,14 @@ export function test_Geom_getPoints():boolean {
 }
 export function test_Geom_getPoint():boolean {
     let m:gs.Model = new gs.Model();
-    let a:gs.Geom = new gs.Geom(m);
-    a.addPoint([1,3,8]);
-    a.addPoint([6,4,3]);
-    a.addPoint([8,8,8]);
-    a.addPoint([3,4,5]);
-    a.addPoint([2,3,5]);
-    a.addPoint([1,5,2]);
-    for(let i:number=0;i<a.getPoints.length;i++){
+    let g:gs.IGeom = m.getGeom();
+    g.addPoint([1,3,8]);
+    g.addPoint([6,4,3]);
+    g.addPoint([8,8,8]);
+    g.addPoint([3,4,5]);
+    g.addPoint([2,3,5]);
+    g.addPoint([1,5,2]);
+    for(let i:number=0;i<g.getPoints.length;i++){
     // console.log(a.getPoint(i));
     }
     return true;

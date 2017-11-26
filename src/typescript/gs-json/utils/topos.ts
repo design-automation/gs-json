@@ -58,6 +58,13 @@ export abstract class Topo implements ifs.ITopo{
         throw new Error ("Method to be overridden by subclass.");
     }
     /**
+    * Get the geometry path for this topological component. 
+    * @return The geometry path.
+    */
+    public getGeomPath():ifs.IGeomPath {
+        return this.path;
+    }
+    /**
     * Get the attribute names for this topological component.
     * @return The array of attribute names.
     */
@@ -85,10 +92,10 @@ export abstract class Topo implements ifs.ITopo{
     * Get the group names for all the groups for which this topological component is a member.
     * @return The array of group names.
     */
-    public getGroupNames():string[] {
+    public getGroups():ifs.IGroup[] {
         return this.getModel().getGroups().
-            filter((v)=>this.path.id in v.getObjIDs()).
-                map((v,i)=>v.getName());
+            filter((v)=>this.path.id in v.getObjIDs());
+                //map((v,i)=>v.getName());
     }
 }
 /**
