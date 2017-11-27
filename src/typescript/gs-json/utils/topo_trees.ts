@@ -196,8 +196,8 @@ class TopoTreeBranch {
     }
     public toPaths(tt:EGeomType.wires|EGeomType.faces):ifs.IGeomPath[] {
         let arr:ifs.IGeomPath[] = [];
-        for (let id of this._tree.keys()) {
-            for (let ti of this._tree.get(id)) {
+        for (let id of Array.from(this._tree.keys())) { //TODO this slow
+            for (let ti of Array.from(this._tree.get(id))) { //TODO this slow
                 arr.push(new GeomPath(id, tt, ti));
             }
         }
@@ -205,13 +205,11 @@ class TopoTreeBranch {
     }
     public toArray():any[] {//TODO, should not be any
         let arr1:any[] = [];
-        //for (let id of this._tree) {
-        //for (let id of this._tree.keys()) {
-        for (let id of Array.from(this._tree.keys())) {  //For some reason, not working, not sure why!!!
+        for (let id of Array.from(this._tree.keys())) {  //TODO this slow
+        //for (let id of Object.keys(this._tree.keys())) { 
             let arr2:any[] = [];
-            for (let ti of this._tree.get(id)) {
+            for (let ti of Array.from(this._tree.get(id))) { //TODO this slow
                 arr2.push(ti);
-                console.log("adding to output array");
             }
             arr1.push([id, arr2])
         }
@@ -220,6 +218,7 @@ class TopoTreeBranch {
     public fromArray(arr1:number[][]):void {
         this._tree = new Map();
         for (let [id, val1] of this._tree) {
+            
             for (let ti of val1) {
                 this.add(id, ti);
             }
@@ -259,9 +258,9 @@ class SubtopoTreeBranch {
         tt:EGeomType.wires|EGeomType.faces, 
         st:EGeomType.vertices|EGeomType.edges):ifs.IGeomPath[] {
         let arr:ifs.IGeomPath[] = [];
-        for (let id of this._tree.keys()) {
-            for (let ti of this._tree.get(id).keys()) {
-                for (let si of this._tree.get(id).get(ti)) {
+        for (let id of Array.from(this._tree.keys())) { //TODO this slow
+            for (let ti of Array.from(this._tree.get(id).keys())) { //TODO this slow
+                for (let si of Array.from(this._tree.get(id).get(ti))) { //TODO this slow
                     arr.push(new GeomPath(id, tt, ti, st, si));
                 }
             }
@@ -270,13 +269,13 @@ class SubtopoTreeBranch {
     }
     public toArray():number[][][] {
         let arr1:number[][][] = [];
-        for (let id of this._tree.keys()) {
+        for (let id of Array.from(this._tree.keys())) { //TODO this slow
             let arr2:number[][] = [];
             arr1.push(arr2)
-            for (let ti of this._tree.get(id).keys()) {
+            for (let ti of Array.from(this._tree.get(id).keys())) { //TODO this slow
                 let arr3:number[] = [];
                 arr2.push(arr3)
-                for (let si of this._tree.get(id).get(ti)) {
+                for (let si of Array.from(this._tree.get(id).get(ti))) { //TODO this slow
                     arr3.push(si);
                 }
             }

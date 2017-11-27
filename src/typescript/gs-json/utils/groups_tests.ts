@@ -24,7 +24,6 @@ export function test_Groups_getParentGroup():boolean{
 	let m:gs.Model = new gs.Model();
 	let grp1:gs.IGroup = m.addGroup("test1");
 	let grp2:gs.IGroup = m.addGroup("test2", "test1");
-	console.log(grp2)
 	if (grp2.getParentGroup() != "test1") {return false;}
 	return true;
 }

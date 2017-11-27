@@ -419,7 +419,6 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public getAttribTemplate(geom_type:EGeomType):any[] {
-                    console.log(this.numPoints());
         switch (geom_type) {
             case EGeomType.objs:
                 return Arr.make(this.numObjs(), 0);

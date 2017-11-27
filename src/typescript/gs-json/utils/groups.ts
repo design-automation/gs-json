@@ -7,7 +7,6 @@ import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
 import {Attrib} from "./attribs";
-
 /**
 * Group class.
 */
@@ -19,7 +18,6 @@ export class Group implements ifs.IGroup {
     private _topos:TopoTree;
     private _objs:number[];
     private _props:Map<string,any>;
-
     /**
     * Creates an instance of the Group class.
     * The group data must already exists in the model. 

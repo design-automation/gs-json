@@ -30,7 +30,7 @@ export class Attrib implements ifs.IAttrib {
     * @return The Attrib object.
     */
     constructor(model:ifs.IModel, data:IAttribData) {
-        console.log();
+        //console.log();
         this._model = model;
         if (data == undefined) {
             throw new Error("Data must be defined.")
