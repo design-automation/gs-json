@@ -171,24 +171,27 @@ export let box_with_groups: gs.IModelData = {
             ]
         ]
     },
+    "attribs": {},
     "groups": [
         {
             "name":"building_obj",
             "objs": [0],
-            "props":[["descr","The building object, that has wire and faces."]]
+            "props":["descr","The building object, that has wire and faces."]
         },
         //groups with topo
         {
             "name":"building_all_faces",
-            "topos": [
-                [[0,[0,1,2,3,4]]], //obj 0, all faces
+            "topos":
+             [
+                [[0],[0,1,2,3,4]], //obj 0, all faces
+                [],
                 [],
                 [],
                 [],
                 [],
                 []
             ], 
-            "props":{"descr":"Three walls, a floor and a roof."}
+            "props":[{"descr":"Three walls, a floor and a roof."}]
         },
         // {
         //     "name":"walls",
