@@ -127,6 +127,20 @@ export function test_Groups_removeObjs():boolean{
 }
 
 export function test_Groups_getTopos():boolean{
+	let m:gs.Model = new gs.Model(td.box);
+	let g:gs.IGroup = m.addGroup("Box");
+//	console.log(Arr.equal(g.getTopos(),[]));
+		if(!Arr.equal(g.getTopos(),[])){return false;}
+//
+console.log(m.getGeom().getObj(0).getWires()[0].getGeomPath());
+console.log(m.getGeom().getObj(0).getWires()[0].getGeom());
+console.log(m.getGeom().getObj(0).getWires()[0].getGeomType());
+	g.addTopo(m.getGeom().getObj(0).getWires()[0]);
+//console.log(g);
+	// console.log(m.getGeom().getObj(0).getWires()[0]);
+	// console.log(g.getTopos(gs.EGeomType.wires));
+	// g.addTopos(m.getGeom().getObj(0).getFaces());
+//	console.log(g);	
 	return true;
 }
 export function test_Groups_addTopo():boolean{
@@ -134,6 +148,7 @@ export function test_Groups_addTopo():boolean{
 	let g:gs.IGroup = m.addGroup("test1");
 	g.addTopo(m.getGeom().getObj(0).getWires()[0]);
 	g.addTopos(m.getGeom().getObj(0).getFaces());
+
 	// console.log("==================")
 	// console.log(g)
 	// console.log(g.topoToArray());

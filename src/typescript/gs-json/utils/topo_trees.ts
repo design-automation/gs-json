@@ -10,7 +10,7 @@ import {Attrib} from "./attribs";
 * Class for storing Topo in a tree data structure.
 * This class is only used by the Group class. 
 */
-export class TopoTree {
+export class TopoTree implements ifs.ITopoTree {
     private _model:ifs.IModel;
     //topo
     private _faces:TopoTreeBranch;   
@@ -169,7 +169,7 @@ export class TopoTree {
 * Class for storing Topo components (wires and faces) in a tree data structure.
 * This class is only used internally by the TopoTree class. 
 */
-class TopoTreeBranch {
+class TopoTreeBranch implements ifs.ITopoTreeBranch{
     private _tree:Map<number, Set<number>>;
     constructor(data?:number[][]) {
         if (data != undefined) {
@@ -230,7 +230,7 @@ class TopoTreeBranch {
 * Class for storing SubTopo components (vertices and edges) in a tree data structure.
 * This class is only used internally by the TopoTree class. 
 */
-class SubtopoTreeBranch {
+class SubtopoTreeBranch implements ifs.ISubtopoTreeBranch {
     private _tree:Map<number, Map<number, Set<number>>>;
     constructor(data?:number[][][]) {
         if (data != undefined) {

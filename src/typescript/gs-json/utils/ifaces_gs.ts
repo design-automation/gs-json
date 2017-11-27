@@ -310,3 +310,42 @@ export interface IGroup {
     //Properties for this group (key-value pairs)
     getProps():IDict;
 }
+// ========================= INTERFACES for TopoTree =========================
+// ITopoTree, ITopoTreeBranch, ISubtopoTreeBranch
+/**
+* Interface, for TopTree class.
+*/
+export interface ITopoTree {
+// constructor(model:ifs.IModel, data?:(number[][]|number[][][])[])
+    hasTopo(topo:ITopo): boolean ;
+    addTopo(topo:ITopo): void ;
+    removeTopo(topo:ITopo): boolean ;
+    getTopos(geom_type?:EGeomType):ITopo[] ;
+    toArray():(number[][]|number[][][])[] ;
+    fromArray(data:(number[][]|number[][][])[]):void ;
+}
+/**
+* Interface, for TopoTreeBranch class.
+*/
+export interface ITopoTreeBranch {
+  //  constructor(data?:number[][]) {
+    has(id:number, ti:number):boolean;
+    add(id:number, ti:number):void;
+    remove(id:number, ti:number):boolean;
+    toPaths(tt:EGeomType.wires|EGeomType.faces):IGeomPath[];
+    toArray():any[];
+    fromArray(arr1:number[][]):void;
+}
+/**
+* Interface, for SubtopoTreeBranch class.
+*/
+export interface ISubtopoTreeBranch {
+//    constructor(data?:number[][][])
+    has(id:number, ti:number, si:number):boolean;
+    add(id:number, ti:number, si:number):void;
+    remove(id:number, ti:number, si:number):boolean;
+    toPaths(tt:EGeomType.wires|EGeomType.faces, st:EGeomType.vertices|EGeomType.edges):IGeomPath[];
+    toArray():number[][][];
+    fromArray(arr1:number[][][]):void;
+}
+
