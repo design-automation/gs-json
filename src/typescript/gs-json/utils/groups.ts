@@ -105,6 +105,16 @@ export class Group implements ifs.IGroup {
     * to be completed
     * @param
     * @return
+    */
+    public removeParentGroup():string{
+        let old_parent_name:string = this._parent;
+        this._parent = null;
+        return old_parent_name;
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
     */ 
     public getChildGroups():string[] {
         return this._model.getGroups().filter((v)=>v.getParentGroup() == this._name).map((v,i)=>v.getName());
@@ -127,8 +137,8 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public addObj(id:number):boolean {
-        if (id in this._objs) {return false;}
-        this._objs.push(id);
+        if (id in this._objs) {return false;
+            } else{this._objs.push(id); } //double check, I still have duplicates
         return true;
     }
     /**

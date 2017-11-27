@@ -15,7 +15,7 @@ export function test_setData2 (url:string):boolean {
 }
 
 export function test_Model_constructor():boolean {
-    let model:gs.IModel 
+    let model:gs.IModel ;
     model = new gs.Model(test_data.box);
     //model with no attribs
     if (model.getGeom().numObjs() != 1) {return false;}
