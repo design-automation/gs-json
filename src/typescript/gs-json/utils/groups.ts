@@ -139,8 +139,8 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public addObj(id:number):boolean {
-        if (id in this._objs) {return false;}
-        this._objs.push(id);
+        if (id in this._objs) {return false;
+            } else{this._objs.push(id); } //double check, I still have duplicates
         return true;
     }
     /**
