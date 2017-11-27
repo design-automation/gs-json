@@ -171,7 +171,7 @@ export let box_with_groups: gs.IModelData = {
             ]
         ]
     },
-    "attribs": {},
+    "attribs": null,
     "groups": [
         {
             "name":"building_obj",
@@ -267,5 +267,6 @@ export let box_with_groups: gs.IModelData = {
             "parent":"building_obj",
             "points": [0,1,4,5]
         }
-    ]
+    ],
+    "skins" : null
 }

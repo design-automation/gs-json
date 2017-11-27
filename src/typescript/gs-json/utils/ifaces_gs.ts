@@ -283,6 +283,8 @@ export interface IGroup {
     getParentGroup():string;
     getChildGroups():string[];
     setParentGroup(name:string):string;
+    removeParentGroup():string;
+
     //Objs in this group
     getObjIDs(obj_type?:EObjType):number[];
     addObj(id:number):boolean;
