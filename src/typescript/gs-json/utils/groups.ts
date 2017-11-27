@@ -1,6 +1,6 @@
 import {Arr} from "./arr";
 import * as ifs from "./ifaces_gs";
-import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {TTreeData, IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapGeomTypeToNumber} from "./enums";
 import {TopoTree} from "./topo_trees";;
 import {Geom, GeomPath} from "./geom";
@@ -244,7 +244,7 @@ export class Group implements ifs.IGroup {
     * @param
     * @return
     */
-    public topoToArray():any[]{
+    public topoToArray():TTreeData{
         return this._topos.toArray();
     }
 

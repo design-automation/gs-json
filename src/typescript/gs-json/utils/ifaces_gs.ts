@@ -1,14 +1,14 @@
 import {EGeomType, EDataType, EObjType} from "./enums";
-import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {TTreeData, TTree2Data, TTree3Data, IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 // ========================= DATA STRUCTURES =========================
 // IDict, IAttribDict, IAttribTypesDict, IGroupsDict
 
 /**
 * Interface, a general purpose dictionary.
 */
-export interface IDict {
-    [key: string] : any;
-}
+// export interface IDict {
+//     [key: string] : any;
+// }
 /**
 * Interface, a dictionary for storing Attrib instances.
 * The key is the name of the Attrib, and the value is an instance of class Attrib.
@@ -308,44 +308,45 @@ export interface IGroup {
     removePoints(ids:number[]):boolean;
     hasPoint(id:number):boolean;
     //Properties for this group (key-value pairs)
-    getProps():IDict;
+    getProps():Map<string,any>;
 }
 // ========================= INTERFACES for TopoTree =========================
 // ITopoTree, ITopoTreeBranch, ISubtopoTreeBranch
 /**
 * Interface, for TopTree class.
 */
+
 export interface ITopoTree {
 // constructor(model:ifs.IModel, data?:(number[][]|number[][][])[])
     hasTopo(topo:ITopo): boolean ;
     addTopo(topo:ITopo): void ;
     removeTopo(topo:ITopo): boolean ;
     getTopos(geom_type?:EGeomType):ITopo[] ;
-    toArray():(number[][]|number[][][])[] ;
-    fromArray(data:(number[][]|number[][][])[]):void ;
+    toArray():TTreeData;
+    fromArray(data:TTreeData):void ;
 }
 /**
 * Interface, for TopoTreeBranch class.
 */
-export interface ITopoTreeBranch {
+export interface ITreeBranch2 {
   //  constructor(data?:number[][]) {
-    has(id:number, ti:number):boolean;
-    add(id:number, ti:number):void;
-    remove(id:number, ti:number):boolean;
-    toPaths(tt:EGeomType.wires|EGeomType.faces):IGeomPath[];
-    toArray():any[];
-    fromArray(arr1:number[][]):void;
+    has(a:number, b:number):boolean;
+    add(a:number, b:number):void;
+    remove(a:number, b:number):boolean;
+    flatten():number[][];
+    toArray():TTree2Data;
+    fromArray(arr1:TTree2Data):void;
 }
 /**
 * Interface, for SubtopoTreeBranch class.
 */
-export interface ISubtopoTreeBranch {
+export interface ITreeBranch3 {
 //    constructor(data?:number[][][])
-    has(id:number, ti:number, si:number):boolean;
-    add(id:number, ti:number, si:number):void;
-    remove(id:number, ti:number, si:number):boolean;
-    toPaths(tt:EGeomType.wires|EGeomType.faces, st:EGeomType.vertices|EGeomType.edges):IGeomPath[];
-    toArray():number[][][];
-    fromArray(arr1:number[][][]):void;
+    has(a:number, b:number, c:number):boolean;
+    add(a:number, b:number, c:number):void;
+    remove(a:number, b:number, c:number):boolean;
+    flatten():number[][];
+    toArray():TTree3Data;
+    fromArray(arr:TTree3Data):void;
 }
 

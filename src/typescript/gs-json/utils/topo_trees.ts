@@ -1,6 +1,6 @@
 import {Arr} from "./arr";
 import * as ifs from "./ifaces_gs";
-import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {TTreeData, TTree2Data, TTree3Data, IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapGeomTypeToNumber} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
@@ -13,25 +13,25 @@ import {Attrib} from "./attribs";
 export class TopoTree implements ifs.ITopoTree {
     private _model:ifs.IModel;
     //topo
-    private _faces:TopoTreeBranch;   
-    private _wires:TopoTreeBranch;
+    private _faces:ifs.ITreeBranch2;   
+    private _wires:ifs.ITreeBranch2;
     //subtopo
-    private _face_edges:SubtopoTreeBranch;
-    private _face_vertices:SubtopoTreeBranch;    
-    private _wire_edges:SubtopoTreeBranch;
-    private _wire_vertices:SubtopoTreeBranch;
+    private _face_edges:ifs.ITreeBranch3;
+    private _face_vertices:ifs.ITreeBranch3;    
+    private _wire_edges:ifs.ITreeBranch3;
+    private _wire_vertices:ifs.ITreeBranch3;
     //create tree
-    constructor(model:ifs.IModel, data?:(number[][]|number[][][])[]) {
+    constructor(model:ifs.IModel, data?:TTreeData) {
         this._model = model;
         if (data != undefined) {
             this.fromArray(data);
         } else {
-            this._faces = new TopoTreeBranch(); 
-            this._wires = new TopoTreeBranch();            
-            this._face_edges = new SubtopoTreeBranch();
-            this._face_vertices = new SubtopoTreeBranch();                       
-            this._wire_edges = new SubtopoTreeBranch();
-            this._wire_vertices = new SubtopoTreeBranch();
+            this._faces =         new TreeBranch2(); 
+            this._wires =         new TreeBranch2();            
+            this._face_edges =    new TreeBranch3();
+            this._face_vertices = new TreeBranch3();                       
+            this._wire_edges =    new TreeBranch3();
+            this._wire_vertices = new TreeBranch3();
         }
     }
     public hasTopo(topo:ifs.ITopo): boolean {
@@ -105,42 +105,34 @@ export class TopoTree implements ifs.ITopoTree {
         }
     }
     public getTopos(geom_type?:EGeomType):ifs.ITopo[] {
-        switch (geom_type) {
-            case EGeomType.wires:
-                return this._wires.toPaths(EGeomType.wires).map((v,i)=>new Wire(this._model.getGeom(), v))
-            case EGeomType.faces:
-                return this._faces.toPaths(EGeomType.faces).map((v,i)=>new Face(this._model.getGeom(), v))
-            case EGeomType.vertices:
-                return [
-                    ...this._wire_vertices.toPaths(EGeomType.wires, EGeomType.vertices).
-                        map((v,i)=>new Vertex(this._model.getGeom(), v)), 
-                    ...this._face_vertices.toPaths(EGeomType.faces, EGeomType.vertices).
-                        map((v,i)=>new Vertex(this._model.getGeom(), v))
-                ];
-            case EGeomType.edges:
-                return [
-                    ...this._wire_edges.toPaths(EGeomType.wires, EGeomType.edges).
-                        map((v,i)=>new Edge(this._model.getGeom(), v)),
-                    ...this._face_edges.toPaths(EGeomType.faces, EGeomType.edges).
-                        map((v,i)=>new Edge(this._model.getGeom(), v))
-                ];
+        let topos:ifs.ITopo[] = [];
+        if (!geom_type || geom_type == EGeomType.faces) {
+            topos = [...topos, 
+            ...this._faces.flatten().map((v)=>
+                new Face(this._model.getGeom(), new GeomPath(v[0], EGeomType.faces, v[1])))];
         }
-        return [
-            ...this._wires.toPaths(EGeomType.wires).
-                map((v,i)=>new Wire(this._model.getGeom(), v)), 
-            ...this._faces.toPaths(EGeomType.faces).
-                map((v,i)=>new Face(this._model.getGeom(), v)),
-            ...this._wire_vertices.toPaths(EGeomType.wires, EGeomType.vertices).
-                map((v,i)=>new Vertex(this._model.getGeom(), v)), 
-            ...this._wire_edges.toPaths(EGeomType.wires, EGeomType.edges).
-                map((v,i)=>new Edge(this._model.getGeom(), v)),
-            ...this._face_vertices.toPaths(EGeomType.faces, EGeomType.vertices).
-                map((v,i)=>new Vertex(this._model.getGeom(), v)), 
-            ...this._face_edges.toPaths(EGeomType.faces, EGeomType.edges).
-                map((v,i)=>new Edge(this._model.getGeom(), v))
-        ];
+        if (!geom_type || geom_type == EGeomType.wires) {
+            topos = [...topos, 
+            ...this._wires.flatten().map((v)=>
+                new Wire(this._model.getGeom(), new GeomPath(v[0], EGeomType.wires, v[1])))];
+        }
+        if (!geom_type || geom_type == EGeomType.edges) {
+            topos = [...topos, 
+            ...this._face_edges.flatten().map((v)=>
+                new Edge(this._model.getGeom(), new GeomPath(v[0], EGeomType.faces, v[1], EGeomType.edges, v[2]))), 
+            ...this._wire_edges.flatten().map((v)=>
+                new Edge(this._model.getGeom(), new GeomPath(v[0], EGeomType.wires, v[1], EGeomType.edges, v[2])))];
+        }
+        if (!geom_type || geom_type == EGeomType.vertices) {
+            topos = [...topos, 
+            ...this._face_vertices.flatten().map((v)=>
+                new Edge(this._model.getGeom(), new GeomPath(v[0], EGeomType.faces, v[1], EGeomType.vertices, v[2]))), 
+            ...this._wire_vertices.flatten().map((v)=>
+                new Edge(this._model.getGeom(), new GeomPath(v[0], EGeomType.wires, v[1], EGeomType.vertices, v[2])))];
+        }
+        return topos;
     }
-    public toArray():(number[][]|number[][][])[] {
+    public toArray():TTreeData {
         return [
             //topo
             this._faces.toArray(),
@@ -152,144 +144,97 @@ export class TopoTree implements ifs.ITopoTree {
             this._wire_vertices.toArray()
         ];
     }
-    public fromArray(data:(number[][]|number[][][])[]):void {
+    public fromArray(data:TTreeData):void {
         if (data == undefined) { throw new Error("Data array is undefined.");}
-        if (data.length != 6) { throw new Error("Data array is invalid  length.");}
+        if (data.length != 6) { throw new Error("Data array is invalid length.");}
         //topo
-        this._faces = new TopoTreeBranch(data[0] as number[][]);
-        this._wires = new TopoTreeBranch(data[1] as number[][]);
+        this._faces = new TreeBranch2(data[0] as TTree2Data);
+        this._wires = new TreeBranch2(data[1] as TTree2Data);
         //subtopo
-        this._face_edges = new SubtopoTreeBranch(data[2] as number[][][]);
-        this._face_vertices = new SubtopoTreeBranch(data[3] as number[][][]);
-        this._wire_edges = new SubtopoTreeBranch(data[4] as number[][][]);        
-        this._wire_vertices = new SubtopoTreeBranch(data[5] as number[][][]);
+        this._face_edges =    new TreeBranch3(data[2] as TTree3Data);
+        this._face_vertices = new TreeBranch3(data[3] as TTree3Data);
+        this._wire_edges =    new TreeBranch3(data[4] as TTree3Data);        
+        this._wire_vertices = new TreeBranch3(data[5] as TTree3Data);
     }
 }
 /**
-* Class for storing Topo components (wires and faces) in a tree data structure.
+* Class for tree branches of depth 2.
 * This class is only used internally by the TopoTree class. 
 */
-class TopoTreeBranch implements ifs.ITopoTreeBranch{
+class TreeBranch2 implements ifs.ITreeBranch2{
     private _tree:Map<number, Set<number>>;
-    constructor(data?:number[][]) {
+    constructor(data?:TTree2Data) {
         if (data != undefined) {
             this.fromArray(data);
         } else {
             this._tree = new Map();
         }
     }
-
-    public has(id:number, ti:number):boolean {
-        if (!this._tree.has(id)) {return false;}
-        if (!this._tree.get(id).has(ti)) {return false;}
+    public has(a:number, b:number):boolean {
+        if (!this._tree.has(a)) {return false;}
+        if (!this._tree.get(a).has(b)) {return false;}
         return true;
     }
-
-    public add(id:number, ti:number):void {
-        if (!this._tree.has(id)) {this._tree.set(id,new Set());}
-        this._tree.get(id).add(ti);
+    public add(a:number, b:number):void {
+        if (!this._tree.has(a)) {this._tree.set(a,new Set());}
+        this._tree.get(a).add(b);
     }
-
-    public remove(id:number, ti:number):boolean {
-        if (!this._tree.has(id)) {return false;}
-        return this._tree.get(id).delete(ti);
+    public remove(a:number, b:number):boolean {
+        if (!this._tree.has(a)) {return false;}
+        return this._tree.get(a).delete(b);
     }
-    public toPaths(tt:EGeomType.wires|EGeomType.faces):ifs.IGeomPath[] {
-        let arr:ifs.IGeomPath[] = [];
-        for (let id of Array.from(this._tree.keys())) { //TODO this slow
-            for (let ti of Array.from(this._tree.get(id))) { //TODO this slow
-                arr.push(new GeomPath(id, tt, ti));
-            }
-        }
+    public flatten():number[][] {
+        let arr:number[][] = [];
+        this._tree.forEach((set,a)=>set.forEach((b)=>arr.push([a, b])));
         return arr;
     }
-    public toArray():any[] {//TODO, should not be any
-        let arr1:any[] = [];
-        for (let id of Array.from(this._tree.keys())) {  //TODO this slow
-        //for (let id of Object.keys(this._tree.keys())) { 
-            let arr2:any[] = [];
-            for (let ti of Array.from(this._tree.get(id))) { //TODO this slow
-                arr2.push(ti);
-            }
-            arr1.push([id, arr2])
-        }
-        return arr1;
+    public toArray():TTree2Data {
+        let arr = [];
+        this._tree.forEach((arr2,obj_id)=>arr.push([obj_id, arr2]));
+        return arr as TTree2Data;
     }
-    public fromArray(arr1:number[][]):void {
+    public fromArray(arr:TTree2Data):void {
         this._tree = new Map();
-        for (let [id, val1] of this._tree) {
-            
-            for (let ti of val1) {
-                this.add(id, ti);
-            }
-        }
+        arr.forEach((arr2, i)=>this._tree.set(arr2[0] as number, new Set(arr2[1] as number[])));
     }
 }
 /**
-* Class for storing SubTopo components (vertices and edges) in a tree data structure.
+* Class for tree branches of depth 3.
 * This class is only used internally by the TopoTree class. 
 */
-class SubtopoTreeBranch implements ifs.ISubtopoTreeBranch {
-    private _tree:Map<number, Map<number, Set<number>>>;
-    constructor(data?:number[][][]) {
+class TreeBranch3 implements ifs.ITreeBranch3 {
+    private _tree:Map<number, ifs.ITreeBranch2>;
+    constructor(data?:TTree3Data) {
         if (data != undefined) {
             this.fromArray(data);
         } else {
             this._tree = new Map();
         }
     }
-    public has(id:number, ti:number, si:number):boolean {
-        if (!this._tree.has(id)) {return false;}
-        if (!this._tree.get(id).has(ti)) {return false;}
-        if (!this._tree.get(id).get(ti).has(si)) {return false;}
-        return true;
+    public has(a:number, b:number, c:number):boolean {
+        if (!this._tree.has(a)) {return false;}
+        return this._tree.get(a).has(b, c);
     }
-    public add(id:number, ti:number, si:number):void {
-        if (!this._tree.has(id)) {this._tree.set(id,new Map());}
-        if (!this._tree.get(id).has(ti)) {this._tree.get(id).set(ti,new Set());}
-        this._tree.get(id).get(ti).add(si);
+    public add(a:number, b:number, c:number):void {
+        if (!this._tree.has(a)) {this._tree.set(a,new TreeBranch2());}
+        this._tree.get(a).add(b, c);
     }
-    public remove(id:number, ti:number, si:number):boolean {
-        if (!this._tree.has(id)) {return false;}
-        if (!this._tree.get(id).has(ti)) {return false;}
-        return this._tree.get(id).get(ti).delete(si);
+    public remove(a:number, b:number, c:number):boolean {
+        if (!this._tree.has(a)) {return false;}
+        return this._tree.get(a).remove(b, c);
     }
-    public toPaths(
-        tt:EGeomType.wires|EGeomType.faces, 
-        st:EGeomType.vertices|EGeomType.edges):ifs.IGeomPath[] {
-        let arr:ifs.IGeomPath[] = [];
-        for (let id of Array.from(this._tree.keys())) { //TODO this slow
-            for (let ti of Array.from(this._tree.get(id).keys())) { //TODO this slow
-                for (let si of Array.from(this._tree.get(id).get(ti))) { //TODO this slow
-                    arr.push(new GeomPath(id, tt, ti, st, si));
-                }
-            }
-        }
+    public flatten():number[][] {
+        let arr:number[][] = [];
+        this._tree.forEach((tb2,a)=>tb2.flatten().forEach((bc)=>arr.push([a, ...bc])));
         return arr;
     }
-    public toArray():number[][][] {
-        let arr1:number[][][] = [];
-        for (let id of Array.from(this._tree.keys())) { //TODO this slow
-            let arr2:number[][] = [];
-            arr1.push(arr2)
-            for (let ti of Array.from(this._tree.get(id).keys())) { //TODO this slow
-                let arr3:number[] = [];
-                arr2.push(arr3)
-                for (let si of Array.from(this._tree.get(id).get(ti))) { //TODO this slow
-                    arr3.push(si);
-                }
-            }
-        }
-        return arr1;
+    public toArray():TTree3Data {
+        let arr = [];
+        this._tree.forEach((branch,obj_id)=>arr.push([obj_id, branch.toArray()]));
+        return arr as TTree3Data;
     }
-    public fromArray(arr1:number[][][]):void {
+    public fromArray(arr:TTree3Data):void {
         this._tree = new Map();
-        for (let [id, val1] of this._tree) {
-            for (let [ti, val2] of val1) {
-                for (let si of val2) {
-                    this.add(id, ti, si);
-                }
-            }
-        }
+        arr.forEach((arr2)=>this._tree.set(arr2[0], new TreeBranch2(arr2[1])));
     }
 }

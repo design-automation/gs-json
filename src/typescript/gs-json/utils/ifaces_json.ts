@@ -1,8 +1,11 @@
 /**
-* Types, for parsing JSON ModelData.
+* Types, for parsing gs-json data.
 */
-type UTGeomType = "points" | "vertices" | "edges" | "wires" | "faces" | "objs";
-type UTDataType = "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]";
+export type TPosData = [number,number]; //can be xy or xyz
+export type TObjData = [number[][],number[][],any[]];
+export type TTree2Data = [number, number[]][]; // obj_id, [ti]
+export type TTree3Data = [number, TTree2Data][];// obj_id, [ti, [si]]
+export type TTreeData = (TTree2Data|TTree3Data)[];
 /**
 * Interface, for parsing JSON ModelData.
 */
@@ -22,8 +25,8 @@ export interface IMetadata {
 }
 
 export interface IGeomData {
-    points?: [number[],number[][]];
-    objs?: [number[][],number[][],any[]][];
+    points?: [number[],TPosData[]];
+    objs?: TObjData[];
 }
 
 export interface IAttribsData {
@@ -37,18 +40,18 @@ export interface IAttribsData {
 
 export interface IAttribData {
     name: string;
-    geom_type: UTGeomType;
-    data_type: UTDataType;
-    values?: any[];
+    geom_type: "points" | "vertices" | "edges" | "wires" | "faces" | "objs";
+    data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]";
+    values?: any[];//TODO
 }
 
 export interface IGroupData {
     name: string;
     parent?:string;
     objs?: number[];
-    topos?:(number[][]|number[][][])[];
+    topos?:TTreeData;
     points?:number[];
-    props?: any[];
+    props?: [string, any][];
 }
 
 

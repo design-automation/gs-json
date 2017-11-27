@@ -175,10 +175,6 @@ export class Model implements ifs.IModel{
     public hasGroup(name:string):boolean {
         return this._groups.has(name);;
     }
-
-
-
-
     //Clean up nulls and unused points
     /**
     * to be completed
