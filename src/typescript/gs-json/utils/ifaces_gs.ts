@@ -56,12 +56,14 @@ export interface IModel {
     getAttrib(name:string, attrib_type:EGeomType):IAttrib;
     addAttrib(name:string, attrib_type:EGeomType, data_type:EDataType):IAttrib;
     delAttrib(name:string, attrib_type:EGeomType):boolean;
+    setAttribName(old_name, new_name, geom_type:EGeomType):boolean;
     //Groups
     getGroups():IGroup[];
     getGroup(name:string):IGroup;
     addGroup(name:string):IGroup;
     delGroup(name:string):boolean;
     hasGroup(name:string):boolean;
+    setGroupName(old_name, new_name):boolean;
     //Clean up nulls and unused points
     purgePoints():number;
     purgeNulls():number;

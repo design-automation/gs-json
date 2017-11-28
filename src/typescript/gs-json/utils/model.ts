@@ -126,6 +126,18 @@ export class Model implements ifs.IModel{
     public delAttrib(name:string, geom_type:EGeomType):boolean {
         return this._attribs.get(geom_type).delete(name);
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public setAttribName(old_name, new_name, geom_type:EGeomType):boolean {
+        if (!this._attribs.get(geom_type).has(old_name)) {return false;}
+        if (this._attribs.get(geom_type).has(new_name)) {return false;}
+        this._attribs.get(geom_type).set(new_name, this._attribs.get(geom_type).get(old_name));
+        this._attribs.get(geom_type).delete(old_name);
+        return true;
+    }
     //Groups
     /**
     * to be completed
@@ -165,7 +177,7 @@ export class Model implements ifs.IModel{
     * @return
     */
     public delGroup(name:string):boolean {
-        return this._groups.delete(name);;
+        return this._groups.delete(name);
     }
     /**
     * to be completed
@@ -173,7 +185,19 @@ export class Model implements ifs.IModel{
     * @return
     */
     public hasGroup(name:string):boolean {
-        return this._groups.has(name);;
+        return this._groups.has(name);
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public setGroupName(old_name, new_name):boolean {
+        if (!this._groups.has(old_name)) {return false;}
+        if (this._groups.has(new_name)) {return false;}
+        this._groups.set(new_name, this._groups.get(old_name));
+        this._groups.delete(old_name);
+        return true;
     }
     //Clean up nulls and unused points
     /**

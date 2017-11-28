@@ -77,9 +77,8 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public setName(name:string):string {
-        let old_name:string = this._name;  //TODO this does not change the "key"
-        //this._model.addGroup(name, this) //How to do this?
-        this._name = name;
+        let old_name:string = this._name;
+        this._model.setGroupName(old_name, name);
         return old_name;
     }
     //Groups
