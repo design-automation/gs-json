@@ -281,6 +281,7 @@ export interface IGroup {
     //constructor(model:ifs.IModel, name:string)
     getName():string;
     setName(name:string):string;
+    getTopoTree():ITopoTree;
     //Parent/child groups
     getParentGroup():string;
     getChildGroups():string[];
@@ -311,6 +312,7 @@ export interface IGroup {
     hasPoint(id:number):boolean;
     //Properties for this group (key-value pairs)
     getProps():Map<string,any>;
+    setProps(new_Map:Map<string,any>):Map<string,any>;
 }
 // ========================= INTERFACES for TopoTree =========================
 // ITopoTree, ITopoTreeBranch, ISubtopoTreeBranch
@@ -351,4 +353,3 @@ export interface ITreeBranch3 {
     toArray():TTree3Data;
     fromArray(arr:TTree3Data):void;
 }
-

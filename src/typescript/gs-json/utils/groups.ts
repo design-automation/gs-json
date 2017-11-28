@@ -81,6 +81,14 @@ export class Group implements ifs.IGroup {
         this._model.setGroupName(old_name, name);
         return old_name;
     }
+
+    /**
+    * This method allows to access a private property of type TopoTree of the class Group
+    * @return The topo tree, of type TopoTree
+    */
+    public getTopoTree():TopoTree {
+        return this._topos;
+    }
     //Groups
     /**
     * to be completed
@@ -319,6 +327,15 @@ export class Group implements ifs.IGroup {
     * @return
     */
     public getProps():Map<string, any> {
+        return this._props;
+    }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public setProps(new_Map:Map<string, any>):Map<string, any> {
+        this._props = new_Map ;
         return this._props;
     }
 }

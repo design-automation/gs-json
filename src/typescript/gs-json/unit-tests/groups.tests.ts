@@ -79,8 +79,10 @@ describe('Tests for Group class', () => {
         expect( groups_tests.test_Groups_removePoints() ).toBe(true);
     });
 
-
 	it('test_Groups_getPropeties', () => {
         expect( groups_tests.test_Groups_getProps() ).toBe(true);
+    });
+    it('test_Groups_setPropeties', () => {
+        expect( groups_tests.test_Groups_setProps() ).toBe(true);
     });
 });
