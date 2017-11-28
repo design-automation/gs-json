@@ -3,42 +3,44 @@ import * as gs from "./gs-json";
 /**
 * A box with one side open.
 */
-export let box: gs.IModelData = {
-    "metadata": {
-        "filetype":"gs-json",
-        "version": "0.1.1",
-        "crs": {"epsg":3857},
-        "location": "+0-0" 
-    },
-    "geom": {
-        "points":[
-            [0, 1, 2, 3, 4, 5, 6, 7],
-            [
-                [-0.7, -1.0, 0.0], 
-                [0.2, -1.0, 0.0], 
-                [0.2, -1.0, 3.0], 
-                [-0.7, -1.0, 3.0], 
-                [-0.7, 1.0, 0.0], 
-                [0.2, 1.0, 0.0], 
-                [0.2, 1.0, 3.0], 
-                [-0.7, 1.0, 3.0]
-            ]
-        ],
-        "objs":[
-            [
+export function open_box():gs.IModelData {
+    return {
+        "metadata": {
+            "filetype":"gs-json",
+            "version": "0.1.1",
+            "crs": {"epsg":3857},
+            "location": "+0-0" 
+        },
+        "geom": {
+            "points":[
+                [0, 1, 2, 3, 4, 5, 6, 7],
                 [
-                    [0, 1, 2, 3, -1]
-                ],
+                    [-0.7, -1.0, 0.0], 
+                    [0.2, -1.0, 0.0], 
+                    [0.2, -1.0, 3.0], 
+                    [-0.7, -1.0, 3.0], 
+                    [-0.7, 1.0, 0.0], 
+                    [0.2, 1.0, 0.0], 
+                    [0.2, 1.0, 3.0], 
+                    [-0.7, 1.0, 3.0]
+                ]
+            ],
+            "objs":[
                 [
-                    [1, 5, 4, 0, -1], 
-                    [2, 6, 5, 1, -1], 
-                    [3, 7, 6, 2, -1], 
-                    [0, 4, 7, 3, -1], 
-                    [5, 6, 7, 4, -1]
-                ],
-                [200]
+                    [
+                        [0, 1, 2, 3, -1]
+                    ],
+                    [
+                        [1, 5, 4, 0, -1], 
+                        [2, 6, 5, 1, -1], 
+                        [3, 7, 6, 2, -1], 
+                        [0, 4, 7, 3, -1], 
+                        [5, 6, 7, 4, -1]
+                    ],
+                    [200]
+                ]
             ]
-        ]
+        }
     }
 }
 /**
@@ -48,7 +50,8 @@ export let box: gs.IModelData = {
 * "shell_id" is a faces attribute of type "number". 
 * "test3" is a faces attribute of type "number". 
 */
-export let box_with_attribs: gs.IModelData = {
+export function box_with_attribs():gs.IModelData {
+    return {
     "metadata": {
         "filetype":"gs-json",
         "version": "0.1.1",
@@ -131,10 +134,12 @@ export let box_with_attribs: gs.IModelData = {
         ]
     }
 }
+}
 /**
 * A box with one side open, with some groups.
 */
-export let box_with_groups: gs.IModelData = {
+export function box_with_groups():gs.IModelData {
+    return {
     "metadata": {
         "filetype":"gs-json",
         "version": "0.1.1",
@@ -294,4 +299,5 @@ export let box_with_groups: gs.IModelData = {
         }
     ],
     "skins" : null
+}
 }

@@ -25,7 +25,7 @@ export interface IMetadata {
 }
 
 export interface IGeomData {
-    points?: [number[],TPosData[]];
+    points?: [number[],number[][]];
     objs?: TObjData[];
 }
 

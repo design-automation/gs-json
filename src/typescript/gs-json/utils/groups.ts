@@ -79,6 +79,7 @@ export class Group implements ifs.IGroup {
     public setName(name:string):string {
         let old_name:string = this._name;
         this._model.setGroupName(old_name, name);
+        this._name = name;
         return old_name;
     }
 

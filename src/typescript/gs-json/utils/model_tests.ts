@@ -16,21 +16,22 @@ export function test_setData2 (url:string):boolean {
 
 export function test_Model_constructor():boolean {
     let model:gs.IModel ;
-    model = new gs.Model(test_data.box);
+    model = new gs.Model(test_data.open_box());
     //model with no attribs
     if (model.getGeom().numObjs() != 1) {return false;}
     if (model.getGeom().numPoints() != 8) {return false;}
+    console.log(model);
     if (model.getGeom().getObj(0).numFaces() != 5) {return false;}
     if (! gs.Arr.equal(
         model.getGeom().getObj(0).getFaces()[4].getVertices().
             map((v,i)=>v.getPoint().getID()), [5, 6, 7, 4])) {return false;}
     //model with attribs
-    model = new gs.Model(test_data.box_with_attribs);
+    model = new gs.Model(test_data.box_with_attribs());
     let attribs:gs.IAttrib[] = model.getAttribs(gs.EGeomType.vertices);
     if (attribs[0].getName() != "test2") {return false;}
     if (model.getGeom().getObj(0).getFaces()[0].getAttribValue("test3") != 2.0) {return false;}
     //model with groups
-    model = new gs.Model(test_data.box_with_groups);
+    model = new gs.Model(test_data.box_with_groups());
     model.getGroups();
     let grp:gs.IGroup = model.getGroup("building_obj");
     return true;

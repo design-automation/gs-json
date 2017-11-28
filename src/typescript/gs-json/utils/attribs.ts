@@ -70,6 +70,7 @@ export class Attrib implements ifs.IAttrib {
     */
     public setName(name:string):string {
         let old_name:string = this._name;
+        this._model.setAttribName(old_name, name, this._geom_type);
         this._name = name;
         return old_name;
     }

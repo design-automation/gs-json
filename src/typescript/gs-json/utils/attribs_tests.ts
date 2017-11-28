@@ -67,7 +67,6 @@ export function test_count():boolean {
 	m.getGeom().addPoint(a4);
 	//create a point attribute, all values should be null
 	let b:gs.IAttrib = m.addAttrib("Color of points", gs.EGeomType.points, gs.EDataType.type_str);
-	console.log(m);
 	if(b.count() != 4){return false;}
     return true;
 }

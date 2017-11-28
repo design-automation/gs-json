@@ -4,7 +4,7 @@ import {Arr} from "./arr";
 
 // Testing methods the Groups Class, composed of 1 constructor and 17 methods
 export function test_Groups_constructor():boolean{
-	let m:gs.Model = new gs.Model(td.box_with_groups);
+	let m:gs.Model = new gs.Model(td.box_with_groups());
 	return true;
 }
 export function test_Groups_getName():boolean{
@@ -17,9 +17,9 @@ export function test_Groups_setName():boolean{
 	let m:gs.Model = new gs.Model();
 	let grp:gs.IGroup = m.addGroup("test1");
 	grp.setName("test2");
+	//console.log(grp.getName(), m.getGroup("test2").getName());
 	if (grp.getName() != "test2") {return false;}
-	//if (m.getGroup("test2").getName() != "test2") {return false;} //FAILS, because:
-	if (m.getGroup("test1").getName() != "test2") {return false;} //intial key test1 is required to access the latest group name.
+	//if (m.getGroup("test2").getName() != "test2") {return false;}
 	return true;
 }
 export function test_Groups_getParentGroup():boolean{
@@ -127,7 +127,7 @@ export function test_Groups_removeObjs():boolean{
 	return true;
 }
 export function test_Groups_getTopos():boolean{
-	let m:gs.Model = new gs.Model(td.box);
+	let m:gs.Model = new gs.Model(td.open_box());
 	let g1:gs.IGroup = m.addGroup("Box");
 	let g2:gs.IGroup = m.addGroup("Box");
 		if(!Arr.equal(g1.getTopoTree().getTopos(),[])){return false;}
@@ -157,7 +157,7 @@ return true;
 //	console.log(g);	
 }
 export function test_Groups_addTopo():boolean{
-	let m:gs.Model = new gs.Model(td.box);
+	let m:gs.Model = new gs.Model(td.open_box());
 	let g:gs.IGroup = m.addGroup("Group");
 			if(!Arr.equal(g.getTopoTree().getTopos(),[])){return false;}
 		g.getTopoTree().addTopo(m.getGeom().getObj(0).getFaces()[0]);
@@ -173,7 +173,7 @@ export function test_Groups_addTopo():boolean{
 	// console.log(g.topoToArray());
 }
 export function test_Groups_addTopos():boolean{
-	let m:gs.Model = new gs.Model(td.box);
+	let m:gs.Model = new gs.Model(td.open_box());
 		let g:gs.IGroup = m.addGroup("Box");
 		if(!Arr.equal(g.getTopoTree().getTopos(),[])){return false;}
 let f1:gs.IFace = m.getGeom().getObj(0).getFaces()[0];
@@ -195,7 +195,7 @@ return true;
 	// 	if(Arr.equal(g2.getTopoTree().getTopos(),[])){return false;}
 }
 export function test_Groups_removeTopo():boolean{
-		let m:gs.Model = new gs.Model(td.box);
+		let m:gs.Model = new gs.Model(td.open_box());
 		let g:gs.IGroup = m.addGroup("Box");
 let f1:gs.IFace = m.getGeom().getObj(0).getFaces()[0];
 	let f2:gs.IFace = m.getGeom().getObj(0).getFaces()[1];
@@ -209,7 +209,7 @@ if(g.getTopoTree().hasTopo(f1) || !g.getTopoTree().hasTopo(f2) || !g.getTopoTree
 	return true;
 }
 export function test_Groups_removeTopos():boolean{
-		let m:gs.Model = new gs.Model(td.box);
+		let m:gs.Model = new gs.Model(td.open_box());
 		let g:gs.IGroup = m.addGroup("Box");
 let f1:gs.IFace = m.getGeom().getObj(0).getFaces()[0];
 	let f2:gs.IFace = m.getGeom().getObj(0).getFaces()[1];
@@ -223,7 +223,7 @@ if(!g.getTopoTree().hasTopo(f1) || g.getTopoTree().hasTopo(f2) || g.getTopoTree(
 	return true;
 }
 export function test_Groups_getPointIDs():boolean{
-	let m:gs.Model = new gs.Model(td.box);
+	let m:gs.Model = new gs.Model(td.open_box());
 		let g:gs.IGroup = m.addGroup("Box");
 
 		// console.log(g.getPointIDs());
@@ -231,7 +231,7 @@ export function test_Groups_getPointIDs():boolean{
 	return true;
 }
 export function test_Groups_addPoint():boolean{
-	let m:gs.Model = new gs.Model(td.box);
+	let m:gs.Model = new gs.Model(td.open_box());
 		let g:gs.IGroup = m.addGroup("Box");
 	let point:gs.IPoint = m.getGeom().addPoint([11,22,33]);
     	g.addPoint(point.getID())
@@ -241,7 +241,7 @@ if(!(m.getGeom().numPoints() - g.getPointIDs()[0] == 1)){return false;}
     return true;
 }
 export function test_Groups_addPoints():boolean{
-	let m:gs.Model = new gs.Model(td.box);
+	let m:gs.Model = new gs.Model(td.open_box());
 		let g1:gs.IGroup = m.addGroup("Box");
 			let g2:gs.IGroup = m.addGroup("Box");
 		let point1:gs.IPoint = m.getGeom().addPoint([11,22,36]);
@@ -252,7 +252,7 @@ if(! (g2.getPointIDs().length - g1.getPointIDs().length == 3)){return false;}
 	return true;
 }
 export function test_Groups_removePoint():boolean{
-	let m:gs.Model = new gs.Model(td.box);
+	let m:gs.Model = new gs.Model(td.open_box());
 		let g1:gs.IGroup = m.addGroup("Box");
 			let g2:gs.IGroup = m.addGroup("Box");
 		let point1:gs.IPoint = m.getGeom().addPoint([11,22,36]);
@@ -269,7 +269,7 @@ if(!(g2.getPointIDs().length == 5)){return false;}
 	return true;
 }
 export function test_Groups_removePoints():boolean{
-		let m:gs.Model = new gs.Model(td.box);
+		let m:gs.Model = new gs.Model(td.open_box());
 				let g:gs.IGroup = m.addGroup("Box");
 			let point1:gs.IPoint = m.getGeom().addPoint([11,22,36]);
 				let point2:gs.IPoint = m.getGeom().addPoint([12,22,23]);
@@ -283,13 +283,13 @@ export function test_Groups_removePoints():boolean{
 	return true;
 }
 export function test_Groups_getProps():boolean{
-		let m:gs.Model = new gs.Model(td.box);
+		let m:gs.Model = new gs.Model(td.open_box());
 				let g:gs.IGroup = m.addGroup("Box");
 		// console.log(g.getProps());
 	return true;
 }
 export function test_Groups_setProps():boolean{
-		let m:gs.Model = new gs.Model(td.box);
+		let m:gs.Model = new gs.Model(td.open_box());
 				let g:gs.IGroup = m.addGroup("Box");
 				let a:Map<string,any> = new Map();
 				if(! g.getProps() == null){return false;}
