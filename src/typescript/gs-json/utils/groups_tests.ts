@@ -30,9 +30,9 @@ export function test_Groups_getParentGroup():boolean{
 	let grp3:gs.IGroup = m.addGroup("test3");
 	let grp4:gs.IGroup = m.addGroup("test4", "test1");			
 		if (grp1.getParentGroup() != null) {return false;}	
-		if (grp2.getParentGroup() != "test1") {return false;}
+			if (grp2.getParentGroup() != "test1") {return false;}
 		if (grp3.getParentGroup() != null) {return false;}
-		if (grp4.getParentGroup() != "test1") {return false;}
+			if (grp4.getParentGroup() != "test1") {return false;}
 	return true;
 }
 export function test_Groups_getChildGroups():boolean{
@@ -71,7 +71,7 @@ export function test_Groups_removeParentGroup():boolean{
 
 export function test_Groups_getObjIDs():boolean{
 	let m:gs.Model = new gs.Model();
-	let grp:gs.IGroup = m.addGroup("Group1");
+		let grp:gs.IGroup = m.addGroup("Group1");
 				grp.addObjs([4,2,9,8]);
 					if (!Arr.equal([4,2,9,8],grp.getObjIDs())){return false};
 	return true;
@@ -91,7 +91,7 @@ export function test_Groups_addObj():boolean{
 							grp.addObj(8);
 							grp.addObj(8);
 							grp.addObj(8);
-							console.log(grp); // shows duplicates
+//							console.log(grp); // shows duplicates
 	return true;
 }
 export function test_Groups_addObjs():boolean{
@@ -126,29 +126,45 @@ export function test_Groups_removeObjs():boolean{
 							if (!Arr.equal([2,8],grp.getObjIDs())){return false};
 	return true;
 }
-
 export function test_Groups_getTopos():boolean{
 	let m:gs.Model = new gs.Model(td.box);
-	let g:gs.IGroup = m.addGroup("Box");
-//	console.log(Arr.equal(g.getTopos(),[]));
-		if(!Arr.equal(g.getTopos(),[])){return false;}
-//
-console.log(m.getGeom().getObj(0).getWires()[0].getGeomPath());
-console.log(m.getGeom().getObj(0).getWires()[0].getGeom());
-console.log(m.getGeom().getObj(0).getWires()[0].getGeomType());
-	g.addTopo(m.getGeom().getObj(0).getWires()[0]);
+	let g1:gs.IGroup = m.addGroup("Box");
+	let g2:gs.IGroup = m.addGroup("Box");
+
+		if(!Arr.equal(g1.getTopoTree().getTopos(),[])){return false;}
+	g1.getTopoTree().addTopo(m.getGeom().getObj(0).getFaces()[0]);
+		if(Arr.equal(g1.getTopoTree().getTopos(),[])){return false;}
+
+		if(!Arr.equal(g2.getTopoTree().getTopos(),[])){return false;}
+	g2.getTopoTree().addTopo(m.getGeom().getObj(0).getWires()[0]);
+		if(Arr.equal(g2.getTopoTree().getTopos(),[])){return false;}
+
+return true;
+// 	g.getTopoTree().getTopos(gs.EGeomType.faces).numVertices()
+// console.log(m.getGeom().getObj(0).getFaces()[0].numVertices());
+// console.log(m.getGeom().getObj(0).getFaces()[0].numEdges());
+// 	console.log(g.getTopoTree().getTopos()[0]);
+//	console.log(g.getTopoTree().getTopos()[0].numVertices());
+// 		if( g.getTopoTree().getTopos().length == 1){return false;}		
+// 	console.log(g.getTopoTree().getTopos()); // Works well
+// console.log(Arr.equal(g.getTopoTree().getTopos()[0],m.getGeom().getObj(0).getFaces()[0]));
+// console.log(m.getGeom().getObj(0).getFaces());
+// console.log(m.getGeom().getObj(0).getFaces()[0].getGeomType());
+// 	//g.getTopoTree().addTopo(m.getGeom().getObj(0).getWires()[0]); // OK
+// 	// ajouter le lien entre groupe et topos (topo tree)
+// 	console.log(g.getTopoTree().getTopos()); // Works well :) :) :)
 //console.log(g);
 	// console.log(m.getGeom().getObj(0).getWires()[0]);
 	// console.log(g.getTopos(gs.EGeomType.wires));
 	// g.addTopos(m.getGeom().getObj(0).getFaces());
 //	console.log(g);	
-	return true;
 }
 export function test_Groups_addTopo():boolean{
 	let m:gs.Model = new gs.Model(td.box);
 	let g:gs.IGroup = m.addGroup("test1");
-	g.addTopo(m.getGeom().getObj(0).getWires()[0]);
-	g.addTopos(m.getGeom().getObj(0).getFaces());
+	// console.log(m.getGeom().getObj(0).getWires()[0]);
+	// g.addTopo(m.getGeom().getObj(0).getWires()[0]);
+	// g.addTopos(m.getGeom().getObj(0).getFaces());
 
 	// console.log("==================")
 	// console.log(g)

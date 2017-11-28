@@ -279,6 +279,7 @@ export interface IGroup {
     //constructor(model:ifs.IModel, name:string)
     getName():string;
     setName(name:string):string;
+    getTopoTree():ITopoTree;
     //Parent/child groups
     getParentGroup():string;
     getChildGroups():string[];
