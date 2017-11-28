@@ -130,15 +130,12 @@ export function test_Groups_getTopos():boolean{
 	let m:gs.Model = new gs.Model(td.box);
 	let g1:gs.IGroup = m.addGroup("Box");
 	let g2:gs.IGroup = m.addGroup("Box");
-
 		if(!Arr.equal(g1.getTopoTree().getTopos(),[])){return false;}
 	g1.getTopoTree().addTopo(m.getGeom().getObj(0).getFaces()[0]);
 		if(Arr.equal(g1.getTopoTree().getTopos(),[])){return false;}
-
 		if(!Arr.equal(g2.getTopoTree().getTopos(),[])){return false;}
 	g2.getTopoTree().addTopo(m.getGeom().getObj(0).getWires()[0]);
 		if(Arr.equal(g2.getTopoTree().getTopos(),[])){return false;}
-
 return true;
 // 	g.getTopoTree().getTopos(gs.EGeomType.faces).numVertices()
 // console.log(m.getGeom().getObj(0).getFaces()[0].numVertices());
@@ -161,7 +158,12 @@ return true;
 }
 export function test_Groups_addTopo():boolean{
 	let m:gs.Model = new gs.Model(td.box);
-	let g:gs.IGroup = m.addGroup("test1");
+	let g:gs.IGroup = m.addGroup("Group");
+			if(!Arr.equal(g.getTopoTree().getTopos(),[])){return false;}
+		g.getTopoTree().addTopo(m.getGeom().getObj(0).getFaces()[0]);
+			if(Arr.equal(g.getTopoTree().getTopos(),[])){return false;}
+	return true;
+
 	// console.log(m.getGeom().getObj(0).getWires()[0]);
 	// g.addTopo(m.getGeom().getObj(0).getWires()[0]);
 	// g.addTopos(m.getGeom().getObj(0).getFaces());
@@ -169,18 +171,57 @@ export function test_Groups_addTopo():boolean{
 	// console.log("==================")
 	// console.log(g)
 	// console.log(g.topoToArray());
-	return true;
 }
 export function test_Groups_addTopos():boolean{
-	return true;
+	let m:gs.Model = new gs.Model(td.box);
+		let g:gs.IGroup = m.addGroup("Box");
+		if(!Arr.equal(g.getTopoTree().getTopos(),[])){return false;}
+let f1:gs.IFace = m.getGeom().getObj(0).getFaces()[0];
+	let f2:gs.IFace = m.getGeom().getObj(0).getFaces()[1];
+		let f3:gs.IFace = m.getGeom().getObj(0).getFaces()[2];
+			let w1:gs.IWire = m.getGeom().getObj(0).getWires()[0];
+				g.addTopos([f1]);
+if(!g.getTopoTree().hasTopo(f1) || g.getTopoTree().hasTopo(f2) || g.getTopoTree().hasTopo(f3) || g.getTopoTree().hasTopo(w1)){return false;}
+				g.addTopos([f2,f3,w1]);
+if(!g.getTopoTree().hasTopo(f1) || !g.getTopoTree().hasTopo(f2) || !g.getTopoTree().hasTopo(f3) || !g.getTopoTree().hasTopo(w1)){return false;}
+return true;
+// console.log(w1);
+
+//	g.getTopoTree().addTopos([m.getGeom().getObj(0).getFaces()[0],m.getGeom().getObj(0).getWires()[0]]);
+//		console.log(g);
+	// 	if(Arr.equal(g1.getTopoTree().getTopos(),[])){return false;}
+	// 	if(!Arr.equal(g2.getTopoTree().getTopos(),[])){return false;}
+	// g2.getTopoTree().addTopo();
+	// 	if(Arr.equal(g2.getTopoTree().getTopos(),[])){return false;}
 }
 export function test_Groups_removeTopo():boolean{
+		let m:gs.Model = new gs.Model(td.box);
+		let g:gs.IGroup = m.addGroup("Box");
+let f1:gs.IFace = m.getGeom().getObj(0).getFaces()[0];
+	let f2:gs.IFace = m.getGeom().getObj(0).getFaces()[1];
+		let f3:gs.IFace = m.getGeom().getObj(0).getFaces()[2];
+			let w1:gs.IWire = m.getGeom().getObj(0).getWires()[0];
+if(!Arr.equal(g.getTopoTree().getTopos(),[])){return false;}
+				g.addTopos([f1,f2,f3,w1]);
+if(!g.getTopoTree().hasTopo(f1) || !g.getTopoTree().hasTopo(f2) || !g.getTopoTree().hasTopo(f3) || !g.getTopoTree().hasTopo(w1)){return false;}
+				g.removeTopo(f1);
+if(g.getTopoTree().hasTopo(f1) || !g.getTopoTree().hasTopo(f2) || !g.getTopoTree().hasTopo(f3) || !g.getTopoTree().hasTopo(w1)){return false;}
 	return true;
 }
 export function test_Groups_removeTopos():boolean{
+		let m:gs.Model = new gs.Model(td.box);
+		let g:gs.IGroup = m.addGroup("Box");
+let f1:gs.IFace = m.getGeom().getObj(0).getFaces()[0];
+	let f2:gs.IFace = m.getGeom().getObj(0).getFaces()[1];
+		let f3:gs.IFace = m.getGeom().getObj(0).getFaces()[2];
+			let w1:gs.IWire = m.getGeom().getObj(0).getWires()[0];
+if(!Arr.equal(g.getTopoTree().getTopos(),[])){return false;}
+				g.addTopos([f1,f2,f3,w1]);
+if(!g.getTopoTree().hasTopo(f1) || !g.getTopoTree().hasTopo(f2) || !g.getTopoTree().hasTopo(f3) || !g.getTopoTree().hasTopo(w1)){return false;}
+				g.removeTopos([f2,f3,w1]);
+if(!g.getTopoTree().hasTopo(f1) || g.getTopoTree().hasTopo(f2) || g.getTopoTree().hasTopo(f3) || g.getTopoTree().hasTopo(w1)){return false;}
 	return true;
 }
-
 
 export function test_Groups_getPointIDs():boolean{
 	return true;
