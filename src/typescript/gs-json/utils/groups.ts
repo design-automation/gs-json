@@ -330,4 +330,13 @@ export class Group implements ifs.IGroup {
     public getProps():Map<string, any> {
         return this._props;
     }
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    public setProps(new_Map:Map<string, any>):Map<string, any> {
+        this._props = new_Map ;
+        return this._props;
+    }
 }
