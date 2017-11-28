@@ -32,25 +32,25 @@ export class Attrib implements ifs.IAttrib {
     constructor(model:ifs.IModel, data:IAttribData) {
         //console.log();
         this._model = model;
-        if (data == undefined) {
+        if (data === undefined) {
             throw new Error("Data must be defined.")
         }
-        if (data.name != undefined) {
+        if (data.name !== undefined) {
             this._name = data.name;
         } else {
             throw new Error("Attribute name must be defined.")
         }
-        if (data.geom_type != undefined) {
+        if (data.geom_type !== undefined) {
             this._geom_type = data.geom_type as EGeomType; //data.geom_type is a str
         } else {
             throw new Error("Geometry type must be defined.")
         }
-        if (data.data_type != undefined) {
+        if (data.data_type !== undefined) {
             this._data_type =  data.data_type as EDataType; //data.geom_type is a str
         } else {
             throw new Error("Data type must be defined.")
         }
-        if (data.values != undefined) {
+        if (data.values !== undefined) {
             this._values = data.values;
         } else {
             this._values = [this._model.getGeom().getAttribTemplate(this._geom_type), [null]];
@@ -143,6 +143,123 @@ export class Attrib implements ifs.IAttrib {
                 this._values[0][path.id][path.ti][path.si] = index;
                 return old_value;
         }
+    }
+    /**
+    * Add an attributes value. 
+    * @param path The path to a geometric entity or topological component.
+    * @return True if teh path does not exist.
+    */
+    public addValue(path:number|ifs.IGeomPath):boolean  {
+        switch (this._geom_type) {
+            case EGeomType.points: case EGeomType.objs:
+                path = path as number;
+                if (this._values[0][path] !== undefined) {return false;}
+                this._values[0][path] = 0;
+                return true;
+            case EGeomType.wires: case EGeomType.faces:
+                path = path as ifs.IGeomPath;
+                if (this._values[0][path.id] === undefined) {this._values[0][path.id] = [];}
+                if (this._values[0][path.id][path.ti] !== undefined) {return false;}
+                this._values[0][path.id][path.ti] = 0;
+                return true;
+            case EGeomType.vertices: case EGeomType.edges:
+                path = path as ifs.IGeomPath;
+                if (this._values[0][path.id] === undefined) {this._values[0][path.id] = [];}
+                if (this._values[0][path.id][path.ti] === undefined) {this._values[0][path.id][path.ti] = [];}
+                if (this._values[0][path.id][path.ti][path.si] !== undefined) {return false;}
+                this._values[0][path.id][path.ti][path.si] = 0;
+                return true;
+        }
+    }
+    /**
+    * Delete an attribute value. 
+    * @param path The path to a geometric entity or topological component.
+    * @return The attribute value.
+    */
+    public delValue(path:number|ifs.IGeomPath):any  {
+        let old_value:any;
+        switch (this._geom_type) {
+            case EGeomType.points: case EGeomType.objs:
+                path = path as number;
+                old_value = this._values[1][this._values[0][path]];
+                delete this._values[0][path];
+                return old_value;
+            case EGeomType.wires: case EGeomType.faces:
+                path = path as ifs.IGeomPath;
+                old_value = this._values[1][this._values[0][path.id][path.ti]];
+                delete this._values[0][path.id][path.ti];
+                return old_value;
+            case EGeomType.vertices: case EGeomType.edges:
+                path = path as ifs.IGeomPath;
+                old_value = this._values[1][this._values[0][path.id][path.ti][path.si]];
+                delete this._values[0][path.id][path.ti][path.si];
+                return old_value;
+        }
+        return null;
+    }
+    /**
+    * Add a set of attributes values for one object. 
+    * @param id The id of the object.
+    * @return True if attribute values for the bject do not exist.
+    */
+    public addObjValues(id:number):boolean  {
+        if (this._values[1][id] !== undefined) {return false;}
+        switch (this._geom_type) {
+            case EGeomType.points:
+                break;
+            case EGeomType.objs:
+                this.addValue(id);
+                break;
+            case EGeomType.faces:
+                Arr.flatten(this._model.getGeom().getObj(id).getFaces()).forEach((v,i)=>
+                    this.addValue(v.getGeomPath()));
+                break;
+            case EGeomType.wires: 
+                Arr.flatten(this._model.getGeom().getObj(id).getWires()).forEach((v,i)=>
+                    this.addValue(v.getGeomPath()));
+                break;
+            case EGeomType.edges:
+                Arr.flatten(this._model.getGeom().getObj(id).getEdges()).forEach((v,i)=>
+                    this.addValue(v.getGeomPath()));
+                break;
+            case EGeomType.vertices: 
+                Arr.flatten(this._model.getGeom().getObj(id).getVertices()).forEach((v,i)=>
+                    this.addValue(v.getGeomPath()));
+                break;
+        }
+        return true;
+    }
+    /**
+    * Delete a set of attributes values for one object. 
+    * @param id The id of the object.
+    * @return False if attribute values for the object do not exist.
+    */
+    public delObjValues(id:number):boolean  {
+        if (this._values[1][id] === undefined) {return false;}
+        switch (this._geom_type) {
+            case EGeomType.points:
+                break;
+            case EGeomType.objs:
+                this.delValue(id);
+                break;
+            case EGeomType.faces:
+                Arr.flatten(this._model.getGeom().getObj(id).getFaces()).forEach((v,i)=>
+                    this.delValue(v.getGeomPath()));
+                break;
+            case EGeomType.wires: 
+                Arr.flatten(this._model.getGeom().getObj(id).getWires()).forEach((v,i)=>
+                    this.delValue(v.getGeomPath()));
+                break;
+            case EGeomType.edges:
+                Arr.flatten(this._model.getGeom().getObj(id).getEdges()).forEach((v,i)=>
+                    this.delValue(v.getGeomPath()));
+                break;
+            case EGeomType.vertices:
+                Arr.flatten(this._model.getGeom().getObj(id).getVertices()).forEach((v,i)=>
+                    this.delValue(v.getGeomPath()));
+                break;
+        }
+        return true;
     }
     /**
     * Get the number of attribute values. 

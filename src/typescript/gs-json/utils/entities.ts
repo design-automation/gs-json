@@ -182,7 +182,24 @@ abstract class Obj extends Ent implements ifs.IObj{
     public getObjType():EObjType {
         throw new Error ("Method to be overridden by subclass.");
     }
-
+    /**
+    * Get the points for this object. If the point_type is not specified, then 
+    * points for both wires and faces are returned. 
+    * @return The array of points.
+    */
+    public getPoints(point_type?:EGeomType.wires|EGeomType.faces):ifs.IPoint[][][] {
+        let w_points:ifs.IPoint[][] = [];
+        if (point_type === undefined || point_type == EGeomType.wires) {
+            this.getWires().forEach((w,wi)=>
+                w_points.push(w.getVertices().map((v,i)=>v.getPoint())));
+        }
+        let f_points:ifs.IPoint[][] = [];
+        if (point_type === undefined || point_type == EGeomType.faces) {
+            this.getFaces().forEach((f,fi)=>
+                f_points.push(f.getVertices().map((v,i)=>v.getPoint())));
+        }
+        return [w_points,f_points];
+    }
     // Get the topo
     /**
     * Get the vertices for this object. If the vertex_type is not specified, then 
@@ -191,11 +208,11 @@ abstract class Obj extends Ent implements ifs.IObj{
     */
     public getVertices(vertex_type?:EGeomType.wires|EGeomType.faces):ifs.IVertex[][][] {
         let w_vertices:ifs.IVertex[][] = [];
-        if (vertex_type == undefined || vertex_type == EGeomType.wires) {
+        if (vertex_type === undefined || vertex_type == EGeomType.wires) {
             this.getWires().forEach((v,i)=>w_vertices.push(v.getVertices()));
         }
         let f_vertices:ifs.IVertex[][] = [];
-        if (vertex_type == undefined || vertex_type == EGeomType.faces) {
+        if (vertex_type === undefined || vertex_type == EGeomType.faces) {
             this.getFaces().forEach((v,i)=>f_vertices.push(v.getVertices()));
         }
         return [w_vertices, f_vertices];
@@ -207,11 +224,11 @@ abstract class Obj extends Ent implements ifs.IObj{
     */
     public getEdges(edge_type?:EGeomType.wires|EGeomType.faces):ifs.IEdge[][][] {
         let w_edges:ifs.IEdge[][] = [];
-        if (edge_type == undefined || edge_type == EGeomType.wires) {
+        if (edge_type === undefined || edge_type == EGeomType.wires) {
             this.getWires().forEach((v,i)=>w_edges.push(v.getEdges()));
         }
         let f_edges:ifs.IEdge[][] = [];
-        if (edge_type == undefined || edge_type == EGeomType.faces) {
+        if (edge_type === undefined || edge_type == EGeomType.faces) {
             this.getFaces().forEach((v,i)=>f_edges.push(v.getEdges()));
         }
         return [w_edges, f_edges];
@@ -245,25 +262,6 @@ abstract class Obj extends Ent implements ifs.IObj{
     */
     public numFaces():number {
         return this.geom.getObjData(new GeomPath(this.id, EGeomType.faces)).length;
-    }
-
-    /**
-    * to be completed
-    * @param
-    * @return
-    */
-    public getTemplate(geom_type:EGeomType):any[] {
-        throw new Error("not implemented");
-        // switch (geom_type) {
-        //     case EGeomType.points:
-        //         // code...
-        //         break;
-            
-        //     default:
-        //         // code...
-        //         break;
-        // }
-
     }
 }
 /**

@@ -44,37 +44,37 @@ export class Geom implements ifs.IGeom {
 
     //Creation
     /**
-    * The purpose of this method consists in creating a Point in the Geometry.
-    * The geometry class has two private properties which include points_data.
-    * points_data array gathers pointers and cartesian xyz coordinates.
-    * The addPoint creates a point of coordinates xyz, and modifies the points_data array
-    * by pointing to an already existing xyz value or by creating it if not referenced.
+    * Adds a new point to the model at position xyz.
     * @param cartesian xyz coordinates are required to create a point
     * @return a instance of type Point is returned
     */
     public addPoint(xyz:number[]):ifs.IPoint {
-        let point:Point = new Point(this, this.numPoints()); // create the point and its ID (which actually is defined by points_data[0].length)
-        // now, the point is created, we allocation a xyz position into that instance.
-        this._points[0].push(0);//points to null
-        point.setPosition(xyz); // switches the old_xyz (points_data[1][0] to the new xyz by pointing it if existing or creating it if not.
+        let point:Point = new Point(this, this.numPoints()); 
+        this._points[0].push(0);//add a point to the points list
+        point.setPosition(xyz); 
         //update point attributes
+        for (let attrib of this._model.getAttribs(EGeomType.points)) {
+            attrib.addValue(point.getID())
+        }
         return point;
     }
 
     /**
-    * The purpose of this method is similar to addPoint except that
-    * it takes as input a collection of Point as opposed to a single Point.
+    * Adds a new polyline to the model that passes through a sequence of points.
     * @param wire_points, which is a collection of Points
     * @return Object of type Polyline
     */
-    public addPolyline(wire_points:ifs.IPoint[]):ifs.IPolyline {
+    public addPolyline(wire_points:ifs.IPoint[], is_closed:boolean):ifs.IPolyline {
+        if (wire_points.length < 2) {throw new Error("Too few points for creating a polyline.");}
         let pline:ifs.IPolyline = new Polyline(this, this.numObjs());
-        this._objs[0].push(0);//points to null
-        pline.setPosition(wire_points);
+        let wire_ids:number[] = wire_points.map((v,i)=>v.getID());
+        if (is_closed) {wire_ids.push(-1);}
+        this._objs.push([[[wire_ids]],[],[200]]);//add the obj
         //update all attributes except points
-        //for (let attribute of this._model.getAttribs()) {
-            //attribute.add(pline.getTemplate(attribute.getGeomType()))
-        //}
+        for (let attrib of this._model.getAttribs()) {
+            attrib.addObjValues(pline.getID());
+        }
+        //return the new pline
         return pline;
     }
 
@@ -104,7 +104,7 @@ export class Geom implements ifs.IGeom {
     }
     /**
     * Low level method to return the data associated with an object. 
-    * 0This method should only be used by experts.
+    * This method should only be used by experts.
     * The data  for an object consists of three arrays: [[wires],[faces],[parameters]].
     * The wires and faces arrays each contain lists of point IDs.
     * The path may extract a subset of this data. 
@@ -192,11 +192,24 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public delPoint(point_id:number):boolean {
-        throw new Error ("Method not implemented.");
-        //this is actually a rather complex method
-        //del anythin that uses this point
-        //for the point attributes, we need to del the attribute in the values_map
-        //this all has to be done very carefully so that our array pointers do not get out of sync
+        //delete the point from the geometry array
+        if (this._points[point_id] === undefined) {return false;}
+        delete this._points[point_id];
+        //delete the point from any geometrc objects
+
+
+        //TODO decide how to do this
+        console.log("WARNING: implementation incomplete.")
+
+
+        //delete attribute values for this point
+        for (let attrib of this._model.getAttribs(EGeomType.points)) {
+            attrib.delValue(point_id);
+        }
+        //delete this point from any groups
+        for (let group of this._model.getGroups()) {
+            group.removePoint(point_id);
+        }
     }
     /**
     * to be completed
@@ -273,11 +286,31 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    public delObj(obj_id:number):boolean{
-        return delete this._objs[obj_id];
-        //TODO: delete the obj from all the attribute arrays
-        //TODO: update the group arrays if they contain this object
-        //TODO: what about the points? Do we keep them or delete them as well?
+    public delObj(obj_id:number, keep_points:boolean=true):boolean{
+        if (this._objs[obj_id] === undefined) {return false;}
+        //delete the obj from the geometry array
+        delete this._objs[obj_id];
+        //delete the points 
+        if (!keep_points) {
+            let points:ifs.IPoint[] = Arr.flatten(this.getObj(obj_id).getPoints());
+
+
+
+            //TODO decide what to do with these points
+            console.log("WARNING: implementation incomplete.")
+
+
+
+        }
+        //delete attribute values for this object
+        for (let attrib of this._model.getAttribs()) {
+            attrib.delObjValues(obj_id);
+        }
+        //delete this point from any groups
+        for (let group of this._model.getGroups()) {
+            group.removeObj(obj_id);
+        }
+        return true;
     }
     /**
     * to be completed

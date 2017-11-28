@@ -80,7 +80,7 @@ export interface IGeom  {
     getModel():IModel;
     //Creation
     addPoint(xyz:number[]):IPoint;
-    addPolyline(wire_points:IPoint[]):IObj;
+    addPolyline(wire_points:IPoint[], is_closed:boolean):IObj;
     addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
     //Generic method for getting data
     getPointData(id:number):any[];
@@ -97,7 +97,7 @@ export interface IGeom  {
     getObjIDs(obj_type?:EObjType):number[];
     getObjs(obj_type?:EObjType):IObj[];
     getObj(obj_id:number):IObj;
-    delObj(obj_id:number):boolean;
+    delObj(obj_id:number, keep_points:boolean):boolean;
     numObjs(obj_type?:EObjType):number;
     setObjPosition(obj_id:number, obj_data:any[]):any[];
     getObjPosition(obj_id:number):any[];
@@ -167,6 +167,7 @@ export interface IObj extends IEnt {
     //to be overriden by subclass
     getObjType():EObjType;
     //
+    getPoints(point_type?:EGeomType.wires|EGeomType.faces):IPoint[][][];
     getVertices(vertex_type?:EGeomType.wires|EGeomType.faces):IVertex[][][];
     getEdges(edge_type?:EGeomType.wires|EGeomType.faces):IEdge[][][];
     getWires():IWire[];
@@ -272,6 +273,10 @@ export interface IAttrib {
     //Attrib Values
     getValue(path:IGeomPath):any;
     setValue(path:IGeomPath, value:any):any;
+    addValue(path:number|IGeomPath):boolean
+    delValue(path:number|IGeomPath):any;
+    addObjValues(id:number):boolean;
+    delObjValues(id:number):boolean;
     count():number;
 }
 /**
