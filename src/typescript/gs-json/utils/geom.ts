@@ -290,25 +290,17 @@ export class Geom implements ifs.IGeom {
         if (this._objs[obj_id] === undefined) {return false;}
         //delete the obj from the geometry array
         delete this._objs[obj_id];
-        //delete the points 
-        if (!keep_points) {
-            let points:ifs.IPoint[] = Arr.flatten(this.getObj(obj_id).getPoints());
-
-
-
-            //TODO decide what to do with these points
-            console.log("WARNING: implementation incomplete.")
-
-
-
-        }
         //delete attribute values for this object
         for (let attrib of this._model.getAttribs()) {
             attrib.delObjValues(obj_id);
         }
-        //delete this point from any groups
+        //delete this obj from any groups
         for (let group of this._model.getGroups()) {
             group.removeObj(obj_id);
+        }
+        //delete the points 
+        if (!keep_points) {
+            this.getObj(obj_id).getPointIDsSet().forEach((p,i)=>this.delPoint(p));
         }
         return true;
     }

@@ -200,6 +200,13 @@ abstract class Obj extends Ent implements ifs.IObj{
         }
         return [w_points,f_points];
     }
+    /**
+    * Get the set of unique points for this object.
+    * @return The array of point IDs.
+    */
+    public getPointIDsSet():Set<number> {
+        return new Set(Arr.flatten(this.geom.getObjData().slice(0,2)).filter((v,i)=>v<0));
+    }
     // Get the topo
     /**
     * Get the vertices for this object. If the vertex_type is not specified, then 
@@ -208,11 +215,11 @@ abstract class Obj extends Ent implements ifs.IObj{
     */
     public getVertices(vertex_type?:EGeomType.wires|EGeomType.faces):ifs.IVertex[][][] {
         let w_vertices:ifs.IVertex[][] = [];
-        if (vertex_type === undefined || vertex_type == EGeomType.wires) {
+        if (vertex_type === undefined || vertex_type === EGeomType.wires) {
             this.getWires().forEach((v,i)=>w_vertices.push(v.getVertices()));
         }
         let f_vertices:ifs.IVertex[][] = [];
-        if (vertex_type === undefined || vertex_type == EGeomType.faces) {
+        if (vertex_type === undefined || vertex_type === EGeomType.faces) {
             this.getFaces().forEach((v,i)=>f_vertices.push(v.getVertices()));
         }
         return [w_vertices, f_vertices];
@@ -224,11 +231,11 @@ abstract class Obj extends Ent implements ifs.IObj{
     */
     public getEdges(edge_type?:EGeomType.wires|EGeomType.faces):ifs.IEdge[][][] {
         let w_edges:ifs.IEdge[][] = [];
-        if (edge_type === undefined || edge_type == EGeomType.wires) {
+        if (edge_type === undefined || edge_type === EGeomType.wires) {
             this.getWires().forEach((v,i)=>w_edges.push(v.getEdges()));
         }
         let f_edges:ifs.IEdge[][] = [];
-        if (edge_type === undefined || edge_type == EGeomType.faces) {
+        if (edge_type === undefined || edge_type === EGeomType.faces) {
             this.getFaces().forEach((v,i)=>f_edges.push(v.getEdges()));
         }
         return [w_edges, f_edges];

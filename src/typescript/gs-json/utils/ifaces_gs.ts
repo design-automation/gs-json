@@ -166,8 +166,10 @@ export interface IObj extends IEnt {
     //use the "add" method in Geom class
     //to be overriden by subclass
     getObjType():EObjType;
-    //
+    //points
     getPoints(point_type?:EGeomType.wires|EGeomType.faces):IPoint[][][];
+    getPointIDsSet():Set<number>;
+    //topo
     getVertices(vertex_type?:EGeomType.wires|EGeomType.faces):IVertex[][][];
     getEdges(edge_type?:EGeomType.wires|EGeomType.faces):IEdge[][][];
     getWires():IWire[];
