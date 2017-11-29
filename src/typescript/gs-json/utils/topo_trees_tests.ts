@@ -1,6 +1,6 @@
 import {Arr} from "./arr";
 import * as ifs from "./ifaces_gs";
-import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
+import {IModelData, IAttribData, IGroupData, ISkinData, TTree2Data, TTree3Data} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapGeomTypeToNumber} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
@@ -131,7 +131,30 @@ export function test_TopoTree_fromArray():boolean{
 	return true;}
 
 // Tests for Class TopoTreeBranch
-export function test_TopoTreeBranch_constructor():boolean{return true;}
+export function test_TopoTreeBranch_constructor():boolean{
+		let m:Model = new Model(td.open_box());
+			let g:ifs.IGroup = m.addGroup("Box");
+				let t:ifs.ITopoTree = g.getTopoTree();
+		let f1:ifs.IFace = m.getGeom().getObj(0).getFaces()[0];
+			let f1_e1:ifs.IEdge = f1.getEdges()[0];
+				let f1_v1:ifs.IVertex = f1.getVertices()[0];
+		let w1:ifs.IWire = m.getGeom().getObj(0).getWires()[0];
+			let w1_e1:ifs.IEdge = w1.getEdges()[0];
+				let w1_v1:ifs.IVertex = w1.getVertices()[0];
+		t.addTopo(f1);
+			t.addTopo(w1);
+		// let TB1:TTree2Data = t.getTreeBranch2(t.toArray()[0]);
+
+				// t.addTopo(f1_e1);
+				// 	t.addTopo(f1_v1);
+				// 		t.addTopo(w1_e1);
+				// 			t.addTopo(w1_v1);
+		console.log(t.toArray()[0]);
+
+
+
+
+	return true;}
 export function test_TopoTreeBranch_has():boolean{return true;}
 export function test_TopoTreeBranch_add():boolean{return true;}
 export function test_TopoTreeBranch_remove():boolean{return true;}
