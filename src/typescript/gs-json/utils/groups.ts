@@ -3,9 +3,9 @@ import * as ifs from "./ifaces_gs";
 import {TTreeData, IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapGeomTypeToNumber} from "./enums";
 import {TopoTree} from "./topo_trees";;
-import {Geom, GeomPath} from "./geom";
+import {Geom} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
-import {Vertex, Edge, Wire, Face} from "./topos";
+import {Vertex, Edge, Wire, Face, TopoPath} from "./topos";
 import {Attrib} from "./attribs";
 /**
 * Group class.

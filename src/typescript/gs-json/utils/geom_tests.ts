@@ -93,8 +93,8 @@ export function test_Geom_getObjData():boolean {
     let g:gs.IGeom = m.getGeom();
     g.addPoint([1,3,8]);
     g.addPoint([6,4,3]);
-    let b1:gs.IGeomPath = new gs.GeomPath(0, null, null, null, null)
-    let b2:gs.IGeomPath = new gs.GeomPath(1, null, null, null, null)
+    let b1:gs.ITopoPath = new gs.TopoPath(0, null, null, null, null)
+    let b2:gs.ITopoPath = new gs.TopoPath(1, null, null, null, null)
     // console.log(b1.equals(b1));
     // console.log(b1.equals(b2));
     // console.log(a.getObjData(b1));
@@ -195,12 +195,12 @@ export function test_Geom_numTopos():boolean {
 export function test_Geom_getAttribTemplate():boolean {
     return true;
 }
-export function test_GeomPath_constructor():boolean {
+export function test_TopoPath_constructor():boolean {
     return true;
 }
-export function test_GeomPath_equals():boolean {
+export function test_TopoPath_equals():boolean {
     return true;
 }
-export function test_GeomPath_toString():boolean {
+export function test_TopoPath_toString():boolean {
     return true;
 }

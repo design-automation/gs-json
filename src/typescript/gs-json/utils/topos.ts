@@ -2,7 +2,7 @@ import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
 import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
-import {Geom,GeomPath} from "./geom";
+import {Geom} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
 import {Attrib} from "./attribs";
 import {Group} from "./groups";
@@ -13,7 +13,7 @@ import {Group} from "./groups";
 */
 export abstract class Topo implements ifs.ITopo{
     protected geom:ifs.IGeom;
-    protected path:ifs.IGeomPath;
+    protected path:ifs.ITopoPath;
     /**
     * Creates an instance of one of the subclasses of Topo.
     * The entity must already exists in the geometry. 
@@ -23,7 +23,7 @@ export abstract class Topo implements ifs.ITopo{
     * @param path The path of the entity. This path must already exist in the geometry.
     * @return The Topo object.
     */
-    constructor(geom:ifs.IGeom, path:ifs.IGeomPath) {
+    constructor(geom:ifs.IGeom, path:ifs.ITopoPath) {
         this.geom = geom;
         this.path = path;
     }
@@ -61,7 +61,7 @@ export abstract class Topo implements ifs.ITopo{
     * Get the geometry path for this topological component. 
     * @return The geometry path.
     */
-    public getGeomPath():ifs.IGeomPath {
+    public getTopoPath():ifs.ITopoPath {
         return this.path;
     }
     /**
@@ -137,7 +137,7 @@ export class Vertex extends Topo implements ifs.IVertex {
             edge_index = 0;
         }
         return new Edge(this.geom, 
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, EGeomType.edges, edge_index));
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, EGeomType.edges, edge_index));
     }
     /**
     * Get the wire or face to which this vertex belongs.
@@ -146,9 +146,9 @@ export class Vertex extends Topo implements ifs.IVertex {
     public getWireOrFace():ifs.IWire|ifs.IFace {
         switch (this.path.tt) {
             case EGeomType.wires:
-                return new Wire(this.geom, new GeomPath(this.path.id, this.path.tt, this.path.ti));
+                return new Wire(this.geom, new TopoPath(this.path.id, this.path.tt, this.path.ti));
             case EGeomType.faces:
-                return new Face(this.geom, new GeomPath(this.path.id, this.path.tt, this.path.ti));
+                return new Face(this.geom, new TopoPath(this.path.id, this.path.tt, this.path.ti));
         }
     }
     /**
@@ -162,7 +162,7 @@ export class Vertex extends Topo implements ifs.IVertex {
             vertex_index = 0;
         }
         return new Vertex(this.geom, 
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index));
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index));
     }
     /**
     * Find the previous vertex in the sequence of vertices in the wire or face.
@@ -175,7 +175,7 @@ export class Vertex extends Topo implements ifs.IVertex {
             vertex_index = this.getWireOrFace().numVertices() - 1;
         }
         return new Vertex(this.geom, 
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index));
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index));
     }
     /**
     * Within the parent object, find all vertices with the same point.
@@ -185,21 +185,21 @@ export class Vertex extends Topo implements ifs.IVertex {
     */
     public verticesSharedPoint():ifs.IVertex[][] {
         let point_id:number = this.geom.getObjData(this.path);
-        let obj_data:any = this.geom.getObjData(new GeomPath(this.path.id));
+        let obj_data:any = this.geom.getObjData(new TopoPath(this.path.id));
         //loop through all wires and extract verts that have same point_id
         let wire_vertices:ifs.IVertex[] = [];
         obj_data[0].forEach((w,w_i)=>w.forEach((v,v_i)=>
             (v==point_id) //same point id
                 && (!(w_i==this.path.ti&&v_i==this.path.si)) //avoid dup
                 && wire_vertices.push(new Vertex(this.geom, 
-                    new GeomPath(this.path.id,EGeomType.wires,w_i,this.path.st,v_i)))));
+                    new TopoPath(this.path.id,EGeomType.wires,w_i,this.path.st,v_i)))));
         //loop through all faces and extract verts that have same point_id
         let face_vertices:ifs.IVertex[] = [];
         obj_data[1].forEach((f,f_i)=>f.forEach((v,v_i)=>
             (v==point_id) //same point id
                 && (!(f_i==this.path.ti&&v_i==this.path.si)) //avoid dup
                 && face_vertices.push(new Vertex(this.geom, 
-                    new GeomPath(this.path.id,EGeomType.faces,f_i,this.path.st,v_i)))));
+                    new TopoPath(this.path.id,EGeomType.faces,f_i,this.path.st,v_i)))));
         return [wire_vertices,face_vertices];
     }
     /**
@@ -210,21 +210,21 @@ export class Vertex extends Topo implements ifs.IVertex {
     */
     public verticesSamePosition():ifs.IVertex[][] {
         let point_id:number = this.geom.getObjData(this.path);
-        let obj_data:any = this.geom.getObjData(new GeomPath(this.path.id));
+        let obj_data:any = this.geom.getObjData(new TopoPath(this.path.id));
         //loop through all wires and extract verts that have same position
         let wire_vertices:ifs.IVertex[] = [];
         obj_data[0].forEach((w,w_i)=>w.forEach((v,v_i)=>
             (this.geom.getPointData(v)[0] == this.geom.getPointData(point_id)[0]) //same pos
                 && (!(w_i==this.path.ti&&v_i==this.path.si)) //avoid dup
                 && wire_vertices.push(new Vertex(this.geom, 
-                    new GeomPath(this.path.id,EGeomType.wires,w_i,this.path.st,v_i)))));
+                    new TopoPath(this.path.id,EGeomType.wires,w_i,this.path.st,v_i)))));
         //loop through all faces and extract verts that have same position
         let face_vertices:ifs.IVertex[] = [];
         obj_data[1].forEach((f,f_i)=>f.forEach((v,v_i)=>
             (this.geom.getPointData(v)[0] == this.geom.getPointData(point_id)[0]) //same pos
                 && (!(f_i==this.path.ti&&v_i==this.path.si)) //avoid dup
                 && face_vertices.push(new Vertex(this.geom, 
-                    new GeomPath(this.path.id,EGeomType.faces,f_i,this.path.st,v_i)))));
+                    new TopoPath(this.path.id,EGeomType.faces,f_i,this.path.st,v_i)))));
         return [wire_vertices,face_vertices];//TODO remove dups
     }
 }
@@ -251,9 +251,9 @@ export class Edge extends Topo implements ifs.IEdge {
         }
         return [
             new Vertex(this.geom, 
-                new GeomPath(this.path.id, this.path.tt, this.path.ti, EGeomType.vertices, this.path.si)),
+                new TopoPath(this.path.id, this.path.tt, this.path.ti, EGeomType.vertices, this.path.si)),
             new Vertex(this.geom, 
-                new GeomPath(this.path.id, this.path.tt, this.path.ti, EGeomType.vertices, vertex_index))
+                new TopoPath(this.path.id, this.path.tt, this.path.ti, EGeomType.vertices, vertex_index))
         ]
     }
     /**
@@ -263,9 +263,9 @@ export class Edge extends Topo implements ifs.IEdge {
     public getWireOrFace():ifs.IWire|ifs.IFace {
         switch (this.path.tt) {
             case EGeomType.wires:
-                return new Wire(this.geom, new GeomPath(this.path.id, this.path.tt, this.path.ti));
+                return new Wire(this.geom, new TopoPath(this.path.id, this.path.tt, this.path.ti));
             case EGeomType.faces:
-                return new Face(this.geom, new GeomPath(this.path.id, this.path.tt, this.path.ti));
+                return new Face(this.geom, new TopoPath(this.path.id, this.path.tt, this.path.ti));
         }
     }
     /**
@@ -279,7 +279,7 @@ export class Edge extends Topo implements ifs.IEdge {
             edge_index = 0;
         }
         return new Edge(this.geom, 
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, this.path.st, edge_index));
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, edge_index));
     }
     /**
     * Find the previous edge in the sequence of edges in the wire or face.
@@ -292,7 +292,7 @@ export class Edge extends Topo implements ifs.IEdge {
             edge_index = this.getWireOrFace().numEdges()-1;
         }
         return new Edge(this.geom, 
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, this.path.st, edge_index));
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, edge_index));
     }
     /**
     * Within the parent object, find all edges with the same two points as this edge.
@@ -308,21 +308,21 @@ export class Edge extends Topo implements ifs.IEdge {
             vertex_index = 0;
         }
         let point_id_1:number = this.geom.getObjData(
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index)) as number;
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index)) as number;
         let points:number[] = [point_id_0, point_id_1].sort();
-        let obj_data:any = this.geom.getObjData(new GeomPath(this.path.id));
+        let obj_data:any = this.geom.getObjData(new TopoPath(this.path.id));
         //loop through all wires and extract verts that have same point_id
         let wire_edges:ifs.IEdge[] = [];
         obj_data[0].forEach((w,w_i)=>w.forEach((v,v_i)=>
             Arr.equal([v, obj_data[v_i+1]].sort(), points) && 
                 wire_edges.push(new Edge(this.geom, 
-                    new GeomPath(this.path.id,EGeomType.wires,w_i,this.path.st,v_i)))));
+                    new TopoPath(this.path.id,EGeomType.wires,w_i,this.path.st,v_i)))));
         //loop through all faces and extract verts that have same point_id
         let face_edges:ifs.IEdge[] = [];
         obj_data[1].forEach((f,f_i)=>f.forEach((v,v_i)=>
             Arr.equal([v, obj_data[v_i+1]].sort(), points) && 
                 face_edges.push(new Edge(this.geom, 
-                    new GeomPath(this.path.id,EGeomType.faces,f_i,this.path.st,v_i)))));
+                    new TopoPath(this.path.id,EGeomType.faces,f_i,this.path.st,v_i)))));
         return [wire_edges,face_edges];//TODO remove the edge itdelf from the list
     }
 }
@@ -344,7 +344,7 @@ export class Wire extends Topo implements ifs.IWire {
     */
     public getVertices():ifs.IVertex[] {
         return Arr.makeSeq(this.numVertices()).map((v,i)=>new Vertex(this.geom, 
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, EGeomType.vertices, v)));
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, EGeomType.vertices, v)));
     }
     /**
     * Get the edges for this wire.
@@ -352,7 +352,7 @@ export class Wire extends Topo implements ifs.IWire {
     */
     public getEdges():ifs.IEdge[] {
         return Arr.makeSeq(this.numEdges()).map((v,i)=>new Edge(this.geom, 
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, EGeomType.edges, v)));
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, EGeomType.edges, v)));
     }
     /**
     * Get the number of vertices in this wire.
@@ -399,7 +399,7 @@ export class Face extends Topo implements ifs.IFace {
     */
     public getVertices():ifs.IVertex[] {
         return Arr.makeSeq(this.numVertices()).map((v,i)=>new Vertex(this.geom, 
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, EGeomType.vertices, v)));
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, EGeomType.vertices, v)));
     }
     /**
     * Get the edges for this wire.
@@ -407,7 +407,7 @@ export class Face extends Topo implements ifs.IFace {
     */
     public getEdges():ifs.IEdge[] {
         return Arr.makeSeq(this.numEdges()).map((v,i)=>new Edge(this.geom, 
-            new GeomPath(this.path.id, this.path.tt, this.path.ti, EGeomType.edges, v)));
+            new TopoPath(this.path.id, this.path.tt, this.path.ti, EGeomType.edges, v)));
     }
     /**
     * Get the number of vertices in this face.
@@ -438,5 +438,42 @@ export class Face extends Topo implements ifs.IFace {
     */
     public facesSharedPoints(num_shared_points?:number):ifs.IFace[] {
         throw new Error ("Method not implemented.");
+    }
+}
+
+// Path
+/**
+* to be completed
+*/
+export class TopoPath implements ifs.ITopoPath {
+    id:number;                    //obj id or point id
+    tt:EGeomType.faces|EGeomType.wires = null;      //topo type
+    ti:number = null;             //topo index
+    st:EGeomType.vertices|EGeomType.edges = null;   //sub topo-type
+    si:number = null;             //sub topo-index
+    //for example, new Path([ifs.ETopoType.obj, 22], )
+    /**
+    * to be completed
+    * @param
+    * @return
+    */
+    constructor(id:number, 
+            tt?:EGeomType.faces|EGeomType.wires, ti?:number, 
+            st?:EGeomType.vertices|EGeomType.edges, si?:number) {
+        this.id = id;
+        if (tt) {
+            this.tt = tt;
+            this.ti = ti;
+            if (st) {
+                this.st = st;
+                this.si = si;
+            }
+        }
+    }
+    public equals(path:ifs.ITopoPath) {
+        return this.toString() == path.toString();
+    }
+    public toString() {
+        return "Obj:" + this.id + "/" + attribTypeStrings[this.tt] + ":" + this.ti + "/" + attribTypeStrings[this.st] + ":" + this.si;
     }
 }

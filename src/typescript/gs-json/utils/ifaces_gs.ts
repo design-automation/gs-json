@@ -1,49 +1,8 @@
 import {EGeomType, EDataType, EObjType} from "./enums";
 import {TTreeData, TTree2Data, TTree3Data, IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
-// ========================= DATA STRUCTURES =========================
-// IDict, IAttribDict, IAttribTypesDict, IGroupsDict
 
-/**
-* Interface, a general purpose dictionary.
-*/
-// export interface IDict {
-//     [key: string] : any;
-// }
-/**
-* Interface, a dictionary for storing Attrib instances.
-* The key is the name of the Attrib, and the value is an instance of class Attrib.
-* This is used in the main Model class to store all the attributes in the model.
-*/
-// export interface IEntAttribDict {
-//     [key: string] : IAttrib;
-// }
-/**
-* Interface, a dictionary for storing Attrib dictionaries.
-* This is used in the main Model class to store attributes.
-* For each Attrib type, there is a dictionary of attributes.
-* This makes finding attributes faster. For example, to find
-* a particular point attribute called "xxx", the format is:
-* "attrib_types_dict.points.xxx"
-*/
-// export interface IAttribTypesDict {
-//     objs: IAttribDict;
-//     points: IAttribDict;
-//     faces: IAttribDict;
-//     wires: IAttribDict;
-//     edges: IAttribDict;
-//     vertices: IAttribDict;
-// }
-/**
-* Interface, a dictionary for storing Group instances.
-* The key is the name of the Group, and the value is an instance of class Group.
-* This is used in the main Model class to store all teh groups in teh model.
-*/
-// export interface IGroupsDict {
-//     [key: string] : IGroup;
-// }
 // ========================= INTERFACES for Model and Geom classes =========================
-// IModel, IGeom, IGeomPath
-
+// IModel, IGeom
 /**
 * Interface, the main model class.
 */
@@ -84,7 +43,7 @@ export interface IGeom  {
     addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
     //Generic method for getting data
     getPointData(id:number):any[];
-    getObjData(path?:IGeomPath):any;
+    getObjData(path?:ITopoPath):any;
     //Points
     getPointIDs(obj_type?:EObjType):number[];
     getPoints(obj_type?:EObjType):IPoint[];
@@ -106,25 +65,6 @@ export interface IGeom  {
     numTopos(topo_type:EGeomType):number;
     //Attribs
     getAttribTemplate(attrib_type:EGeomType):any[];
-}
-// interface for path to a single topo component
-// This is used by:
-//     attrib.getValue(path) and attrib.setValue(path, value)
-//     ent.getGeomPath()
-/**
-* Interface, for the GeomPath class. 
-* This is used to define a path to a particular geometric element.
-* The geometric element could be either an Ent entity (Point or Obj),
-* or it could be a Topo component (Vertex, Edge, Wire, or Face).
-*/
-export interface IGeomPath {
-    id:number;             //id, point_id or an obj_id
-    tt:EGeomType.wires|EGeomType.faces;          //topo type, wires or faces
-    ti:number;             //topo index
-    st:EGeomType.vertices|EGeomType.edges        //sub topo-type, vertices or edges
-    si:number;             //sub topo-index
-    equals(path:IGeomPath):boolean;
-    toString():string;
 }
 // ========================= INTERFACES for Ent classes and Subclasses =========================
 // IEnt, IPoint, IObj, IPolyline, IPolymesh, 
@@ -196,18 +136,16 @@ export interface IPolymesh extends IObj {
 }
 // ========================= INTERFACES for Topo classes and Subclasses =========================
 // ITopo, IVertex, IEdge, IWire, IFace
-
-
 /**
 * Interface, for Topo abstract class, that represents any topological component.
 */
 export interface ITopo {
-    //constructor(geom:ifs.IGeom, geom_path:ifs.IGeomPath)
+    //constructor(geom:ifs.IGeom, path:ifs.ITopoPath)
     getGeom():IGeom;
     getModel():IModel;
     getObjID():number;
     getGeomType():EGeomType;
-    getGeomPath():IGeomPath;
+    getTopoPath():ITopoPath;
     //attribs
     getAttribNames():string[];
     setAttribValue(name:string, value:any):any;
@@ -258,6 +196,20 @@ export interface IFace extends ITopo {
     facesSharedPoints(num_shared_points?:number):IFace[];
     isClosed():boolean;
 }
+/**
+* Interface, for the TopoPath class. 
+* This is used to define a path to a topological component. 
+* (Vertex, Edge, Wire, or Face).
+*/
+export interface ITopoPath {
+    id:number;             //id, point_id or an obj_id
+    tt:EGeomType.wires|EGeomType.faces;          //topo type, wires or faces
+    ti:number;             //topo index
+    st:EGeomType.vertices|EGeomType.edges        //sub topo-type, vertices or edges
+    si:number;             //sub topo-index
+    equals(path:ITopoPath):boolean;
+    toString():string;
+}
 // ========================= INTERFACES for Attrib and Group classes =========================
 // IAttrib, IGroup
 
@@ -283,10 +235,10 @@ export interface IEntAttrib extends IAttrib {
 }
 
 export interface ITopoAttrib extends IAttrib {
-    getValue(path:IGeomPath):any;
-    setValue(path:IGeomPath, value:any):any;
-    addValue(path:IGeomPath):boolean
-    delValue(path:IGeomPath):any;
+    getValue(path:ITopoPath):any;
+    setValue(path:ITopoPath, value:any):any;
+    addValue(path:ITopoPath):boolean
+    delValue(path:ITopoPath):any;
     addObjValues(id:number):boolean;
     delObjValues(id:number):boolean;
 }

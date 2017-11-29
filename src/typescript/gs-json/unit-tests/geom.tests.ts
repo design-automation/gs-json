@@ -73,14 +73,14 @@ describe('Tests for Geom class', () => {
     });
 });
 
-describe('Tests for GeomPath class', () => {
-    it('test_GeomPath_constructor', () => {
-        expect( geom_tests.test_GeomPath_constructor() ).toBe(true);
+describe('Tests for TopoPath class', () => {
+    it('test_TopoPath_constructor', () => {
+        expect( geom_tests.test_TopoPath_constructor() ).toBe(true);
     });
-    it('test_GeomPath_equals', () => {
-        expect( geom_tests.test_GeomPath_equals() ).toBe(true);
+    it('test_TopoPath_equals', () => {
+        expect( geom_tests.test_TopoPath_equals() ).toBe(true);
     });
-    it('test_GeomPath_equals', () => {
-        expect( geom_tests.test_GeomPath_toString() ).toBe(true);
+    it('test_TopoPath_equals', () => {
+        expect( geom_tests.test_TopoPath_toString() ).toBe(true);
     });
 });

@@ -3,7 +3,7 @@ import {Arr} from "./arr";
 import {IModelData, IGeomData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
 import {Point,Polyline,Polymesh} from "./entities";
-import {Topo, Vertex, Edge, Wire, Face} from "./topos";
+import {Topo, Vertex, Edge, Wire, Face, TopoPath} from "./topos";
 import {Attrib} from "./attribs";
 import {Group} from "./groups";
 
@@ -112,7 +112,7 @@ export class Geom implements ifs.IGeom {
     * @param obj_id The object ID. 
     * @return The object data.
     */
-    public getObjData(path?:ifs.IGeomPath):any {
+    public getObjData(path?:ifs.ITopoPath):any {
         try {
         //if (path.st) { //vertices or edges
             switch (path.st) {
@@ -350,13 +350,13 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    private _getVEPathsFromWF(path_arr:ifs.IGeomPath[], obj_id:number, wf_data:any[], w_or_f:number, v_or_e:number):void {
+    private _getVEPathsFromWF(path_arr:ifs.ITopoPath[], obj_id:number, wf_data:any[], w_or_f:number, v_or_e:number):void {
         let wf_type = [EGeomType.wires,EGeomType.faces][w_or_f] as EGeomType.wires|EGeomType.faces;
         let ve_type = [EGeomType.vertices,EGeomType.edges][v_or_e] as EGeomType.vertices|EGeomType.edges;
         //loop through all the wire or faces, and create paths for all the vertices or edges
         for (let wf_index=0;wf_index<wf_data.length;wf_index++) {
             for (let ve_index=0;ve_index<wf_data[wf_index].length - v_or_e;ve_index++) {
-                path_arr.push(new GeomPath(Number(obj_id),wf_type, wf_index, ve_type, ve_index));
+                path_arr.push(new TopoPath(Number(obj_id),wf_type, wf_index, ve_type, ve_index));
             }
         }
     }
@@ -365,8 +365,8 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    private _getVEPathsFromObjsData(objs_data:any[], v_or_e:number):ifs.IGeomPath[] {
-        let path_arr:ifs.IGeomPath[] = [];
+    private _getVEPathsFromObjsData(objs_data:any[], v_or_e:number):ifs.ITopoPath[] {
+        let path_arr:ifs.ITopoPath[] = [];
         //loop through all the objects
         for (let obj_id in objs_data) {//TODO: check this works with sparse arrays
             let w_data:number[][] = objs_data[obj_id][0];
@@ -381,14 +381,14 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    private _getWFPathsFromObjsData(objs_data:any[], w_or_f:number):ifs.IGeomPath[] {
+    private _getWFPathsFromObjsData(objs_data:any[], w_or_f:number):ifs.ITopoPath[] {
         let wf_type = [EGeomType.wires,EGeomType.faces][w_or_f] as EGeomType.faces|EGeomType.wires;
-        let path_arr:ifs.IGeomPath[] = [];
+        let path_arr:ifs.ITopoPath[] = [];
         //loop through all the objects, and create paths for wires or faces
         for (let obj_id in objs_data) {//TODO: check this works with sparse arrays
             let wf_data:number[][] = objs_data[obj_id][w_or_f];//wf_choice is 0 or 1, wires or faces
             for (let wf_index=0;wf_index<wf_data.length;wf_index++) {
-                path_arr.push(new GeomPath(Number(obj_id),wf_type, wf_index));
+                path_arr.push(new TopoPath(Number(obj_id),wf_type, wf_index));
             }
         }
         return path_arr;
@@ -398,7 +398,7 @@ export class Geom implements ifs.IGeom {
     * @param
     * @return
     */
-    private _getPaths(geom_type:EGeomType):ifs.IGeomPath[] {
+    private _getPaths(geom_type:EGeomType):ifs.ITopoPath[] {
         let objs_data:any[] = this._objs.filter((n)=>n!=undefined);
         switch (geom_type) {
             case EGeomType.vertices:
@@ -466,41 +466,5 @@ export class Geom implements ifs.IGeom {
             case EGeomType.points:
                 return Arr.make(this.numPoints(), 0);
         }
-    }
-}
-// Path
-    /**
-    * to be completed
-    */
-export class GeomPath implements ifs.IGeomPath {
-    id:number;                    //obj id or point id
-    tt:EGeomType.faces|EGeomType.wires = null;      //topo type
-    ti:number = null;             //topo index
-    st:EGeomType.vertices|EGeomType.edges = null;   //sub topo-type
-    si:number = null;             //sub topo-index
-    //for example, new Path([ifs.ETopoType.obj, 22], )
-    /**
-    * to be completed
-    * @param
-    * @return
-    */
-    constructor(id:number, 
-            tt?:EGeomType.faces|EGeomType.wires, ti?:number, 
-            st?:EGeomType.vertices|EGeomType.edges, si?:number) {
-        this.id = id;
-        if (tt) {
-            this.tt = tt;
-            this.ti = ti;
-            if (st) {
-                this.st = st;
-                this.si = si;
-            }
-        }
-    }
-    public equals(path:ifs.IGeomPath) {
-        return this.toString() == path.toString();
-    }
-    public toString() {
-        return "Obj:" + this.id + "/" + attribTypeStrings[this.tt] + ":" + this.ti + "/" + attribTypeStrings[this.st] + ":" + this.si;
     }
 }

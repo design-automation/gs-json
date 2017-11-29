@@ -2,8 +2,8 @@ import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
 import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
-import {Geom, GeomPath} from "./geom";
-import {Vertex, Edge, Wire, Face} from "./topos";
+import {Geom} from "./geom";
+import {Vertex, Edge, Wire, Face, TopoPath} from "./topos";
 import {EntAttrib, TopoAttrib} from "./attribs";
 import {Group} from "./groups";
 /**
@@ -148,11 +148,11 @@ export class Point extends Ent implements ifs.IPoint{
             //loop through all wires and extract verts that have same point_id
             obj_data[0].forEach((w,w_i)=>w.forEach((v,v_i)=>(v == this.id) && 
                 vertices.push(new Vertex(this.geom, 
-                    new GeomPath(this.id,EGeomType.wires,w_i,EGeomType.vertices,v_i)))));
+                    new TopoPath(this.id,EGeomType.wires,w_i,EGeomType.vertices,v_i)))));
             //loop through all faces and extract verts that have same point_id
             obj_data[1].forEach((f,f_i)=>f.forEach((v,v_i)=>(v == this.id) && 
                 vertices.push(new Vertex(this.geom, 
-                    new GeomPath(this.id,EGeomType.faces,f_i,EGeomType.vertices,v_i)))));
+                    new TopoPath(this.id,EGeomType.faces,f_i,EGeomType.vertices,v_i)))));
         }
         return vertices;
     }
@@ -243,7 +243,7 @@ abstract class Obj extends Ent implements ifs.IObj{
     */
     public getWires():ifs.IWire[] {
         return Arr.makeSeq(this.numWires()).map((v,i)=>new Wire(this.geom, 
-            new GeomPath(this.id, EGeomType.wires, v)));
+            new TopoPath(this.id, EGeomType.wires, v)));
     }
     /**
     * Get the faces for this object.
@@ -251,21 +251,21 @@ abstract class Obj extends Ent implements ifs.IObj{
     */
     public getFaces():ifs.IFace[] {
         return Arr.makeSeq(this.numFaces()).map((v,i)=>new Face(this.geom, 
-            new GeomPath(this.id, EGeomType.faces, v)));
+            new TopoPath(this.id, EGeomType.faces, v)));
     }
     /**
     * Get the number of wires for this object.
     * @return The number of wires.
     */
     public numWires():number {
-        return this.geom.getObjData(new GeomPath(this.id, EGeomType.wires)).length;
+        return this.geom.getObjData(new TopoPath(this.id, EGeomType.wires)).length;
     }    
     /**
     * Get the number of faces for this object.
     * @return The number of faces.
     */
     public numFaces():number {
-        return this.geom.getObjData(new GeomPath(this.id, EGeomType.faces)).length;
+        return this.geom.getObjData(new TopoPath(this.id, EGeomType.faces)).length;
     }
 }
 /**

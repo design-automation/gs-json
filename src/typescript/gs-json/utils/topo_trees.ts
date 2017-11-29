@@ -2,9 +2,9 @@ import {Arr} from "./arr";
 import * as ifs from "./ifaces_gs";
 import {TTreeData, TTree2Data, TTree3Data, IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapGeomTypeToNumber} from "./enums";
-import {Geom, GeomPath} from "./geom";
+import {Geom} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
-import {Vertex, Edge, Wire, Face} from "./topos";
+import {Vertex, Edge, Wire, Face, TopoPath} from "./topos";
 import {Attrib} from "./attribs";
 /**
 * Class for storing Topo in a tree data structure.
@@ -35,7 +35,7 @@ export class TopoTree implements ifs.ITopoTree {
         }
     }
     public hasTopo(topo:ifs.ITopo): boolean {
-        let path:ifs.IGeomPath = topo.getGeomPath();
+        let path:ifs.ITopoPath = topo.getTopoPath();
         //subtopo
         if (path.tt == EGeomType.wires) {
             if (path.st == EGeomType.vertices) {
@@ -58,7 +58,7 @@ export class TopoTree implements ifs.ITopoTree {
         }
     }
     public addTopo(topo:ifs.ITopo): void {
-        let path:ifs.IGeomPath = topo.getGeomPath();
+        let path:ifs.ITopoPath = topo.getTopoPath();
         //subtopo
         if (path.tt == EGeomType.wires) {
             if (path.st == EGeomType.vertices) {
@@ -81,7 +81,7 @@ export class TopoTree implements ifs.ITopoTree {
         }        
     }
     public removeTopo(topo:ifs.ITopo): boolean {
-        let path:ifs.IGeomPath = topo.getGeomPath();
+        let path:ifs.ITopoPath = topo.getTopoPath();
         //subtopo
         if (path.tt == EGeomType.wires) {
             if (path.st == EGeomType.vertices) {
@@ -108,26 +108,26 @@ export class TopoTree implements ifs.ITopoTree {
         if (!geom_type || geom_type == EGeomType.faces) {
             topos = [...topos, 
             ...this._faces.flatten().map((v)=>
-                new Face(this._model.getGeom(), new GeomPath(v[0], EGeomType.faces, v[1])))];
+                new Face(this._model.getGeom(), new TopoPath(v[0], EGeomType.faces, v[1])))];
         }
         if (!geom_type || geom_type == EGeomType.wires) {
             topos = [...topos, 
             ...this._wires.flatten().map((v)=>
-                new Wire(this._model.getGeom(), new GeomPath(v[0], EGeomType.wires, v[1])))];
+                new Wire(this._model.getGeom(), new TopoPath(v[0], EGeomType.wires, v[1])))];
         }
         if (!geom_type || geom_type == EGeomType.edges) {
             topos = [...topos, 
             ...this._face_edges.flatten().map((v)=>
-                new Edge(this._model.getGeom(), new GeomPath(v[0], EGeomType.faces, v[1], EGeomType.edges, v[2]))), 
+                new Edge(this._model.getGeom(), new TopoPath(v[0], EGeomType.faces, v[1], EGeomType.edges, v[2]))), 
             ...this._wire_edges.flatten().map((v)=>
-                new Edge(this._model.getGeom(), new GeomPath(v[0], EGeomType.wires, v[1], EGeomType.edges, v[2])))];
+                new Edge(this._model.getGeom(), new TopoPath(v[0], EGeomType.wires, v[1], EGeomType.edges, v[2])))];
         }
         if (!geom_type || geom_type == EGeomType.vertices) {
             topos = [...topos, 
             ...this._face_vertices.flatten().map((v)=>
-                new Edge(this._model.getGeom(), new GeomPath(v[0], EGeomType.faces, v[1], EGeomType.vertices, v[2]))), 
+                new Edge(this._model.getGeom(), new TopoPath(v[0], EGeomType.faces, v[1], EGeomType.vertices, v[2]))), 
             ...this._wire_vertices.flatten().map((v)=>
-                new Edge(this._model.getGeom(), new GeomPath(v[0], EGeomType.wires, v[1], EGeomType.vertices, v[2])))];
+                new Edge(this._model.getGeom(), new TopoPath(v[0], EGeomType.wires, v[1], EGeomType.vertices, v[2])))];
         }
         return topos;
     }

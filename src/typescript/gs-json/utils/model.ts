@@ -2,9 +2,9 @@ import * as ifs from "./ifaces_gs";
 import {IMetadata, IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {Arr} from "./arr";
 import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
-import {Geom, GeomPath} from "./geom";
+import {Geom} from "./geom";
 import {Point, Polyline, Polymesh} from "./entities";
-import {Vertex, Edge, Wire, Face} from "./topos";
+import {Vertex, Edge, Wire, Face, TopoPath} from "./topos";
 import {EntAttrib, TopoAttrib} from "./attribs";
 import {Group} from "./groups";
 /**

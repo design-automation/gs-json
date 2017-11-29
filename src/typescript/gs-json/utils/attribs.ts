@@ -2,9 +2,9 @@ import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
 import {IModelData, IAttribsData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
-import {Geom, GeomPath} from "./geom";
+import {Geom} from "./geom";
 import {Point,Polyline,Polymesh} from "./entities";
-import {Vertex, Edge, Wire, Face} from "./topos";
+import {Vertex, Edge, Wire, Face, TopoPath} from "./topos";
 import {Group} from "./groups";
 /**
  * Attrib abstract class.
@@ -198,13 +198,13 @@ export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
     * @param path The path to a topological component.
     * @return The value.
     */
-    public getValue(path:ifs.IGeomPath):any {
+    public getValue(path:ifs.ITopoPath):any {
         switch (this._geom_type) {
             case EGeomType.wires: case EGeomType.faces:
-                path = path as ifs.IGeomPath;
+                path = path as ifs.ITopoPath;
                 return this._values[1][this._values[0][path.id][path.ti]];
             case EGeomType.vertices: case EGeomType.edges:
-                path = path as ifs.IGeomPath;
+                path = path as ifs.ITopoPath;
                 return this._values[1][this._values[0][path.id][path.ti][path.si]];
         }
     }
@@ -215,7 +215,7 @@ export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
     * @param value The new value.
     * @return The old value.
     */
-    public setValue(path:ifs.IGeomPath, value:any):any {
+    public setValue(path:ifs.ITopoPath, value:any):any {
         let index:number = Arr.indexOf(value, this._values);
         if (index == -1) {
             index = this._values[1].push(value) - 1;
@@ -223,12 +223,12 @@ export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
         let old_value:any;
         switch (this._geom_type) {
             case EGeomType.wires: case EGeomType.faces:
-                path = path as ifs.IGeomPath;
+                path = path as ifs.ITopoPath;
                 old_value = this._values[1][this._values[0][path.id][path.ti]];
                 this._values[0][path.id][path.ti] = index;
                 return old_value;
             case EGeomType.vertices: case EGeomType.edges:
-                path = path as ifs.IGeomPath;
+                path = path as ifs.ITopoPath;
                 old_value = this._values[1][this._values[0][path.id][path.ti][path.si]];
                 this._values[0][path.id][path.ti][path.si] = index;
                 return old_value;
@@ -239,16 +239,16 @@ export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
     * @param path The path to a geometric entity or topological component.
     * @return True if teh path does not exist.
     */
-    public addValue(path:ifs.IGeomPath):boolean  {
+    public addValue(path:ifs.ITopoPath):boolean  {
         switch (this._geom_type) {
             case EGeomType.wires: case EGeomType.faces:
-                path = path as ifs.IGeomPath;
+                path = path as ifs.ITopoPath;
                 if (this._values[0][path.id] === undefined) {this._values[0][path.id] = [];}
                 if (this._values[0][path.id][path.ti] !== undefined) {return false;}
                 this._values[0][path.id][path.ti] = 0;
                 return true;
             case EGeomType.vertices: case EGeomType.edges:
-                path = path as ifs.IGeomPath;
+                path = path as ifs.ITopoPath;
                 if (this._values[0][path.id] === undefined) {this._values[0][path.id] = [];}
                 if (this._values[0][path.id][path.ti] === undefined) {this._values[0][path.id][path.ti] = [];}
                 if (this._values[0][path.id][path.ti][path.si] !== undefined) {return false;}
@@ -261,16 +261,16 @@ export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
     * @param path The path to a geometric entity or topological component.
     * @return The attribute value.
     */
-    public delValue(path:ifs.IGeomPath):any  {
+    public delValue(path:ifs.ITopoPath):any  {
         let old_value:any;
         switch (this._geom_type) {
             case EGeomType.wires: case EGeomType.faces:
-                path = path as ifs.IGeomPath;
+                path = path as ifs.ITopoPath;
                 old_value = this._values[1][this._values[0][path.id][path.ti]];
                 delete this._values[0][path.id][path.ti];
                 return old_value;
             case EGeomType.vertices: case EGeomType.edges:
-                path = path as ifs.IGeomPath;
+                path = path as ifs.ITopoPath;
                 old_value = this._values[1][this._values[0][path.id][path.ti][path.si]];
                 delete this._values[0][path.id][path.ti][path.si];
                 return old_value;
@@ -287,19 +287,19 @@ export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
         switch (this._geom_type) {
             case EGeomType.faces:
                 Arr.flatten(this._model.getGeom().getObj(id).getFaces()).forEach((v,i)=>
-                    this.addValue(v.getGeomPath()));
+                    this.addValue(v.getTopoPath()));
                 break;
             case EGeomType.wires: 
                 Arr.flatten(this._model.getGeom().getObj(id).getWires()).forEach((v,i)=>
-                    this.addValue(v.getGeomPath()));
+                    this.addValue(v.getTopoPath()));
                 break;
             case EGeomType.edges:
                 Arr.flatten(this._model.getGeom().getObj(id).getEdges()).forEach((v,i)=>
-                    this.addValue(v.getGeomPath()));
+                    this.addValue(v.getTopoPath()));
                 break;
             case EGeomType.vertices: 
                 Arr.flatten(this._model.getGeom().getObj(id).getVertices()).forEach((v,i)=>
-                    this.addValue(v.getGeomPath()));
+                    this.addValue(v.getTopoPath()));
                 break;
         }
         return true;
@@ -314,19 +314,19 @@ export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
         switch (this._geom_type) {
             case EGeomType.faces:
                 Arr.flatten(this._model.getGeom().getObj(id).getFaces()).forEach((v,i)=>
-                    this.delValue(v.getGeomPath()));
+                    this.delValue(v.getTopoPath()));
                 break;
             case EGeomType.wires: 
                 Arr.flatten(this._model.getGeom().getObj(id).getWires()).forEach((v,i)=>
-                    this.delValue(v.getGeomPath()));
+                    this.delValue(v.getTopoPath()));
                 break;
             case EGeomType.edges:
                 Arr.flatten(this._model.getGeom().getObj(id).getEdges()).forEach((v,i)=>
-                    this.delValue(v.getGeomPath()));
+                    this.delValue(v.getTopoPath()));
                 break;
             case EGeomType.vertices:
                 Arr.flatten(this._model.getGeom().getObj(id).getVertices()).forEach((v,i)=>
-                    this.delValue(v.getGeomPath()));
+                    this.delValue(v.getTopoPath()));
                 break;
         }
         return true;
