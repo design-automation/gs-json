@@ -79,14 +79,14 @@ export class Attrib implements ifs.IAttrib {
     * @return The geometry type.
     */
     public getGeomType():EGeomType {
-        return mapStringToGeomType[this._geom_type];
+        return this._geom_type;
     }
     /**
     * Set the data type for the attribute values. 
     * @return The data type.
     */
     public getObjDataType():EDataType {
-        return mapStringToDataType[this._data_type];
+        return this._data_type;
     }
     /**
     * Get a single attribute value. 
@@ -123,7 +123,7 @@ export class Attrib implements ifs.IAttrib {
     public setValue(path:number|ifs.IGeomPath, value:any):any {
         let index:number = Arr.indexOf(value, this._values);
         if (index == -1) {
-            index = this._values.push(value) - 1;
+            index = this._values[1].push(value) - 1;
         }
         let old_value:any;
         switch (this._geom_type) {

@@ -87,7 +87,7 @@ export class Group implements ifs.IGroup {
     * This method allows to access a private property of type TopoTree of the class Group
     * @return The topo tree, of type TopoTree
     */
-    public getTopoTree():TopoTree {
+    public getTopoTree():TopoTree {  //TODO this should not be needed, maybe only for testing?
         return this._topos;
     }
     //Groups
