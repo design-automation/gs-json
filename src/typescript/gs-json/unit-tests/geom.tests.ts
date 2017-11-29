@@ -73,14 +73,4 @@ describe('Tests for Geom class', () => {
     });
 });
 
-describe('Tests for TopoPath class', () => {
-    it('test_TopoPath_constructor', () => {
-        expect( geom_tests.test_TopoPath_constructor() ).toBe(true);
-    });
-    it('test_TopoPath_equals', () => {
-        expect( geom_tests.test_TopoPath_equals() ).toBe(true);
-    });
-    it('test_TopoPath_equals', () => {
-        expect( geom_tests.test_TopoPath_toString() ).toBe(true);
-    });
-});
+

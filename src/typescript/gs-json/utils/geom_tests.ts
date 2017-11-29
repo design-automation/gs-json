@@ -195,12 +195,3 @@ export function test_Geom_numTopos():boolean {
 export function test_Geom_getAttribTemplate():boolean {
     return true;
 }
-export function test_TopoPath_constructor():boolean {
-    return true;
-}
-export function test_TopoPath_equals():boolean {
-    return true;
-}
-export function test_TopoPath_toString():boolean {
-    return true;
-}

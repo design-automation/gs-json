@@ -124,3 +124,14 @@ describe('Tests for Face class', () => {
     });
 });
 
+describe('Tests for TopoPath class', () => {
+    it('test_TopoPath_constructor', () => {
+        expect( topos_tests.test_TopoPath_constructor() ).toBe(true);
+    });
+    it('test_TopoPath_equals', () => {
+        expect( topos_tests.test_TopoPath_equals() ).toBe(true);
+    });
+    it('test_TopoPath_equals', () => {
+        expect( topos_tests.test_TopoPath_toString() ).toBe(true);
+    });
+});

@@ -446,7 +446,7 @@ export class Face extends Topo implements ifs.IFace {
 * to be completed
 */
 export class TopoPath implements ifs.ITopoPath {
-    id:number;                    //obj id or point id
+    id:number;                    //obj id
     tt:EGeomType.faces|EGeomType.wires = null;      //topo type
     ti:number = null;             //topo index
     st:EGeomType.vertices|EGeomType.edges = null;   //sub topo-type

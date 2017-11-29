@@ -166,3 +166,13 @@ export function test_Face_isClosed():boolean{
 export function test_Face_facesSharedPoints():boolean{
 	return true;
 }
+
+export function test_TopoPath_constructor():boolean {
+    return true;
+}
+export function test_TopoPath_equals():boolean {
+    return true;
+}
+export function test_TopoPath_toString():boolean {
+    return true;
+}
