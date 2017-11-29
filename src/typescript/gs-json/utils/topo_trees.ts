@@ -78,8 +78,7 @@ export class TopoTree implements ifs.ITopoTree {
             return this._wires.add(path.id, path.ti);
         } else {
             return this._faces.add(path.id, path.ti);
-        }
-        
+        }        
     }
     public removeTopo(topo:ifs.ITopo): boolean {
         let path:ifs.IGeomPath = topo.getGeomPath();
@@ -155,6 +154,38 @@ export class TopoTree implements ifs.ITopoTree {
         this._face_vertices = new TreeBranch3(data[3] as TTree3Data);
         this._wire_edges =    new TreeBranch3(data[4] as TTree3Data);        
         this._wire_vertices = new TreeBranch3(data[5] as TTree3Data);
+    }
+    public has(t:EGeomType[], a:number, b:number, c?:number ): boolean {
+        switch (t){
+            case [EGeomType.faces,null]:
+                return this._faces.has(a,b);
+            case [EGeomType.wires,null]:
+                return this._wires.has(a,b);
+            case [EGeomType.faces, EGeomType.edges]:
+                return this._face_edges.has(a,b,c);
+            case [EGeomType.faces,EGeomType.vertices]:
+                return this._face_vertices.has(a,b,c);
+            case [EGeomType.wires,EGeomType.edges]:
+                return this._wire_edges.has(a,b,c);
+            case [EGeomType.wires,EGeomType.vertices]:
+                return this._wire_vertices.has(a,b,c);
+        }
+    }
+    public add(t:EGeomType[], a:number, b:number, c?:number): void {
+        switch (t){
+            case [EGeomType.faces,null]:
+                return this._faces.add(a,b);
+            case [EGeomType.wires,null]:
+                return this._wires.add(a,b);
+            case [EGeomType.faces, EGeomType.edges]:
+                return this._face_edges.add(a,b,c);
+            case [EGeomType.faces,EGeomType.vertices]:
+                return this._face_vertices.add(a,b,c);
+            case [EGeomType.wires,EGeomType.edges]:
+                return this._wire_edges.add(a,b,c);
+            case [EGeomType.wires,EGeomType.vertices]:
+                return this._wire_vertices.add(a,b,c);
+        }
     }
 }
 /**
