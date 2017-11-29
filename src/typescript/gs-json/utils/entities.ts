@@ -4,7 +4,7 @@ import {IModelData, IAttribData, IGroupData, ISkinData} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, mapStringToDataType} from "./enums";
 import {Geom, GeomPath} from "./geom";
 import {Vertex, Edge, Wire, Face} from "./topos";
-import {Attrib} from "./attribs";
+import {EntAttrib, TopoAttrib} from "./attribs";
 import {Group} from "./groups";
 /**
  * Class Ent.
@@ -62,9 +62,8 @@ abstract class Ent {
     * @return The array of attribute names.
     */    
     public getAttribNames():string[] {
-        return this.getModel().
-            getAttribs(this.getGeomType()).
-                map(attrib=>attrib.getName());
+        let attribs:ifs.IEntAttrib[] = this.getModel().getAttribs(this.getGeomType()) as ifs.IEntAttrib[];
+        return attribs.map(attrib=>attrib.getName());
     }
     /**
     * Get an attribute value for this entity.
@@ -72,9 +71,8 @@ abstract class Ent {
     * @return The attribute value.
     */
     public getAttribValue(name:string):any {
-        return this.getModel().
-            getAttrib(name, this.getGeomType()).
-                getValue(new GeomPath(this.id));
+        let attrib:ifs.IEntAttrib = this.getModel().getAttrib(name, this.getGeomType()) as ifs.IEntAttrib;
+        return attrib.getValue(this.id);
     }
     /**
     * Set an attribute value for this entity.
@@ -83,9 +81,8 @@ abstract class Ent {
     * @return The old attribute value.
     */
     public setAttribValue(name:string, value:any):any {
-        return this.getModel().
-            getAttrib(name, this.getGeomType()).
-                setValue(new GeomPath(this.id), value);
+        let attrib:ifs.IEntAttrib = this.getModel().getAttrib(name, this.getGeomType()) as ifs.IEntAttrib;
+        return attrib.setValue(this.id, value);
     }
     /**
     * Get the group names for all the groups for which this entity is a member.

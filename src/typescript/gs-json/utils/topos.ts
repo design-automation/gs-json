@@ -69,7 +69,8 @@ export abstract class Topo implements ifs.ITopo{
     * @return The array of attribute names.
     */
     public getAttribNames():string[] {
-        return this.getModel().getAttribs(this.getGeomType()).map(attrib=>attrib.getName());
+        let attribs:ifs.ITopoAttrib[] = this.getModel().getAttribs(this.getGeomType()) as ifs.ITopoAttrib[];
+        return attribs.map(attrib=>attrib.getName());
     }
     /**
     * Get an attribute value for this topological component.
@@ -77,7 +78,8 @@ export abstract class Topo implements ifs.ITopo{
     * @return The attribute value.
     */
     public getAttribValue(name:string):any {
-        return this.getModel().getAttrib(name, this.getGeomType()).getValue(this.path);
+        let attrib:ifs.ITopoAttrib = this.getModel().getAttrib(name, this.getGeomType()) as ifs.ITopoAttrib;
+        return attrib.getValue(this.path);
     }
     /**
     * Set an attribute value for this topological component.
@@ -85,12 +87,13 @@ export abstract class Topo implements ifs.ITopo{
     * @param value The new attribute value.
     * @return The old attribute value.
     */
-    public setAttribValue(name:string, value:any):any {;
-        return this.getModel().getAttrib(name, this.getGeomType()).setValue(this.path, value);
+    public setAttribValue(name:string, value:any):any {
+        let attrib:ifs.ITopoAttrib = this.getModel().getAttrib(name, this.getGeomType()) as ifs.ITopoAttrib;
+        return attrib.setValue(this.path, value);
     }
     /**
     * Get the group names for all the groups for which this topological component is a member.
-    * @return The array of group names.
+    * @return The array of groups.
     */
     public getGroups():ifs.IGroup[] {
         return this.getModel().getGroups().

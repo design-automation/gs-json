@@ -7,19 +7,19 @@ import {Point,Polyline,Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
 import {Group} from "./groups";
 /**
- * Attrib class.
+ * Attrib abstract class.
  * An class that represents a semantic attribute.
- * An attribute is data that is attached to a specific type of geometry.
- * The geometric types to which attributes can be attached are: 
- * "points", "vertices", "edges", "wires", "faces", and "objs".
+ * An attribute is data that is attached to either:
+ * entities (points and objects) or 
+ * topological components (vertices, edges, wires, faces).
  * An instance of this class stores a list of attributes values. 
  */
-export class Attrib implements ifs.IAttrib {
-    private _model:ifs.IModel;
-    private _name:string;
-    private _geom_type:EGeomType;
-    private _data_type:EDataType;
-    private _values:any[]; //values[0] is the map, values[1] is the array of unique values
+export abstract class Attrib implements ifs.IAttrib {
+    protected _model:ifs.IModel;
+    protected _name:string;
+    protected _geom_type:EGeomType;
+    protected _data_type:EDataType;
+    protected _values:any[]; //values[0] is the map, values[1] is the array of unique values
     /**
     * Creates an instance of the Attrib class.
     * The attribute data must already exists in the model. 
@@ -85,23 +85,121 @@ export class Attrib implements ifs.IAttrib {
     * Set the data type for the attribute values. 
     * @return The data type.
     */
-    public getObjDataType():EDataType {
+    public getDataType():EDataType {
         return this._data_type;
     }
+    
+    /**
+    * Get the number of attribute values. 
+    * @return The number of attribute values.
+    */
+    public count():number  {
+        return this._values[0].length;
+    }
+}
+
+/**
+ * EntAttrib class for entities (points and objects).
+ * An class that represents a semantic attribute that is attached to a point or object.
+ * An instance of this class stores a list of attributes values. 
+ */
+export class EntAttrib extends Attrib implements ifs.IEntAttrib {
     /**
     * Get a single attribute value. 
     * The data type of the attribute value can be found using the getDataType() method.
-    * If getGeomType() returns "points" or "objs", then path should be the entity id (a number).
-    * If getGeomType() returns "vertices", "edges", "wires", or "faces",
-    * then path should be a path to a topo component (an instance of GeomPath).
-    * @param path The path to a geometric entity or topological component.
+    * @param id The id of a geometric entity.
     * @return The value.
     */
-    public getValue(path:number|ifs.IGeomPath):any {
+    public getValue(id:number):any {
+        return this._values[1][this._values[0][id]];//TODO check by reference or by value?
+    }
+    /**
+    * Set a single attribute value. 
+    * The data type of the attribute value can be found using the getDataType() method.
+    * @param id The id of a geometric entity.
+    * @param value The new value.
+    * @return The old value.
+    */
+    public setValue(id:number, value:any):any {
+        let index:number = Arr.indexOf(value, this._values);
+        if (index == -1) {
+            index = this._values[1].push(value) - 1;
+        }
+        let old_value:any;
+        old_value = this._values[1][this._values[0][id]];
+        this._values[0][id] = index;
+        return old_value;
+    }
+    /**
+    * Add an attributes value. 
+    * @param id The id of a geometric entity.
+    * @return True if the id does not exist.
+    */
+    public addValue(id:number):boolean  {
+        if (this._values[0][id] !== undefined) {return false;}
+        this._values[0][id] = 0;
+        return true;
+
+    }
+    /**
+    * Delete an attribute value. 
+    * @param id The id of a geometric entity.
+    * @return The attribute value.
+    */
+    public delValue(id:number):any  {
+        let old_value:any;
+        old_value = this._values[1][this._values[0][id]];
+        delete this._values[0][id];
+        return old_value;
+    }
+    /**
+    * Add a set of attributes values for one object. 
+    * @param id The id of the object.
+    * @return True if attribute values for the bject do not exist.
+    */
+    public addObjValues(id:number):boolean  {
+        if (this._values[1][id] !== undefined) {return false;}
         switch (this._geom_type) {
-            case EGeomType.points: case EGeomType.objs:
-                path = path as number;
-                return this._values[1][this._values[0][path]];//TODO check by reference or by value?
+            case EGeomType.points:
+                break;
+            case EGeomType.objs:
+                this.addValue(id);
+                break;
+        }
+        return true;
+    }
+    /**
+    * Delete a set of attributes values for one object. 
+    * @param id The id of the object.
+    * @return False if attribute values for the object do not exist.
+    */
+    public delObjValues(id:number):boolean  {
+        if (this._values[1][id] === undefined) {return false;}
+        switch (this._geom_type) {
+            case EGeomType.points:
+                break;
+            case EGeomType.objs:
+                this.delValue(id);
+                break;
+        }
+        return true;
+    }
+}
+
+/**
+ * TopoAttrib class for topos (vertices, edges, wires, and faces).
+ * Semantic attributes that are attached to points or objects.
+ * An instance of this class stores a list of attributes values. 
+ */
+export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
+    /**
+    * Get a single attribute value. 
+    * The data type of the attribute value can be found using the getDataType() method.
+    * @param path The path to a topological component.
+    * @return The value.
+    */
+    public getValue(path:ifs.IGeomPath):any {
+        switch (this._geom_type) {
             case EGeomType.wires: case EGeomType.faces:
                 path = path as ifs.IGeomPath;
                 return this._values[1][this._values[0][path.id][path.ti]];
@@ -113,25 +211,17 @@ export class Attrib implements ifs.IAttrib {
     /**
     * Set a single attribute value. 
     * The data type of the attribute value can be found using the getDataType() method.
-    * If getGeomType() returns "points" or "objs", then path should be the entity id (a number).
-    * If getGeomType() returns "vertices", "edges", "wires", or "faces",
-    * then path should be a path to a topo component (an instance of GeomPath).
-    * @param path The path to a geometric entity or topological component.
+    * @param path The path to a topological component.
     * @param value The new value.
     * @return The old value.
     */
-    public setValue(path:number|ifs.IGeomPath, value:any):any {
+    public setValue(path:ifs.IGeomPath, value:any):any {
         let index:number = Arr.indexOf(value, this._values);
         if (index == -1) {
             index = this._values[1].push(value) - 1;
         }
         let old_value:any;
         switch (this._geom_type) {
-            case EGeomType.points: case EGeomType.objs:
-                path = path as number;
-                old_value = this._values[1][this._values[0][path]];
-                this._values[0][path] = index;
-                return old_value;
             case EGeomType.wires: case EGeomType.faces:
                 path = path as ifs.IGeomPath;
                 old_value = this._values[1][this._values[0][path.id][path.ti]];
@@ -149,13 +239,8 @@ export class Attrib implements ifs.IAttrib {
     * @param path The path to a geometric entity or topological component.
     * @return True if teh path does not exist.
     */
-    public addValue(path:number|ifs.IGeomPath):boolean  {
+    public addValue(path:ifs.IGeomPath):boolean  {
         switch (this._geom_type) {
-            case EGeomType.points: case EGeomType.objs:
-                path = path as number;
-                if (this._values[0][path] !== undefined) {return false;}
-                this._values[0][path] = 0;
-                return true;
             case EGeomType.wires: case EGeomType.faces:
                 path = path as ifs.IGeomPath;
                 if (this._values[0][path.id] === undefined) {this._values[0][path.id] = [];}
@@ -176,14 +261,9 @@ export class Attrib implements ifs.IAttrib {
     * @param path The path to a geometric entity or topological component.
     * @return The attribute value.
     */
-    public delValue(path:number|ifs.IGeomPath):any  {
+    public delValue(path:ifs.IGeomPath):any  {
         let old_value:any;
         switch (this._geom_type) {
-            case EGeomType.points: case EGeomType.objs:
-                path = path as number;
-                old_value = this._values[1][this._values[0][path]];
-                delete this._values[0][path];
-                return old_value;
             case EGeomType.wires: case EGeomType.faces:
                 path = path as ifs.IGeomPath;
                 old_value = this._values[1][this._values[0][path.id][path.ti]];
@@ -205,11 +285,6 @@ export class Attrib implements ifs.IAttrib {
     public addObjValues(id:number):boolean  {
         if (this._values[1][id] !== undefined) {return false;}
         switch (this._geom_type) {
-            case EGeomType.points:
-                break;
-            case EGeomType.objs:
-                this.addValue(id);
-                break;
             case EGeomType.faces:
                 Arr.flatten(this._model.getGeom().getObj(id).getFaces()).forEach((v,i)=>
                     this.addValue(v.getGeomPath()));
@@ -237,11 +312,6 @@ export class Attrib implements ifs.IAttrib {
     public delObjValues(id:number):boolean  {
         if (this._values[1][id] === undefined) {return false;}
         switch (this._geom_type) {
-            case EGeomType.points:
-                break;
-            case EGeomType.objs:
-                this.delValue(id);
-                break;
             case EGeomType.faces:
                 Arr.flatten(this._model.getGeom().getObj(id).getFaces()).forEach((v,i)=>
                     this.delValue(v.getGeomPath()));
@@ -260,12 +330,5 @@ export class Attrib implements ifs.IAttrib {
                 break;
         }
         return true;
-    }
-    /**
-    * Get the number of attribute values. 
-    * @return The number of attribute values.
-    */
-    public count():number  {
-        return this._values[0].length;
     }
 }

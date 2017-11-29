@@ -54,6 +54,7 @@ export class Geom implements ifs.IGeom {
         point.setPosition(xyz); 
         //update point attributes
         for (let attrib of this._model.getAttribs(EGeomType.points)) {
+            attrib = attrib as ifs.IEntAttrib;
             attrib.addValue(point.getID())
         }
         return point;
@@ -204,6 +205,7 @@ export class Geom implements ifs.IGeom {
 
         //delete attribute values for this point
         for (let attrib of this._model.getAttribs(EGeomType.points)) {
+            attrib = attrib as ifs.IEntAttrib;
             attrib.delValue(point_id);
         }
         //delete this point from any groups

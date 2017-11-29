@@ -5,7 +5,7 @@ import {EGeomType, EDataType, EObjType, mapStringToGeomType, attribTypeStrings, 
 import {Geom, GeomPath} from "./geom";
 import {Point, Polyline, Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
-import {Attrib} from "./attribs";
+import {EntAttrib, TopoAttrib} from "./attribs";
 import {Group} from "./groups";
 /**
 * Model Class
@@ -13,7 +13,7 @@ import {Group} from "./groups";
 export class Model implements ifs.IModel{
     private _metadata:IMetadata;
     private _geom:ifs.IGeom;
-    private _attribs:Map<string, Map<string, ifs.IAttrib>>;
+    private _attribs:Map<string, Map<string, ifs.IEntAttrib|ifs.ITopoAttrib>>;
     private _groups:Map<string, ifs.IGroup>;
     /**
     * to be completed
@@ -23,11 +23,12 @@ export class Model implements ifs.IModel{
     constructor(data?:IModelData) {
         this._attribs = new Map();
         this._attribs.set("points", new Map());
+        this._attribs.set("objs", new Map());
         this._attribs.set("vertices", new Map());
         this._attribs.set("edges", new Map());
         this._attribs.set("wires", new Map());
         this._attribs.set("faces", new Map());
-        this._attribs.set("objs", new Map());
+
         this._groups = new Map();
         //Metadata
         if (data && data.metadata != undefined) {
@@ -44,34 +45,35 @@ export class Model implements ifs.IModel{
         //Attributes
         if (data && data.attribs && data.attribs.points != undefined) {
             for (let attrib_data of data.attribs.points) {
-                this._attribs.get("points").set(attrib_data.name, new Attrib(this, attrib_data));
-            }
-        }
-        if (data && data.attribs && data.attribs.vertices != undefined) {
-            for (let attrib_data of data.attribs.vertices) {
-                this._attribs.get("vertices").set(attrib_data.name, new Attrib(this, attrib_data));
-            }
-        }
-        if (data && data.attribs && data.attribs.edges != undefined) {
-            for (let attrib_data of data.attribs.edges) {
-                this._attribs.get("edges").set(attrib_data.name, new Attrib(this, attrib_data));
-            }
-        }
-        if (data && data.attribs && data.attribs.wires != undefined) {
-            for (let attrib_data of data.attribs.wires) {
-                this._attribs.get("wires").set(attrib_data.name, new Attrib(this, attrib_data));
-            }
-        }
-        if (data && data.attribs && data.attribs.faces != undefined) {
-            for (let attrib_data of data.attribs.faces) {
-                this._attribs.get("faces").set(attrib_data.name, new Attrib(this, attrib_data));
+                this._attribs.get("points").set(attrib_data.name, new EntAttrib(this, attrib_data));
             }
         }
         if (data && data.attribs && data.attribs.objs != undefined) {
             for (let attrib_data of data.attribs.objs) {
-                this._attribs.get("objects").set(attrib_data.name, new Attrib(this, attrib_data));
+                this._attribs.get("objects").set(attrib_data.name, new EntAttrib(this, attrib_data));
             }
         }
+        if (data && data.attribs && data.attribs.vertices != undefined) {
+            for (let attrib_data of data.attribs.vertices) {
+                this._attribs.get("vertices").set(attrib_data.name, new TopoAttrib(this, attrib_data));
+            }
+        }
+        if (data && data.attribs && data.attribs.edges != undefined) {
+            for (let attrib_data of data.attribs.edges) {
+                this._attribs.get("edges").set(attrib_data.name, new TopoAttrib(this, attrib_data));
+            }
+        }
+        if (data && data.attribs && data.attribs.wires != undefined) {
+            for (let attrib_data of data.attribs.wires) {
+                this._attribs.get("wires").set(attrib_data.name, new TopoAttrib(this, attrib_data));
+            }
+        }
+        if (data && data.attribs && data.attribs.faces != undefined) {
+            for (let attrib_data of data.attribs.faces) {
+                this._attribs.get("faces").set(attrib_data.name, new TopoAttrib(this, attrib_data));
+            }
+        }
+
         //Groups
         if (data && data.attribs && data.groups != undefined) {
             for (let group_data of data.groups) {
@@ -79,7 +81,6 @@ export class Model implements ifs.IModel{
             }
         }
     }
-    //Geom
     /**
     * to be completed
     * @param
@@ -88,22 +89,25 @@ export class Model implements ifs.IModel{
     public getGeom():ifs.IGeom {
         return this._geom;
     }
-
-    //Attribs
     /**
     * to be completed
     * @param
     * @return
     */
-    public getAttribs(geom_type?:EGeomType):ifs.IAttrib[] {
-        return Array.from(this._attribs.get(geom_type).values());
+    public getAttribs(geom_type?:EGeomType):ifs.IEntAttrib[]|ifs.ITopoAttrib[] {
+        switch (geom_type) {
+            case EGeomType.points: case EGeomType.objs:
+                return Array.from(this._attribs.get(geom_type).values()) as ifs.IEntAttrib[];
+            default:
+                return Array.from(this._attribs.get(geom_type).values()) as ifs.ITopoAttrib[];
+        }
     }
     /**
     * to be completed
     * @param
     * @return
     */
-    public getAttrib(name:string, geom_type?:EGeomType):ifs.IAttrib {
+    public getAttrib(name:string, geom_type?:EGeomType):ifs.IEntAttrib|ifs.ITopoAttrib {
         return this._attribs.get(geom_type).get(name);
     }
     /**
@@ -111,12 +115,19 @@ export class Model implements ifs.IModel{
     * @param
     * @return
     */
-    public addAttrib(name:string, geom_type:EGeomType, data_type:EDataType):ifs.IAttrib {
+    public addAttrib(name:string, geom_type:EGeomType, data_type:EDataType):ifs.IEntAttrib|ifs.ITopoAttrib {
         name = name.replace(/\s/g, "_");
         let data:IAttribData = {name:name, geom_type:geom_type, data_type:data_type};
-        let attrib:ifs.IAttrib = new Attrib(this, data);
-        this._attribs.get(geom_type).set(name, attrib);
-        return attrib; 
+        switch (geom_type) {
+            case EGeomType.points: case EGeomType.objs:
+                let ent_attrib:ifs.IEntAttrib = new EntAttrib(this, data);
+                this._attribs.get(geom_type).set(name, ent_attrib);
+                return ent_attrib;
+            default://vertices, edges, wires, faces
+                let topo_attrib:ifs.ITopoAttrib = new TopoAttrib(this, data);
+                this._attribs.get(geom_type).set(name, topo_attrib);
+                return topo_attrib;
+        }
     }
     /**
     * to be completed
@@ -138,7 +149,6 @@ export class Model implements ifs.IModel{
         this._attribs.get(geom_type).delete(old_name);
         return true;
     }
-    //Groups
     /**
     * to be completed
     * @param

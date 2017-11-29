@@ -14,9 +14,9 @@ import {TTreeData, TTree2Data, TTree3Data, IModelData, IAttribData, IGroupData, 
 * The key is the name of the Attrib, and the value is an instance of class Attrib.
 * This is used in the main Model class to store all the attributes in the model.
 */
-export interface IAttribDict {
-    [key: string] : IAttrib;
-}
+// export interface IEntAttribDict {
+//     [key: string] : IAttrib;
+// }
 /**
 * Interface, a dictionary for storing Attrib dictionaries.
 * This is used in the main Model class to store attributes.
@@ -25,22 +25,22 @@ export interface IAttribDict {
 * a particular point attribute called "xxx", the format is:
 * "attrib_types_dict.points.xxx"
 */
-export interface IAttribTypesDict {
-    objs: IAttribDict;
-    points: IAttribDict;
-    faces: IAttribDict;
-    wires: IAttribDict;
-    edges: IAttribDict;
-    vertices: IAttribDict;
-}
+// export interface IAttribTypesDict {
+//     objs: IAttribDict;
+//     points: IAttribDict;
+//     faces: IAttribDict;
+//     wires: IAttribDict;
+//     edges: IAttribDict;
+//     vertices: IAttribDict;
+// }
 /**
 * Interface, a dictionary for storing Group instances.
 * The key is the name of the Group, and the value is an instance of class Group.
 * This is used in the main Model class to store all teh groups in teh model.
 */
-export interface IGroupsDict {
-    [key: string] : IGroup;
-}
+// export interface IGroupsDict {
+//     [key: string] : IGroup;
+// }
 // ========================= INTERFACES for Model and Geom classes =========================
 // IModel, IGeom, IGeomPath
 
@@ -52,9 +52,9 @@ export interface IModel {
     //Geometry
     getGeom():IGeom;
     //Attribs
-    getAttribs(attrib_type?:EGeomType):IAttrib[];
-    getAttrib(name:string, attrib_type:EGeomType):IAttrib;
-    addAttrib(name:string, attrib_type:EGeomType, data_type:EDataType):IAttrib;
+    getAttribs(attrib_type?:EGeomType):IEntAttrib[]|ITopoAttrib[];
+    getAttrib(name:string, attrib_type:EGeomType):IEntAttrib|ITopoAttrib;
+    addAttrib(name:string, attrib_type:EGeomType, data_type:EDataType):IEntAttrib|ITopoAttrib;
     delAttrib(name:string, attrib_type:EGeomType):boolean;
     setAttribName(old_name, new_name, geom_type:EGeomType):boolean;
     //Groups
@@ -265,22 +265,32 @@ export interface IFace extends ITopo {
 * Interface, for Attrib class.
 */
 export interface IAttrib {
-    //constructor(model:ifs.IModel, 
-    //    name:string, attrib_type:EGeomType, data_type:EDataType, 
-    //    values_map?:any[], values?:any[])
+    //constructor(model:ifs.IModel, data:IAttribData)
     getName():string;
     setName(name:string):string;
     getGeomType():EGeomType;
-    getObjDataType():EDataType;
-    //Attrib Values
-    getValue(path:IGeomPath):any;
-    setValue(path:IGeomPath, value:any):any;
-    addValue(path:number|IGeomPath):boolean
-    delValue(path:number|IGeomPath):any;
-    addObjValues(id:number):boolean;
-    delObjValues(id:number):boolean;
+    getDataType():EDataType;
     count():number;
 }
+
+export interface IEntAttrib extends IAttrib {
+    getValue(id:number):any;
+    setValue(id:number, value:any):any;
+    addValue(id:number):boolean
+    delValue(id:number):any;
+    addObjValues(id:number):boolean;
+    delObjValues(id:number):boolean;
+}
+
+export interface ITopoAttrib extends IAttrib {
+    getValue(path:IGeomPath):any;
+    setValue(path:IGeomPath, value:any):any;
+    addValue(path:IGeomPath):boolean
+    delValue(path:IGeomPath):any;
+    addObjValues(id:number):boolean;
+    delObjValues(id:number):boolean;
+}
+
 /**
 * Interface, for Group class.
 */
