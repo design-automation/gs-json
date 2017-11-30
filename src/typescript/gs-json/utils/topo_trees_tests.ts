@@ -130,70 +130,46 @@ export function test_TopoTree_fromArray():boolean{
 		if( !(g2.hasTopo(f1) && g2.hasTopo(w1) && g2.hasTopo(f1_e1) && g2.hasTopo(f1_v1) && g2.hasTopo(w1_e1) && g2.hasTopo(w1_v1)) ) {return false;}
 	return true;}
 
-// Tests for Class TopoTreeBranch
-export function test_TopoTreeBranch_constructor():boolean{
-		let m:Model = new Model(td.open_box());
-			let g:ifs.IGroup = m.addGroup("Box");
-				let t:ifs.ITopoTree = g.getTopoTree();
-		let f1:ifs.IFace = m.getGeom().getObj(0).getFaces()[0];
-			let f1_e1:ifs.IEdge = f1.getEdges()[0];
-				let f1_v1:ifs.IVertex = f1.getVertices()[0];
-		let w1:ifs.IWire = m.getGeom().getObj(0).getWires()[0];
-			let w1_e1:ifs.IEdge = w1.getEdges()[0];
-				let w1_v1:ifs.IVertex = w1.getVertices()[0];
-		t.addTopo(f1);
-			t.addTopo(w1);
-		// let TB1:TTree2Data = t.getTreeBranch2(t.toArray()[0]);
-
-				// t.addTopo(f1_e1);
-				// 	t.addTopo(f1_v1);
-				// 		t.addTopo(w1_e1);
-				// 			t.addTopo(w1_v1);
-		console.log(t.toArray()[0]);
 
 
 
 
-	return true;}
-export function test_TopoTreeBranch_has():boolean{return true;}
-export function test_TopoTreeBranch_add():boolean{return true;}
-export function test_TopoTreeBranch_remove():boolean{return true;}
-export function test_TopoTreeBranch_toPaths():boolean{return true;}
-export function test_TopoTreeBranch_toArray():boolean{return true;}
-export function test_TopoTreeBranch_fromArray():boolean{return true;}
-
-// Tests for Class SubtopoTreeBranch
-export function test_SubtopoTreeBranch_constructor():boolean{return true;}
-export function test_SubtopoTreeBranch_has():boolean{return true;}
-export function test_SubtopoTreeBranch_add():boolean{return true;}
-export function test_SubtopoTreeBranch_remove():boolean{return true;}
-export function test_SubtopoTreeBranch_toPaths():boolean{return true;}
-export function test_SubtopoTreeBranch_toArray():boolean{return true;}
-export function test_SubtopoTreeBranch_fromArray():boolean{return true;}
-
-// // Tests for Class TopoTree
-// export function test_TopoTree_constructor(model:ifs.IModel, data?:(number[][]|number[][][])[]) {return true;}
-// export function test_TopoTree_hasTopo(topo:ifs.ITopo): boolean{return true;}
-// export function test_TopoTree_addTopo(topo:ifs.ITopo): boolean{return true;}
-// export function test_TopoTree_removeTopo(topo:ifs.ITopo): boolean{return true;}
-// export function test_TopoTree_getTopos(geom_type?:EGeomType):boolean{return true;}
-// export function test_TopoTree_toArray():boolean{return true;}
-// export function test_TopoTree_fromArray(data:(number[][]|number[][][])[]):boolean{return true;}
-
+// Branch not tested for now
 // // Tests for Class TopoTreeBranch
-// export function test_TopoTreeBranch_constructor(data?:number[][]):boolean{return true;}
-// export function test_TopoTreeBranch_has(id:number, ti:number):boolean{return true;}
-// export function test_TopoTreeBranch_add(id:number, ti:number):boolean{return true;}
-// export function test_TopoTreeBranch_remove(id:number, ti:number):boolean{return true;}
-// export function test_TopoTreeBranch_toPaths(tt:EGeomType.wires|EGeomType.faces):boolean{return true;}
-// export function test_TopoTreeBranch_toArray():boolean{return true;}
-// export function test_TopoTreeBranch_fromArray(arr1:number[][]):boolean{return true;}
+// export function test_TopoTreeBranch_constructor():boolean{
+// 		let m:Model = new Model(td.open_box());
+// 			let g:ifs.IGroup = m.addGroup("Box");
+// 				let t:ifs.ITopoTree = g.getTopoTree();
+// 		let f1:ifs.IFace = m.getGeom().getObj(0).getFaces()[0];
+// 			let f1_e1:ifs.IEdge = f1.getEdges()[0];
+// 				let f1_v1:ifs.IVertex = f1.getVertices()[0];
+// 		let w1:ifs.IWire = m.getGeom().getObj(0).getWires()[0];
+// 			let w1_e1:ifs.IEdge = w1.getEdges()[0];
+// 				let w1_v1:ifs.IVertex = w1.getVertices()[0];
+// 		t.addTopo(f1);
+// 			t.addTopo(w1);
+// 		// let TB1:TTree2Data = t.getTreeBranch2(t.toArray()[0]);
 
-// // Tests for Class SubtopoTreeBranch
-// export function test_SubtopoTreeBranch_constructor(data?:number[][][]):boolean{return true;}
-// export function test_SubtopoTreeBranch_has(id:number, ti:number, si:number):boolean{return true;}
-// export function test_SubtopoTreeBranch_add(id:number, ti:number, si:number):boolean{return true;}
-// export function test_SubtopoTreeBranch_remove(id:number, ti:number, si:number):boolean{return true;}
-// export function test_SubtopoTreeBranch_toPaths(tt:EGeomType.wires|EGeomType.faces, st:EGeomType.vertices|EGeomType.edges):boolean{return true;}
+// 				// t.addTopo(f1_e1);
+// 				// 	t.addTopo(f1_v1);
+// 				// 		t.addTopo(w1_e1);
+// 				// 			t.addTopo(w1_v1);
+// //		console.log(t.toArray()[0]);
+// 	return true;}
+
+// // No testing for Branch2
+// export function test_TopoTreeBranch_has():boolean{return true;}
+// export function test_TopoTreeBranch_add():boolean{return true;}
+// export function test_TopoTreeBranch_remove():boolean{return true;}
+// export function test_TopoTreeBranch_toPaths():boolean{return true;}
+// export function test_TopoTreeBranch_toArray():boolean{return true;}
+// export function test_TopoTreeBranch_fromArray():boolean{return true;}
+
+// // Tests for Class Branch3
+// export function test_SubtopoTreeBranch_constructor():boolean{return true;}
+// export function test_SubtopoTreeBranch_has():boolean{return true;}
+// export function test_SubtopoTreeBranch_add():boolean{return true;}
+// export function test_SubtopoTreeBranch_remove():boolean{return true;}
+// export function test_SubtopoTreeBranch_toPaths():boolean{return true;}
 // export function test_SubtopoTreeBranch_toArray():boolean{return true;}
-// export function test_SubtopoTreeBranch_fromArray(arr1:number[][][]):boolean{return true;}
+// export function test_SubtopoTreeBranch_fromArray():boolean{return true;}

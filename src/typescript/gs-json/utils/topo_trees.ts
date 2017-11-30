@@ -187,6 +187,70 @@ export class TopoTree implements ifs.ITopoTree {
                 return this._wire_vertices.add(a,b,c);
         }
     }
+    public remove(t:EGeomType[], a:number, b:number, c?:number): boolean {
+        switch (t){
+            case [EGeomType.faces,null]:
+                return this._faces.remove(a,b);
+            case [EGeomType.wires,null]:
+                return this._wires.remove(a,b);
+            case [EGeomType.faces, EGeomType.edges]:
+                return this._face_edges.remove(a,b,c);
+            case [EGeomType.faces,EGeomType.vertices]:
+                return this._face_vertices.remove(a,b,c);
+            case [EGeomType.wires,EGeomType.edges]:
+                return this._wire_edges.remove(a,b,c);
+            case [EGeomType.wires,EGeomType.vertices]:
+                return this._wire_vertices.remove(a,b,c);
+        }
+    }
+    public flatten(t:EGeomType[]): number[][] {
+        switch (t){
+            case [EGeomType.faces,null]:
+                return this._faces.flatten();
+            case [EGeomType.wires,null]:
+                return this._wires.flatten();
+            case [EGeomType.faces, EGeomType.edges]:
+                return this._face_edges.flatten();
+            case [EGeomType.faces,EGeomType.vertices]:
+                return this._face_vertices.flatten();
+            case [EGeomType.wires,EGeomType.edges]:
+                return this._wire_edges.flatten();
+            case [EGeomType.wires,EGeomType.vertices]:
+                return this._wire_vertices.flatten();
+        }
+    }
+    public toArray_bis(t:EGeomType[]): (TTree2Data | TTree3Data) {
+        switch (t){
+            case [EGeomType.faces,null]:
+                return this._faces.toArray();
+            case [EGeomType.wires,null]:
+                return this._wires.toArray();
+            case [EGeomType.faces, EGeomType.edges]:
+                return this._face_edges.toArray();
+            case [EGeomType.faces,EGeomType.vertices]:
+                return this._face_vertices.toArray();
+            case [EGeomType.wires,EGeomType.edges]:
+                return this._wire_edges.toArray();
+            case [EGeomType.wires,EGeomType.vertices]:
+                return this._wire_vertices.toArray();
+        }
+    }
+    public fromArray_bis(t:EGeomType[], arr2?:TTree2Data, arr3?:TTree3Data):void{
+        switch (t){
+            case [EGeomType.faces,null]:
+                return this._faces.fromArray(arr2);
+            case [EGeomType.wires,null]:
+                return this._wires.fromArray(arr2);
+            case [EGeomType.faces, EGeomType.edges]:
+                return this._face_edges.fromArray(arr3);
+            case [EGeomType.faces,EGeomType.vertices]:
+                return this._face_vertices.fromArray(arr3);
+            case [EGeomType.wires,EGeomType.edges]:
+                return this._wire_edges.fromArray(arr3);
+            case [EGeomType.wires,EGeomType.vertices]:
+                return this._wire_vertices.fromArray(arr3);
+        }
+    }
 }
 /**
 * Class for tree branches of depth 2.
