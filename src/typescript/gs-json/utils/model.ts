@@ -96,10 +96,20 @@ export class Model implements ifs.IModel{
     */
     public getAttribs(geom_type?:EGeomType):ifs.IEntAttrib[]|ifs.ITopoAttrib[] {
         switch (geom_type) {
-            case EGeomType.points: case EGeomType.objs:
+            case EGeomType.points: 
                 return Array.from(this._attribs.get(geom_type).values()) as ifs.IEntAttrib[];
-            default:
+            case EGeomType.objs:
+                return Array.from(this._attribs.get(geom_type).values()) as ifs.IEntAttrib[];
+            case EGeomType.faces:
                 return Array.from(this._attribs.get(geom_type).values()) as ifs.ITopoAttrib[];
+            case EGeomType.wires:
+                return Array.from(this._attribs.get(geom_type).values()) as ifs.ITopoAttrib[];
+            case EGeomType.edges:
+                return Array.from(this._attribs.get(geom_type).values()) as ifs.ITopoAttrib[];
+            case EGeomType.vertices:
+                return Array.from(this._attribs.get(geom_type).values()) as ifs.ITopoAttrib[];
+            default:
+                throw new Error("EGeomType must be defined");
         }
     }
     /**

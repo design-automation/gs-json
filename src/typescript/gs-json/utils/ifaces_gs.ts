@@ -132,7 +132,6 @@ export interface IPolyline  extends IObj {
 export interface IPolymesh extends IObj {
     getObjType():EObjType;
     setPosition(wire_points:IPoint[], face_points:IFace[]):any[]
-
 }
 // ========================= INTERFACES for Topo classes and Subclasses =========================
 // ITopo, IVertex, IEdge, IWire, IFace

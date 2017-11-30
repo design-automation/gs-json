@@ -13,14 +13,13 @@ export function test_setData2 (url:string):boolean {
 	xmlhttp.send();
 	return true;
 }
-
 export function test_Model_constructor():boolean {
     let model:gs.IModel ;
     model = new gs.Model(test_data.open_box());
     //model with no attribs
     if (model.getGeom().numObjs() != 1) {return false;}
     if (model.getGeom().numPoints() != 8) {return false;}
-    console.log(model);
+    // console.log(model);
     if (model.getGeom().getObj(0).numFaces() != 5) {return false;}
     if (! gs.Arr.equal(
         model.getGeom().getObj(0).getFaces()[4].getVertices().
@@ -37,14 +36,41 @@ export function test_Model_constructor():boolean {
     return true;
 }
 export function test_Model_getGeom():boolean {
-    let m:gs.Model = new gs.Model();
-    m.getGeom();
+        let m:gs.Model = new gs.Model(test_data.open_box());
+        let g:gs.IGroup = m.addGroup("Box");
+    let t:gs.ITopoTree = g.getTopoTree();
+            let f1:gs.IFace = m.getGeom().getObj(0).getFaces()[0];
+            if(t.hasTopo(f1) == true) {return false;}
+        t.addTopo(f1);
+            if(!(t.hasTopo(f1) == true)) {return false;}
     return true;
 }
 export function test_Model_getAttribs():boolean {
+//     let m:gs.Model = new gs.Model();
+//     console.log(m.getAttribs());
+    let m:gs.Model = new gs.Model(test_data.box_with_attribs());
+    // let e:gs.IEntAttrib[]|gs.ITopoAttrib[] = m.getAttribs();
+//     console.log(e);                                    
     return true;
 }
 export function test_Model_getAttrib():boolean {
+    let m:gs.Model = new gs.Model(test_data.box_with_attribs());
+    console.log(m.getAttribs(gs.EGeomType.points));
+    console.log(m.getAttribs(gs.EGeomType.objs));
+    console.log(m.getAttribs(gs.EGeomType.faces));
+    console.log(m.getAttribs(gs.EGeomType.wires));
+    console.log(m.getAttribs(gs.EGeomType.vertices));
+    console.log(m.getAttribs(gs.EGeomType.edges));
+    // console.log(m.getAttribs())
+
+
+
+//        // console.log(m1.getAttrib("test1",gs.EGeomType.points)); //
+        // let e:gs.ITopoAttrib |gs.IEntAttrib = m1.getAttrib("test1",gs.EGeomType.points) ;
+//       console.log(e.getName());  // let e:gs.IEntAttrib = m1.getAttrib("test1",gs.EGeomType.points); //
+// console.log
+
+
     return true;
 }
 export function test_Model_addAttrib():boolean {
@@ -54,31 +80,46 @@ export function test_Model_delAttrib():boolean {
     return true;
 }
 export function test_Model_getGroups():boolean {
+    let m:gs.Model = new gs.Model();
+    if(!(gs.Arr.equal(m.getGroups(), []))){return false;}
+        let g1:gs.IGroup = m.addGroup("G1");
+            let g2:gs.IGroup = m.addGroup("G2");
+                let g3:gs.IGroup = m.addGroup("G3");
+        let G:gs.IGroup[] = [g1,g2,g3];
+    if(!(m.getGroups()[0] == G[0])){return false;}
+        if(!(m.getGroups()[1] == G[1])){return false;}
+            if(!(m.getGroups()[2] == G[2])){return false;}
     return true;
 }
 export function test_Model_getGroup():boolean {
-    let m:gs.Model = new gs.Model();
-    m.addGroup("first_group");
-    m.getGroup("first_group");
-    m.getGroup("non_existent_group");
+    let m:gs.Model = new gs.Model(test_data.open_box());
+            let g:gs.IGroup = m.addGroup("Box"); //No group in Box
+    if(!( m.getGroup("Alpha") == null)){return false;}
+        if(!( m.getGroup("Box")   ==   g )){return false;}
     return true;
 }
 export function test_Model_addGroup():boolean {
     let m:gs.Model = new gs.Model();
-    m.addGroup("First_Group");
-    m.addGroup("Second_Group");
-    m.addGroup("Third_Group");
-    m.delGroup("Second_Group");
+        if(!( m.getGroup("Group1") == null)){return false;}
+    let g:gs.IGroup = m.addGroup("Group1");
+        if(!( m.getGroup("Group1") == g)){return false;}
     return true;
 }
-
 export function test_Model_hasGroup():boolean {
     let m:gs.Model = new gs.Model();
-    m.addGroup("First_Group");
+    if (m.hasGroup("First_Group")) {return false;}
+        m.addGroup("First_Group");
     if (!m.hasGroup("First_Group")) {return false;}
     return true;
 }
 export function test_Model_delGroup():boolean {
+    let m:gs.Model = new gs.Model();
+    if (m.hasGroup("First_Group")) {return false;}
+        m.addGroup("First_Group");
+    if (!m.hasGroup("First_Group")) {return false;}
+        m.delGroup("First_Group");
+    if (m.hasGroup("First_Group")) {return false;}
+    if(!( m.getGroup("First_Group") == null)){return false;}
     return true;
 }
 export function test_Model_purgePoints():boolean {
