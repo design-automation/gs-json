@@ -148,6 +148,41 @@ export function test_Geom_getPointData():boolean {
 export function test_Geom_getObjData():boolean {
     let m:gs.Model = new gs.Model(test_data.open_box());
     let geom:gs.IGeom = m.getGeom();
+
+    console.log(geom.getObjs()[0])
+
+    console.log(geom.getObj(0).getGeom().getObj(0))
+
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[0].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.edges)[0].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.wires)[0].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.faces)[0].getTopoPath()))
+
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[0].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[1].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[2].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[3].getTopoPath()))
+
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath()))
+    // I would have thought -1 wouldn't be an output of this function
+
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[5].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[6].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[7].getTopoPath()))
+    console.log(geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[8].getTopoPath()))
+
+    // console.log(geom.getPointPosition(0))
+    // // console.log(geom.getTopos(gs.EGeomType.points))
+    // console.log(geom.getObjData(0))   
+
+
+    // console.log(geom.getTopos(gs.EGeomType.points)[0].getTopoPath())
+    // console.log(geom.getObjData(geom.getTopos(gs.EGeomType.points)[0].getTopoPath()))
+
+
+
     // console.log(geom.getObjData(gs.EObjType))
     // for(let k  in  m.getGeom().getObjIDs()){
     // console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getGeom().getObjs())
