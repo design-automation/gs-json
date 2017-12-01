@@ -1,47 +1,33 @@
 import * as gs from "./gs-json";
+import * as test_data from "./test_data";
 
 export function test_createPoint():boolean {
-   let model:gs.IModel = new gs.Model();
-   let a:number[] = [1,2,3];
-//  for (let k:number = 0 ; 10 ; k++){a[k] = Math.floor(Math.random() * 10);} (this line crashes Karma)
-   model.getGeom().addPoint(a);
-   //test 1
-   if (model.getGeom().numPoints() != 1) {return false;}
-   //test 2
-   for (let k:number = 0 ; k<a.length ; k++){
-        if(model.getGeom().getPointData(0)[1][k] != a[k] ) {return false};
+    let model:gs.IModel = new gs.Model();
+    let a:number[] = [1,2,3];
+    //  for (let k:number = 0 ; 10 ; k++){a[k] = Math.floor(Math.random() * 10);} (this line crashes Karma)
+    model.getGeom().addPoint(a);
+    //test 1
+    if (model.getGeom().numPoints() != 1) {return false;}
+    //test 2
+    for (let k:number = 0 ; k<a.length ; k++){
+    if(model.getGeom().getPointData(0)[1][k] != a[k] ) {return false};
     }
     return true;
 }
-
 // Geom constructor and its 19 public methods are tested
 export function test_Geom_constructor():boolean {
-   let m1:gs.IModel = new gs.Model();
-   let a:number[] = [1,2,3];
-   m1.getGeom().addPoint(a);
-   m1.getGeom().getPointData(0);
-
-   let m2:gs.IModel = new gs.Model();
-//   console.log(m1.getGeom().getPointData(0));
-//  let g2:Geom = new Geom(m2, m1.getGeom().getPointData(0), null);
-// let g2:Geom = new Geom(m2, m1.getGeom().getPointData(0), []);
-
-// tester le constructeur
-// console.log(m2.getGeom().numPoints());
-// console.log(m2.getGeom().getPointData(0)[1]);
+    let m1:gs.IModel = new gs.Model();
+    let a:number[] = [1,2,3];
+    m1.getGeom().addPoint(a);
+    if(!(gs.Arr.equal(m1.getGeom().getPointData(0)[1],a))){return false;}
     return true;
 }
-
 export function test_Geom_getModel():boolean {
-   let m:gs.IModel = new gs.Model();
-   let g:gs.IGeom = m.getGeom();
-   g.addPoint([1,2,7]);
-//   console.log(g);
-//   console.log(g.getModel().getGeom().getPointData(0));
-//   console.log(a.getModel().getGeom().getPointIDs());
-   return true;
+    let m:gs.Model = new gs.Model(test_data.box_with_attribs());
+    let geom:gs.IGeom = m.getGeom();
+    if(!(geom.getModel().getAttribs(gs.EGeomType.points)[0].getName() == m.getAttribs(gs.EGeomType.points)[0].getName())){return false;}
+    return true;
 }
-
 export function test_Geom_addPoint():boolean {
     let model:gs.IModel = new gs.Model();
     let p1:number[] = [4,8,6];
@@ -52,9 +38,9 @@ export function test_Geom_addPoint():boolean {
     if (model.getGeom().numPoints() != num_Point) {return false;}
     //test 1.2
     for(let j:number = 0; j < model.getGeom().numPoints(); j++){
-        for (let k:number = 0 ; k<p1.length ; k++){
-            if(model.getGeom().getPointData(j)[1][k] != p1[k] ) {return false};       
-        }
+    for (let k:number = 0 ; k<p1.length ; k++){
+    if(model.getGeom().getPointData(j)[1][k] != p1[k] ) {return false};       
+    }
     }
     ////
     let p2:number[] = [4,2,8];
@@ -63,9 +49,9 @@ export function test_Geom_addPoint():boolean {
     //test 2.1
     if (model.getGeom().numPoints() != num_Point) {return false;}
     //test 2.2
-        for (let k:number = 0 ; k<p2.length ; k++){
-            if(model.getGeom().getPointData(1)[1][k] != p2[k] ) {return false};       
-        }
+    for (let k:number = 0 ; k<p2.length ; k++){
+    if(model.getGeom().getPointData(1)[1][k] != p2[k] ) {return false};       
+    }
     ////
     let p3:number[] = [6,1,7];
     num_Point = num_Point + 1;
@@ -73,9 +59,9 @@ export function test_Geom_addPoint():boolean {
     //test 3.1
     if (model.getGeom().numPoints() != num_Point) {return false;}
     //test 3.2
-        for (let k:number = 0 ; k<p3.length ; k++){
-            if(model.getGeom().getPointData(2)[1][k] != p3[k] ) {return false};       
-        }    
+    for (let k:number = 0 ; k<p3.length ; k++){
+    if(model.getGeom().getPointData(2)[1][k] != p3[k] ) {return false};       
+    }    
     return true;
 }
 
@@ -93,7 +79,7 @@ export function test_Geom_addPolyline():boolean {
     if (pline1.numWires() != 1) {return false;}
     if (pline2.numFaces() != 0) {return false;}
     if (pline2.numWires() != 1) {return false;}
-    console.log("get the wire 0", g.getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0)));
+    // console.log("get the wire 0", g.getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0)));
     return true;
 
 }
@@ -105,8 +91,8 @@ export function test_Geom_addPolymesh():boolean {
     let p3 = g.addPoint([2,7,0]);
     let p4 = g.addPoint([7,7,2]);
     let pmesh1:gs.IPolymesh = g.addPolymesh([
-        [p1,p2,p3],
-        [p2,p4,p3]
+    [p1,p2,p3],
+    [p2,p4,p3]
     ]);
 
     if (g.numObjs() != 1) {return false;}
@@ -124,12 +110,12 @@ export function test_Geom_addPolymesh():boolean {
     let p17 = g.addPoint([-5,3,2]);
 
     let pmesh2:gs.IPolymesh = g.addPolymesh([
-      [p13,p12,p11,p10], //bottom
-      [p10,p11,p15,p14], //side0
-      [p11,p12,p16,p15], //side1
-      [p12,p13,p17,p16], //side2
-      [p13,p10,p14,p17], //side3
-      [p14,p15,p16,p17]  //top
+    [p13,p12,p11,p10], //bottom
+    [p10,p11,p15,p14], //side0
+    [p11,p12,p16,p15], //side1
+    [p12,p13,p17,p16], //side2
+    [p13,p10,p14,p17], //side3
+    [p14,p15,p16,p17]  //top
     ]);
 
     if (g.numObjs() != 2) {return false;}
@@ -137,10 +123,10 @@ export function test_Geom_addPolymesh():boolean {
     if (pmesh2.numWires() != 0) {return false;}
 
     let pmesh3:gs.IPolymesh = g.addPolymesh([
-      [p13,p12,p11,p10], //bottom
-      [p10,p11,p15,p14], //side0
-      [p13,p10,p14,p17], //side3
-      [p14,p15,p16,p17]  //top
+    [p13,p12,p11,p10], //bottom
+    [p10,p11,p15,p14], //side0
+    [p13,p10,p14,p17], //side3
+    [p14,p15,p16,p17]  //top
     ]);
 
     if (g.numObjs() != 3) {return false;}
@@ -150,15 +136,45 @@ export function test_Geom_addPolymesh():boolean {
     return true;
 }
 export function test_Geom_getPointData():boolean {
+    let m:gs.Model = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    for ( let k  in  m.getGeom().getPointIDs()){
+    if(!(gs.Arr.equal(m.getGeom().getPoint(geom.getPointIDs()[k]).getPosition(),geom.getPointData(k)[1]))){return false;} // compiles well
+    }
     return true;
 }
 export function test_Geom_getObjData():boolean {
-    let m:gs.IModel = new gs.Model();
-    let g:gs.IGeom = m.getGeom();
-    g.addPoint([1,3,8]);
-    g.addPoint([6,4,3]);
-    let b1:gs.ITopoPath = new gs.TopoPath(0, null, null, null, null)
-    let b2:gs.ITopoPath = new gs.TopoPath(1, null, null, null, null)
+    let m:gs.Model = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    for(let k  in  m.getGeom().getObjIDs()){
+
+// console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getGeom().getObjs())
+console.log(geom.getObjData())
+
+
+console.log(m.getGeom().getObj(geom.getObjIDs()[k]))
+    // .getGeom().getObj()[k])
+
+// console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getObj()[0][2])
+// console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getObj()[0][3])
+    // if(!(gs.Arr.equal(m.getGeom().getObj(geom.getObjIDs()[k]).numWires(),geom.getObjData(k)[1]))){return false;} // compiles well
+    }
+
+
+
+
+
+
+
+
+    // let m:gs.IModel = new gs.Model();
+    // let g:gs.IGeom = m.getGeom();
+    // g.addPoint([1,3,8]);
+    // g.addPoint([6,4,3]);
+    // let b1:gs.ITopoPath = new gs.TopoPath(0, null, null, null, null)
+    // let b2:gs.ITopoPath = new gs.TopoPath(1, null, null, null, null)
+
+
     // console.log(b1.equals(b1));
     // console.log(b1.equals(b2));
     // console.log(a.getObjData(b1));
