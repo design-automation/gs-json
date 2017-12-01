@@ -172,14 +172,21 @@ export function test_Geom_getObjData():boolean {
 }
 export function test_Geom_getPointIDs():boolean {
     let m:gs.IModel = new gs.Model();
-    let g:gs.IGeom = m.getGeom();
-    g.addPoint([1,3,8]);
-    g.addPoint([6,4,3]);
-    g.addPoint([8,8,8]);
-    g.addPoint([3,4,5]);
-    g.addPoint([2,3,5]);
-    g.addPoint([1,5,2]);
-//    console.log(a.getPointIDs()); //expect to return the number 6, as there are 6 points
+    let geom:gs.IGeom = m.getGeom();
+
+    if(!(gs.Arr.equal(geom.getPointIDs(),[]))){return false;}
+    geom.addPoint([1,3,8]);
+    if(!(gs.Arr.equal(geom.getPointIDs(),[0]))){return false;}
+    geom.addPoint([6,4,3]);
+    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1]))){return false;}
+    geom.addPoint([8,8,8]);
+    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1,2]))){return false;}
+    geom.addPoint([3,4,5]);
+    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1,2,3]))){return false;}
+    geom.addPoint([2,3,5]);
+    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1,2,3,4]))){return false;}
+    geom.addPoint([1,5,2]);
+    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1,2,3,4,5]))){return false;}
     return true;
 }
 export function test_Geom_getPoints():boolean {
@@ -215,16 +222,21 @@ export function test_Geom_getPoints():boolean {
 }
 export function test_Geom_getPoint():boolean {
     let m:gs.Model = new gs.Model();
-    let g:gs.IGeom = m.getGeom();
-    g.addPoint([1,3,8]);
-    g.addPoint([6,4,3]);
-    g.addPoint([8,8,8]);
-    g.addPoint([3,4,5]);
-    g.addPoint([2,3,5]);
-    g.addPoint([1,5,2]);
-    for(let i:number=0;i<g.getPoints.length;i++){
-    // console.log(a.getPoint(i));
-    }
+    let geom:gs.IGeom = m.getGeom();
+    let p1:gs.IPoint = geom.addPoint([1,3,8]);
+    let p2:gs.IPoint = geom.addPoint([6,4,3]);
+    let p3:gs.IPoint = geom.addPoint([8,8,8]);
+    let p4:gs.IPoint = geom.addPoint([3,4,5]);
+    let p5:gs.IPoint = geom.addPoint([2,3,5]);
+    let p6:gs.IPoint = geom.addPoint([1,5,2]);
+
+    if(!(gs.Arr.equal(geom.getPointPosition(0),p1.getPosition()))){return false;}
+    if(!(gs.Arr.equal(geom.getPointPosition(1),p2.getPosition()))){return false;}
+    if(!(gs.Arr.equal(geom.getPointPosition(2),p3.getPosition()))){return false;}
+    if(!(gs.Arr.equal(geom.getPointPosition(3),p4.getPosition()))){return false;}
+    if(!(gs.Arr.equal(geom.getPointPosition(4),p5.getPosition()))){return false;}
+    if(!(gs.Arr.equal(geom.getPointPosition(5),p6.getPosition()))){return false;}
+    
     return true;
 }
 export function test_Geom_delPoint():boolean {
