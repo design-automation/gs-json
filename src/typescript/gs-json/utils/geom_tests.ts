@@ -102,7 +102,6 @@ export function test_Geom_addPolymesh():boolean {
     if (pmesh1.numFaces() != 2) {return false;}
     if (pmesh1.numWires() != 1) {return false;}
 
-
     let p10 = g.addPoint([-5,-3,-2]);
     let p11 = g.addPoint([5,-3,-2]);
     let p12 = g.addPoint([5,3,-2]);
@@ -149,6 +148,7 @@ export function test_Geom_getPointData():boolean {
 export function test_Geom_getObjData():boolean {
     let m:gs.Model = new gs.Model(test_data.open_box());
     let geom:gs.IGeom = m.getGeom();
+    // console.log(geom.getObjData(gs.EObjType))
     // for(let k  in  m.getGeom().getObjIDs()){
     // console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getGeom().getObjs())
     // console.log(geom.getObjData())
@@ -392,5 +392,22 @@ export function test_Geom_numTopos():boolean {
     return true;
 }
 export function test_Geom_getAttribTemplate():boolean {
+    let m:gs.Model = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+
+    let p1 = geom.addPoint([0,0,0]);
+    let p2 = geom.addPoint([2,0,0]);
+    let p3 = geom.addPoint([3,6,0]);
+    let p4 = geom.addPoint([7,4,9]);
+    let pline1:gs.IPolyline = geom.addPolyline([p1,p2,p3,p4], true);
+    let pline2:gs.IPolyline = geom.addPolyline([p1,p2,p3], false);
+    let pline3:gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
+
+    if(!(geom.getAttribTemplate(gs.EGeomType.points).length ==   geom.numPoints())){return false;}
+    if(!(geom.getAttribTemplate(gs.EGeomType.objs).length ==  geom.numObjs() )){return false;}
+    if(!(geom.getAttribTemplate(gs.EGeomType.wires).length ==  geom.numTopos(gs.EGeomType.wires))){return false;}
+    if(!(geom.getAttribTemplate(gs.EGeomType.faces)[0][0].length ==  geom.numTopos(gs.EGeomType.faces))){return false;}
+    if(!(gs.Arr.flatten(geom.getAttribTemplate(gs.EGeomType.edges)).length == geom.numTopos(gs.EGeomType.edges))){return false;}
+    if(!(gs.Arr.flatten(geom.getAttribTemplate(gs.EGeomType.vertices)).length == geom.numTopos(gs.EGeomType.vertices))){return false;}
     return true;
 }
