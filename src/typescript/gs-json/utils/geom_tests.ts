@@ -258,33 +258,107 @@ export function test_Geom_numPoints():boolean {
     geom.addPoint([1,5,2]);
     if(!(geom.numPoints() == 5)){return false;}
     return true;
-                                    // for(let k:number = 0; 8 ; k++){               // provoke a Karma Crash
-                                    // if(!(geom.numPoints() == k)){return false;}
-                                    // let x:number = Math.floor(Math.random()*10);
-                                    // let y:number = Math.floor(Math.random()*10);
-                                    // let z:number = Math.floor(Math.random()*10);
-                                    // geom.addPoint([x,y,z]);            
-                                    // }    
+                                                        // for(let k:number = 0; 8 ; k++){               // provoke a Karma Crash
+                                                        // if(!(geom.numPoints() == k)){return false;}
+                                                        // let x:number = Math.floor(Math.random()*10);
+                                                        // let y:number = Math.floor(Math.random()*10);
+                                                        // let z:number = Math.floor(Math.random()*10);
+                                                        // geom.addPoint([x,y,z]);            
+                                                        // }    
 }
 export function test_Geom_setPointPosition():boolean {
+    let m:gs.Model = new gs.Model();
+    let geom:gs.IGeom = m.getGeom();
+    geom.addPoint([1,3,8]);
+    geom.setPointPosition(0,[4,8,9])
+    if(!(gs.Arr.equal(geom.getPointPosition(0),[4,8,9]))){return false;}
     return true;
 }
 export function test_Geom_getPointPosition():boolean {
+    let m:gs.Model = new gs.Model();
+    let geom:gs.IGeom = m.getGeom();
+    geom.addPoint([1,3,8]);
+    if(!(gs.Arr.equal(geom.getPointPosition(0),[1,3,8]))){return false;}
     return true;
 }
 export function test_Geom_getObjIDs():boolean {
+    let m:gs.Model = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    let p1 = geom.addPoint([0,0,0]);
+    let p2 = geom.addPoint([2,0,0]);
+    let p3 = geom.addPoint([3,6,0]);
+    let p4 = geom.addPoint([7,4,9]);
+    if(!((gs.Arr.equal(geom.getObjIDs(),[0])))){return false;}
+    let pline1:gs.IPolyline = geom.addPolyline([p1,p2,p3,p4], true);
+    if(!((gs.Arr.equal(geom.getObjIDs(),[0,1])))){return false;}
+    let pline2:gs.IPolyline = geom.addPolyline([p1,p2,p3], false);
+    if(!((gs.Arr.equal(geom.getObjIDs(),[0,1,2])))){return false;}
+    let pline3:gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
+    if(!((gs.Arr.equal(geom.getObjIDs(),[0,1,2,3])))){return false;}
     return true;
 }
 export function test_Geom_getObjs():boolean {
+    let m:gs.Model = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    let p1 = geom.addPoint([0,0,0]);
+    let p2 = geom.addPoint([2,0,0]);
+    let p3 = geom.addPoint([3,6,0]);
+    let p4 = geom.addPoint([7,4,9]);
+    let pline1:gs.IPolyline = geom.addPolyline([p1,p2,p3,p4], true);
+    let pline2:gs.IPolyline = geom.addPolyline([p1,p2,p3], false);
+    let pline3:gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
+
+    if(!(gs.Arr.equal([geom.getObjs()[0].getObjType()],[200]))){return false;}
+    if(!(gs.Arr.equal([geom.getObjs()[1].getObjType()],[100]))){return false;}
+    if(!(gs.Arr.equal([geom.getObjs()[2].getObjType()],[100]))){return false;}
+
     return true;
 }
 export function test_Geom_getObj():boolean {
+    let m:gs.Model = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    let Polymesh:gs.IObj = geom.getObj(0)
+    if(!(gs.Arr.equal([Polymesh.getObjType()],[200]))){return false;}
     return true;
 }
 export function test_Geom_delObj():boolean {
+
+    // This test requires the delPoint implementation before running
+
+    // let m:gs.Model = new gs.Model(test_data.open_box());
+    // let geom:gs.IGeom = m.getGeom();
+    // if(!((gs.Arr.equal(geom.getObjIDs(),[0])))){return false;}
+    // geom.delObj(0,true);
+    // let p1 = geom.addPoint([0,0,0]);
+    // let p2 = geom.addPoint([2,0,0]);
+    // let p3 = geom.addPoint([3,6,0]);
+    // let p4 = geom.addPoint([7,4,9]);
+    // let pline1:gs.IPolyline = geom.addPolyline([p1,p2,p3,p4], true);
+    // if(!((gs.Arr.equal(geom.getObjIDs(),[0])))){return false;}
+    // let a:number = geom.getPointIDs().length;
+    // geom.delObj(0,false);
+    // if(!(gs.Arr.equal(geom.getObjIDs(),[]))){return false;}
+    // if( !(a-geom.getPointIDs().length == 4)){return false;}    
     return true;
 }
 export function test_Geom_numObjs():boolean {
+    let m:gs.Model = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    if(!(geom.numObjs(gs.EObjType.polymesh) == 1 )){return false;}
+    if(!(geom.numObjs(gs.EObjType.polyline) == 0 )){return false;}
+    let p1 = geom.addPoint([0,0,0]);
+    let p2 = geom.addPoint([2,0,0]);
+    let p3 = geom.addPoint([3,6,0]);
+    let p4 = geom.addPoint([7,4,9]);
+    let pline1:gs.IPolyline = geom.addPolyline([p1,p2,p3,p4], true);
+    if(!(geom.numObjs(gs.EObjType.polymesh) == 1 )){return false;}
+    if(!(geom.numObjs(gs.EObjType.polyline) == 1 )){return false;}
+    let pline2:gs.IPolyline = geom.addPolyline([p1,p2,p3], false);
+    if(!(geom.numObjs(gs.EObjType.polymesh) == 1 )){return false;}
+    if(!(geom.numObjs(gs.EObjType.polyline) == 2 )){return false;}    
+    let pline3:gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
+    if(!(geom.numObjs(gs.EObjType.polymesh) == 1 )){return false;}
+    if(!(geom.numObjs(gs.EObjType.polyline) == 3 )){return false;}
     return true;
 }
 export function test_Geom_getTopos():boolean {

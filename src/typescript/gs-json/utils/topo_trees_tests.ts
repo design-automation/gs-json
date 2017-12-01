@@ -10,7 +10,6 @@ import {TopoTree} from "./topo_trees";
 import {Model} from "./model";
 import * as td from "./test_data";
 
-
 // Tests for Class TopoTree
 export function test_TopoTree_constructor(): boolean {
 	let m:Model = new Model(td.open_box());
