@@ -45,32 +45,32 @@ export class Model implements ifs.IModel{
         //Attributes
         if (data && data.attribs && data.attribs.points != undefined) {
             for (let attrib_data of data.attribs.points) {
-                this._attribs.get("points").set(attrib_data.name, new EntAttrib(this, attrib_data));
+                this._attribs.get(EGeomType.points).set(attrib_data.name, new EntAttrib(this, attrib_data));
             }
         }
         if (data && data.attribs && data.attribs.objs != undefined) {
             for (let attrib_data of data.attribs.objs) {
-                this._attribs.get("objects").set(attrib_data.name, new EntAttrib(this, attrib_data));
+                this._attribs.get(EGeomType.objs).set(attrib_data.name, new EntAttrib(this, attrib_data));
             }
         }
         if (data && data.attribs && data.attribs.vertices != undefined) {
             for (let attrib_data of data.attribs.vertices) {
-                this._attribs.get("vertices").set(attrib_data.name, new TopoAttrib(this, attrib_data));
+                this._attribs.get(EGeomType.vertices).set(attrib_data.name, new TopoAttrib(this, attrib_data));
             }
         }
         if (data && data.attribs && data.attribs.edges != undefined) {
             for (let attrib_data of data.attribs.edges) {
-                this._attribs.get("edges").set(attrib_data.name, new TopoAttrib(this, attrib_data));
+                this._attribs.get(EGeomType.edges).set(attrib_data.name, new TopoAttrib(this, attrib_data));
             }
         }
         if (data && data.attribs && data.attribs.wires != undefined) {
             for (let attrib_data of data.attribs.wires) {
-                this._attribs.get("wires").set(attrib_data.name, new TopoAttrib(this, attrib_data));
+                this._attribs.get(EGeomType.wires).set(attrib_data.name, new TopoAttrib(this, attrib_data));
             }
         }
         if (data && data.attribs && data.attribs.faces != undefined) {
             for (let attrib_data of data.attribs.faces) {
-                this._attribs.get("faces").set(attrib_data.name, new TopoAttrib(this, attrib_data));
+                this._attribs.get(EGeomType.faces).set(attrib_data.name, new TopoAttrib(this, attrib_data));
             }
         }
 

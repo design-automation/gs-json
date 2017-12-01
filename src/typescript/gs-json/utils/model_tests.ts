@@ -16,10 +16,10 @@ export function test_setData2 (url:string):boolean {
 export function test_Model_constructor():boolean {
     let model:gs.IModel ;
     model = new gs.Model(test_data.open_box());
+
     //model with no attribs
     if (model.getGeom().numObjs() != 1) {return false;}
     if (model.getGeom().numPoints() != 8) {return false;}
-    // console.log(model);
     if (model.getGeom().getObj(0).numFaces() != 5) {return false;}
     if (! gs.Arr.equal(
     model.getGeom().getObj(0).getFaces()[4].getVertices().
@@ -29,6 +29,7 @@ export function test_Model_constructor():boolean {
     let attribs:gs.IAttrib[] = model.getAttribs(gs.EGeomType.vertices);
     if (attribs[0].getName() != "test2") {return false;}
     if (model.getGeom().getObj(0).getFaces()[0].getAttribValue("test3") != 2.0) {return false;}
+    
     //model with groups
     model = new gs.Model(test_data.box_with_groups());
     model.getGroups();
@@ -61,7 +62,7 @@ export function test_Model_getAttribs():boolean {
     if(!(e3[1].getName() == "test3")){return false;}
     if(!(e4[0].getName() == "wires_id")){return false;}
     if(!(e5[0].getName() == "edge_id")){return false;}
-    // if(!(e6[0].getName() == "obj_id")){return false;} //TO DO
+    if(!(e6[0].getName() == "obj_id")){return false;}
 
     return true;
 }
@@ -82,8 +83,7 @@ export function test_Model_getAttrib():boolean {
     if(!(e3bis.getName() == "test3")){return false;}
     if(!(e4.getName() == "wires_id")){return false;}
     if(!(e5.getName() == "edge_id")){return false;}
-
-    // if(!(e6.getName() == "obj_id")){return false;} //TO DO
+    if(!(e6.getName() == "obj_id")){return false;}
 
     return true;
 }
