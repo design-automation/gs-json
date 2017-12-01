@@ -46,31 +46,39 @@ export function test_Model_getGeom():boolean {
     return true;
 }
 export function test_Model_getAttribs():boolean {
-//     let m:gs.Model = new gs.Model();
-//     console.log(m.getAttribs());
     let m:gs.Model = new gs.Model(test_data.box_with_attribs());
-    // let e:gs.IEntAttrib[]|gs.ITopoAttrib[] = m.getAttribs();
-//     console.log(e);                                    
+        let e1:gs.IEntAttrib[]|gs.ITopoAttrib[] = m.getAttribs(gs.EGeomType.points);
+    let e2:gs.IEntAttrib[]|gs.ITopoAttrib[] = m.getAttribs(gs.EGeomType.vertices);
+        let e3:gs.IEntAttrib[]|gs.ITopoAttrib[] = m.getAttribs(gs.EGeomType.faces);
+    let e4:gs.IEntAttrib[]|gs.ITopoAttrib[] = m.getAttribs(gs.EGeomType.wires);
+        let e5:gs.IEntAttrib[]|gs.ITopoAttrib[] = m.getAttribs(gs.EGeomType.edges);
+    let e6:gs.IEntAttrib[]|gs.ITopoAttrib[] = m.getAttribs(gs.EGeomType.objs);
+    if(!(e1[0].getName() == "test1")){return false;}
+        if(!(e2[0].getName() == "test2")){return false;}
+            if(!(e3[0].getName() == "faces_id")){return false;}
+                if(!(e3[1].getName() == "test3")){return false;}
+                    if(!(e4[0].getName() == "wires_id")){return false;}
+                        if(!(e5[0].getName() == "edge_id")){return false;}
+                            // if(!(e6[0].getName() == "obj_id")){return false;} //TO DO
     return true;
 }
 export function test_Model_getAttrib():boolean {
     let m:gs.Model = new gs.Model(test_data.box_with_attribs());
-    console.log(m.getAttribs(gs.EGeomType.points));
-    console.log(m.getAttribs(gs.EGeomType.objs));
-    console.log(m.getAttribs(gs.EGeomType.faces));
-    console.log(m.getAttribs(gs.EGeomType.wires));
-    console.log(m.getAttribs(gs.EGeomType.vertices));
-    console.log(m.getAttribs(gs.EGeomType.edges));
-    // console.log(m.getAttribs())
-
-
-
-//        // console.log(m1.getAttrib("test1",gs.EGeomType.points)); //
-        // let e:gs.ITopoAttrib |gs.IEntAttrib = m1.getAttrib("test1",gs.EGeomType.points) ;
-//       console.log(e.getName());  // let e:gs.IEntAttrib = m1.getAttrib("test1",gs.EGeomType.points); //
-// console.log
-
-
+        let e1:gs.IEntAttrib|gs.ITopoAttrib = m.getAttrib("test1",gs.EGeomType.points);
+    let e2:gs.IEntAttrib|gs.ITopoAttrib = m.getAttrib("test2",gs.EGeomType.vertices);
+        let e3:gs.IEntAttrib|gs.ITopoAttrib = m.getAttrib("faces_id",gs.EGeomType.faces);
+        let e3bis:gs.IEntAttrib|gs.ITopoAttrib = m.getAttrib("test3",gs.EGeomType.faces);
+    let e4:gs.IEntAttrib|gs.ITopoAttrib = m.getAttrib("wires_id",gs.EGeomType.wires);
+        let e5:gs.IEntAttrib|gs.ITopoAttrib = m.getAttrib("edge_id",gs.EGeomType.edges);
+    let e6:gs.IEntAttrib|gs.ITopoAttrib = m.getAttrib("obj_id",gs.EGeomType.objs);
+    if(!(e1.getName() == "test1")){return false;}
+        if(!(e2.getName() == "test2")){return false;}
+            if(!(e3.getName() == "faces_id")){return false;}
+                if(!(e3bis.getName() == "test3")){return false;}
+                    if(!(e4.getName() == "wires_id")){return false;}
+                        if(!(e5.getName() == "edge_id")){return false;}
+                            // if(!(e6.getName() == "obj_id")){return false;} //TO DO
+                            console.log(e6);
     return true;
 }
 export function test_Model_addAttrib():boolean {
@@ -122,12 +130,12 @@ export function test_Model_delGroup():boolean {
     if(!( m.getGroup("First_Group") == null)){return false;}
     return true;
 }
-export function test_Model_purgePoints():boolean {
+export function test_Model_purgePoints():boolean { //OPTIONAL testing as of now
     return true;
 }
-export function test_Model_purgeNulls():boolean {
+export function test_Model_purgeNulls():boolean { //OPTIONAL testing as of now
     return true;
 }
-export function test_Model_validateModel():boolean {
+export function test_Model_validateModel():boolean { //OPTIONAL testing as of now
     return true;
 }

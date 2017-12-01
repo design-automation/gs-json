@@ -51,7 +51,7 @@ export function test_Attrib_getValue():boolean {
 export function test_Attrib_setValue():boolean {
 	let m:gs.IModel = new gs.Model(td.box_with_attribs());
 	let faces:gs.IFace[] = m.getGeom().getObj(0).getFaces();
-	let attrib:gs.ITopoAttrib = m.getAttrib("shell_id", gs.EGeomType.faces) as gs.ITopoAttrib;
+	let attrib:gs.ITopoAttrib = m.getAttrib("faces_id", gs.EGeomType.faces) as gs.ITopoAttrib;
 	attrib.setValue(faces[3].getTopoPath(), 1234);
 	if (attrib.getValue(faces[3].getTopoPath()) != 1234) {return false;}
     return true;
