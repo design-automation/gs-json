@@ -43,46 +43,110 @@ export function test_Geom_getModel():boolean {
 }
 
 export function test_Geom_addPoint():boolean {
-   let model:gs.IModel = new gs.Model();
-   let p1:number[] = [4,8,6];
-   let num_Point:number = 1;
-   //  for (let k:number = 0 ; 10 ; k++){a[k] = Math.floor(Math.random() * 10);} (this line crashes Karma)
-   model.getGeom().addPoint(p1);
-   //test 1.1
-   if (model.getGeom().numPoints() != num_Point) {return false;}
-   //test 1.2
-   for(let j:number = 0; j < model.getGeom().numPoints(); j++){
-       for (let k:number = 0 ; k<p1.length ; k++){
+    let model:gs.IModel = new gs.Model();
+    let p1:number[] = [4,8,6];
+    let num_Point:number = 1;
+    //  for (let k:number = 0 ; 10 ; k++){a[k] = Math.floor(Math.random() * 10);} (this line crashes Karma)
+    model.getGeom().addPoint(p1);
+    //test 1.1
+    if (model.getGeom().numPoints() != num_Point) {return false;}
+    //test 1.2
+    for(let j:number = 0; j < model.getGeom().numPoints(); j++){
+        for (let k:number = 0 ; k<p1.length ; k++){
             if(model.getGeom().getPointData(j)[1][k] != p1[k] ) {return false};       
         }
     }
     ////
-   let p2:number[] = [4,2,8];
-   num_Point = num_Point + 1;
-   model.getGeom().addPoint(p2);
-   //test 2.1
-   if (model.getGeom().numPoints() != num_Point) {return false;}
-   //test 2.2
-       for (let k:number = 0 ; k<p2.length ; k++){
+    let p2:number[] = [4,2,8];
+    num_Point = num_Point + 1;
+    model.getGeom().addPoint(p2);
+    //test 2.1
+    if (model.getGeom().numPoints() != num_Point) {return false;}
+    //test 2.2
+        for (let k:number = 0 ; k<p2.length ; k++){
             if(model.getGeom().getPointData(1)[1][k] != p2[k] ) {return false};       
         }
     ////
-   let p3:number[] = [6,1,7];
-   num_Point = num_Point + 1;
-   model.getGeom().addPoint(p3);
-   //test 3.1
-   if (model.getGeom().numPoints() != num_Point) {return false;}
-   //test 3.2
-       for (let k:number = 0 ; k<p3.length ; k++){
+    let p3:number[] = [6,1,7];
+    num_Point = num_Point + 1;
+    model.getGeom().addPoint(p3);
+    //test 3.1
+    if (model.getGeom().numPoints() != num_Point) {return false;}
+    //test 3.2
+        for (let k:number = 0 ; k<p3.length ; k++){
             if(model.getGeom().getPointData(2)[1][k] != p3[k] ) {return false};       
         }    
     return true;
 }
 
 export function test_Geom_addPolyline():boolean {
+    let m:gs.IModel = new gs.Model();
+    let g:gs.IGeom = m.getGeom();
+    let p1 = g.addPoint([0,0,0]);
+    let p2 = g.addPoint([2,0,0]);
+    let p3 = g.addPoint([3,6,0]);
+    let p4 = g.addPoint([7,4,9]);
+    let pline1:gs.IPolyline = g.addPolyline([p1,p2,p3,p4], true);
+    let pline2:gs.IPolyline = g.addPolyline([p1,p2,p3], false);
+    if (g.numObjs() != 2) {return false;}
+    if (pline1.numFaces() != 0) {return false;}
+    if (pline1.numWires() != 1) {return false;}
+    if (pline2.numFaces() != 0) {return false;}
+    if (pline2.numWires() != 1) {return false;}
+    console.log("get the wire 0", g.getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0)));
     return true;
+
 }
 export function test_Geom_addPolymesh():boolean {
+    let m:gs.IModel = new gs.Model();
+    let g:gs.IGeom = m.getGeom();
+    let p1 = g.addPoint([0,0,0]);
+    let p2 = g.addPoint([2,0,0]);
+    let p3 = g.addPoint([2,7,0]);
+    let p4 = g.addPoint([7,7,2]);
+    let pmesh1:gs.IPolymesh = g.addPolymesh([
+        [p1,p2,p3],
+        [p2,p4,p3]
+    ]);
+
+    if (g.numObjs() != 1) {return false;}
+    if (pmesh1.numFaces() != 2) {return false;}
+    if (pmesh1.numWires() != 1) {return false;}
+
+
+    let p10 = g.addPoint([-5,-3,-2]);
+    let p11 = g.addPoint([5,-3,-2]);
+    let p12 = g.addPoint([5,3,-2]);
+    let p13 = g.addPoint([-5,3,-2]);
+    let p14 = g.addPoint([-5,-3,2]);
+    let p15 = g.addPoint([5,-3,2]);
+    let p16 = g.addPoint([5,3,2]);
+    let p17 = g.addPoint([-5,3,2]);
+
+    let pmesh2:gs.IPolymesh = g.addPolymesh([
+      [p13,p12,p11,p10], //bottom
+      [p10,p11,p15,p14], //side0
+      [p11,p12,p16,p15], //side1
+      [p12,p13,p17,p16], //side2
+      [p13,p10,p14,p17], //side3
+      [p14,p15,p16,p17]  //top
+    ]);
+
+    if (g.numObjs() != 2) {return false;}
+    if (pmesh2.numFaces() != 6) {return false;}
+    if (pmesh2.numWires() != 0) {return false;}
+
+    let pmesh3:gs.IPolymesh = g.addPolymesh([
+      [p13,p12,p11,p10], //bottom
+      [p10,p11,p15,p14], //side0
+      [p13,p10,p14,p17], //side3
+      [p14,p15,p16,p17]  //top
+    ]);
+
+    if (g.numObjs() != 3) {return false;}
+    if (pmesh3.numFaces() != 4) {return false;}
+    if (pmesh3.numWires() != 1) {return false;}
+
     return true;
 }
 export function test_Geom_getPointData():boolean {

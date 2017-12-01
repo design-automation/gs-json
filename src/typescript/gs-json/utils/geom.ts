@@ -39,7 +39,7 @@ export class Geom implements ifs.IGeom {
     * @return
     */
     public getModel():ifs.IModel {
-    return this._model;
+        return this._model;
     }
 
     //Creation
@@ -49,15 +49,16 @@ export class Geom implements ifs.IGeom {
     * @return a instance of type Point is returned
     */
     public addPoint(xyz:number[]):ifs.IPoint {
-        let point:Point = new Point(this, this.numPoints()); 
+        let new_id:number = this.numPoints();
+        //create the point
         this._points[0].push(0);//add a point to the points list
-        point.setPosition(xyz); 
+        this.setPointPosition(new_id, xyz); 
         //update point attributes
         for (let attrib of this._model.getAttribs(EGeomType.points)) {
             attrib = attrib as ifs.IEntAttrib;
-            attrib.addValue(point.getID())
+            attrib.addValue(new_id);
         }
-        return point;
+        return new Point(this, new_id);
     }
 
     /**
@@ -67,29 +68,92 @@ export class Geom implements ifs.IGeom {
     */
     public addPolyline(wire_points:ifs.IPoint[], is_closed:boolean):ifs.IPolyline {
         if (wire_points.length < 2) {throw new Error("Too few points for creating a polyline.");}
-        let pline:ifs.IPolyline = new Polyline(this, this.numObjs());
+        let new_id:number = this.numObjs();
         let wire_ids:number[] = wire_points.map((v,i)=>v.getID());
+        //create the pline
         if (is_closed) {wire_ids.push(-1);}
-        this._objs.push([[[wire_ids]],[],[200]]);//add the obj
-        //update all attributes except points
+        this._objs.push([[wire_ids],[],[100]]);//add the obj
+        //update all attributes
         for (let attrib of this._model.getAttribs()) {
-            attrib.addObjValues(pline.getID());
+            attrib.addObjValues(new_id);
         }
         //return the new pline
-        return pline;
+        return new Polyline(this, new_id);
     }
+
 
     /**
     * to be completed
     * @param
     * @return Object of type Polymesh
     */
-    public addPolymesh(wire_points:ifs.IPoint[], face_points:ifs.IFace[]):ifs.IPolymesh {//double arrays
-        let pmesh:ifs.IPolymesh = new Polymesh(this, this.numObjs());
-        this._objs[0].push(0);//points to null
-        pmesh.setPosition(wire_points, face_points);
-        //update all attributes except points
-        return pmesh;
+    private _findPolymeshWires(face_ids:number[][]):number[][] {
+        let wire_ids:number[][] = [];
+        let edges:number[][] = [];
+        for (let f of face_ids) {
+            for (let i=0;i<f.length;i++) {
+                let v1 = f[i];
+                let i2 = i + 1;
+                if (i2 == f.length) {i2 = 0;}
+                let v2 = f[i2];
+                edges.push([v1,v2]);
+            }
+        }
+        let naked_edges:number[][] = [];
+        for (let e of edges) {
+            if (Arr.indexOf([e[1],e[0]], edges) == -1) {naked_edges.push(e);}
+        }
+        if (naked_edges.length == 0) {
+            return [];
+        }
+        let sorted_naked_edges:number[][][] = [[naked_edges[0]]];
+        let already_used:number[][] = [naked_edges[0]];
+        for (let i=0;i<naked_edges.length;i++) {
+            let current_wire_edges:number[][] = sorted_naked_edges[sorted_naked_edges.length-1];
+            let start:number = current_wire_edges[0][0];
+            let end:number = current_wire_edges[current_wire_edges.length-1][1];
+            if (start == end) {
+                for (let e of naked_edges) {
+                    if (Arr.indexOf(e, already_used) == -1) {
+                        sorted_naked_edges.push([e]);
+                        already_used.push(e);
+                        break;
+                    }
+                }
+            } else {
+                for (let e of naked_edges) {
+                    if (e[0] == end) {
+                        current_wire_edges.push(e);
+                        already_used.push(e);
+                        break;
+                    }
+                }
+            }
+        }
+        let naked_wires:number[][] = sorted_naked_edges.map((w)=>Arr.flatten(w.map((e)=>e[0])));
+        return naked_wires;
+    }
+    /**
+    * to be completed
+    * @param
+    * @return Object of type Polymesh
+    */
+    public addPolymesh(face_points:ifs.IPoint[][]):ifs.IPolymesh {
+        for (let f of face_points) {
+            if (f.length<3) {throw new Error("Too few points for creating a face.");}
+        }
+        let new_id:number = this.numObjs();
+        let face_ids:number[][] = face_points.map((f)=>f.map((v)=>v.getID()));
+        let wire_ids:number[][] = this._findPolymeshWires(face_ids);
+        face_ids.forEach((f)=>f.push(-1));
+        wire_ids.forEach((w)=>w.push(-1));
+        this._objs.push([wire_ids,face_ids,[100]]);//add the obj
+        //update all attributes
+        for (let attrib of this._model.getAttribs()) {
+            attrib.addObjValues(new_id);
+        }
+        //return the new pline
+        return new Polymesh(this, new_id);
     }
 
     /**
@@ -200,6 +264,7 @@ export class Geom implements ifs.IGeom {
 
 
         //TODO decide how to do this
+        
         console.log("WARNING: implementation incomplete.")
 
 

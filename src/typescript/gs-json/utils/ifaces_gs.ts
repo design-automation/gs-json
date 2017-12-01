@@ -11,7 +11,7 @@ export interface IModel {
     //Geometry
     getGeom():IGeom;
     //Attribs
-    getAttribs(attrib_type?:EGeomType):IEntAttrib[]|ITopoAttrib[];
+    getAttribs(attrib_type?:EGeomType):(IEntAttrib|ITopoAttrib)[];
     getAttrib(name:string, attrib_type:EGeomType):IEntAttrib|ITopoAttrib;
     addAttrib(name:string, attrib_type:EGeomType, data_type:EDataType):IEntAttrib|ITopoAttrib;
     delAttrib(name:string, attrib_type:EGeomType):boolean;
@@ -39,8 +39,8 @@ export interface IGeom  {
     getModel():IModel;
     //Creation
     addPoint(xyz:number[]):IPoint;
-    addPolyline(wire_points:IPoint[], is_closed:boolean):IObj;
-    addPolymesh(wire_points:IPoint[], face_points:IFace[]):IObj;
+    addPolyline(wire_points:IPoint[], is_closed:boolean):IPolyline;
+    addPolymesh(face_points:IPoint[][]):IPolymesh;
     //Generic method for getting data
     getPointData(id:number):any[];
     getObjData(path?:ITopoPath):any;
