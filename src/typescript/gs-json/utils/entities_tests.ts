@@ -81,12 +81,30 @@ export function test_ent_setAttribValue():boolean {
     return true;
 }
 export function test_ent_getGroupNames():boolean {
-
-
+    let m:gs.IModel = new gs.Model(test_data.box_with_groups());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:ifs.IObj = geom.getObj(0);
     
+    // console.log(a1.getGroupNames());
+    // console.log(geom);
+    // console.log(m.getGroups())
+// console.log(m);
+    // let model:gs.IModel ;    
+    // model = new gs.Model(test_data.box_with_groups());
+    // model.getGroups();
+    // let grp:gs.IGroup = model.getGroup("building_obj");
+    // console.log(grp);
+
+
+// == ["building_obj"]
+
     return true;
 }
 export function test_ent_addToGroup():boolean {
+    // let m:gs.IModel = new gs.Model(test_data.box_with_groups());
+    // let geom:gs.IGeom = m.getGeom();
+    // let a1:ifs.IObj = geom.getObj(0);
+    // let gpr1
     return true;
 }
 
@@ -98,10 +116,14 @@ export function test_point_setPosition():boolean {
     let model:gs.IModel = new gs.Model();
     let point:gs.IPoint = model.getGeom().addPoint([11,22,33]);
     point.setPosition([4,5,6]);
+    if((Arr.equal(point.getPosition(),[11,22,33]))){return false;}
+    if(!(Arr.equal(point.getPosition(),[4,5,6]))){return false;}
     point.setPosition(null); //what should this do?
-    point.setPosition([1,2]); //what should this do?
-    point.setPosition([1,2,3,4]); //what should this do?
-    point.setPosition([1,,2]); //sparse array
+    if((Arr.equal(point.getPosition(),[4,5,6]))){return false;}
+    if(!(Arr.equal(point.getPosition(),null))){return false;}
+        // point.setPosition([1,2]); //what should this do?
+        // point.setPosition([1,2,3,4]); //what should this do?
+        // point.setPosition([1,,2]); //sparse array
     return true;
 }
 export function test_point_getPosition():boolean {
@@ -112,6 +134,14 @@ export function test_point_getPosition():boolean {
     return gs.Arr.equal([4,5,6], pos);
 }
 export function test_point_getVertices():boolean {
+    let m:gs.IModel = new gs.Model(test_data.box_with_groups());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:gs.IPoint = geom.getPoint(0);
+ 
+
+
+
+
     return true;
 }
 
