@@ -79,10 +79,10 @@ export function test_Geom_addPolyline():boolean {
     if (pline1.numWires() != 1) {return false;}
     if (pline2.numFaces() != 0) {return false;}
     if (pline2.numWires() != 1) {return false;}
-<<<<<<< HEAD
-    // console.log("get the wire 0", g.getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0)));
-=======
->>>>>>> bafbac73c9771851c06681e79f8c33e5bac39a81
+// <<<<<<< HEAD
+//     // console.log("get the wire 0", g.getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0)));
+// =======
+// >>>>>>> bafbac73c9771851c06681e79f8c33e5bac39a81
     return true;
 
 }
@@ -149,35 +149,21 @@ export function test_Geom_getPointData():boolean {
 export function test_Geom_getObjData():boolean {
     let m:gs.Model = new gs.Model(test_data.open_box());
     let geom:gs.IGeom = m.getGeom();
-    for(let k  in  m.getGeom().getObjIDs()){
-
-// console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getGeom().getObjs())
-console.log(geom.getObjData())
-
-
-console.log(m.getGeom().getObj(geom.getObjIDs()[k]))
+    // for(let k  in  m.getGeom().getObjIDs()){
+    // console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getGeom().getObjs())
+    // console.log(geom.getObjData())
+    // console.log(m.getGeom().getObj(geom.getObjIDs()[k]))
     // .getGeom().getObj()[k])
-
-// console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getObj()[0][2])
-// console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getObj()[0][3])
+    // console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getObj()[0][2])
+    // console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getObj()[0][3])
     // if(!(gs.Arr.equal(m.getGeom().getObj(geom.getObjIDs()[k]).numWires(),geom.getObjData(k)[1]))){return false;} // compiles well
-    }
-
-
-
-
-
-
-
-
+    // }
     // let m:gs.IModel = new gs.Model();
     // let g:gs.IGeom = m.getGeom();
     // g.addPoint([1,3,8]);
     // g.addPoint([6,4,3]);
     // let b1:gs.ITopoPath = new gs.TopoPath(0, null, null, null, null)
     // let b2:gs.ITopoPath = new gs.TopoPath(1, null, null, null, null)
-
-
     // console.log(b1.equals(b1));
     // console.log(b1.equals(b2));
     // console.log(a.getObjData(b1));
@@ -199,23 +185,22 @@ export function test_Geom_getPointIDs():boolean {
 export function test_Geom_getPoints():boolean {
     let m:gs.Model = new gs.Model();
     let g1:gs.IGeom = m.getGeom();
-
     let p1:number[] = [1,3,9] ;
-        g1.addPoint(p1);
+    g1.addPoint(p1);
     let p2:number[] = [2,1,6] ;
-        g1.addPoint(p2);
+    g1.addPoint(p2);
     let p3:number[] = [4,9,2] ;
-        g1.addPoint(p3);
+    g1.addPoint(p3);
     let p4:number[] = [2,3,4] ;
-        g1.addPoint(p4);
+    g1.addPoint(p4);
     let p5:number[] = [8,4,3] ;
-        g1.addPoint(p5);
+    g1.addPoint(p5);
     let p6:number[] = [6,1,7] ;
-        g1.addPoint(p6);
+    g1.addPoint(p6);
     let p7:number[] = [9,0,4] ;
-        g1.addPoint(p7);
+    g1.addPoint(p7);
     let p8:number[] = [4,0,8] ;
-        g1.addPoint(p8);
+    g1.addPoint(p8);
 
     if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[0].getID())[1] != p1 ) {return false;}
     if( g1.getPoints()[0].getGeom().getPointData(g1.getPoints()[1].getID())[1] != p2 ) {return false;}
@@ -243,10 +228,43 @@ export function test_Geom_getPoint():boolean {
     return true;
 }
 export function test_Geom_delPoint():boolean {
+    let m:gs.Model = new gs.Model();
+    let geom:gs.IGeom = m.getGeom();
+    geom.addPoint([1,3,8]);
+    geom.addPoint([8,8,8]);
+    geom.addPoint([3,4,5]);
+    geom.addPoint([2,3,5]);
+    geom.addPoint([1,5,2]);
+    // The below test is to run when delPoint funciton is implemented
+    // if(!(geom.numPoints() == 5)){return false;}
+    // for(let k:number = 0 ; k < 4; k++){
+    // geom.delPoint(5-k);
+    // if(!(geom.numPoints() == 5 - (k+1) )){return false;}
+    // }
     return true;
 }
 export function test_Geom_numPoints():boolean {
+    let m:gs.Model = new gs.Model();
+    let geom:gs.IGeom = m.getGeom();
+    if(!(geom.numPoints() == 0)){return false;}
+    geom.addPoint([1,3,8]);
+    if(!(geom.numPoints() == 1)){return false;}
+    geom.addPoint([8,8,8]);
+    if(!(geom.numPoints() == 2)){return false;}
+    geom.addPoint([3,4,5]);
+    if(!(geom.numPoints() == 3)){return false;}
+    geom.addPoint([2,3,5]);
+    if(!(geom.numPoints() == 4)){return false;}
+    geom.addPoint([1,5,2]);
+    if(!(geom.numPoints() == 5)){return false;}
     return true;
+                                    // for(let k:number = 0; 8 ; k++){               // provoke a Karma Crash
+                                    // if(!(geom.numPoints() == k)){return false;}
+                                    // let x:number = Math.floor(Math.random()*10);
+                                    // let y:number = Math.floor(Math.random()*10);
+                                    // let z:number = Math.floor(Math.random()*10);
+                                    // geom.addPoint([x,y,z]);            
+                                    // }    
 }
 export function test_Geom_setPointPosition():boolean {
     return true;
@@ -270,9 +288,21 @@ export function test_Geom_numObjs():boolean {
     return true;
 }
 export function test_Geom_getTopos():boolean {
+    let m:gs.Model = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    if(!(geom.getTopos(gs.EGeomType.edges).length == geom.numTopos(gs.EGeomType.edges))){return false;}
+    if(!(geom.getTopos(gs.EGeomType.vertices).length == geom.numTopos(gs.EGeomType.vertices))){return false;}
+    if(!(geom.getTopos(gs.EGeomType.faces).length == geom.numTopos(gs.EGeomType.faces))){return false;}
+    if(!(geom.getTopos(gs.EGeomType.wires).length == geom.numTopos(gs.EGeomType.wires))){return false;}
     return true;
 }
 export function test_Geom_numTopos():boolean {
+    let m:gs.Model = new gs.Model(test_data.box_with_attribs());
+    let geom:gs.IGeom = m.getGeom();
+    if(!(geom.getTopos(gs.EGeomType.edges).length == geom.numTopos(gs.EGeomType.edges))){return false;}
+    if(!(geom.getTopos(gs.EGeomType.vertices).length == geom.numTopos(gs.EGeomType.vertices))){return false;}
+    if(!(geom.getTopos(gs.EGeomType.faces).length == geom.numTopos(gs.EGeomType.faces))){return false;}
+    if(!(geom.getTopos(gs.EGeomType.wires).length == geom.numTopos(gs.EGeomType.wires))){return false;}
     return true;
 }
 export function test_Geom_getAttribTemplate():boolean {
