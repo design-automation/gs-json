@@ -131,7 +131,7 @@ export function box_with_attribs():gs.IModelData {
                     [2.0, 12.0, 22.0, 32.0, 42.0, 52.0]
                 ]
             }
-            ],
+        ],
         "wires":[
             {
                 "name":"wires_id", 
@@ -142,7 +142,7 @@ export function box_with_attribs():gs.IModelData {
                     [0]
                 ]
             }
-            ],
+        ],
         "edges":[
             {
                 "name":"edge_id", 
@@ -151,41 +151,20 @@ export function box_with_attribs():gs.IModelData {
                 "values": [
                     [[0, 0, 0, 0, 0, 0]],
                     [0]
-                            ]
-            }
                 ]
-
-
-///
-        //     ,
-        // "objs":[
-        //     {
-        //         "name":"obj_id", 
-        //         "geom_type":"objs",
-        //         "data_type":"number",
-        //         "values":
-
-
-        //     [
-        //         [
-        //             [5, 4, 5]
-        //         ],
-        //         [
-        //             [1, 5, 4, 0, -1], 
-        //             [2, 6, 5, 1, -1], 
-        //             [3, 7, 6, 2, -1], 
-        //             [0, 4, 7, 3, -1], 
-        //             [2, 1, 0, 3, -1], 
-        //             [5, 6, 7, 4, -1]
-        //         ],
-        //         [200]
-        //     ]
-
-        //     }
-        // ]
-                
-///
-
+            }
+        ],
+        "objs":[
+            {
+                "name":"obj_id", 
+                "geom_type":"objs",
+                "data_type":"number",
+                "values": [
+                    [0],
+                    [1234]
+                ]
+            }
+        ]
         }        
     }
 }

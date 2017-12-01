@@ -93,7 +93,6 @@ export function test_Geom_addPolyline():boolean {
     if (pline1.numWires() != 1) {return false;}
     if (pline2.numFaces() != 0) {return false;}
     if (pline2.numWires() != 1) {return false;}
-    console.log("get the wire 0", g.getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0)));
     return true;
 
 }
