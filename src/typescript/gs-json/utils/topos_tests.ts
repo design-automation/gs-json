@@ -1,7 +1,7 @@
 import * as gs from "./gs-json";
 import * as td from "./test_data";
 import {Topo} from "./topos";
-
+import * as test_data from "./test_data";
 export function test_Topo_constructor():boolean{
 	// the class is abstract
 	return true;
@@ -18,6 +18,12 @@ export function test_Topo_getObjID():boolean{
 }
 
 export function test_Topo_getGeom():boolean{
+
+
+
+
+
+
 	return true;
 }
 
@@ -30,18 +36,49 @@ export function test_Topo_getModel():boolean{
 // }
 
 export function test_Topo_getAttribNames():boolean{
+    let m:gs.IModel = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:gs.IObj = geom.getObj(0);
+    let path1:gs.ITopoPath = a1.getWires()[0].getTopoPath() ;
+
+
+
 	return true;
 }
 
 export function test_Topo_getAttribValue():boolean{
+    let m:gs.IModel = new gs.Model(test_data.box_with_attribs());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:gs.IObj = geom.getObj(0);
+    let path1:gs.ITopoPath = a1.getFaces()[0].getTopoPath() ;
+    if(!(geom.numTopos(gs.EGeomType.faces) == 6)){return false;}
+    if(!(a1.getFaces()[0].getAttribValue("faces_id") == 0)){return false;}
 	return true;
 }
 
 export function test_Topo_setAttribValue():boolean{
+    let m:gs.IModel = new gs.Model(test_data.box_with_attribs());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:gs.IObj = geom.getObj(0);
+    let path1:gs.ITopoPath = a1.getFaces()[0].getTopoPath() ;
+    if(!(geom.numTopos(gs.EGeomType.faces) == 6)){return false;}
+    if(!(a1.getFaces()[0].getAttribValue("faces_id") == 0)){return false;}
+	a1.getFaces()[0].setAttribValue("faces_id",49)
+	if((a1.getFaces()[0].getAttribValue("faces_id") == 0)){return false;}
+	if(!(a1.getFaces()[0].getAttribValue("faces_id") == 49)){return false;}
 	return true;
 }
 
 export function test_Topo_getGroupNames():boolean{
+ //    let m:gs.IModel = new gs.Model(test_data.box_with_groups());
+ //    let geom:gs.IGeom = m.getGeom();
+ //    let a1:gs.IObj = geom.getObj(0);
+ //    let path1:gs.ITopoPath = a1.getFaces()[0].getTopoPath() ;
+ //    if(!(geom.numTopos(gs.EGeomType.faces) == 6)){return false;}
+ //    if(!(a1.getFaces()[0].getAttribValue("faces_id") == 0)){return false;}
+	// a1.getFaces()[0].setAttribValue("faces_id",49)
+	// if((a1.getFaces()[0].getAttribValue("faces_id") == 0)){return false;}
+	// if(!(a1.getFaces()[0].getAttribValue("faces_id") == 49)){return false;}
 	return true;
 }
 
@@ -121,6 +158,19 @@ export function test_Edge_getWireOrFace():boolean{
 	return true;
 }
 export function test_Edge_next():boolean{
+	let m:gs.IModel = new gs.Model(test_data.open_box());
+	let geom:gs.IGeom = m.getGeom();
+	let a1:gs.IObj = geom.getObj(0);
+	let path1:gs.ITopoPath = a1.getEdges()[0][0][0].getTopoPath() ;
+	console.log(geom.numTopos(gs.EGeomType.edges))
+	console.log(a1.getEdges()[0][0][0].getTopoPath())
+	console.log(a1.getEdges()[0][0][1].getTopoPath())
+	console.log(a1.getEdges()[0][0][2].getTopoPath())
+	console.log(a1.getEdges()[0][0][1].next().getTopoPath())
+	console.log(a1.getEdges()[0][0][1].previous().getTopoPath())
+	console.log(a1.getEdges()[0][0][0].next().getTopoPath())
+	console.log(a1.getEdges()[0][0][0].previous().getTopoPath()) //Same results for next/previous..?
+
 	return true;
 }
 export function test_Edge_previous():boolean{
