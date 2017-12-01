@@ -96,7 +96,7 @@ export class Model implements ifs.IModel{
     */
     public getAttribs(geom_type?:EGeomType):(ifs.IEntAttrib|ifs.ITopoAttrib)[] {
         switch (geom_type) {
-            case EGeomType.points: 
+            case EGeomType.points:
                 return Array.from(this._attribs.get(geom_type).values()) as ifs.IEntAttrib[];
             case EGeomType.objs:
                 return Array.from(this._attribs.get(geom_type).values()) as ifs.IEntAttrib[];
