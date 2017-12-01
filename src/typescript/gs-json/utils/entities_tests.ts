@@ -85,6 +85,8 @@ export function test_ent_getGroupNames():boolean {
     let geom:gs.IGeom = m.getGeom();
     let a1:ifs.IObj = geom.getObj(0);
     
+    // TO DO
+
     // console.log(a1.getGroupNames());
     // console.log(geom);
     // console.log(m.getGroups())
@@ -94,8 +96,6 @@ export function test_ent_getGroupNames():boolean {
     // model.getGroups();
     // let grp:gs.IGroup = model.getGroup("building_obj");
     // console.log(grp);
-
-
 // == ["building_obj"]
 
     return true;
@@ -110,6 +110,10 @@ export function test_ent_addToGroup():boolean {
 
 // Point tests, extends Entities by 4 complementary methods
 export function test_point_getGeomType():boolean {
+    let m:gs.IModel = new gs.Model(test_data.box_with_groups());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:ifs.IPoint = geom.getPoint(0);
+    if(!(a1.getGeomType() == gs.EGeomType.points)){return false;}
     return true;
 }
 export function test_point_setPosition():boolean {
@@ -134,46 +138,81 @@ export function test_point_getPosition():boolean {
     return gs.Arr.equal([4,5,6], pos);
 }
 export function test_point_getVertices():boolean {
+    
+// TO DO // LINKED WITH GET OBJ DATA IN GEOM
     let m:gs.IModel = new gs.Model(test_data.box_with_groups());
     let geom:gs.IGeom = m.getGeom();
-    let a1:gs.IPoint = geom.getPoint(0);
- 
-
-
-
-
+    let a1:gs.IPoint = m.getGeom().addPoint([2,4,6]);
+//       console.log(a1.getVertices()) 
+// console.log(a1.getGeom().getObjs()) //
     return true;
 }
 
 // Object tests, extends Entities by 6 complementary methods
 export function test_obj_getGeomType():boolean {
+    let m:gs.IModel = new gs.Model(test_data.box_with_groups());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:gs.IObj = geom.getObj(0);
+    if(!(a1.getGeomType() == gs.EGeomType.objs)){return false;}
     return true;
 }
 // export function test_obj_getObjType():boolean { //This method cannot be tested.
 //     return true;
 // }
 export function test_obj_getVertices():boolean {
+    let m:gs.IModel = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:gs.IObj = geom.getObj(0);
+    let path1:gs.ITopoPath = a1.getVertices()[0][0][0].getTopoPath() ;
+    console.log(geom.numTopos(gs.EGeomType.vertices))
+    console.log(a1.getVertices()) // Looks fine
     return true;
 }
 export function test_obj_getEdges():boolean {
+    let m:gs.IModel = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:gs.IObj = geom.getObj(0);
+    let path1:gs.ITopoPath = a1.getEdges()[0][0][0].getTopoPath() ;
+    console.log(geom.numTopos(gs.EGeomType.edges))
+    console.log(a1.getEdges()) // Looks fine
     return true;
 }
 export function test_obj_getWires():boolean {
+    let m:gs.IModel = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:gs.IObj = geom.getObj(0);
+    let path1:gs.ITopoPath = a1.getWires()[0].getTopoPath() ;
+    console.log(geom.numTopos(gs.EGeomType.wires))
+    console.log(a1.getWires()) //Looks fine
     return true;
 }
 export function test_obj_getFaces():boolean {
+    let m:gs.IModel = new gs.Model(test_data.open_box());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:gs.IObj = geom.getObj(0);
+    let path1:gs.ITopoPath = a1.getFaces()[0].getTopoPath() ;
+    console.log(geom.numTopos(gs.EGeomType.faces))
+    console.log(a1.getFaces()) //Looks fine
     return true;
 }
 
 // Polyline test, extend Obj by 1 method
 export function test_Polyline_getObjType():boolean {
-    let model:gs.IModel = new gs.Model(test_data.open_box());
-    // let wire:number[] = model.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 2));
-    // if (gs.Arr.equal(wire,[2, 6, 5, 1, 2])) {return false;}
+    let m:gs.IModel = new gs.Model();
+    let g:gs.IGeom = m.getGeom();
+    let p1 = g.addPoint([0,0,0]);
+    let p2 = g.addPoint([2,0,0]);
+    let p3 = g.addPoint([3,6,0]);
+    let p4 = g.addPoint([7,4,9]);
+    let pline1:gs.IPolyline = g.addPolyline([p1,p2,p3,p4], true);
+    let pline2:gs.IPolyline = g.addPolyline([p1,p2,p3], false);
+    if (!(pline1.getObjType() == 100)) {return false;}
+    if (!(pline2.getObjType() == 100)) {return false;}
     return true;
 }
-
 // Polymesh test, extend Obj by 1 method
 export function test_Polymesh_getObjType():boolean {
+
+
     return true;
 }
