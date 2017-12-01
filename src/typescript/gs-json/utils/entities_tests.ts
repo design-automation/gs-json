@@ -6,6 +6,9 @@ import {Arr} from "./arr";
 
 // Entities tests, 1 constructor and 8 methods
 export function test_ent_constructor():boolean {
+    let m:gs.Model = new gs.Model(test_data.box_with_attribs());
+    let geom:gs.IGeom = m.getGeom();
+    let a:ifs.IPoint = geom.addPoint([6,3,8]); //unexported abstract class
     return true;
 }
 export function test_ent_getGeom():boolean {
@@ -28,28 +31,59 @@ export function test_ent_getGeom():boolean {
     return true;
 }
 export function test_ent_getID():boolean {
+    let m:gs.Model = new gs.Model();
+    let geom:gs.IGeom = m.getGeom();
+    let a:ifs.IPoint = geom.addPoint([6,3,8]);
+    if( !(a.getID() == 0) ){return false;}
     return true;
 }
 export function test_ent_getModel():boolean {
-
-
-
-
+    let m:gs.Model = new gs.Model();
+    let geom:gs.IGeom = m.getGeom();
+    let a:ifs.IPoint = geom.addPoint([6,3,8]);
+    if(!(a.getModel().getGeom().numPoints() == 1)){return false;}
     return true;
 }
 // export function test_ent_getGeomType():boolean { //This method cannot be tested.
 //     return true;
 // }
 export function test_ent_getAttribNames():boolean {
+    let m:gs.Model = new gs.Model(test_data.box_with_attribs());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:ifs.IPoint = geom.addPoint([6,3,8]);
+    if(!(a1.getAttribNames()[0] == "test1")){return false;}
+    let a2:ifs.IObj = geom.getObj(0);
+    if(!(a2.getAttribNames()[0] == "obj_id")){return false;}
     return true;
 }
 export function test_ent_getAttribValue():boolean {
+    let m:gs.Model = new gs.Model(test_data.box_with_attribs());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:ifs.IPoint = geom.getPoint(0);
+    if(!(a1.getAttribValue("test1") == 641.600585938)){return false;}
+    let a2:ifs.IObj = geom.getObj(0);
+    if(!(a2.getAttribValue("obj_id") == 1234)){return false;}
     return true;
 }
 export function test_ent_setAttribValue():boolean {
+    let m:gs.Model = new gs.Model(test_data.box_with_attribs());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:ifs.IPoint = geom.getPoint(0);
+    if(!(a1.getAttribValue("test1") == 641.600585938)){return false;}
+    let a2:ifs.IObj = geom.getObj(0);
+    if(!(a2.getAttribValue("obj_id") == 1234)){return false;}
+    a1.setAttribValue("test1",12321);
+    a2.setAttribValue("obj_id",12333222321);
+    if((a1.getAttribValue("test1") == 641.600585938)){return false;}
+    if((a2.getAttribValue("obj_id") == 1234)){return false;}
+    if(!(a1.getAttribValue("test1") == 12321)){return false;}
+    if(!(a2.getAttribValue("obj_id") == 12333222321)){return false;}
     return true;
 }
 export function test_ent_getGroupNames():boolean {
+
+
+    
     return true;
 }
 export function test_ent_addToGroup():boolean {

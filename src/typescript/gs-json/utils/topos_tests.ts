@@ -1,11 +1,19 @@
 import * as gs from "./gs-json";
 import * as td from "./test_data";
+import {Topo} from "./topos";
 
 export function test_Topo_constructor():boolean{
+	// the class is abstract
 	return true;
 }
 
 export function test_Topo_getObjID():boolean{
+ //    let m:gs.Model = new gs.Model(td.open_box());
+ //    let geom:gs.IGeom = m.getGeom();
+	// // geom.getObjID()
+	// let Wire1:gs.IWire = geom.getObjData(geom.getTopos(gs.EGeomType.wires)[0].getTopoPath()) ;
+	// console.log(Wire1.getObjID());
+    // let wire:gs.IWire = new Topo(geom,geom.getObjData(geom.getTopos(gs.EGeomType.wires)[0].getTopoPath()));
 	return true;
 }
 
