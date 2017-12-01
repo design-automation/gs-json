@@ -2,16 +2,16 @@ import * as gs from "./gs-json";
 import * as test_data from "./test_data";
 
 export function test_setData2 (url:string):boolean {
-	let xmlhttp = new XMLHttpRequest();
-	let data: gs.IModelData;
-	xmlhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-	        data = JSON.parse(this.responseText);
-	    }
-	};
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
-	return true;
+    let xmlhttp = new XMLHttpRequest();
+    let data: gs.IModelData;
+    xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    data = JSON.parse(this.responseText);
+    }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    return true;
 }
 export function test_Model_constructor():boolean {
     let model:gs.IModel ;
@@ -24,7 +24,6 @@ export function test_Model_constructor():boolean {
     if (! gs.Arr.equal(
     model.getGeom().getObj(0).getFaces()[4].getVertices().
     map((v,i)=>v.getPoint().getID()), [5, 6, 7, 4])) {return false;}
-
     //model with attribs
     model = new gs.Model(test_data.box_with_attribs());
     let attribs:gs.IAttrib[] = model.getAttribs(gs.EGeomType.vertices);
@@ -89,9 +88,22 @@ export function test_Model_getAttrib():boolean {
     return true;
 }
 export function test_Model_addAttrib():boolean {
+    let m1:gs.Model = new gs.Model(test_data.box_with_attribs());
+    let e1:gs.IEntAttrib|gs.ITopoAttrib = m1.getAttrib("test1",gs.EGeomType.points);
+    let m2:gs.Model = new gs.Model();
+    let e2:gs.IEntAttrib|gs.ITopoAttrib = m2.addAttrib(e1.getName(), e1.getGeomType(), e1.getDataType());
+    if(!(e2.getName() == e1.getName())){return false;}
     return true;
 }
 export function test_Model_delAttrib():boolean {
+    let m1:gs.Model = new gs.Model(test_data.box_with_attribs());
+    let e1:gs.IEntAttrib|gs.ITopoAttrib = m1.getAttrib("test1",gs.EGeomType.points);
+    let m2:gs.Model = new gs.Model();
+    let e2:gs.IEntAttrib|gs.ITopoAttrib = m2.addAttrib(e1.getName(), e1.getGeomType(), e1.getDataType());
+    if(!(e2.getName() == e1.getName())){return false;}
+    let eType:gs.EGeomType = e1.getGeomType();
+    m2.delAttrib(e1.getName(), e1.getGeomType());
+    if(!(gs.Arr.equal(m2.getAttribs(eType),[]))){return false;}
     return true;
 }
 export function test_Model_getGroups():boolean {
