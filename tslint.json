@@ -1,0 +1,29 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "ordered-imports": false,
+        "align": [true, "parameters", "statements", "members"],
+        "prefer-const": true,
+        "whitespace": true,
+        "semicolon": true,
+        "no-trailing-whitespace": true,
+        "no-irregular-whitespace": true,
+        "no-unused-variable": true,
+        "quotemark": "double",
+        "eofline": true,
+        "class-name": true,
+        "interface-name": true,
+        "variable-name": [
+        	true, "ban-keywords", "check-format",
+        	"allow-snake-case", "allow-leading-underscore"
+        ],
+        "max-line-length": {
+            "options": [120]
+        }
+    },
+    "rulesDirectory": []
+}

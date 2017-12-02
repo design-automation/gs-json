@@ -1,0 +1,72 @@
+    {
+    "folders":
+    [
+        {
+            "path": "src/typescript/gs-json",
+            "name": "TS Source Code"
+        },
+        {
+            "path": "dist",
+            "name": "JS Dist Code"
+        },
+        {
+            "path": "docs/typescript",
+            "name": "TS Documentation"
+        },
+        {
+            "path": "src/assets/gs-json",
+            "name": "GS Models",
+            "folder_exclude_patterns": ["backup"]
+        },
+        {
+            "path": ".",
+            "name": "ROOT"
+        }
+    ],
+    "settings":
+    {
+        "color_scheme": "Packages/User/SublimeLinter/Sixteen (SL).tmTheme",
+        "font_size": 17,
+        "ignored_packages":["Vintage"],
+        "ensure_newline_at_eof_on_save": true,
+        "trim_trailing_white_space_on_save": true,
+        "translate_tabs_to_spaces": true,
+        "tab_size": 4,
+        "rulers": [4,8,100]
+    },
+    "build_systems":
+    [
+        {
+            "name": "Compile TypeScript",
+            "file_regex": "(.*\\.ts?)\\s\\(([0-9]+)\\,([0-9]+)\\)\\:\\s(...*?)$",
+            "selector": "source.ts",
+            "osx": {
+               "path": "/usr/local/bin:/opt/local/bin"
+            },
+            "windows": {
+                "cmd": [
+                    "tsc.cmd",
+                    "--declaration",
+                    "--target", "ES6",
+                    "--module", "ES6",
+                    "--sourceMap",
+                    "--outDir", "$project_path/dist",
+                    "--listFiles",
+                    "--listEmittedFiles",
+                    "$file"
+                ]
+            }
+        },
+        {
+            "name": "Run",
+            "selector": "source.js",
+            "osx": {
+               "cmd": ["/usr/local/bin/node", "$file"]
+            },
+            "windows": {
+                "cmd": ["node.exe", "$file"]
+            }
+        }
+    ]
+}
+
