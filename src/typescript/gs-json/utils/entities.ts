@@ -2,6 +2,7 @@ import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
 import {EGeomType, EObjType} from "./enums";
 import {Vertex, Wire, Face, TopoPath} from "./topos";
+
 /**
  * Class Ent.
  * An abstrcat class that is the superclass for all geometric entities, both Point and Obj.
@@ -104,29 +105,35 @@ abstract class Ent {
             case EGeomType.objs:
                 return this.getModel().getGroup(name).addObj(this.id);
         }
-
     }
 }
+
 /**
  * Class Point.
  * A point with x, y, z coordinates.
  * A point may be part of a group and may have attributes.
  */
 export class Point extends Ent implements ifs.IPoint {
-    /**
-     * Get the geometry type for this entity.
-     * This method overrides the method in the Ent class.
-     * @return The geometry type.
-     */
+   /**
+    * Get the geometry type for this entity.
+    * This method overrides the method in the Ent class.
+    * @return The geometry type.
+    */
     public getGeomType(): EGeomType {
         return EGeomType.points;
     }
-    /**
-     * Set the cartesian x, y, z coordinates of a point.
-     * @param xyz Cartesian coordinates
-     * @return Arrays of pre-defined coordinates
-     */
+   /**
+    * Set the cartesian x,y,z coordinates of a point.
+    * @param xyz Cartesian coordinates
+    * @return Arrays of pre-defined coordinates
+    */
     public setPosition(xyz: number[]): number[] {
+        if (!Array.isArray(xyz) || xyz.length !== 3) {
+            throw new Error("A Point must be defined in 3D with three coordinates x,y,z");
+        }
+        if (xyz[0] === undefined || xyz[1] === undefined || xyz[2] === undefined) {
+            throw new Error("All 3 coordinates must be defined to set a Position");
+        }
         return this.geom.setPointPosition(this.id, xyz);
     }
     /**
@@ -156,6 +163,7 @@ export class Point extends Ent implements ifs.IPoint {
         return vertices;
     }
 }
+
 /**
  * Abstract class Obj.
  * The superclass for all geometric objects,
@@ -267,6 +275,7 @@ abstract class Obj extends Ent implements ifs.IObj {
         return this.geom.getObjData(new TopoPath(this.id, EGeomType.faces)).length;
     }
 }
+
 /**
  * Class Polyline.
  * A polyline consists of one wire and no faces.

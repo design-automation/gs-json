@@ -29,6 +29,7 @@ export interface IModel {
     // Runs some check
     validateModel(): boolean;
 }
+
 // Class to hold manipulate geometry arrays
 /**
  * Interface, for the Geom class, that stores all the geometry in the model.
@@ -66,6 +67,7 @@ export interface IGeom  {
     // Attribs
     getAttribTemplate(attrib_type: EGeomType): any[];
 }
+
 // =================== INTERFACES for Ent classes and Subclasses ===================
 // IEnt, IPoint, IObj, IPolyline, IPolymesh,
 
@@ -133,6 +135,7 @@ export interface IPolymesh extends IObj {
     getObjType(): EObjType;
     setPosition(wire_points: IPoint[], face_points: IFace[]): any[];
 }
+
 // =================== INTERFACES for Topo classes and Subclasses ===================
 // ITopo, IVertex, IEdge, IWire, IFace
 /**
@@ -209,6 +212,7 @@ export interface ITopoPath {
     equals(path: ITopoPath): boolean;
     toString(): string;
 }
+
 // =================== INTERFACES for Attrib and Group classes ===================
 // IAttrib, IGroup
 
@@ -282,6 +286,7 @@ export interface IGroup {
     getProps(): Map<string, any>;
     setProps(new_Map: Map<string, any>): Map<string, any>;
 }
+
 // =================== INTERFACES for TopoTree ===================
 // ITopoTree, ITopoTreeBranch, ISubtopoTreeBranch
 /**

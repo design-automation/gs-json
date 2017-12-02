@@ -489,7 +489,7 @@ export class Geom implements ifs.IGeom {
     private _getVEPathsFromObjsData(objs_data: any[], v_or_e: number): ifs.ITopoPath[] {
         const path_arr: ifs.ITopoPath[] = [];
         // loop through all the objects
-        for (const obj_id of objs_data) {// TODO: check this works with sparse arrays
+        for (let obj_id in objs_data) {// TODO: check this works with sparse arrays
             const w_data: number[][] = objs_data[obj_id][0];
             this._getVEPathsFromWF(path_arr, Number(obj_id), w_data, 0, v_or_e);
             const f_data: number[][] = objs_data[obj_id][1];
@@ -506,7 +506,7 @@ export class Geom implements ifs.IGeom {
         const wf_type = [EGeomType.wires, EGeomType.faces][w_or_f] as EGeomType.faces|EGeomType.wires;
         const path_arr: ifs.ITopoPath[] = [];
         // loop through all the objects, and create paths for wires or faces
-        for (const obj_id of objs_data) {// TODO: check this works with sparse arrays
+        for (const obj_id in objs_data) {// TODO: check this works with sparse arrays
             const wf_data: number[][] = objs_data[obj_id][w_or_f]; // wf_choice is 0 or 1, wires or faces
             for (let wf_index = 0; wf_index < wf_data.length; wf_index++) {
                 path_arr.push(new TopoPath(Number(obj_id), wf_type, wf_index));

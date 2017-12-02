@@ -307,7 +307,7 @@ export function test_Groups_setProps(): boolean {
     const m: gs.Model = new gs.Model(td.open_box());
     const g: gs.IGroup = m.addGroup("Box");
     const a: Map<string, any> = new Map();
-    if (! g.getProps() === null) {return false; }
+    if (! g.getProps() === undefined) {return false; }
     a.set("one", 1);
     a.set("two", 2);
     a.set("three", 3);

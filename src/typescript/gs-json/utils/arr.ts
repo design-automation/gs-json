@@ -30,16 +30,10 @@ export class Arr {
      * @returns True or false.
      */
     public static equal(arr1: any[], arr2: any[]): boolean {
-        if (arr1 === undefined || arr2 === undefined) {return false; }
-        if (arr1 === null && arr2 === null) {return true; } // both are null
-        if (arr1 === null || arr2 === null) {return false; } // only one is null
-        if (arr1.length !== arr2.length) {
-            return false;
-        }
+        if (!Array.isArray(arr1) || !Array.isArray(arr2)) {return arr1 == arr2; }
+        if (arr1.length !== arr2.length) {return false; }
         for (let i = 0; i < arr1.length; i++) {
-            if (arr1[i] !== arr2[i]) {
-                return false;
-            }
+            if (arr1[i] !== arr2[i]) {return false;}
         }
         return true;
     }
@@ -52,8 +46,7 @@ export class Arr {
      * @returns The index in the array of the first occurance of the value.
      */
     public static indexOf(value: any, arr: any[]): number {
-        if (value === undefined || arr === undefined) {return -1; }
-        if (arr === null) {return -1; }
+        if (!Array.isArray(arr)) {throw new Error("Second argument must be a array."); }
         if (!Array.isArray(value)) {return arr.indexOf(value); }
         for (let i = 0; i < arr.length; i++) {
             if (Array.isArray(arr[i]) && this.equal(value, arr[i])) {

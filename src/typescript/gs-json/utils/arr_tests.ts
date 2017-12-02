@@ -31,6 +31,8 @@ export function test_equal(): boolean {
     if (!Arr.equal([1.1, 2.2], [1.1, 2.2])) {return false; }
     if (!Arr.equal([], [])) {return false;}
     if (!Arr.equal([null, null], [null, null])) {return false;}
+    if (Arr.equal([1,2,3], null)) {return false;}
+    if (Arr.equal(null, [1,2,3])) {return false;}
     // sparse arrays
     const x: number[] = [];
     x[2] = 5;
@@ -47,6 +49,9 @@ export function test_indexOf(): boolean {
     if (Arr.indexOf([1, 2], [[], [2], [1, 2], [3, 4]]) !== 2) {return false; }
     if (Arr.indexOf([1, null], [[], [1, null], [2], [1, null], [3, 4]]) !== 1) {return false; }
     if (Arr.indexOf([1, 3], [[], [1, null], [2], [1, null], [3, 4]]) !== -1) {return false; }
+    if (Arr.indexOf(null, [1,2,3]) !== -1) {return false;}
+    if (Arr.indexOf(null, [null,2,3]) !== 0) {return false;}
+
     // sparse arrays
     const x: number[][] = [];
     x[2] = [1, 2];

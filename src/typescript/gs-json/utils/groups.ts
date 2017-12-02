@@ -2,6 +2,7 @@ import * as ifs from "./ifaces_gs";
 import {IGroupData, TTreeData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
 import {TopoTree} from "./topo_trees";
+
 /**
  * Group class.
  */
