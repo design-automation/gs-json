@@ -469,13 +469,13 @@ export function test_Geom_getAttribTemplate(): boolean {
     const pline3: gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
 
     if(!(geom.getAttribTemplate(
-        gs.EGeomType.points).length ===   geom.numPoints())) {return false;}
+        gs.EGeomType.points).length === geom.numPoints())) {return false;}
     if(!(geom.getAttribTemplate(
-        gs.EGeomType.objs).length ===  geom.numObjs() )) {return false;}
+        gs.EGeomType.objs).length === geom.numObjs() )) {return false;}
     if(!(geom.getAttribTemplate(
-        gs.EGeomType.wires).length ===  geom.numTopos(gs.EGeomType.wires))) {return false;}
+        gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
     if(!(geom.getAttribTemplate(
-        gs.EGeomType.faces)[0][0].length ===  geom.numTopos(gs.EGeomType.faces))) {return false;}
+        gs.EGeomType.faces)[0][0].length === geom.numTopos(gs.EGeomType.faces))) {return false;}
     if(!(gs.Arr.flatten(geom.getAttribTemplate(
         gs.EGeomType.edges)).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
     if(!(gs.Arr.flatten(geom.getAttribTemplate(

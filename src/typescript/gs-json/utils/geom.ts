@@ -361,16 +361,13 @@ export class Geom implements ifs.IGeom {
     public getTopos(geom_type: EGeomType): ifs.ITopo[] {
         switch (geom_type) {
             case EGeomType.vertices:
-        return this._getPaths(geom_type).map((v, i) => new Vertex(this, v));
-
+                return this._getPaths(geom_type).map((p) => new Vertex(this, p));
             case EGeomType.edges:
-        return this._getPaths(geom_type).map((v, i) => new Edge(this, v));
-
+                return this._getPaths(geom_type).map((p) => new Edge(this, p));
             case EGeomType.wires:
-        return this._getPaths(geom_type).map((v, i) => new Wire(this, v));
-
+                return this._getPaths(geom_type).map((p) => new Wire(this, p));
             case EGeomType.faces:
-        return this._getPaths(geom_type).map((v, i) => new Face(this, v));
+                return this._getPaths(geom_type).map((p) => new Face(this, p));
         }
     }
     /**
@@ -379,7 +376,23 @@ export class Geom implements ifs.IGeom {
      * @return
      */
     public numTopos(geom_type: EGeomType): number {
-        return this._getPaths(geom_type).length;
+        // return this._getPaths(geom_type).length;
+        switch (geom_type) {
+            case EGeomType.vertices:
+                return this._objs.map((o) => [
+                    ...o[0].map((w) => w.filter((wi) => (wi !== -1)).length),
+                    ...o[1].map((f) => f.filter((fi) => (fi !== -1)).length),
+                ].reduce((a,b) => a + b)).reduce((a,b) => a + b);
+            case EGeomType.edges:
+                return this._objs.map((o) => [
+                    ...o[0].map((w) => w.length - 1),
+                    ...o[1].map((f) => f.length - 1),
+                ].reduce((a,b) => a + b)).reduce((a,b) => a + b);
+            case EGeomType.wires:
+                return this._objs.map((o) => o[0].length).reduce((a,b) => a + b);
+            case EGeomType.faces:
+                return this._objs.map((o) => o[1].length).reduce((a,b) => a + b);
+        }
     }
     // Template is an array full of zeros, but with the right structure for the attribute data
     /**
@@ -392,19 +405,21 @@ export class Geom implements ifs.IGeom {
             case EGeomType.objs:
                 return Arr.make(this.numObjs(), 0);
             case EGeomType.faces:
-                return this._objs.map((v, i) =>
-                        [v[1].map((v2, i2) => Arr.make(v2.length, 0))]);
+                return this._objs.map((o) =>
+                        [o[1].map((f) => Arr.make(f.length, 0))]);
             case EGeomType.wires:
-                return this._objs.map((v, i) =>
-                        [v[0].map((v2, i2) => Arr.make(v2.length, 0))]);
+                return this._objs.map((o) =>
+                        [o[0].map((w) => Arr.make(w.length, 0))]);
             case EGeomType.edges:
-                return this._objs.map((v, i) => [
-                        [v[0].map((v2, i2) => Arr.make(v2.length - 1, 0))],
-                        [v[1].map((v2, i2) => Arr.make(v2.length - 1, 0))]]);
+                return this._objs.map((o) => [
+                    o[0].map((w) => Arr.make(w.length - 1, 0)),
+                    o[1].map((f) => Arr.make(f.length - 1, 0)),
+                ]);
             case EGeomType.vertices:
-                return this._objs.map((v, i) => [
-                        [v[0].map((v2, i2) => Arr.make(v2.length, 0))],
-                        [v[1].map((v2, i2) => Arr.make(v2.length, 0))]]);
+                return this._objs.map((o) => [
+                    o[0].map((w) => Arr.make(w.filter((wi) => (wi !== -1)).length, 0)),
+                    o[1].map((f) => Arr.make(f.filter((fi) => (fi !== -1)).length, 0)),
+                ]);
             case EGeomType.points:
                 return Arr.make(this.numPoints(), 0);
         }
@@ -477,7 +492,9 @@ export class Geom implements ifs.IGeom {
         // loop through all the wire or faces, and create paths for all the vertices or edges
         for (let wf_index = 0; wf_index < wf_data.length; wf_index++) {
             for (let ve_index = 0; ve_index < wf_data[wf_index].length - v_or_e; ve_index++) {
-                path_arr.push(new TopoPath(Number(obj_id), wf_type, wf_index, ve_type, ve_index));
+                if (wf_data[wf_index][ve_index] !== -1) {
+                    path_arr.push(new TopoPath(Number(obj_id), wf_type, wf_index, ve_type, ve_index));
+                }
             }
         }
     }
@@ -489,7 +506,7 @@ export class Geom implements ifs.IGeom {
     private _getVEPathsFromObjsData(objs_data: any[], v_or_e: number): ifs.ITopoPath[] {
         const path_arr: ifs.ITopoPath[] = [];
         // loop through all the objects
-        for (let obj_id in objs_data) {// TODO: check this works with sparse arrays
+        for (const obj_id in objs_data) {// TODO: check this works with sparse arrays
             const w_data: number[][] = objs_data[obj_id][0];
             this._getVEPathsFromWF(path_arr, Number(obj_id), w_data, 0, v_or_e);
             const f_data: number[][] = objs_data[obj_id][1];
