@@ -1,8 +1,8 @@
 language: node_js
 node_js:
   - "6.11.2"
-branches: 
-  only: 
+branches:
+  only:
     - master
 script:
   - npm test
@@ -17,8 +17,8 @@ dist: trusty
 language: node_js
 node_js:
   - '6.11.2'
-branches: 
-  only: 
+branches:
+  only:
     - master
 addons:
 apt:
@@ -37,4 +37,4 @@ before_script:
 - npm install -g karma
 - npm install
 
-script: karma start ./.config/karma.conf.ts --single-run
+script: karma start ./karma.conf.ts --single-run
