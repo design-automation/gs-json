@@ -10,8 +10,8 @@ module.exports = (config) => {
         ],
         karmaTypescriptConfig: {
             compilerOptions: {
+                target: "ES6",
                 module: "commonjs",
-                lib: [ "es2016", "dom" ],
             },
         },
         plugins: [
