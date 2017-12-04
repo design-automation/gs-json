@@ -213,9 +213,21 @@ export function test_Wire_getGeomType(): boolean {
     return true;
 }
 export function test_Wire_getVertices(): boolean {
+    const m:gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0);
+    const w: gs.IWire = new gs.Wire(m.getGeom(), path)
+    const v: gs.IVertex[] = w.getVertices();
+    const w2: gs.IWire = v[0].getWireOrFace();
+    if(!w2.isClosed()){return false;}
     return true;
 }
 export function test_Wire_getEdges(): boolean {
+    const m:gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0);
+    const w: gs.IWire = new gs.Wire(m.getGeom(), path)
+    const e: gs.IEdge[] = w.getEdges();
+    const w2: gs.IWire = e[0].getWireOrFace();
+    if(!w2.isClosed()){return false;}
     return true;
 }
 export function test_Wire_numVertices(): boolean {
@@ -242,32 +254,85 @@ export function test_Wire_isClosed(): boolean {
 
 // Face
 export function test_Face_getGeomType(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0);
+    const f: gs.IFace = new gs.Face(m.getGeom(), path)
+    if(mapGeomTypeToString.get(f.getGeomType()) !== "faces"){return false;}
     return true;
 }
 export function test_Face_getVertices(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0);
+    const f: gs.IFace = new gs.Face(m.getGeom(), path)
+    const v: gs.IVertex[] = f.getVertices();
+    if(mapGeomTypeToString.get(v[0].getWireOrFace().getGeomType()) !== "faces"){return false;}
+    if(mapGeomTypeToString.get(v[1].getWireOrFace().getGeomType()) !== "faces"){return false;}
+    if(mapGeomTypeToString.get(v[2].getWireOrFace().getGeomType()) !== "faces"){return false;}
+    if(mapGeomTypeToString.get(v[3].getWireOrFace().getGeomType()) !== "faces"){return false;}
     return true;
 }
 export function test_Face_getEdges(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0);
+    const f: gs.IFace = new gs.Face(m.getGeom(), path)
+    const e: gs.IEdge[] = f.getEdges();
+    if(mapGeomTypeToString.get(e[0].getWireOrFace().getGeomType()) !== "faces"){return false;}
+    if(mapGeomTypeToString.get(e[1].getWireOrFace().getGeomType()) !== "faces"){return false;}
+    if(mapGeomTypeToString.get(e[2].getWireOrFace().getGeomType()) !== "faces"){return false;}
+    if(mapGeomTypeToString.get(e[3].getWireOrFace().getGeomType()) !== "faces"){return false;}
     return true;
 }
 export function test_Face_numVertices(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0);
+    const f: gs.IFace = new gs.Face(m.getGeom(), path)
+    if(f.numVertices() != 4){return false;}
     return true;
 }
 export function test_Face_numEdges(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0);
+    const f: gs.IFace = new gs.Face(m.getGeom(), path)
+    if(f.numEdges() != 4){return false;}
     return true;
 }
 export function test_Face_isClosed(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0);
+    const f: gs.IFace = new gs.Face(m.getGeom(), path)
+    if(!f.isClosed()){return false;}    
     return true;
 }
 export function test_Face_facesSharedPoints(): boolean {
+const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+if(path.toString() != "Obj: 0/faces: 0/edges: 0"){return false;}
     return true;
 }
+
+//////////////////////////////////////////////////////
 export function test_TopoPath_constructor(): boolean {
+
+
     return true;
 }
 export function test_TopoPath_equals(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    const e: gs.IEdge = new gs.Edge(m.getGeom(), path)
+    const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    const path2: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 1, gs.EGeomType.edges, 0);
+    const path3: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 1);
+    const path4: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 1);
+    if(!e.getTopoPath().equals(path1)){return false;}
+    if(e.getTopoPath().equals(path2)){return false;}
+    if(e.getTopoPath().equals(path3)){return false;}
+    if(e.getTopoPath().equals(path4)){return false;}
     return true;
 }
 export function test_TopoPath_toString(): boolean {
+    const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    const path2: gs.ITopoPath = new gs.TopoPath(1, gs.EGeomType.wires, 4, gs.EGeomType.vertices, 9);
+    if(path1.toString() != "Obj: 0/faces: 0/edges: 0"){return false;}
+    if(path2.toString() != "Obj: 1/wires: 4/vertices: 9"){return false;}
     return true;
 }
