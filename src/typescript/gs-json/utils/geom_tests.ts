@@ -160,7 +160,7 @@ export function test_Geom_getObjData(): boolean {
     // Case 4: 
     // Case 5: 
 
-    const path: gs.ITopoPath = new gs.TopoPath(0);    
+    const path: gs.ITopoPath = new gs.TopoPath(0);
     console.log(geom.getObjData(path))
     // Edges of Wires
     const path0: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);

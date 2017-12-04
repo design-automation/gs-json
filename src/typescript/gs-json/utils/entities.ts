@@ -89,9 +89,16 @@ abstract class Ent {
      * @return The array of group names.
      */
     public getGroupNames(): string[] {
-        return this.getModel().getGroups().
-            filter((v) => this.getID() in v.getObjIDs()).
-                map((v, i) => v.getName());
+        switch (this.getGeomType()){
+            case EGeomType.objs:
+                    return this.getModel().getGroups().
+                    filter((v) => this.getID() in v.getObjIDs()).
+                    map((v, i) => v.getName());                       
+            case EGeomType.points:
+                    return this.getModel().getGroups().
+                    filter((v) => this.getID() in v.getPointIDs()).
+                    map((v, i) => v.getName());
+ }
     }
     /**
      * Add this entity to a group.

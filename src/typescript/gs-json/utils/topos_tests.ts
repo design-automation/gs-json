@@ -224,12 +224,38 @@ export function test_Edge_next(): boolean {
 export function test_Edge_previous(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
     const geom: gs.IGeom = m.getGeom();
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
+    const e1: gs.IEdge = new gs.Edge(m.getGeom(),path);
+    const e2: gs.IEdge = e1.previous();
+    const e3: gs.IEdge = e2.previous();
+    const e4: gs.IEdge = e3.previous();
+    const e5: gs.IEdge = e4.previous();
+    const e6: gs.IEdge = e5.previous();
+    const e7: gs.IEdge = e6.previous();
+    const e8: gs.IEdge = e7.previous();
+    const e9: gs.IEdge = e8.previous();
+
+    console.log(e1.getTopoPath());
+    console.log(e2.getTopoPath());
+    console.log(e3.getTopoPath());
+    console.log(e4.getTopoPath());
+    console.log(e5.getTopoPath());
+    console.log(e6.getTopoPath());
+    console.log(e7.getTopoPath());
+    console.log(e8.getTopoPath());
+    console.log(e9.getTopoPath());
+
     const a1: gs.IObj = geom.getObj(0);
     const path1: gs.ITopoPath = a1.getEdges()[0][0][0].getTopoPath();
+
     // console.log(geom.numTopos(gs.EGeomType.edges));
     // console.log(a1.getEdges()[0][0][0].getTopoPath());
     // console.log(a1.getEdges()[0][0][1].getTopoPath());
     // console.log(a1.getEdges()[0][0][2].getTopoPath());
+
+    console.log(a1.getEdges()[0][0][1])
+    console.log(a1.getEdges()[0][0][1].previous())
+    console.log(a1.getEdges()[0][0][1].previous().getTopoPath())
     if (!a1.getEdges()[0][0][1].previous().getTopoPath()) {return false;}
     if (!a1.getEdges()[0][0][0].previous().getTopoPath()) {return false;}
     return true;
@@ -249,12 +275,10 @@ export function test_Edge_edgesSharedPoints(): boolean { // To Do
     // const e3: gs.IEdge = new gs.Edge(m.getGeom(), path3)
 
     const e: gs.ITopo[] = m.getGeom().getTopos(gs.EGeomType.edges)
-
     console.log(e[0]);
 
     for (let k:number = 0 ; k<24 ; k++){
         let e1:gs.IEdge = e[0] ;
-
         // console.log(e[k].edgesSharedPoints())
     }
 
@@ -262,13 +286,6 @@ export function test_Edge_edgesSharedPoints(): boolean { // To Do
     // console.log(e1.edgesSharedPoints())
     // console.log(e2.edgesSharedPoints())
     // console.log(e3.edgesSharedPoints())
-
-
-
-
-
-
-
 
     // const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
     // const path2: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 1, gs.EGeomType.edges, 0);

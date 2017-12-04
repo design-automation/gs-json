@@ -6,6 +6,7 @@ import {Arr} from "./arr";
 
 // Entities tests, 1 constructor and 8 methods
 export function test_ent_constructor(): boolean {
+    // abstract class
     const m: gs.Model = new gs.Model(test_data.box_with_attribs());
     const geom: gs.IGeom = m.getGeom();
     const a: ifs.IPoint = geom.addPoint([6,3,8]);
@@ -83,9 +84,33 @@ export function test_ent_setAttribValue(): boolean {
 }
 
 export function test_ent_getGroupNames(): boolean {
-    const m: gs.IModel = new gs.Model(test_data.box_with_groups());
+    const m: gs.IModel = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
     const a1: ifs.IObj = geom.getObj(0);
+    const p1: ifs.IPoint = geom.getPoint(0);
+
+    const gpr1: ifs.IGroup = m.addGroup("test1");
+    gpr1.addObj(0);
+    const gpr2: ifs.IGroup = m.addGroup("test2");
+    gpr2.addPoint(0);
+
+    if(!Arr.equal(a1.getGroupNames(),["test1"])){return false;}
+    if(!Arr.equal(p1.getGroupNames(),["test2"])){return false;}
+
+    // console.log(a1.getGroupNames())
+    // console.log(p1.getGroupNames())
+
+    // console.log(a1);
+    // console.log(p1);
+    // console.log(gpr2);
+    // console.log(a1.getGroupNames())
+     // == ["test 1"]);
+    // console.log(p1.getGroupNames())
+
+
+
+     // == ["test 2"]);
+
     // TO DO
     // console.log(a1.getGroupNames());
     // console.log(geom);
@@ -140,11 +165,13 @@ export function test_point_getPosition(): boolean {
     return gs.Arr.equal([4, 5, 6], pos);
 }
 
-export function test_point_getVertices(): boolean {
+export function test_point_getVertices(): boolean { // To Do
     // TO DO // LINKED WITH GET OBJ DATA IN GEOM
     const m: gs.IModel = new gs.Model(test_data.box_with_groups());
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IPoint = m.getGeom().addPoint([2,4,6]);
+    // const v1: gs.IVertex[] = a1.getVertices()
+    // console.log(v1);
     // console.log(a1.getVertices())
     // console.log(a1.getGeom().getObjs()) //
     return true;
