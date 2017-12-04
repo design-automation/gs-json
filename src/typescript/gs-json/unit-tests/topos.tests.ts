@@ -26,8 +26,8 @@ describe("Tests for Topo class", () => {
     it("test_Topo_setAttribValue", () => {
         expect( topos_tests.test_Topo_setAttribValue() ).toBe(true);
     });
-    it("test_Topo_getGroupNames", () => {
-        expect( topos_tests.test_Topo_getGroupNames() ).toBe(true);
+    it("test_Topo_getGroups", () => {
+        expect( topos_tests.test_Topo_getGroups() ).toBe(true);
     });
 });
 
