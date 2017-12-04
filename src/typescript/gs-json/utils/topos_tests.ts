@@ -155,16 +155,25 @@ export function test_Vertex_verticesSharedPoint(): boolean {
     let w_v: gs.IVertex[]; // vertices that belong to wires
     let f_v: gs.IVertex[]; // vertices that belong to faces
     [w_v, f_v] = v.verticesSharedPoint();
-    if (w_v.length !== 0) {return false; }
-    if (f_v.length !== 2) {return false; }
+    if (w_v.length !== 0) {return false;}
+    if (f_v.length !== 2) {return false;}
     return true;
 }
 
-export function test_Vertex_verticesSamePosition(): boolean { // // To Do
+export function test_Vertex_verticesSamePosition(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 0);
-    const v: gs.IVertex = new gs.Vertex(m.getGeom(), path);
-  //  console.log(v.verticesSamePosition())
+    const path0: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 0);
+    const v0: gs.IVertex = new gs.Vertex(m.getGeom(), path0);
+    if((v0.verticesSamePosition().length != 2)){return false;}
+    const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 1);
+    const v1: gs.IVertex = new gs.Vertex(m.getGeom(), path1);
+    if((v1.verticesSamePosition().length != 2)){return false;}
+    const path2: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 2);
+    const v2: gs.IVertex = new gs.Vertex(m.getGeom(), path2);
+    if((v2.verticesSamePosition().length != 2)){return false;}
+    const path3: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 3);
+    const v3: gs.IVertex = new gs.Vertex(m.getGeom(), path3);
+    if((v3.verticesSamePosition().length != 2)){return false;}
     return true;
 }
 
