@@ -1,5 +1,7 @@
 import * as gs from "./gs-json";
 import * as td from "./test_data";
+import {mapGeomTypeToString} from "./enums";
+
 
 export function test_Topo_constructor(): boolean {
     // the class is abstract
@@ -142,14 +144,31 @@ export function test_Vertex_verticesSamePosition(): boolean {
 
 // Edge
 export function test_Edge_getGeomType(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    const v: gs.IVertex = new gs.Vertex(m.getGeom(), path);
+    const e: gs.IEdge = v.getEdge();
+    if(!(e.getGeomType() == gs.EGeomType.edges)) {return false;}
     return true;
 }
 
 export function test_Edge_getVertices(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    const v: gs.IVertex = new gs.Vertex(m.getGeom(), path);
+    const e: gs.IEdge = v.getEdge();
+    if (e.getVertices().length !== 2) {return false; }
     return true;
 }
 
 export function test_Edge_getWireOrFace(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 1, gs.EGeomType.edges, 0);
+    const e1: gs.IEdge = new gs.Edge(m.getGeom(), path1)
+    const path2: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
+    const e2: gs.IEdge = new gs.Edge(m.getGeom(), path2)
+    if(mapGeomTypeToString.get(e1.getWireOrFace().getGeomType()) !== "faces"){return false;}
+    if(mapGeomTypeToString.get(e2.getWireOrFace().getGeomType()) !== "wires"){return false;}
     return true;
 }
 
@@ -187,6 +206,10 @@ export function test_Edge_edgesSharedPoints(): boolean {
 
 // Wire
 export function test_Wire_getGeomType(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0);
+    const w: gs.IWire = new gs.Wire(m.getGeom(), path)
+    if(mapGeomTypeToString.get(w.getGeomType()) !== "wires"){return false;}
     return true;
 }
 export function test_Wire_getVertices(): boolean {
@@ -196,12 +219,24 @@ export function test_Wire_getEdges(): boolean {
     return true;
 }
 export function test_Wire_numVertices(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0);
+    const w: gs.IWire = new gs.Wire(m.getGeom(), path)
+    if(w.numVertices() != 4){return false;}
     return true;
 }
 export function test_Wire_numEdges(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0);
+    const w: gs.IWire = new gs.Wire(m.getGeom(), path)
+    if(w.numEdges() != 4){return false;}
     return true;
 }
 export function test_Wire_isClosed(): boolean {
+    const m: gs.IModel = new gs.Model(td.open_box());
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0);
+    const w: gs.IWire = new gs.Wire(m.getGeom(), path)
+    if(!w.isClosed()){return false;}
     return true;
 }
 
