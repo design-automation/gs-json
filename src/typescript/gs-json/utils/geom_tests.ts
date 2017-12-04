@@ -154,6 +154,40 @@ export function test_Geom_getPointData(): boolean {
 export function test_Geom_getObjData(): boolean {
     const m: gs.Model = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
+    // Case 1: Vertice of a Face/Wire
+    // Case 2: Edge of a Face/Wire
+    // Case 3:
+    // Case 4: 
+    // Case 5: 
+
+    const path: gs.ITopoPath = new gs.TopoPath(0);    
+    console.log(geom.getObjData(path))
+    // Edges of Wires
+    const path0: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
+    const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 1);
+    const path2: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2);
+    const path3: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3);
+    // console.log(geom.getObjData(path0))
+    // console.log(geom.getObjData(path1))
+    // console.log(geom.getObjData(path2))
+    // console.log(geom.getObjData(path3))
+    // Edges of Faces
+    const path00: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 0);
+    const path01: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 1);
+    const path02: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 2);
+    const path03: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 3);
+    const path04: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 4);
+    const path05: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 5);
+    console.log(geom.getObjData(path00))
+    console.log(geom.getObjData(path01))
+    console.log(geom.getObjData(path02))
+    console.log(geom.getObjData(path03))
+    console.log(geom.getObjData(path04))
+    console.log(geom.getObjData(path05))
+
+
+//    geom.getObjData()
+
 
     geom.getObjs()[0];
 
@@ -169,8 +203,8 @@ export function test_Geom_getObjData(): boolean {
     geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[2].getTopoPath());
     geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[3].getTopoPath());
 
-    geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath());
-    geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath());
+// console.log(    geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath()));
+// console.log(    geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath()));
     // I would have thought -1 wouldn't be an output of this function
 
     geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath());
