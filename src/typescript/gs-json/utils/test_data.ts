@@ -28,7 +28,7 @@ export function open_box(): gs.IModelData {
             objs: [
                 [
                     [
-                        [0, 1, 2, 3, -1],
+                        [0, 1, 2, 3, -1]
                    ],
                     [
                         [1, 5, 4, 0, -1],

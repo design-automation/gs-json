@@ -220,6 +220,19 @@ export class Geom implements ifs.IGeom {
         // for (const group of this._model.getGroups()) {
         //     group.removePoint(point_id);
         // }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
     /**
      * to be completed

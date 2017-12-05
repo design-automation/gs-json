@@ -107,8 +107,6 @@ export function test_ent_getGroupNames(): boolean {
      // == ["test 1"]);
     // console.log(p1.getGroupNames())
 
-
-
      // == ["test 2"]);
 
     // TO DO
@@ -126,11 +124,17 @@ export function test_ent_getGroupNames(): boolean {
 }
 
 export function test_ent_addToGroup(): boolean {
-    // let m:gs.IModel = new gs.Model(test_data.box_with_groups());
-    // let geom:gs.IGeom = m.getGeom();
-    // let a1:ifs.IObj = geom.getObj(0);
-    // let gpr1
-    return true;
+    let m:gs.IModel = new gs.Model(test_data.box_with_groups());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:ifs.IObj = geom.getObj(0);
+    let gpr1:gs.IGroup = m.addGroup("test1");
+    console.log(gpr1.hasObj(0))
+    console.log(true);
+    if(gpr1.hasObj(0)){return false;}
+    a1.addToGroup("test1");
+    console.log(gpr1.hasObj(0))
+    if(gpr1.hasObj(0)){return false;}
+    return true;
 }
 
 // Point tests, extends Entities by 4 complementary methods
@@ -148,12 +152,10 @@ export function test_point_setPosition(): boolean {
     point.setPosition([4,5,6]);
     if((Arr.equal(point.getPosition(),[11,22,33]))) {return false;}
     if(!(Arr.equal(point.getPosition(),[4,5,6]))) {return false;}
-
     //if(!(Arr.equal(point.getPosition(),null))) {return false;}
     // point.setPosition([1,2]); //what should this do?
     // point.setPosition([1,2,3,4]); //what should this do?
     // point.setPosition([1,,2]); //sparse array
-
     return true;
 }
 
@@ -167,9 +169,19 @@ export function test_point_getPosition(): boolean {
 
 export function test_point_getVertices(): boolean { // To Do
     // TO DO // LINKED WITH GET OBJ DATA IN GEOM
-    const m: gs.IModel = new gs.Model(test_data.box_with_groups());
+    const m: gs.IModel = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
-    const a1: gs.IPoint = m.getGeom().addPoint([2,4,6]);
+    // const path1: gs.IPoint = new gs.TopoPath(0, )
+    const p1: gs.IPoint = m.getGeom().getPoint(0);
+
+    // console.log(p1.getGeom().getObjs());
+    // console.log(p1.getVertices());
+
+    // console.log(p1)
+    // console.log(v)
+
+    // const
+
     // const v1: gs.IVertex[] = a1.getVertices()
     // console.log(v1);
     // console.log(a1.getVertices())

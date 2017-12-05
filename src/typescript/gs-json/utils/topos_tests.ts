@@ -3,7 +3,6 @@ import * as td from "./test_data";
 import {mapGeomTypeToString} from "./enums";
 import {Arr} from "./arr";
 
-
 export function test_Topo_constructor(): boolean {
     const m:gs.IModel = new gs.Model(td.open_box());
     const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
@@ -235,15 +234,15 @@ export function test_Edge_previous(): boolean {
     const e8: gs.IEdge = e7.previous();
     const e9: gs.IEdge = e8.previous();
 
-    console.log(e1.getTopoPath());
-    console.log(e2.getTopoPath());
-    console.log(e3.getTopoPath());
-    console.log(e4.getTopoPath());
-    console.log(e5.getTopoPath());
-    console.log(e6.getTopoPath());
-    console.log(e7.getTopoPath());
-    console.log(e8.getTopoPath());
-    console.log(e9.getTopoPath());
+    // console.log(e1.getTopoPath());
+    // console.log(e2.getTopoPath());
+    // console.log(e3.getTopoPath());
+    // console.log(e4.getTopoPath());
+    // console.log(e5.getTopoPath());
+    // console.log(e6.getTopoPath());
+    // console.log(e7.getTopoPath());
+    // console.log(e8.getTopoPath());
+    // console.log(e9.getTopoPath());
 
     const a1: gs.IObj = geom.getObj(0);
     const path1: gs.ITopoPath = a1.getEdges()[0][0][0].getTopoPath();
@@ -253,9 +252,9 @@ export function test_Edge_previous(): boolean {
     // console.log(a1.getEdges()[0][0][1].getTopoPath());
     // console.log(a1.getEdges()[0][0][2].getTopoPath());
 
-    console.log(a1.getEdges()[0][0][1])
-    console.log(a1.getEdges()[0][0][1].previous())
-    console.log(a1.getEdges()[0][0][1].previous().getTopoPath())
+    // console.log(a1.getEdges()[0][0][1])
+    // console.log(a1.getEdges()[0][0][1].previous())
+    // console.log(a1.getEdges()[0][0][1].previous().getTopoPath())
     if (!a1.getEdges()[0][0][1].previous().getTopoPath()) {return false;}
     if (!a1.getEdges()[0][0][0].previous().getTopoPath()) {return false;}
     return true;
@@ -275,7 +274,7 @@ export function test_Edge_edgesSharedPoints(): boolean { // To Do
     // const e3: gs.IEdge = new gs.Edge(m.getGeom(), path3)
 
     const e: gs.ITopo[] = m.getGeom().getTopos(gs.EGeomType.edges)
-    console.log(e[0]);
+    // console.log(e[0]);
 
     for (let k:number = 0 ; k<24 ; k++){
         let e1:gs.IEdge = e[0] ;
@@ -393,15 +392,15 @@ export function test_Face_isClosed(): boolean {
     return true;
 }
 export function test_Face_facesSharedPoints(): boolean { // To Do
-const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-if(path.toString() != "Obj: 0/faces: 0/edges: 0"){return false;}
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    if(path.toString() != "Obj: 0/faces: 0/edges: 0"){return false;}
     return true;
 }
 
 //////////////////////////////////////////////////////
 export function test_TopoPath_constructor(): boolean {
-const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-if(path.toString() != "Obj: 0/faces: 0/edges: 0"){return false;}
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    if(path.toString() != "Obj: 0/faces: 0/edges: 0"){return false;}
     return true;
 }
 export function test_TopoPath_equals(): boolean {

@@ -155,6 +155,7 @@ export class Point extends Ent implements ifs.IPoint {
      * @return Returns the array of vertices.
      */
     public getVertices(): ifs.IVertex[] {
+        // const objs_data: ifs.IObj[] = this.getGeom().getObjs();
         const objs_data: any = this.geom.getObjData();
         const vertices: ifs.IVertex[] = [];
         for (const obj_data of objs_data) {
@@ -162,10 +163,10 @@ export class Point extends Ent implements ifs.IPoint {
             obj_data[0].forEach((w, w_i) => w.forEach((v, v_i) => (v === this.id) &&
                 vertices.push(new Vertex(this.geom,
                     new TopoPath(this.id, EGeomType.wires, w_i, EGeomType.vertices, v_i)))));
-            // loop through all faces and extract verts that have same point_id
-            obj_data[1].forEach((f, f_i) => f.forEach((v, v_i) => (v === this.id) &&
-                vertices.push(new Vertex(this.geom,
-                    new TopoPath(this.id, EGeomType.faces, f_i, EGeomType.vertices, v_i)))));
+        //     // loop through all faces and extract verts that have same point_id
+        //     obj_data[1].forEach((f, f_i) => f.forEach((v, v_i) => (v === this.id) &&
+        //         vertices.push(new Vertex(this.geom,
+        //             new TopoPath(this.id, EGeomType.faces, f_i, EGeomType.vertices, v_i)))));
         }
         return vertices;
     }
