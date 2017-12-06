@@ -172,27 +172,34 @@ export function test_point_getVertices(): boolean { // To Do
     const geom: gs.IGeom = m.getGeom();
     // const path1: gs.IPoint = new gs.TopoPath(0, )
     const p1: gs.IPoint = m.getGeom().getPoint(0);
-    const global: gs.IVertex[] = []
+    console.log(p1.getVertices()); // Looks good
+
+////////////
+//     const m: gs.IModel = new gs.Model(test_data.open_box());
+//     const geom: gs.IGeom = m.getGeom();
+//     // const path1: gs.IPoint = new gs.TopoPath(0, )
+//     const p1: gs.IPoint = m.getGeom().getPoint(0);
+//     const global: gs.IVertex[] = []
     
-    for(const a of p1.getGeom().getTopos(gs.EGeomType.wires)){for(const b of a.getVertices()){
-   // console.log(p1.getGeom().getPoint(p1.getID()).getID())
-   // console.log(b.getPoint().getID())
-   // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID())
-   // console.log(b.getTopoPath())
-   if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getTopoPath()))}
-    // if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getPath()))}
-    // console.log(b.getPoint().getID())}
-    }
-    }
+//     for(const a of p1.getGeom().getTopos(gs.EGeomType.wires)){for(const b of a.getVertices()){
+//    // console.log(p1.getGeom().getPoint(p1.getID()).getID())
+//    // console.log(b.getPoint().getID())
+//    // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID())
+//    // console.log(b.getTopoPath())
+//    if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getTopoPath()))}
+//     // if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getPath()))}
+//     // console.log(b.getPoint().getID())}
+//     }
+//     }
     
-    for(const a of p1.getGeom().getTopos(gs.EGeomType.faces)){for(const b of a.getVertices()){
- // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()) 
-    if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getTopoPath()))}
-// console.log(b.getPoint().getID())}
-    }
-    }
-    console.log(global);
-    
+//     for(const a of p1.getGeom().getTopos(gs.EGeomType.faces)){for(const b of a.getVertices()){
+//  // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()) 
+//     if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getTopoPath()))}
+// // console.log(b.getPoint().getID())}
+//     }
+//     }
+//     console.log(global);
+//////////////    
         // console.log(p1.getVertices())
 
 //     const objs_data: any = p1.getGeom().getTopos(gs.EGeomType.wires);
