@@ -272,14 +272,15 @@ export class Edge extends Topo implements ifs.IEdge {
      * @return The next edge object.
      */
     public next(): ifs.IEdge {
-        let edge_index: number = this.path.si + 1;
+    let edge_index: number = this.path.si + 1;
         if (edge_index > this.getWireOrFace().numEdges() - 1) {
-            if (!this.getWireOrFace().isClosed()) {return null; }
-            edge_index = 0;
+
+            if (!this.getWireOrFace().isClosed()) {return null;}
+            edge_index = 0; 
         }
-        return new Edge(this.geom,
-            new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, edge_index));
+        return new Edge(this.geom, new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, edge_index));
     }
+
     /**
      * Find the previous edge in the sequence of edges in the wire or face.
      * @return The previous edge object.

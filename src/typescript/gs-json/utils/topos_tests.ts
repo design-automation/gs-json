@@ -208,6 +208,32 @@ export function test_Edge_getWireOrFace(): boolean {
 
 export function test_Edge_next(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
+    const e_f1: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0)).next()
+    const e_f2: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 2)).next()
+    const e_f3: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)).next()
+    if(!Arr.equal(m.getGeom().getObjData(e_f1.getTopoPath()),[5,4])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_f2.getTopoPath()),[0,1])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_f3.getTopoPath()),[1,5])){return false;}
+
+    const e_w1: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0)).next()
+    const e_w2: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2)).next()
+    const e_w3: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)).next()
+    if(!Arr.equal(m.getGeom().getObjData(e_w1.getTopoPath()),[1,2])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_w2.getTopoPath()),[3,0])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_w3.getTopoPath()),[0,1])){return false;}
+
+    const m2: gs.IModel = new gs.Model(td.Unclosed_Face_with_groups());
+    const e2_f1: gs.IEdge = new gs.Edge(m2.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)).next()
+    if(!Arr.equal(m2.getGeom().getObjData(e2_f1.getTopoPath()),[1,5])){return false;}
+    // A face is always closed, even if unspecified in the object face
+
+    // Unclosed Wire, shows error if console.log() is released (although e2_w1 is generated as a non existing edge, by constructor), OK
+    const e2_w1: gs.IEdge = new gs.Edge(m2.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 4)).next()
+    // console.log(m2.getGeom().getObjData(e2_w1.getTopoPath()))    
+
+
+
+
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IObj = geom.getObj(0);
     const path1: gs.ITopoPath = a1.getEdges()[0][0][0].getTopoPath();
@@ -215,8 +241,8 @@ export function test_Edge_next(): boolean {
     // console.log(a1.getEdges()[0][0][0].getTopoPath());
     // console.log(a1.getEdges()[0][0][1].getTopoPath());
     // console.log(a1.getEdges()[0][0][2].getTopoPath());
-    if (!a1.getEdges()[0][0][1].next().getTopoPath()) {return false;}
-    if (!a1.getEdges()[0][0][0].next().getTopoPath()) {return false;}
+    // if (!a1.getEdges()[0][0][1].next().getTopoPath()) {return false;}
+    // if (!a1.getEdges()[0][0][0].next().getTopoPath()) {return false;}
     return true;
 }
 

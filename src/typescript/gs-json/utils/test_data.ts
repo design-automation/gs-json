@@ -335,3 +335,172 @@ export function box_with_groups(): gs.IModelData {
     skins : null,
 };
 }
+
+/**
+ * A box with one side open, with some groups.
+ */
+export function Unclosed_Face_with_groups(): gs.IModelData {
+    return {
+    metadata: {
+        filetype: "gs-json",
+        version: "0.1.1",
+        crs: {epsg: 3857},
+        location: "+0-0",
+    },
+    geom: {
+        points: [
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            [
+                [-0.7, -1.0, 0.0], // 0
+                [0.2, -1.0, 0.0], // 1
+                [0.2, -1.0, 3.0], // 2
+                [-0.7, -1.0, 3.0], // 3
+                [-0.7, 1.0, 0.0], // 4
+                [0.2, 1.0, 0.0],  // 5
+                [0.2, 1.0, 3.0],  // 6
+                [-0.7, 1.0, 3.0],  // 7
+           ],
+       ],
+        objs: [
+            [
+                [
+                    [0, 4, 1, 5, 7],  // 
+               ],
+                [
+                    [1, 5, 4, 0, 2], // 
+                    [2, 6, 5, 1, 3], // 
+                    [3, 7, 6, 2, 5], // 
+                    [0, 4, 7, 3, 6], // 
+                    [5, 6, 7, 4, 3],  // 
+               ],
+                [200],
+           ],
+       ],
+    },
+    attribs: null,
+    groups: [
+        {
+            name: "building_obj",
+            objs: [0],
+            props: [["descr", "The building object, that has wire and faces."]],
+        },
+        // groups with topo
+        {
+            name: "building_all_faces",
+            topos:
+             [
+                [[0, [0, 1, 2, 3, 4]]], // obj 0, all faces
+                [],
+                [],
+                [],
+                [],
+                [],
+           ],
+        },
+        {
+            name: "walls",
+            parent: "building_obj",
+            topos: [
+                [[0, [1, 3, 4]]], // obj 0, faces 1, 3, 4
+                [],
+                [],
+                [],
+                [],
+                [],
+           ],
+            props: [["descr", "Three walls."], ["material", "brick"], ["thickness", 300]],
+        },
+        {
+            name: "floor",
+            parent: "building_obj",
+            topos: [
+                [[0, [0]]], // obj 0, face 0
+                [],
+                [],
+                [],
+                [],
+                [],
+           ],
+        },
+        {
+            name: "roof",
+            parent: "building_obj",
+            topos: [
+                [[0, [2]]], // obj 0, face 2
+                [],
+                [],
+                [],
+                [],
+                [],
+           ],
+        },
+        {
+            name: "winodw_openings",
+            parent: "building_obj",
+            topos: [
+                [],
+                [[0, [0]]], // obj 0, wire 0
+                [],
+                [],
+                [],
+                [],
+           ],
+        },
+        {
+            name: "vertical_edges_of_faces",
+            parent: "building_obj",
+            topos: [
+                [
+                    [0,
+                        [
+                            [1, [1, 3]], // obj 0, face 1, edges 1, 3
+                            [3, [1, 3]], // obj 0, face 3, edges 1, 3
+                            [4, [0, 2]], // obj 0, face 4, edges 0, 2
+                       ],
+                   ],
+               ],
+                [],
+                [],
+                [],
+                [],
+                [],
+           ],
+        },
+        {
+            name: "vertices_on_ground",
+            parent: "building_obj",
+            topos: [
+                [
+                    [0,
+                        [
+                            [0, [0, 1, 2, 3]], // obj 0, face 0, vertices 0, 1, 2, 3
+                            [1, [2, 3]],     // obj 0, face 0, vertices 2, 3
+                            [3, [0, 1]],     // obj 0, face 0, vertices 0, 1
+                            [4, [0, 3]],      // obj 0, face 0, vertices 0, 3
+                       ],
+                   ],
+               ],
+                [
+                    [0,
+                        [
+                            [0, [0, 1]], // obj 0, wire 0, vertices 0, 1
+                       ],
+                   ],
+               ],
+                [],
+                [],
+                [],
+                [],
+           ],
+        },
+        {
+            name: "points_on_ground",
+            parent: "building_obj",
+            points: [0, 1, 4, 5],
+        },
+   ],
+    skins : null,
+};
+}
+
+
