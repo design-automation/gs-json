@@ -286,7 +286,7 @@ export class Edge extends Topo implements ifs.IEdge {
      * @return The previous edge object.
      */
     public previous(): ifs.IEdge {
-        let edge_index: number = this.path.si + 1;
+        let edge_index: number = this.path.si - 1;
         if (edge_index < 0) {
             if (!this.getWireOrFace().isClosed()) {return null; }
             edge_index = this.getWireOrFace().numEdges() - 1;

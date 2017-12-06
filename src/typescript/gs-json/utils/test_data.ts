@@ -339,7 +339,7 @@ export function box_with_groups(): gs.IModelData {
 /**
  * A box with one side open, with some groups.
  */
-export function Unclosed_Face_with_groups(): gs.IModelData {
+export function Unclosed_with_groups(): gs.IModelData {
     return {
     metadata: {
         filetype: "gs-json",
@@ -367,11 +367,11 @@ export function Unclosed_Face_with_groups(): gs.IModelData {
                     [0, 4, 1, 5, 7],  // 
                ],
                 [
-                    [1, 5, 4, 0, 2], // 
-                    [2, 6, 5, 1, 3], // 
-                    [3, 7, 6, 2, 5], // 
-                    [0, 4, 7, 3, 6], // 
-                    [5, 6, 7, 4, 3],  // 
+                    [1, 5, 4, 0, -1], // 
+                    [2, 6, 5, 1, -1], // 
+                    [3, 7, 6, 2, -1], // 
+                    [0, 4, 7, 3, -1], // 
+                    [5, 6, 7, 4, -1],  // 
                ],
                 [200],
            ],

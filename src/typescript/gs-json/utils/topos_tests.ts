@@ -222,17 +222,13 @@ export function test_Edge_next(): boolean {
     if(!Arr.equal(m.getGeom().getObjData(e_w2.getTopoPath()),[3,0])){return false;}
     if(!Arr.equal(m.getGeom().getObjData(e_w3.getTopoPath()),[0,1])){return false;}
 
-    const m2: gs.IModel = new gs.Model(td.Unclosed_Face_with_groups());
+    const m2: gs.IModel = new gs.Model(td.Unclosed_with_groups());
     const e2_f1: gs.IEdge = new gs.Edge(m2.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)).next()
     if(!Arr.equal(m2.getGeom().getObjData(e2_f1.getTopoPath()),[1,5])){return false;}
-    // A face is always closed, even if unspecified in the object face
 
     // Unclosed Wire, shows error if console.log() is released (although e2_w1 is generated as a non existing edge, by constructor), OK
     const e2_w1: gs.IEdge = new gs.Edge(m2.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 4)).next()
     // console.log(m2.getGeom().getObjData(e2_w1.getTopoPath()))    
-
-
-
 
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IObj = geom.getObj(0);
@@ -248,29 +244,32 @@ export function test_Edge_next(): boolean {
 
 export function test_Edge_previous(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const geom: gs.IGeom = m.getGeom();
-    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
-    const e1: gs.IEdge = new gs.Edge(m.getGeom(),path);
-    const e2: gs.IEdge = e1.previous();
-    const e3: gs.IEdge = e2.previous();
-    const e4: gs.IEdge = e3.previous();
-    const e5: gs.IEdge = e4.previous();
-    const e6: gs.IEdge = e5.previous();
-    const e7: gs.IEdge = e6.previous();
-    const e8: gs.IEdge = e7.previous();
-    const e9: gs.IEdge = e8.previous();
+    const e_f1: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0)).previous()
+    const e_f2: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 1)).previous()
+    const e_f3: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)).previous()
 
-    // console.log(e1.getTopoPath());
-    // console.log(e2.getTopoPath());
-    // console.log(e3.getTopoPath());
-    // console.log(e4.getTopoPath());
-    // console.log(e5.getTopoPath());
-    // console.log(e6.getTopoPath());
-    // console.log(e7.getTopoPath());
-    // console.log(e8.getTopoPath());
-    // console.log(e9.getTopoPath());
+    if(!Arr.equal(m.getGeom().getObjData(e_f1.getTopoPath()),[0,1])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_f2.getTopoPath()),[1,5])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_f3.getTopoPath()),[4,0])){return false;}
 
-    const a1: gs.IObj = geom.getObj(0);
+    const e_w1: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0)).previous()
+    const e_w2: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2)).previous()
+    const e_w3: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)).previous()
+    if(!Arr.equal(m.getGeom().getObjData(e_w1.getTopoPath()),[3,0])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_w2.getTopoPath()),[1,2])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_w3.getTopoPath()),[2,3])){return false;}
+
+
+    // Unclosed Wire, shows error if console.log() is released (although e2_w1 is generated as a non existing edge, by constructor), OK
+    const m2: gs.IModel = new gs.Model(td.Unclosed_with_groups());
+    const e2_w1: gs.IEdge = new gs.Edge(m2.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0)).previous()
+    // Console.log(m2.getGeom().getObjData(e2_w1.getTopoPath()))
+
+
+
+
+////////////////////////
+    const a1: gs.IObj = m.getGeom().getObj(0);
     const path1: gs.ITopoPath = a1.getEdges()[0][0][0].getTopoPath();
 
     // console.log(geom.numTopos(gs.EGeomType.edges));
