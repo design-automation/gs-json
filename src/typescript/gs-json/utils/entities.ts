@@ -155,21 +155,69 @@ export class Point extends Ent implements ifs.IPoint {
      * @return Returns the array of vertices.
      */
     public getVertices(): ifs.IVertex[] {
-        // const objs_data: ifs.IObj[] = this.getGeom().getObjs();
-        const objs_data: any = this.geom.getObjData();
-        const vertices: ifs.IVertex[] = [];
-        for (const obj_data of objs_data) {
-            // loop through all wires and extract verts that have same point_id
-            obj_data[0].forEach((w, w_i) => w.forEach((v, v_i) => (v === this.id) &&
-                vertices.push(new Vertex(this.geom,
-                    new TopoPath(this.id, EGeomType.wires, w_i, EGeomType.vertices, v_i)))));
-        //     // loop through all faces and extract verts that have same point_id
-        //     obj_data[1].forEach((f, f_i) => f.forEach((v, v_i) => (v === this.id) &&
-        //         vertices.push(new Vertex(this.geom,
-        //             new TopoPath(this.id, EGeomType.faces, f_i, EGeomType.vertices, v_i)))));
-        }
+    const geom: ifs.IGeom = this.geom
+    // const path1: gs.IPoint = new gs.TopoPath(0, )
+    // const p1: ifs.IPoint = m.getGeom().getPoint(0);
+    const vertices: ifs.IVertex[] = []
+    
+    for(const a of this.geom.getTopos(EGeomType.wires)){for(const b of a.getVertices()){
+   // console.log(p1.getGeom().getPoint(p1.getID()).getID())
+   // console.log(b.getPoint().getID())
+   // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID())
+   // console.log(b.getTopoPath())
+   if(this.geom.getPoint(this.getID()).getID() == b.getPoint().getID()){vertices.push(new Vertex(this.geom, b.getTopoPath()))}
+    // if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getPath()))}
+    // console.log(b.getPoint().getID())}
+    }
+    }
+    
+    for(const a of this.geom.getTopos(EGeomType.faces)){for(const b of a.getVertices()){
+ // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()) 
+    if(this.geom.getPoint(this.getID()).getID() == b.getPoint().getID()){vertices.push(new Vertex(this.geom, b.getTopoPath()))}
+// console.log(b.getPoint().getID())}
+    }
+    }
         return vertices;
     }
+
+
+//////////////////////////////////////////////////
+/////////////////// COPY /////////////////////////
+//////////////////////////////////////////////////
+    // public getVertices(): ifs.IVertex[] {
+    //     // const objs_data: ifs.IObj[] = this.getGeom().getObjs();
+    //     const objs_data: any = this.geom.getObjData();
+    //     const vertices: ifs.IVertex[] = [];
+    //     for (const obj_data of objs_data) {
+    //         // loop through all wires and extract verts that have same point_id
+    //         obj_data[0].forEach((w, w_i) => w.forEach((v, v_i) => (v === this.id) &&
+    //             vertices.push(new Vertex(this.geom,
+    //                 new TopoPath(this.id, EGeomType.wires, w_i, EGeomType.vertices, v_i)))));
+    //     //     // loop through all faces and extract verts that have same point_id
+    //     //     obj_data[1].forEach((f, f_i) => f.forEach((v, v_i) => (v === this.id) &&
+    //     //         vertices.push(new Vertex(this.geom,
+    //     //             new TopoPath(this.id, EGeomType.faces, f_i, EGeomType.vertices, v_i)))));
+    //     }
+    //     return vertices;
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 /**
