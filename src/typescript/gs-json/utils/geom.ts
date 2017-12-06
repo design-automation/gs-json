@@ -120,51 +120,123 @@ export class Geom implements ifs.IGeom {
      * @param obj_id The object ID.
      * @return The object data.
      */
-    public getObjData(path?: ifs.ITopoPath): any {
-        try {
+
+public getObjData(path?: ifs.ITopoPath): any {
+try {
         // if (path.st) { // vertices or edges
-            switch (path.st) {
-                case EGeomType.vertices:
-                    switch (path.tt) {
-                        case EGeomType.wires:
-                            return this._objs[path.id][0][path.ti][path.si];
-                        case EGeomType.faces:
-                            return this._objs[path.id][1][path.ti][path.si];
-                    }
-                case EGeomType.edges:
-                    switch (path.tt) {
-                        case EGeomType.wires:
-                            return [
-                                this._objs[path.id][0][path.ti][path.si],
-                                this._objs[path.id][0][path.ti][path.si + 1],
-                           ];
-                        case EGeomType.faces:
-                            return [
-                                this._objs[path.id][1][path.ti][path.si],
-                                this._objs[path.id][1][path.ti][path.si + 1],
-                           ];
-                    }
-            }
+        switch (path.st) {
+            case EGeomType.vertices:
+                switch (path.tt) {
+                    case EGeomType.wires:
+                    if(this._objs[path.id][0][path.ti][path.si] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+                    if(this._objs[path.id][0][path.ti][path.si] == -1){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+                    return this._objs[path.id][0][path.ti][path.si];
+                    case EGeomType.faces:
+                    if(this._objs[path.id][1][path.ti][path.si] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+                    if(this._objs[path.id][1][path.ti][path.si] == -1){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+                    return this._objs[path.id][1][path.ti][path.si];
+                                }        
+            case EGeomType.edges:
+                switch (path.tt) {
+                    case EGeomType.wires:
+                    if(this._objs[path.id][0][path.ti][path.si + 1] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+                   if(this._objs[path.id][0][path.ti][path.si + 1] == -1){return [this._objs[path.id][0][path.ti][path.si],this._objs[path.id][0][path.ti][0],];}                    
+                    return [this._objs[path.id][0][path.ti][path.si],this._objs[path.id][0][path.ti][path.si + 1],];
+                    case EGeomType.faces:                    
+                    if(this._objs[path.id][1][path.ti][path.si + 1] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+                   if(this._objs[path.id][1][path.ti][path.si + 1] == -1){return [this._objs[path.id][1][path.ti][path.si],this._objs[path.id][1][path.ti][0],];}                   
+                    return [this._objs[path.id][1][path.ti][path.si],this._objs[path.id][1][path.ti][path.si + 1],];
+                                }
+                        }
         // } else if (path.tt) { // wires or faces
-            switch (path.tt) {
+        switch (path.tt) {
                 case EGeomType.wires:
-                    if (path.ti !== undefined) {
-                        return this._objs[path.id][0][path.ti];
-                    }
+                if (path.ti !== undefined) {
+                    if(this._objs[path.id][0][path.ti] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+                    return this._objs[path.id][0][path.ti];
+                }
                     return this._objs[path.id][0];
                 case EGeomType.faces:
-                    if (path.ti !== undefined) {
-                        return this._objs[path.id][1][path.ti];
-                    }
+                if (path.ti !== undefined) {
+                    if(this._objs[path.id][1][path.ti] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+                    return this._objs[path.id][1][path.ti];
+                }
                     return this._objs[path.id][1];
-            }
+                }
         // } else { // objects
-            return this._objs[path.id];
+
+        if(this._objs[path.id] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+        return this._objs[path.id];
         // }
-        } catch (ex) {
-            throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);
-        }
-    }
+}catch (ex) {throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+}
+
+
+
+
+
+////////////////
+///// Copy Paste
+////////////////
+    // public getObjData(path?: ifs.ITopoPath): any {
+    //     try {
+    //     // if (path.st) { // vertices or edges
+    //         switch (path.st) {
+    //             case EGeomType.vertices:
+    //                 switch (path.tt) {
+    //                     case EGeomType.wires:
+    //                         return this._objs[path.id][0][path.ti][path.si];
+    //                     case EGeomType.faces:
+    //                         return this._objs[path.id][1][path.ti][path.si];
+    //                 }
+    //             case EGeomType.edges:
+    //                 switch (path.tt) {
+    //                     case EGeomType.wires:
+    //                         return [
+    //                             this._objs[path.id][0][path.ti][path.si],
+    //                             this._objs[path.id][0][path.ti][path.si + 1],
+    //                        ];
+    //                     case EGeomType.faces:
+    //                         return [
+    //                             this._objs[path.id][1][path.ti][path.si],
+    //                             this._objs[path.id][1][path.ti][path.si + 1],
+    //                        ];
+    //                 }
+    //         }
+    //     // } else if (path.tt) { // wires or faces
+    //         switch (path.tt) {
+    //             case EGeomType.wires:
+    //                 if (path.ti !== undefined) {
+    //                     return this._objs[path.id][0][path.ti];
+    //                 }
+    //                 return this._objs[path.id][0];
+    //             case EGeomType.faces:
+    //                 if (path.ti !== undefined) {
+    //                     return this._objs[path.id][1][path.ti];
+    //                 }
+    //                 return this._objs[path.id][1];
+    //         }
+    //     // } else { // objects
+    //         if(this._objs[path.id] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+    //         return this._objs[path.id];
+    //     // }
+    //     } catch (ex) {
+    //         throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);
+    //     }
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Points
     /**
      * to be completed

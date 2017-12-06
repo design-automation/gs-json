@@ -172,16 +172,60 @@ export function test_Geom_getObjData(): boolean { // A REVERIFIER
     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0))[2],[200])){return false;}
     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0))[1][3],[0, 4, 7, 3, -1])){return false;}
 
-    console.log(m.getGeom().getObjData(new gs.TopoPath(0))[0])
-    // if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0)),[[0, 1, 2, 3, -1],[[1, 5, 4, 0, -1],[2, 6, 5, 1, -1],[3, 7, 6, 2, -1],[0, 4, 7, 3, -1],[5, 6, 7, 4, -1],],[200]])){return false;}
-    console.log(m.getGeom().getObjData(new gs.TopoPath(0)))
-    // Exceptions
-    console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 4)))
-    console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 5)))
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // if(!Arr.equal([],[])){return false;}
-    // if(!Arr.equal([],[])){return false;}
-    // if(!Arr.equal([],[])){return false;}
+    //Exceptions, All 9 below tests, if released, must show errors:
+    // Case object undefined:    console.log(m.getGeom().getObjData(new gs.TopoPath(0))) = OK
+
+    // Case Object undefined, OK (test 1/11)
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(4)))
+    // Case Edges undefined, test 2/11 OK
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 10)))
+    // Case Wires undefined, test 3/11
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 10)))
+    // Case Vertices (Wires) undefined or points -1: (test 4/11 and 5/11)
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 44)))
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 4)))
+    // Case Vertices (Faces) undefined or points -1: (test 6/11 and 7/11)
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 88)))
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 4)))
+    // Case Edges (Wires) undefined or linked to a -1: (test 8/11 and 9/11) OK
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 44)))
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)),[3,0])){return false;}
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)))
+    // Case Edges (Faces) undefined or linked to a -1: (test 10/11 and 11/11)
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 88)))
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)),[0,1])){return false;}
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)))
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0))[0])
+    // // if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0)),[[0, 1, 2, 3, -1],[[1, 5, 4, 0, -1],[2, 6, 5, 1, -1],[3, 7, 6, 2, -1],[0, 4, 7, 3, -1],[5, 6, 7, 4, -1],],[200]])){return false;}
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0)))
+    // // Exceptions, 2 cases, first, when path shows -1 or undefined
+
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 4)))
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 5)))
+    // console.log(4)
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0)))
+    // // if(!Arr.equal([],[])){return false;}
+    // // if(!Arr.equal([],[])){return false;}
+    // // if(!Arr.equal([],[])){return false;}
 
 
     // const path: gs.ITopoPath = new gs.TopoPath(0);
