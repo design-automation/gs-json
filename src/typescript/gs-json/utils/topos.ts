@@ -2,6 +2,7 @@ import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
 import {EGeomType, mapGeomTypeToString} from "./enums";
 import {Point} from "./entities";
+import * as td from "./test_data";
 
 /**
  * Topo class.
@@ -301,30 +302,87 @@ export class Edge extends Topo implements ifs.IEdge {
      * 1) The wire edges, and 2) the face edges.
      * @return An array containing the two sub-arrays of edges.
      */
+
     public edgesSharedPoints(): ifs.IEdge[][] {
-        const point_id_0: number = this.geom.getObjData(this.path) as number;
-        let vertex_index: number = this.path.si + 1;
-        if (vertex_index > this.getWireOrFace().numVertices() - 1) {
-            vertex_index = 0;
-        }
-        const point_id_1: number = this.geom.getObjData(
-            new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index)) as number;
-        const points: number[] = [point_id_0, point_id_1].sort();
-        const obj_data: any = this.geom.getObjData(new TopoPath(this.path.id));
-        // loop through all wires and extract verts that have same point_id
-        const wire_edges: ifs.IEdge[] = [];
-        obj_data[0].forEach((w, w_i) => w.forEach((v, v_i) =>
-            Arr.equal([v, obj_data[v_i + 1]].sort(), points) &&
-                wire_edges.push(new Edge(this.geom,
-                    new TopoPath(this.path.id, EGeomType.wires, w_i, this.path.st, v_i)))));
-        // loop through all faces and extract verts that have same point_id
-        const face_edges: ifs.IEdge[] = [];
-        obj_data[1].forEach((f, f_i) => f.forEach((v, v_i) =>
-            Arr.equal([v, obj_data[v_i + 1]].sort(), points) &&
-                face_edges.push(new Edge(this.geom,
-                    new TopoPath(this.path.id, EGeomType.faces, f_i, this.path.st, v_i)))));
-        return [wire_edges, face_edges]; // TODO remove the edge itdelf from the list
+
+        const select:ifs.IEdge[][] =[];
+        return select;
+
+//         const id0: number = this.geom.getObjData(this.path)[0];
+//         const id1: number = this.geom.getObjData(this.path)[1];
+
+//         const point0: ifs.IPoint = new Point(this.geom, id0);
+//         const point1: ifs.IPoint = new Point(this.geom, id1);
+
+//         const Vertices0: ifs.IVertex[] = point0.getVertices();
+//         const Vertices1: ifs.IVertex[] = point1.getVertices();
+
+//         console.log(id0);
+//         console.log(id1);
+//         console.log(Vertices0);
+//         console.log(Vertices1);
+
+//         console.log(Vertices[].next())
+
+//         const wire_edges: ifs.IEdge[] = [];
+//         const face_edges: ifs.IEdge[] = [];
+//         return [wire_edges, face_edges];
+
+// // To Continue
+
+        // const point_id_0: number = this.geom.getObjData(this.path) as number;
+        // let vertex_index: number = this.path.si + 1;
+        // if (vertex_index > this.getWireOrFace().numVertices() - 1) {
+        // vertex_index = 0;
+        // }
+        // const point_id_1: number = this.geom.getObjData(
+        // new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index)) as number;
+        // const points: number[] = [point_id_0, point_id_1].sort();
+        // const obj_data: any = this.geom.getObjData(new TopoPath(this.path.id));
+        // // loop through all wires and extract verts that have same point_id
+        // const wire_edges: ifs.IEdge[] = [];
+        // obj_data[0].forEach((w, w_i) => w.forEach((v, v_i) =>
+        // Arr.equal([v, obj_data[v_i + 1]].sort(), points) &&
+        // wire_edges.push(new Edge(this.geom,
+        // new TopoPath(this.path.id, EGeomType.wires, w_i, this.path.st, v_i)))));
+        // // loop through all faces and extract verts that have same point_id
+        // const face_edges: ifs.IEdge[] = [];
+        // obj_data[1].forEach((f, f_i) => f.forEach((v, v_i) =>
+        // Arr.equal([v, obj_data[v_i + 1]].sort(), points) &&
+        // face_edges.push(new Edge(this.geom,
+        // new TopoPath(this.path.id, EGeomType.faces, f_i, this.path.st, v_i)))));
+        // return [wire_edges, face_edges]; // TODO remove the edge itdelf from the list
+
     }
+
+////////////////////////////////////////////////
+//////////////// COPY //////////////////////////
+////////////////////////////////////////////////
+
+    // public edgesSharedPoints(): ifs.IEdge[][] {
+    //     const point_id_0: number = this.geom.getObjData(this.path) as number;
+    //     let vertex_index: number = this.path.si + 1;
+    //     if (vertex_index > this.getWireOrFace().numVertices() - 1) {
+    //         vertex_index = 0;
+    //     }
+    //     const point_id_1: number = this.geom.getObjData(
+    //         new TopoPath(this.path.id, this.path.tt, this.path.ti, this.path.st, vertex_index)) as number;
+    //     const points: number[] = [point_id_0, point_id_1].sort();
+    //     const obj_data: any = this.geom.getObjData(new TopoPath(this.path.id));
+    //     // loop through all wires and extract verts that have same point_id
+    //     const wire_edges: ifs.IEdge[] = [];
+    //     obj_data[0].forEach((w, w_i) => w.forEach((v, v_i) =>
+    //         Arr.equal([v, obj_data[v_i + 1]].sort(), points) &&
+    //             wire_edges.push(new Edge(this.geom,
+    //                 new TopoPath(this.path.id, EGeomType.wires, w_i, this.path.st, v_i)))));
+    //     // loop through all faces and extract verts that have same point_id
+    //     const face_edges: ifs.IEdge[] = [];
+    //     obj_data[1].forEach((f, f_i) => f.forEach((v, v_i) =>
+    //         Arr.equal([v, obj_data[v_i + 1]].sort(), points) &&
+    //             face_edges.push(new Edge(this.geom,
+    //                 new TopoPath(this.path.id, EGeomType.faces, f_i, this.path.st, v_i)))));
+    //     return [wire_edges, face_edges]; // TODO remove the edge itdelf from the list
+    // }
 }
 
 /**
@@ -439,9 +497,24 @@ export class Face extends Topo implements ifs.IFace {
      * @return An array of faces.
      */
     public facesSharedPoints(num_shared_points?: number): ifs.IFace[] {
-        throw new Error ("Method not implemented.");
+    if(num_shared_points === undefined){num_shared_points = 1;}
+    if( num_shared_points === 0){throw new Error("WARNING: num_shared point needs a non zero value") ;}
+    const faces:ifs.IFace[] = [];
+    const Obj:ifs.IObj = this.getGeom().getObj(this.getObjID());
+    for(const b of Obj.getFaces()){
+    let counter:number = 0;
+    for (const c of b.getVertices()){
+    for(const a of this.getGeom().getObjData(this.getTopoPath())){
+    if(!(a===-1)){if(!(this.getTopoPath().ti === c.getTopoPath().ti)){if(a === c.getPoint().getID()){counter = counter + 1;}}}
+    };
+    var duplicate:boolean = false;
+    for(const k of faces){if( k.getTopoPath() === b.getTopoPath()){duplicate = true;}}
+    if(!duplicate){if(counter >= num_shared_points){faces.push(new Face(this.geom, b.getTopoPath()));}}
     }
-}
+    }
+    return faces;
+    }
+    }
 
 // Path
 /**
