@@ -167,130 +167,31 @@ export function test_point_getPosition(): boolean {
     return gs.Arr.equal([4, 5, 6], pos);
 }
 
-export function test_point_getVertices(): boolean { // To Do
+export function test_point_getVertices(): boolean {
     const m: gs.IModel = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
-    // const path1: gs.IPoint = new gs.TopoPath(0, )
-    const p1: gs.IPoint = m.getGeom().getPoint(0);
-    console.log(p1.getVertices()); // Looks good
-
-////////////
-//     const m: gs.IModel = new gs.Model(test_data.open_box());
-//     const geom: gs.IGeom = m.getGeom();
-//     // const path1: gs.IPoint = new gs.TopoPath(0, )
-//     const p1: gs.IPoint = m.getGeom().getPoint(0);
-//     const global: gs.IVertex[] = []
-    
-//     for(const a of p1.getGeom().getTopos(gs.EGeomType.wires)){for(const b of a.getVertices()){
-//    // console.log(p1.getGeom().getPoint(p1.getID()).getID())
-//    // console.log(b.getPoint().getID())
-//    // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID())
-//    // console.log(b.getTopoPath())
-//    if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getTopoPath()))}
-//     // if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getPath()))}
-//     // console.log(b.getPoint().getID())}
-//     }
-//     }
-    
-//     for(const a of p1.getGeom().getTopos(gs.EGeomType.faces)){for(const b of a.getVertices()){
-//  // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()) 
-//     if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getTopoPath()))}
-// // console.log(b.getPoint().getID())}
-//     }
-//     }
-//     console.log(global);
-//////////////    
-        // console.log(p1.getVertices())
-
-//     const objs_data: any = p1.getGeom().getTopos(gs.EGeomType.wires);
-
-//     // console.log(p1.getGeom().numTopos(gs.EGeomType.wires))
-//     // console.log(p1.getGeom().numTopos(gs.EGeomType.faces))
-    // console.log(p1.getGeom().getTopos(gs.EGeomType.wires))
-    // console.log(p1.getGeom().getTopos(gs.EGeomType.faces))
-
-    // for(const a of p1.getGeom().getTopos(gs.EGeomType.wires)){for(const b of a.getVertices()){console.log(b.getPoint().getID())}}
-    // for(const a of p1.getGeom().getTopos(gs.EGeomType.faces)){for(const b of a.getVertices()){console.log(b.getPoint().getID())}}
-
-    // for(const a of p1.getGeom().getTopos(gs.EGeomType.faces)){console.log(a.getVertices())}
-
-
-//     const global: gs.IVertex[] = []
-
-//     // console.log(p1.getGeom().getTopos(gs.EGeomType.wires)[0])
-
-//         for (const a of p1.getGeom().getTopos(gs.EGeomType.wires)){
-//             // console.log(k)
-//             // console.log(p1.getGeom().getTopos(gs.EGeomType.wires)[k])
-//     for(const b in a.getVertices())(            console.log(global.push(b.getPoint()))
-//             // global.push(a.getVertices())
-// )     }
-
-//         for (const a of p1.getGeom().getTopos(gs.EGeomType.faces)){
-//     //         console.log(k)
-//     //         console.log(p1.getGeom().getTopos(gs.EGeomType.faces)[k])
-//     //         // global.push(a.getVertices())
-//             console.log(a)
-//      }
-
-
-
-    // if(p1.getGeom().numTopos(gs.EGeomType.wires) != 0){
-    // // for(const k in Arr.makeSeq(p1.getGeom().numTopos(gs.EGeomType.wires))){
-    //     for(let k:number = 0 ; k< p1.getGeom().numTopos(gs.EGeomType.wires); k++){
-
-    //     for (const a of p1.getGeom().getTopos(gs.EGeomType.wires)[k]){global.push(a.getVertices())}
-    // }}
-    // if(p1.getGeom().numTopos(gs.EGeomType.faces) != 0){
-    // for(const k in Arr.makeSeq(p1.getGeom().numTopos(gs.EGeomType.faces))){}
-    // }
-
-    // objs_data.push(p1.getGeom().getTopos(gs.EGeomType.faces));
-    // console.log(objs_data[0].length)
-    // console.log(objs_data[1].length)
-    // console.log(objs_data[1][0].getVertices())
-    // console.log(objs_data[0][0].getVertices())
-
-    // const global: gs.IVertex[] = []
-    // for (const a of objs_data[0]){global.push(a.getVertices())}
-    // for (const a of objs_data[1]){global.push(a.getVertices())}
-    // console.log(global)
-    // console.log(global[0][0].getPoint().getID())
-
-    // console.log(global[0].getPoint().getID())
-
-
-        // const vertices: ifs.IVertex[] = [];
-        // for (const obj_data of objs_data) {
-        //     // loop through all wires and extract verts that have same point_id
-        //     obj_data[0].forEach((w, w_i) => w.forEach((v, v_i) => (v === this.id) &&
-        //         vertices.push(new gs.Vertex(this.geom,
-        //             new gs.TopoPath(this.id, gs.EGeomType.wires, w_i, gs.EGeomType.vertices, v_i)))));
-        //     // loop through all faces and extract verts that have same point_id
-        //     obj_data[1].forEach((f, f_i) => f.forEach((v, v_i) => (v === this.id) &&
-        //         vertices.push(new Vertex(this.geom,
-        //             new TopoPath(this.id, EGeomType.faces, f_i, EGeomType.vertices, v_i)))));
-        // }
-
-        // console.log(vertices);
-
-
-
-//    console.log(p1.getGeom().getPointData(p1.getID()))
-
-
-    // console.log(p1.getGeom().getObjs());
-    // console.log(p1.getVertices());
-
-    // console.log(p1)
-    // console.log(v)
-
-    // const
-
-    // const v1: gs.IVertex[] = a1.getVertices()
-    // console.log(v1);
-    // console.log(a1.getVertices())
-    // console.log(a1.getGeom().getObjs()) //
+    const p0: gs.IPoint = m.getGeom().getPoint(0);
+    const p1: gs.IPoint = m.getGeom().getPoint(1);
+    const p2: gs.IPoint = m.getGeom().getPoint(2);
+    const p3: gs.IPoint = m.getGeom().getPoint(3);
+    const p4: gs.IPoint = m.getGeom().getPoint(4);
+    const p5: gs.IPoint = m.getGeom().getPoint(5);
+    const p6: gs.IPoint = m.getGeom().getPoint(6);
+    const p7: gs.IPoint = m.getGeom().getPoint(7);
+    if(!(p0.getVertices().length === 3)){return false;}
+    if(!(p0.getVertices()[0].getWireOrFace().getTopoPath().ti === 0)){return false;}
+    if(!(p0.getVertices()[0].getTopoPath().si === 0)){return false;}
+    if(!(p0.getVertices()[1].getTopoPath().ti === 0)){return false;}
+    if(!(p0.getVertices()[1].getTopoPath().si === 3)){return false;}
+    if(!(p0.getVertices()[2].getTopoPath().ti === 3)){return false;}
+    if(!(p0.getVertices()[2].getTopoPath().si === 0)){return false;}
+    if(!(p1.getVertices().length === 3)){return false;}
+    if(!(p2.getVertices().length === 3)){return false;}
+    if(!(p3.getVertices().length === 3)){return false;}
+    if(!(p4.getVertices().length === 3)){return false;}
+    if(!(p5.getVertices().length === 3)){return false;}
+    if(!(p6.getVertices().length === 3)){return false;}
+    if(!(p7.getVertices().length === 3)){return false;}
     return true;
 }
 

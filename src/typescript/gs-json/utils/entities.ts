@@ -156,34 +156,18 @@ export class Point extends Ent implements ifs.IPoint {
      */
     public getVertices(): ifs.IVertex[] {
     const geom: ifs.IGeom = this.geom
-    // const path1: gs.IPoint = new gs.TopoPath(0, )
-    // const p1: ifs.IPoint = m.getGeom().getPoint(0);
-    const vertices: ifs.IVertex[] = []
-    
+    const vertices: ifs.IVertex[] = []    
     for(const a of this.geom.getTopos(EGeomType.wires)){for(const b of a.getVertices()){
-   // console.log(p1.getGeom().getPoint(p1.getID()).getID())
-   // console.log(b.getPoint().getID())
-   // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID())
-   // console.log(b.getTopoPath())
-   if(this.geom.getPoint(this.getID()).getID() == b.getPoint().getID()){vertices.push(new Vertex(this.geom, b.getTopoPath()))}
-    // if(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()){global.push(new gs.Vertex(p1.getGeom(), b.getPath()))}
-    // console.log(b.getPoint().getID())}
-    }
-    }
-    
+    if(this.geom.getPoint(this.getID()).getID() == b.getPoint().getID()){vertices.push(new Vertex(this.geom, b.getTopoPath()))}}
+    }    
     for(const a of this.geom.getTopos(EGeomType.faces)){for(const b of a.getVertices()){
- // console.log(p1.getGeom().getPoint(p1.getID()).getID() == b.getPoint().getID()) 
-    if(this.geom.getPoint(this.getID()).getID() == b.getPoint().getID()){vertices.push(new Vertex(this.geom, b.getTopoPath()))}
-// console.log(b.getPoint().getID())}
+    if(this.geom.getPoint(this.getID()).getID() == b.getPoint().getID()){vertices.push(new Vertex(this.geom, b.getTopoPath()))}}
     }
+    return vertices;
     }
-        return vertices;
-    }
-
-
-//////////////////////////////////////////////////
-/////////////////// COPY /////////////////////////
-//////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    /////////////////// COPY /////////////////////////
+    //////////////////////////////////////////////////
     // public getVertices(): ifs.IVertex[] {
     //     // const objs_data: ifs.IObj[] = this.getGeom().getObjs();
     //     const objs_data: any = this.geom.getObjData();
@@ -200,26 +184,7 @@ export class Point extends Ent implements ifs.IPoint {
     //     }
     //     return vertices;
     // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-
+    }
 /**
  * Abstract class Obj.
  * The superclass for all geometric objects,
