@@ -304,32 +304,48 @@ export class Edge extends Topo implements ifs.IEdge {
      */
 
     public edgesSharedPoints(): ifs.IEdge[][] {
-
-        const select:ifs.IEdge[][] =[];
-        return select;
-
+    const Wire_Edges: ifs.IEdge[] =[];
+    const Face_Edges: ifs.IEdge[] =[];
+    let var1: number[] = this.geom.getObjData(this.getTopoPath());
+    let var2: number[] = [];
+    let var3: number[] = [];
+    for(const a of this.geom.getObj(this.getObjID()).getWires()){
+    for(const b of a.getEdges()){
+    var2 = b.getGeom().getObjData(b.getTopoPath());
+    var3 = [var2[1],var2[0]];
+    var duplicate:boolean = false;
+    for(const k of Wire_Edges){if( k.getTopoPath() === b.getTopoPath()){duplicate = true;}}
+    if(!duplicate){if((Arr.equal(var1,var2) || Arr.equal(var1,var3))){Wire_Edges.push(new Edge(this.geom, b.getTopoPath()));}}
+    }
+    ;}
+    for(const a of this.geom.getObj(this.getObjID()).getFaces()){
+    for(const b of a.getEdges()){
+    var2 = b.getGeom().getObjData(b.getTopoPath());
+    var3 = [var2[1],var2[0]];
+    var duplicate:boolean = false;
+    for(const k of Face_Edges){if( k.getTopoPath() === b.getTopoPath()){duplicate = true;}}
+    if(!duplicate){if((Arr.equal(var1,var2) || Arr.equal(var1,var3))){Face_Edges.push(new Edge(this.getGeom(), b.getTopoPath()));}}
+    }
+    ;}
+    return [Wire_Edges,Face_Edges];
+    
+// const m:gs.IModel = new gs.Model(td.open_box());
+// const edge_init: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0));
 //         const id0: number = this.geom.getObjData(this.path)[0];
 //         const id1: number = this.geom.getObjData(this.path)[1];
-
 //         const point0: ifs.IPoint = new Point(this.geom, id0);
 //         const point1: ifs.IPoint = new Point(this.geom, id1);
-
 //         const Vertices0: ifs.IVertex[] = point0.getVertices();
 //         const Vertices1: ifs.IVertex[] = point1.getVertices();
-
 //         console.log(id0);
 //         console.log(id1);
 //         console.log(Vertices0);
 //         console.log(Vertices1);
-
 //         console.log(Vertices[].next())
-
 //         const wire_edges: ifs.IEdge[] = [];
 //         const face_edges: ifs.IEdge[] = [];
 //         return [wire_edges, face_edges];
-
 // // To Continue
-
         // const point_id_0: number = this.geom.getObjData(this.path) as number;
         // let vertex_index: number = this.path.si + 1;
         // if (vertex_index > this.getWireOrFace().numVertices() - 1) {

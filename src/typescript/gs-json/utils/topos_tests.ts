@@ -282,7 +282,27 @@ export function test_Edge_previous(): boolean {
     return true;
 }
 
-export function test_Edge_edgesSharedPoints(): boolean { // To Do
+export function test_Edge_edgesSharedPoints(): boolean {
+
+const E1: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.open_box())).getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0))).edgesSharedPoints() ;
+const E2: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.open_box())).getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0))).edgesSharedPoints() ;
+const E3: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.open_box())).getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 1))).edgesSharedPoints() ;
+const E4: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.open_box())).getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 1))).edgesSharedPoints() ;
+
+const E5: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.Random_Closed())).getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 4, gs.EGeomType.edges, 0))).edgesSharedPoints() ;
+const E6: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.Random_Closed())).getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 4))).edgesSharedPoints() ;
+const E7: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.Random_Closed())).getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 4, gs.EGeomType.edges, 4))).edgesSharedPoints() ;
+const E8: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.Random_Closed())).getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0))).edgesSharedPoints() ;
+
+if(!((E1[0].length + E1[1].length) === 2)){return false;};
+if(!((E2[0].length + E2[1].length) === 2)){return false;};
+if(!((E3[0].length + E3[1].length) === 2)){return false;};
+if(!((E4[0].length + E4[1].length) === 2)){return false;};
+if(!((E5[0].length + E5[1].length) === 5)){return false;};
+if(!((E6[0].length + E6[1].length) === 7)){return false;};
+if(!((E7[0].length + E7[1].length) === 7)){return false;};
+if(!((E8[0].length + E8[1].length) === 1)){return false;};
+
     return true;
 }
 
