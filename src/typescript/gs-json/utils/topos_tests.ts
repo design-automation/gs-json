@@ -208,6 +208,28 @@ export function test_Edge_getWireOrFace(): boolean {
 
 export function test_Edge_next(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
+    const e_f1: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0)).next()
+    const e_f2: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 2)).next()
+    const e_f3: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)).next()
+    if(!Arr.equal(m.getGeom().getObjData(e_f1.getTopoPath()),[5,4])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_f2.getTopoPath()),[0,1])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_f3.getTopoPath()),[1,5])){return false;}
+
+    const e_w1: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0)).next()
+    const e_w2: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2)).next()
+    const e_w3: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)).next()
+    if(!Arr.equal(m.getGeom().getObjData(e_w1.getTopoPath()),[1,2])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_w2.getTopoPath()),[3,0])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_w3.getTopoPath()),[0,1])){return false;}
+
+    const m2: gs.IModel = new gs.Model(td.Unclosed_with_groups());
+    const e2_f1: gs.IEdge = new gs.Edge(m2.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)).next()
+    if(!Arr.equal(m2.getGeom().getObjData(e2_f1.getTopoPath()),[1,5])){return false;}
+
+    // Unclosed Wire, shows error if console.log() is released (although e2_w1 is generated as a non existing edge, by constructor), OK
+    const e2_w1: gs.IEdge = new gs.Edge(m2.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 4)).next()
+    // console.log(m2.getGeom().getObjData(e2_w1.getTopoPath()))
+
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IObj = geom.getObj(0);
     const path1: gs.ITopoPath = a1.getEdges()[0][0][0].getTopoPath();
@@ -215,36 +237,36 @@ export function test_Edge_next(): boolean {
     // console.log(a1.getEdges()[0][0][0].getTopoPath());
     // console.log(a1.getEdges()[0][0][1].getTopoPath());
     // console.log(a1.getEdges()[0][0][2].getTopoPath());
-    if (!a1.getEdges()[0][0][1].next().getTopoPath()) {return false;}
-    if (!a1.getEdges()[0][0][0].next().getTopoPath()) {return false;}
+    // if (!a1.getEdges()[0][0][1].next().getTopoPath()) {return false;}
+    // if (!a1.getEdges()[0][0][0].next().getTopoPath()) {return false;}
     return true;
 }
 
 export function test_Edge_previous(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const geom: gs.IGeom = m.getGeom();
-    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
-    const e1: gs.IEdge = new gs.Edge(m.getGeom(),path);
-    const e2: gs.IEdge = e1.previous();
-    const e3: gs.IEdge = e2.previous();
-    const e4: gs.IEdge = e3.previous();
-    const e5: gs.IEdge = e4.previous();
-    const e6: gs.IEdge = e5.previous();
-    const e7: gs.IEdge = e6.previous();
-    const e8: gs.IEdge = e7.previous();
-    const e9: gs.IEdge = e8.previous();
+    const e_f1: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0)).previous()
+    const e_f2: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 1)).previous()
+    const e_f3: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)).previous()
 
-    console.log(e1.getTopoPath());
-    console.log(e2.getTopoPath());
-    console.log(e3.getTopoPath());
-    console.log(e4.getTopoPath());
-    console.log(e5.getTopoPath());
-    console.log(e6.getTopoPath());
-    console.log(e7.getTopoPath());
-    console.log(e8.getTopoPath());
-    console.log(e9.getTopoPath());
+    if(!Arr.equal(m.getGeom().getObjData(e_f1.getTopoPath()),[0,1])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_f2.getTopoPath()),[1,5])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_f3.getTopoPath()),[4,0])){return false;}
 
-    const a1: gs.IObj = geom.getObj(0);
+    const e_w1: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0)).previous()
+    const e_w2: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2)).previous()
+    const e_w3: gs.IEdge = new gs.Edge(m.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)).previous()
+    if(!Arr.equal(m.getGeom().getObjData(e_w1.getTopoPath()),[3,0])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_w2.getTopoPath()),[1,2])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(e_w3.getTopoPath()),[2,3])){return false;}
+
+
+    // Unclosed Wire, shows error if console.log() is released (although e2_w1 is generated as a non existing edge, by constructor), OK
+    const m2: gs.IModel = new gs.Model(td.Unclosed_with_groups());
+    const e2_w1: gs.IEdge = new gs.Edge(m2.getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0)).previous()
+    // Console.log(m2.getGeom().getObjData(e2_w1.getTopoPath()))
+
+////////////////////////
+    const a1: gs.IObj = m.getGeom().getObj(0);
     const path1: gs.ITopoPath = a1.getEdges()[0][0][0].getTopoPath();
 
     // console.log(geom.numTopos(gs.EGeomType.edges));
@@ -252,43 +274,35 @@ export function test_Edge_previous(): boolean {
     // console.log(a1.getEdges()[0][0][1].getTopoPath());
     // console.log(a1.getEdges()[0][0][2].getTopoPath());
 
-    console.log(a1.getEdges()[0][0][1])
-    console.log(a1.getEdges()[0][0][1].previous())
-    console.log(a1.getEdges()[0][0][1].previous().getTopoPath())
+    // console.log(a1.getEdges()[0][0][1])
+    // console.log(a1.getEdges()[0][0][1].previous())
+    // console.log(a1.getEdges()[0][0][1].previous().getTopoPath())
     if (!a1.getEdges()[0][0][1].previous().getTopoPath()) {return false;}
     if (!a1.getEdges()[0][0][0].previous().getTopoPath()) {return false;}
     return true;
 }
 
-export function test_Edge_edgesSharedPoints(): boolean { // To Do
+export function test_Edge_edgesSharedPoints(): boolean {
 
-    const m: gs.IModel = new gs.Model(td.open_box());
-    const path0: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
-    const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 1);
-    const path2: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2);
-    const path3: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3);
+const E1: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.open_box())).getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0))).edgesSharedPoints() ;
+const E2: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.open_box())).getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0))).edgesSharedPoints() ;
+const E3: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.open_box())).getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 1))).edgesSharedPoints() ;
+const E4: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.open_box())).getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 1))).edgesSharedPoints() ;
 
-    // const e0: gs.IEdge = new gs.Edge(m.getGeom(), path0)
-    // const e1: gs.IEdge = new gs.Edge(m.getGeom(), path1)
-    // const e2: gs.IEdge = new gs.Edge(m.getGeom(), path2)
-    // const e3: gs.IEdge = new gs.Edge(m.getGeom(), path3)
+const E5: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.Random_Closed())).getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 4, gs.EGeomType.edges, 0))).edgesSharedPoints() ;
+const E6: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.Random_Closed())).getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 4))).edgesSharedPoints() ;
+const E7: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.Random_Closed())).getGeom(), new gs.TopoPath(0, gs.EGeomType.faces, 4, gs.EGeomType.edges, 4))).edgesSharedPoints() ;
+const E8: gs.IEdge[][] = (new gs.Edge((new gs.Model(td.Random_Closed())).getGeom(), new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0))).edgesSharedPoints() ;
 
-    const e: gs.ITopo[] = m.getGeom().getTopos(gs.EGeomType.edges)
-    console.log(e[0]);
+if(!((E1[0].length + E1[1].length) === 2)){return false;};
+if(!((E2[0].length + E2[1].length) === 2)){return false;};
+if(!((E3[0].length + E3[1].length) === 2)){return false;};
+if(!((E4[0].length + E4[1].length) === 2)){return false;};
+if(!((E5[0].length + E5[1].length) === 5)){return false;};
+if(!((E6[0].length + E6[1].length) === 7)){return false;};
+if(!((E7[0].length + E7[1].length) === 7)){return false;};
+if(!((E8[0].length + E8[1].length) === 1)){return false;};
 
-    for (let k:number = 0 ; k<24 ; k++){
-        let e1:gs.IEdge = e[0] as gs.IEdge;
-        // console.log(e[k].edgesSharedPoints())
-    }
-
-    // console.log(e0.edgesSharedPoints())
-    // console.log(e1.edgesSharedPoints())
-    // console.log(e2.edgesSharedPoints())
-    // console.log(e3.edgesSharedPoints())
-
-    // const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-    // const path2: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 1, gs.EGeomType.edges, 0);
-    // const path3: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 1);
     return true;
 }
 
@@ -391,16 +405,66 @@ export function test_Face_isClosed(): boolean {
     if(!f.isClosed()){return false;}
     return true;
 }
-export function test_Face_facesSharedPoints(): boolean { // To Do
-const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-if(path.toString() != "Obj: 0/faces: 0/edges: 0"){return false;}
+export function test_Face_facesSharedPoints(): boolean {
+    const m1: gs.IModel = new gs.Model(td.open_box());
+    const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0);
+    const f1: gs.IFace = new gs.Face(m1.getGeom(), path1)
+    if(!(f1.facesSharedPoints(1).length === 3)){return false;}
+
+    const m2: gs.IModel = new gs.Model(td.Random_Closed());
+    const path00: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0);
+    const f00: gs.IFace = new gs.Face(m2.getGeom(), path00)
+    const path01: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 1);
+    const f01: gs.IFace = new gs.Face(m2.getGeom(), path01)
+    const path02: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 2);
+    const f02: gs.IFace = new gs.Face(m2.getGeom(), path02)
+    const path03: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 3);
+    const f03: gs.IFace = new gs.Face(m2.getGeom(), path03)
+    const path04: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 4);
+    const f04: gs.IFace = new gs.Face(m2.getGeom(), path04)
+    const path05: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 5);
+    const f05: gs.IFace = new gs.Face(m2.getGeom(), path05)
+    const path06: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 6);
+    const f06: gs.IFace = new gs.Face(m2.getGeom(), path06)
+    const path07: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 7);
+    const f07: gs.IFace = new gs.Face(m2.getGeom(), path07)
+    const path08: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 8);
+    const f08: gs.IFace = new gs.Face(m2.getGeom(), path08)
+
+    if(!(f00.facesSharedPoints().length === 6)){return false;}
+    if(!(f01.facesSharedPoints().length === 7)){return false;}
+    if(!(f02.facesSharedPoints().length === 8)){return false;}
+
+    if(!(f00.facesSharedPoints(1).length === 6)){return false;}
+    if(!(f01.facesSharedPoints(1).length === 7)){return false;}
+    if(!(f02.facesSharedPoints(1).length === 8)){return false;}
+    if(!(f03.facesSharedPoints(1).length === 8)){return false;}
+    if(!(f04.facesSharedPoints(1).length === 8)){return false;}
+    if(!(f05.facesSharedPoints(1).length === 8)){return false;}
+    if(!(f06.facesSharedPoints(1).length === 8)){return false;}
+    if(!(f07.facesSharedPoints(1).length === 7)){return false;}
+    if(!(f08.facesSharedPoints(1).length === 6)){return false;}
+
+    if(!(f00.facesSharedPoints(5).length === 2)){return false;}
+    if(!(f01.facesSharedPoints(5).length === 3)){return false;}
+    if(!(f02.facesSharedPoints(5).length === 4)){return false;}
+    if(!(f03.facesSharedPoints(5).length === 4)){return false;}
+    if(!(f04.facesSharedPoints(5).length === 4)){return false;}
+    if(!(f05.facesSharedPoints(5).length === 4)){return false;}
+    if(!(f06.facesSharedPoints(5).length === 4)){return false;}
+    if(!(f07.facesSharedPoints(5).length === 3)){return false;}
+    if(!(f08.facesSharedPoints(5).length === 2)){return false;}
+
+    if(!(f06.facesSharedPoints(6).length === 2)){return false;}
+    if(!(f07.facesSharedPoints(6).length === 2)){return false;}
+    if(!(f08.facesSharedPoints(6).length === 1)){return false;}
+
     return true;
 }
 
-//////////////////////////////////////////////////////
 export function test_TopoPath_constructor(): boolean {
-const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-if(path.toString() != "Obj: 0/faces: 0/edges: 0"){return false;}
+    const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    if(path.toString() != "Obj: 0/faces: 0/edges: 0"){return false;}
     return true;
 }
 export function test_TopoPath_equals(): boolean {

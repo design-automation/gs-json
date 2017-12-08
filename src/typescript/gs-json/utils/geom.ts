@@ -120,51 +120,107 @@ export class Geom implements ifs.IGeom {
      * @param obj_id The object ID.
      * @return The object data.
      */
-    public getObjData(path?: ifs.ITopoPath): any {
-        try {
-        // if (path.st) { // vertices or edges
-            switch (path.st) {
-                case EGeomType.vertices:
-                    switch (path.tt) {
-                        case EGeomType.wires:
-                            return this._objs[path.id][0][path.ti][path.si];
-                        case EGeomType.faces:
-                            return this._objs[path.id][1][path.ti][path.si];
-                    }
-                case EGeomType.edges:
-                    switch (path.tt) {
-                        case EGeomType.wires:
-                            return [
-                                this._objs[path.id][0][path.ti][path.si],
-                                this._objs[path.id][0][path.ti][path.si + 1],
-                           ];
-                        case EGeomType.faces:
-                            return [
-                                this._objs[path.id][1][path.ti][path.si],
-                                this._objs[path.id][1][path.ti][path.si + 1],
-                           ];
-                    }
-            }
-        // } else if (path.tt) { // wires or faces
-            switch (path.tt) {
-                case EGeomType.wires:
-                    if (path.ti !== undefined) {
-                        return this._objs[path.id][0][path.ti];
-                    }
-                    return this._objs[path.id][0];
-                case EGeomType.faces:
-                    if (path.ti !== undefined) {
-                        return this._objs[path.id][1][path.ti];
-                    }
-                    return this._objs[path.id][1];
-            }
-        // } else { // objects
-            return this._objs[path.id];
-        // }
-        } catch (ex) {
-            throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);
-        }
+
+public getObjData(path?: ifs.ITopoPath): any {
+    try {
+    // if (path.st) { // vertices or edges
+    switch (path.st) {
+    case EGeomType.vertices:
+    switch (path.tt) {
+    case EGeomType.wires:
+    if(this._objs[path.id][0][path.ti][path.si] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    if(this._objs[path.id][0][path.ti][path.si] == -1){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    return this._objs[path.id][0][path.ti][path.si];
+    case EGeomType.faces:
+    if(this._objs[path.id][1][path.ti][path.si] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    if(this._objs[path.id][1][path.ti][path.si] == -1){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    return this._objs[path.id][1][path.ti][path.si];
+    }        
+    case EGeomType.edges:
+    switch (path.tt) {
+    case EGeomType.wires:
+    if(this._objs[path.id][0][path.ti][path.si + 1] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+    if(this._objs[path.id][0][path.ti][path.si + 1] == -1){return [this._objs[path.id][0][path.ti][path.si],this._objs[path.id][0][path.ti][0],];}                    
+    return [this._objs[path.id][0][path.ti][path.si],this._objs[path.id][0][path.ti][path.si + 1],];
+    case EGeomType.faces:                    
+    if(this._objs[path.id][1][path.ti][path.si + 1] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    if(this._objs[path.id][1][path.ti][path.si + 1] == -1){return [this._objs[path.id][1][path.ti][path.si],this._objs[path.id][1][path.ti][0],];}                   
+    return [this._objs[path.id][1][path.ti][path.si],this._objs[path.id][1][path.ti][path.si + 1],];
     }
+    }
+    // } else if (path.tt) { // wires or faces
+    switch (path.tt) {
+    case EGeomType.wires:
+    if (path.ti !== undefined) {
+    if(this._objs[path.id][0][path.ti] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    return this._objs[path.id][0][path.ti];
+    }
+    return this._objs[path.id][0];
+    case EGeomType.faces:
+    if (path.ti !== undefined) {
+    if(this._objs[path.id][1][path.ti] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    return this._objs[path.id][1][path.ti];
+    }
+    return this._objs[path.id][1];
+    }
+    // } else { // objects
+
+    if(this._objs[path.id] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+    return this._objs[path.id];
+    // }
+    }catch (ex) {throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+    }
+
+////////////////
+///// Copy Paste
+////////////////
+    // public getObjData(path?: ifs.ITopoPath): any {
+    //     try {
+    //     // if (path.st) { // vertices or edges
+    //         switch (path.st) {
+    //             case EGeomType.vertices:
+    //                 switch (path.tt) {
+    //                     case EGeomType.wires:
+    //                         return this._objs[path.id][0][path.ti][path.si];
+    //                     case EGeomType.faces:
+    //                         return this._objs[path.id][1][path.ti][path.si];
+    //                 }
+    //             case EGeomType.edges:
+    //                 switch (path.tt) {
+    //                     case EGeomType.wires:
+    //                         return [
+    //                             this._objs[path.id][0][path.ti][path.si],
+    //                             this._objs[path.id][0][path.ti][path.si + 1],
+    //                        ];
+    //                     case EGeomType.faces:
+    //                         return [
+    //                             this._objs[path.id][1][path.ti][path.si],
+    //                             this._objs[path.id][1][path.ti][path.si + 1],
+    //                        ];
+    //                 }
+    //         }
+    //     // } else if (path.tt) { // wires or faces
+    //         switch (path.tt) {
+    //             case EGeomType.wires:
+    //                 if (path.ti !== undefined) {
+    //                     return this._objs[path.id][0][path.ti];
+    //                 }
+    //                 return this._objs[path.id][0];
+    //             case EGeomType.faces:
+    //                 if (path.ti !== undefined) {
+    //                     return this._objs[path.id][1][path.ti];
+    //                 }
+    //                 return this._objs[path.id][1];
+    //         }
+    //     // } else { // objects
+    //         if(this._objs[path.id] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+    //         return this._objs[path.id];
+    //     // }
+    //     } catch (ex) {
+    //         throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);
+    //     }
+    // }
+
     // Points
     /**
      * to be completed
@@ -202,14 +258,62 @@ export class Geom implements ifs.IGeom {
      * @return
      */
     public delPoint(point_id: number): boolean {
+
+//////////////////
+
+        // const var1:[number[],number[][]] = [[],[[null]]];
+        // for(const a of this._points[0]){if(!(a === point_id)){var1[0].push(a)}};
+        // var1[1] = this._points[1];
+
+        // // var1[1][point_id] === [3,3,3];
+
+        // for(const a of this._points[1]){
+        //     if(Arr.indexOf(a,this._points[1]) === point_id){var1[1].push(undefined)}
+        //     else{var1[1].push(a)};
+
+        // //     for(const b of a){
+
+        // //     if(!(b === point_id)){var1[1][].push(b)}
+        // // }
+        // };
+
+
+        // // let var: [number[], number[][]] = [[], [null]];
+        // // var[0] = [0,1,2];
+        // // [number[], number[][]] = [[], [null]];
+
+        // // var[0].push(this._points[0])
+
+        // // this._points = [[1,2,3,4,5],[[1,1,1],[2,2,2],[3,3,3]]];
+        // // this._points[point_id] = null;
+        // this._points = var1;
+///////////////////
+
+
+        return true ;
+
+        // delete this._points[0][point_id];
+        // delete this._points[1][point_id];
+        // delete function replaces by empty, and is not directly usable because numPoints kind of ignores the deletion
+        // return true;
+
+
+
+////////////////////////////////////////////////////////
+///////////////////////// COPY  ////////////////////////
+////////////////////////////////////////////////////////
+
         // delete the point from the geometry array
-        if (this._points[point_id] === undefined) {return false; }
-        delete this._points[point_id];
+        // if (this._points[0][point_id] === undefined) {return false; }
+        // this._points[0][point_id] == null;
+        // this._points[1][point_id] == null;
+        // delete this._points[0][point_id];
+        // delete this._points[1][point_id];
         // delete the point from any geometrc objects
 
         // TODO decide how to do this
 
-        throw new Error("WARNING: implementation incomplete.");
+        // throw new Error("WARNING: implementation incomplete.");
 
         // delete attribute values for this point
         // for (let attrib of this._model.getAttribs(EGeomType.points)) {
@@ -220,6 +324,10 @@ export class Geom implements ifs.IGeom {
         // for (const group of this._model.getGroups()) {
         //     group.removePoint(point_id);
         // }
+
+////////////////////////////////////////////////////////
+///////////////////////// COPY  ////////////////////////
+////////////////////////////////////////////////////////
     }
     /**
      * to be completed
@@ -358,7 +466,8 @@ export class Geom implements ifs.IGeom {
      * @param
      * @return
      */
-    public getTopos(geom_type: EGeomType): ifs.ITopo[] {
+    // public getTopos(geom_type: EGeomType): ifs.ITopo[] {
+    public getTopos(geom_type: EGeomType): (ifs.IVertex[] | ifs.IEdge[] | ifs.IWire[] | ifs.IFace[])  {
         switch (geom_type) {
             case EGeomType.vertices:
                 return this._getPaths(geom_type).map((p) => new Vertex(this, p));

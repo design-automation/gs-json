@@ -107,8 +107,6 @@ export function test_ent_getGroupNames(): boolean {
      // == ["test 1"]);
     // console.log(p1.getGroupNames())
 
-
-
      // == ["test 2"]);
 
     // TO DO
@@ -126,11 +124,17 @@ export function test_ent_getGroupNames(): boolean {
 }
 
 export function test_ent_addToGroup(): boolean {
-    // let m:gs.IModel = new gs.Model(test_data.box_with_groups());
-    // let geom:gs.IGeom = m.getGeom();
-    // let a1:ifs.IObj = geom.getObj(0);
-    // let gpr1
-    return true;
+    let m:gs.IModel = new gs.Model(test_data.box_with_groups());
+    let geom:gs.IGeom = m.getGeom();
+    let a1:ifs.IObj = geom.getObj(0);
+    let gpr1:gs.IGroup = m.addGroup("test1");
+    console.log(gpr1.hasObj(0))
+    console.log(true);
+    if(gpr1.hasObj(0)){return false;}
+    a1.addToGroup("test1");
+    console.log(gpr1.hasObj(0))
+    if(gpr1.hasObj(0)){return false;}
+    return true;
 }
 
 // Point tests, extends Entities by 4 complementary methods
@@ -148,12 +152,10 @@ export function test_point_setPosition(): boolean {
     point.setPosition([4,5,6]);
     if((Arr.equal(point.getPosition(),[11,22,33]))) {return false;}
     if(!(Arr.equal(point.getPosition(),[4,5,6]))) {return false;}
-
     //if(!(Arr.equal(point.getPosition(),null))) {return false;}
     // point.setPosition([1,2]); //what should this do?
     // point.setPosition([1,2,3,4]); //what should this do?
     // point.setPosition([1,,2]); //sparse array
-
     return true;
 }
 
@@ -165,15 +167,31 @@ export function test_point_getPosition(): boolean {
     return gs.Arr.equal([4, 5, 6], pos);
 }
 
-export function test_point_getVertices(): boolean { // To Do
-    // TO DO // LINKED WITH GET OBJ DATA IN GEOM
-    const m: gs.IModel = new gs.Model(test_data.box_with_groups());
+export function test_point_getVertices(): boolean {
+    const m: gs.IModel = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
-    const a1: gs.IPoint = m.getGeom().addPoint([2,4,6]);
-    // const v1: gs.IVertex[] = a1.getVertices()
-    // console.log(v1);
-    // console.log(a1.getVertices())
-    // console.log(a1.getGeom().getObjs()) //
+    const p0: gs.IPoint = m.getGeom().getPoint(0);
+    const p1: gs.IPoint = m.getGeom().getPoint(1);
+    const p2: gs.IPoint = m.getGeom().getPoint(2);
+    const p3: gs.IPoint = m.getGeom().getPoint(3);
+    const p4: gs.IPoint = m.getGeom().getPoint(4);
+    const p5: gs.IPoint = m.getGeom().getPoint(5);
+    const p6: gs.IPoint = m.getGeom().getPoint(6);
+    const p7: gs.IPoint = m.getGeom().getPoint(7);
+    if(!(p0.getVertices().length === 3)){return false;}
+    if(!(p0.getVertices()[0].getWireOrFace().getTopoPath().ti === 0)){return false;}
+    if(!(p0.getVertices()[0].getTopoPath().si === 0)){return false;}
+    if(!(p0.getVertices()[1].getTopoPath().ti === 0)){return false;}
+    if(!(p0.getVertices()[1].getTopoPath().si === 3)){return false;}
+    if(!(p0.getVertices()[2].getTopoPath().ti === 3)){return false;}
+    if(!(p0.getVertices()[2].getTopoPath().si === 0)){return false;}
+    if(!(p1.getVertices().length === 3)){return false;}
+    if(!(p2.getVertices().length === 3)){return false;}
+    if(!(p3.getVertices().length === 3)){return false;}
+    if(!(p4.getVertices().length === 3)){return false;}
+    if(!(p5.getVertices().length === 3)){return false;}
+    if(!(p6.getVertices().length === 3)){return false;}
+    if(!(p7.getVertices().length === 3)){return false;}
     return true;
 }
 

@@ -1,5 +1,7 @@
 import * as gs from "./gs-json";
 import * as test_data from "./test_data";
+import {Arr} from "./arr";
+import * as td from "./test_data";
 
 export function test_createPoint(): boolean {
     const model: gs.IModel = new gs.Model();
@@ -10,12 +12,12 @@ export function test_createPoint(): boolean {
     if (model.getGeom().numPoints() !== 1) {return false;}
     // test 2
     for (let k: number = 0 ; k<a.length ; k++) {
-        if(model.getGeom().getPointData(0)[1][k] !== a[k]) {return false;}
+    if(model.getGeom().getPointData(0)[1][k] !== a[k]) {return false;}
     }
     return true;
 }
 
-// Geom constructor and its 19 public methods are tested
+    // Geom constructor and its 19 public methods are tested
 export function test_Geom_constructor(): boolean {
     const m1: gs.IModel = new gs.Model();
     const a: number[] = [1,2,3];
@@ -28,8 +30,8 @@ export function test_Geom_getModel(): boolean {
     const m: gs.Model = new gs.Model(test_data.box_with_attribs());
     const geom: gs.IGeom = m.getGeom();
     if(!(geom.getModel().getAttribs(
-        gs.EGeomType.points)[0].getName() === m.getAttribs(
-            gs.EGeomType.points)[0].getName())) {return false;}
+    gs.EGeomType.points)[0].getName() === m.getAttribs(
+    gs.EGeomType.points)[0].getName())) {return false;}
     return true;
 }
 
@@ -43,9 +45,9 @@ export function test_Geom_addPoint(): boolean {
     if (model.getGeom().numPoints() !== num_Point) {return false;}
     // test 1.2
     for(let j: number = 0; j < model.getGeom().numPoints(); j++) {
-        for (let k: number = 0 ; k<p1.length ; k++) {
-            if(model.getGeom().getPointData(j)[1][k] !== p1[k] ) {return false;}
-        }
+    for (let k: number = 0 ; k<p1.length ; k++) {
+    if(model.getGeom().getPointData(j)[1][k] !== p1[k] ) {return false;}
+    }
     }
     //
     const p2: number[] = [4, 2, 8];
@@ -56,7 +58,7 @@ export function test_Geom_addPoint(): boolean {
     if (model.getGeom().numPoints() !== num_Point) {return false;}
     // test 2.2
     for (let k: number = 0 ; k<p2.length ; k++) {
-        if(model.getGeom().getPointData(1)[1][k] !== p2[k] ) {return false;}
+    if(model.getGeom().getPointData(1)[1][k] !== p2[k] ) {return false;}
     }
     ////
     const p3: number[] = [6,1,7];
@@ -66,7 +68,7 @@ export function test_Geom_addPoint(): boolean {
     if (model.getGeom().numPoints() !== num_Point) {return false;}
     // test 3.2
     for (let k: number = 0 ; k<p3.length ; k++) {
-        if(model.getGeom().getPointData(2)[1][k] !== p3[k] ) {return false;}
+    if(model.getGeom().getPointData(2)[1][k] !== p3[k] ) {return false;}
     }
     return true;
 }
@@ -114,12 +116,12 @@ export function test_Geom_addPolymesh(): boolean {
     const p17 = g.addPoint([-5,3,2]);
 
     const pmesh2: gs.IPolymesh = g.addPolymesh([
-        [p13,p12,p11,p10], // bottom
-        [p10,p11,p15,p14], // side0
-        [p11,p12,p16,p15], // side1
-        [p12,p13,p17,p16], // side2
-        [p13,p10,p14,p17], // side3
-        [p14,p15,p16,p17], // top
+    [p13,p12,p11,p10], // bottom
+    [p10,p11,p15,p14], // side0
+    [p11,p12,p16,p15], // side1
+    [p12,p13,p17,p16], // side2
+    [p13,p10,p14,p17], // side3
+    [p14,p15,p16,p17], // top
 
     ]);
 
@@ -128,10 +130,10 @@ export function test_Geom_addPolymesh(): boolean {
     if (pmesh2.numWires() !== 0) {return false; }
 
     const pmesh3: gs.IPolymesh = g.addPolymesh([
-        [p13,p12,p11,p10], // bottom
-        [p10,p11,p15,p14], // side0
-        [p13,p10,p14,p17], // side3
-        [p14,p15,p16,p17], // top
+    [p13,p12,p11,p10], // bottom
+    [p10,p11,p15,p14], // side0
+    [p13,p10,p14,p17], // side3
+    [p14,p15,p16,p17], // top
     ]);
 
     if (g.numObjs() !== 3) {return false; }
@@ -146,47 +148,110 @@ export function test_Geom_getPointData(): boolean {
     const geom: gs.IGeom = m.getGeom();
     for ( const k  of  m.getGeom().getPointIDs()) {
     if(!(gs.Arr.equal(m.getGeom().getPoint(
-        geom.getPointIDs()[k]).getPosition(),geom.getPointData(k)[1]))) {return false;} // compiles well
+    geom.getPointIDs()[k]).getPosition(),geom.getPointData(k)[1]))) {return false;} // compiles well
     }
     return true;
 }
 
-export function test_Geom_getObjData(): boolean {
+export function test_Geom_getObjData(): boolean { // A REVERIFIER
     const m: gs.Model = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
-    // Case 1: Vertice of a Face/Wire
-    // Case 2: Edge of a Face/Wire
-    // Case 3:
-    // Case 4: 
-    // Case 5: 
+    // const path:gs.ITopoPath = ;
 
-    const path: gs.ITopoPath = new gs.TopoPath(0);
-    console.log(geom.getObjData(path))
+    // Vertices/Edges (Wires)
+    if(!Arr.equal([m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 3))],[3])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2)),[2,3])){return false;}
+    // Vertices/Edges (Faces)
+    if(!Arr.equal([m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 3, gs.EGeomType.vertices, 2))],[7])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 3, gs.EGeomType.edges, 1)),[4,7])){return false;}
+    // Wire
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0)),[0, 1, 2, 3, -1])){return false;}
+    // Face
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 3)),[0, 4, 7, 3, -1])){return false;}
+    // Object
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0))[0][0],[0, 1, 2, 3, -1])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0))[2],[200])){return false;}
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0))[1][3],[0, 4, 7, 3, -1])){return false;}
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Exceptions, All 11 below tests, if released, must show errors:
+    // Case object undefined:    console.log(m.getGeom().getObjData(new gs.TopoPath(0))) = OK
+
+    // Case Object undefined, OK (test 1/11)
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(4)))
+    // Case Edges undefined, test 2/11 OK
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 10)))
+    // Case Wires undefined, test 3/11 OK
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 10)))
+    // Case Vertices (Wires) undefined or points -1: (test 4/11 and 5/11) OK
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 44)))
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 4)))
+    // Case Vertices (Faces) undefined or points -1: (test 6/11 and 7/11) OK
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 88)))
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 4)))
+    // Case Edges (Wires) undefined or linked to a -1: (test 8/11 and 9/11) OK
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 44)))
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)),[3,0])){return false;}
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)))
+    // Case Edges (Faces) undefined or linked to a -1: (test 10/11 and 11/11) OK
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 88)))
+    if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)),[0,1])){return false;}
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)))
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0))[0])
+    // // if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0)),[[0, 1, 2, 3, -1],[[1, 5, 4, 0, -1],[2, 6, 5, 1, -1],[3, 7, 6, 2, -1],[0, 4, 7, 3, -1],[5, 6, 7, 4, -1],],[200]])){return false;}
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0)))
+    // // Exceptions, 2 cases, first, when path shows -1 or undefined
+
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 4)))
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 5)))
+    // console.log(4)
+    // console.log(m.getGeom().getObjData(new gs.TopoPath(0)))
+    // // if(!Arr.equal([],[])){return false;}
+    // // if(!Arr.equal([],[])){return false;}
+    // // if(!Arr.equal([],[])){return false;}
+
+
+    // const path: gs.ITopoPath = new gs.TopoPath(0);
+    // console.log(geom.getObjData(path))
     // Edges of Wires
-    const path0: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
-    const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 1);
-    const path2: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2);
-    const path3: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3);
+
+    // const path0: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
+    // const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 1);
+    // const path2: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2);
+    // const path3: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3);
+
     // console.log(geom.getObjData(path0))
     // console.log(geom.getObjData(path1))
     // console.log(geom.getObjData(path2))
     // console.log(geom.getObjData(path3))
+
     // Edges of Faces
-    const path00: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 0);
-    const path01: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 1);
-    const path02: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 2);
-    const path03: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 3);
-    const path04: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 4);
-    const path05: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 5);
-    console.log(geom.getObjData(path00))
-    console.log(geom.getObjData(path01))
-    console.log(geom.getObjData(path02))
-    console.log(geom.getObjData(path03))
-    console.log(geom.getObjData(path04))
-    console.log(geom.getObjData(path05))
+
+    // const path00: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 3, gs.EGeomType.vertices, 2);
+    // const path01: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 1);
+    // const path02: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 2);
+    // const path03: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 3);
+    // const path04: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 4);
+    // const path05: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 5);
 
 
-//    geom.getObjData()
+    // console.log(geom.getObjData(path00))
+    // console.log(geom.getObjData(path01))
+    // console.log(geom.getObjData(path02))
+    // console.log(geom.getObjData(path03))
+    // console.log(geom.getObjData(path04))
+    // console.log(geom.getObjData(path05))
+
+
+    //    geom.getObjData()
 
 
     geom.getObjs()[0];
@@ -203,8 +268,8 @@ export function test_Geom_getObjData(): boolean {
     geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[2].getTopoPath());
     geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[3].getTopoPath());
 
-// console.log(    geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath()));
-// console.log(    geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath()));
+    // console.log(    geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath()));
+    // console.log(    geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath()));
     // I would have thought -1 wouldn't be an output of this function
 
     geom.getObjData(geom.getTopos(gs.EGeomType.vertices)[4].getTopoPath());
@@ -314,25 +379,70 @@ export function test_Geom_getPoint(): boolean {
     if(!(gs.Arr.equal(geom.getPointPosition(3),p4.getPosition()))) {return false;}
     if(!(gs.Arr.equal(geom.getPointPosition(4),p5.getPosition()))) {return false;}
     if(!(gs.Arr.equal(geom.getPointPosition(5),p6.getPosition()))) {return false;}
-
     return true;
 }
 
 export function test_Geom_delPoint(): boolean {
-    const m: gs.Model = new gs.Model();
-    const geom: gs.IGeom = m.getGeom();
-    geom.addPoint([1,3,8]);
-    geom.addPoint([8,8,8]);
-    geom.addPoint([3,4,5]);
-    geom.addPoint([2,3,5]);
-    geom.addPoint([1,5,2]);
+//////////////////////////////////////////////////////////////
+////////////////// PLAN, COMPUTER THINKING ///////////////////
+//////////////////////////////////////////////////////////////
+// La base de donnee est composee de points, d'objets, et d'autres constantes internes au groupe.
+// Dans un premier temps nous retirons du tableau un point d'une configuration donnee
+// Etape 1: retirer le point du pt ID et des xyz.
+// Etape 2: retirer les traces de cet id dans les objets de la geometrie.
+// Etape 3: idem pr les attributs, les groupes.
+// Etape 4: Pr le traitement du retrait d'un objet, il s'agira de retirer l'objet des attributs.
+
+///////////////////////////////////////
+// Etape 1: test du retrait du Point ID.
+
+let m: gs.Model = new gs.Model(td.open_box());
+// console.log(m.getGeom().getPointIDs());
+// Re-check all other functions after using a delPoint.
+// Interfers with getPointIDS (for the reason that makeSeq is used)
+
+// m.getGeom().delPoint(4)
+
+m.getGeom().delPoint(4);
+// console.log(m);
+console.log(m.getGeom());
+console.log(m.getGeom().getPointPosition(4));
+// This sub Point looks kind of solved..
+
+
+// const var1:number[] = m.getGeom().getPointIDs();
+// console.log(var1);
+//  delete var1[0];
+
+// console.log(var1);
+
+
+// console.log(m.getGeom().numPoints());
+
+
+// m.getGeom().delPoint(5);
+// // delete m.getGeom().
+// console.log(m.getGeom().getPointIDs());
+// //    console.log(m.getGeom().getP)
+// console.log(m);
+return true;
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+///////////////////////// DEL POINT TEST /////////////////////////////
+//////////////////////////////////////////////////////////////////////
     // The below test is to run when delPoint funciton is implemented
     // if(!(geom.numPoints() == 5)){return false;}
     // for(let k:number = 0 ; k < 4; k++){
     // geom.delPoint(5-k);
     // if(!(geom.numPoints() == 5 - (k+1) )){return false;}
     // }
-    return true;
+//////////////////////////////////////////////////////////////////////
+///////////////////////// DEL POINT TEST /////////////////////////////
+//////////////////////////////////////////////////////////////////////
 }
 
 export function test_Geom_numPoints(): boolean {
@@ -466,13 +576,13 @@ export function test_Geom_getTopos(): boolean {
     const m: gs.Model = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
     if(!(geom.getTopos(
-        gs.EGeomType.edges).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
+    gs.EGeomType.edges).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
     if(!(geom.getTopos(
-        gs.EGeomType.vertices).length === geom.numTopos(gs.EGeomType.vertices))) {return false;}
+    gs.EGeomType.vertices).length === geom.numTopos(gs.EGeomType.vertices))) {return false;}
     if(!(geom.getTopos(
-        gs.EGeomType.faces).length === geom.numTopos(gs.EGeomType.faces))) {return false;}
+    gs.EGeomType.faces).length === geom.numTopos(gs.EGeomType.faces))) {return false;}
     if(!(geom.getTopos(
-        gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
+    gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
     return true;
 }
 
@@ -480,13 +590,13 @@ export function test_Geom_numTopos(): boolean {
     const m: gs.Model = new gs.Model(test_data.box_with_attribs());
     const geom: gs.IGeom = m.getGeom();
     if(!(geom.getTopos(
-        gs.EGeomType.edges).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
+    gs.EGeomType.edges).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
     if(!(geom.getTopos(
-        gs.EGeomType.vertices).length === geom.numTopos(gs.EGeomType.vertices))) {return false;}
+    gs.EGeomType.vertices).length === geom.numTopos(gs.EGeomType.vertices))) {return false;}
     if(!(geom.getTopos(
-        gs.EGeomType.faces).length === geom.numTopos(gs.EGeomType.faces))) {return false;}
+    gs.EGeomType.faces).length === geom.numTopos(gs.EGeomType.faces))) {return false;}
     if(!(geom.getTopos(
-        gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
+    gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
     return true;
 }
 
@@ -503,17 +613,17 @@ export function test_Geom_getAttribTemplate(): boolean {
     const pline3: gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
 
     if(!(geom.getAttribTemplate(
-        gs.EGeomType.points).length === geom.numPoints())) {return false;}
+    gs.EGeomType.points).length === geom.numPoints())) {return false;}
     if(!(geom.getAttribTemplate(
-        gs.EGeomType.objs).length === geom.numObjs() )) {return false;}
+    gs.EGeomType.objs).length === geom.numObjs() )) {return false;}
     if(!(geom.getAttribTemplate(
-        gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
+    gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
     if(!(geom.getAttribTemplate(
-        gs.EGeomType.faces)[0][0].length === geom.numTopos(gs.EGeomType.faces))) {return false;}
+    gs.EGeomType.faces)[0][0].length === geom.numTopos(gs.EGeomType.faces))) {return false;}
     if(!(gs.Arr.flatten(geom.getAttribTemplate(
-        gs.EGeomType.edges)).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
+    gs.EGeomType.edges)).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
     if(!(gs.Arr.flatten(geom.getAttribTemplate(
-        gs.EGeomType.vertices)).length === geom.numTopos(gs.EGeomType.vertices))) {return false;}
+    gs.EGeomType.vertices)).length === geom.numTopos(gs.EGeomType.vertices))) {return false;}
 
     return true;
 }
