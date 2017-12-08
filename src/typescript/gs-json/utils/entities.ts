@@ -158,16 +158,16 @@ export class Point extends Ent implements ifs.IPoint {
     const geom: ifs.IGeom = this.geom
     const vertices: ifs.IVertex[] = []    
     for(let a of this.geom.getTopos(EGeomType.wires)){
+        a = a as ifs.IWire;
         for(const b of a.getVertices()){
-            a = a as ifs.IWire;
             if(this.geom.getPoint(this.getID()).getID() == b.getPoint().getID()){
                 vertices.push(new Vertex(this.geom, b.getTopoPath()))
             }
         }
     }    
     for(let a of this.geom.getTopos(EGeomType.faces)){
+        a = a as ifs.IFace;
         for(const b of a.getVertices()){
-            a = a as ifs.IFace;
             if(this.geom.getPoint(this.getID()).getID() == b.getPoint().getID()){
                 vertices.push(new Vertex(this.geom, b.getTopoPath()))
             }
