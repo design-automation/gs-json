@@ -258,7 +258,32 @@ public getObjData(path?: ifs.ITopoPath): any {
      * @return
      */
     public delPoint(point_id: number): boolean {
-
+        
+                // Point IDs & xyz ;
+        delete this._points[0][point_id] ;
+        delete this._points[1][point_id] ;
+        this._points[0][point_id] = undefined ;
+        this._points[1][point_id] = undefined ;
+        // Wires
+        for(const a of this._objs[0][0]){
+        for(const b of a){if((b === point_id)){this._objs[0][0][Arr.indexOf(a,this._objs[0][0])][Arr.indexOf(b,a)] = undefined;};}
+        }
+        // Faces
+        for(const a of this._objs[0][1]){
+        for(const b of a){if((b === point_id)){this._objs[0][1][Arr.indexOf(a,this._objs[0][1])][Arr.indexOf(b,a)] = undefined;};}
+        }
+        // Groups
+        for(const a of this._model.getGroups()){if(a.hasPoint(point_id)) a.removePoint(point_id)};
+        // Attribs
+        for(const a of this._model.getAttribs(EGeomType.points)){
+        a as ifs.IEntAttrib;
+        if(!(a.getValue(point_id) === undefined)){a.delValue(point_id)};
+        }
+        
+        
+        
+        
+        
 //////////////////
 
         // const var1:[number[],number[][]] = [[],[[null]]];
