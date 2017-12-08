@@ -1,5 +1,5 @@
 import * as ifs from "./ifaces_gs";
-import {IMetadata, IModelData, IAttribData, IGroupData} from "./ifaces_json";
+import {IMetadata, IModelData, IGeomData,  IAttribData, IGroupData, TPointsData} from "./ifaces_json";
 import {EGeomType, EDataType, mapGeomTypeToString, mapDataTypeToString} from "./enums";
 import {Geom} from "./geom";
 import {EntAttrib, TopoAttrib} from "./attribs";
@@ -272,5 +272,25 @@ export class Model implements ifs.IModel {
         // TODO
 
         return true;
+    }
+    // Save the model as  file
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public toJSON(): string {
+        //
+        // const
+        // const points:TPointsData = this._geom.
+        // const json = {
+        //     metadata : this._metadata,
+        //     test : {points: [], objs: []},
+        //     attribs : [],
+        //     groups : [],
+        // };
+
+        return "";
+
     }
 }

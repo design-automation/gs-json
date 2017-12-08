@@ -87,6 +87,7 @@ export class Group implements ifs.IGroup {
         return this._topos;
     }
     // Groups
+
     /**
      * to be completed
      * @param

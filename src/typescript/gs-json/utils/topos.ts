@@ -61,6 +61,9 @@ export abstract class Topo implements ifs.ITopo {
     public getTopoPath(): ifs.ITopoPath {
         return this.path;
     }
+
+
+
     /**
      * Get the attribute names for this topological component.
      * @return The array of attribute names.

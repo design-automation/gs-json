@@ -28,6 +28,8 @@ export interface IModel {
     purgeNulls(): number;
     // Runs some check
     validateModel(): boolean;
+    //Export the whole model to JSON
+    toJSON():string;
 }
 
 // Class to hold manipulate geometry arrays

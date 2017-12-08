@@ -187,6 +187,7 @@ export class EntAttrib extends Attrib implements ifs.IEntAttrib {
  * An instance of this class stores a list of attributes values.
  */
 export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
+
     /**
      * Get a single attribute value.
      * The data type of the attribute value can be found using the getDataType() method.

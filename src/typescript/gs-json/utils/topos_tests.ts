@@ -3,7 +3,6 @@ import * as td from "./test_data";
 import {mapGeomTypeToString} from "./enums";
 import {Arr} from "./arr";
 
-
 export function test_Topo_constructor(): boolean {
     const m:gs.IModel = new gs.Model(td.open_box());
     const path1: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
@@ -278,7 +277,7 @@ export function test_Edge_edgesSharedPoints(): boolean { // To Do
     console.log(e[0]);
 
     for (let k:number = 0 ; k<24 ; k++){
-        let e1:gs.IEdge = e[0] ;
+        let e1:gs.IEdge = e[0] as gs.IEdge;
         // console.log(e[k].edgesSharedPoints())
     }
 
@@ -389,7 +388,7 @@ export function test_Face_isClosed(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
     const path: gs.ITopoPath = new gs.TopoPath(0, gs.EGeomType.faces, 0);
     const f: gs.IFace = new gs.Face(m.getGeom(), path)
-    if(!f.isClosed()){return false;}    
+    if(!f.isClosed()){return false;}
     return true;
 }
 export function test_Face_facesSharedPoints(): boolean { // To Do
