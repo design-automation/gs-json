@@ -1,6 +1,7 @@
 import * as gs from "./gs-json";
 import * as test_data from "./test_data";
 import {Arr} from "./arr";
+import * as td from "./test_data";
 
 export function test_createPoint(): boolean {
     const model: gs.IModel = new gs.Model();
@@ -378,25 +379,70 @@ export function test_Geom_getPoint(): boolean {
     if(!(gs.Arr.equal(geom.getPointPosition(3),p4.getPosition()))) {return false;}
     if(!(gs.Arr.equal(geom.getPointPosition(4),p5.getPosition()))) {return false;}
     if(!(gs.Arr.equal(geom.getPointPosition(5),p6.getPosition()))) {return false;}
-
     return true;
 }
 
 export function test_Geom_delPoint(): boolean {
-    const m: gs.Model = new gs.Model();
-    const geom: gs.IGeom = m.getGeom();
-    geom.addPoint([1,3,8]);
-    geom.addPoint([8,8,8]);
-    geom.addPoint([3,4,5]);
-    geom.addPoint([2,3,5]);
-    geom.addPoint([1,5,2]);
+//////////////////////////////////////////////////////////////
+////////////////// PLAN, COMPUTER THINKING ///////////////////
+//////////////////////////////////////////////////////////////
+// La base de donnee est composee de points, d'objets, et d'autres constantes internes au groupe.
+// Dans un premier temps nous retirons du tableau un point d'une configuration donnee
+// Etape 1: retirer le point du pt ID et des xyz.
+// Etape 2: retirer les traces de cet id dans les objets de la geometrie.
+// Etape 3: idem pr les attributs, les groupes.
+// Etape 4: Pr le traitement du retrait d'un objet, il s'agira de retirer l'objet des attributs.
+
+///////////////////////////////////////
+// Etape 1: test du retrait du Point ID.
+
+let m: gs.Model = new gs.Model(td.open_box());
+// console.log(m.getGeom().getPointIDs());
+// Re-check all other functions after using a delPoint.
+// Interfers with getPointIDS (for the reason that makeSeq is used)
+
+// m.getGeom().delPoint(4)
+
+m.getGeom().delPoint(4);
+// console.log(m);
+console.log(m.getGeom());
+console.log(m.getGeom().getPointPosition(4));
+// This sub Point looks kind of solved..
+
+
+// const var1:number[] = m.getGeom().getPointIDs();
+// console.log(var1);
+//  delete var1[0];
+
+// console.log(var1);
+
+
+// console.log(m.getGeom().numPoints());
+
+
+// m.getGeom().delPoint(5);
+// // delete m.getGeom().
+// console.log(m.getGeom().getPointIDs());
+// //    console.log(m.getGeom().getP)
+// console.log(m);
+return true;
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+///////////////////////// DEL POINT TEST /////////////////////////////
+//////////////////////////////////////////////////////////////////////
     // The below test is to run when delPoint funciton is implemented
     // if(!(geom.numPoints() == 5)){return false;}
     // for(let k:number = 0 ; k < 4; k++){
     // geom.delPoint(5-k);
     // if(!(geom.numPoints() == 5 - (k+1) )){return false;}
     // }
-    return true;
+//////////////////////////////////////////////////////////////////////
+///////////////////////// DEL POINT TEST /////////////////////////////
+//////////////////////////////////////////////////////////////////////
 }
 
 export function test_Geom_numPoints(): boolean {

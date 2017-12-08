@@ -258,14 +258,62 @@ public getObjData(path?: ifs.ITopoPath): any {
      * @return
      */
     public delPoint(point_id: number): boolean {
+
+//////////////////
+
+        // const var1:[number[],number[][]] = [[],[[null]]];
+        // for(const a of this._points[0]){if(!(a === point_id)){var1[0].push(a)}};
+        // var1[1] = this._points[1];
+
+        // // var1[1][point_id] === [3,3,3];
+
+        // for(const a of this._points[1]){
+        //     if(Arr.indexOf(a,this._points[1]) === point_id){var1[1].push(undefined)}
+        //     else{var1[1].push(a)};
+
+        // //     for(const b of a){
+
+        // //     if(!(b === point_id)){var1[1][].push(b)}
+        // // }
+        // };
+
+
+        // // let var: [number[], number[][]] = [[], [null]];
+        // // var[0] = [0,1,2];
+        // // [number[], number[][]] = [[], [null]];
+
+        // // var[0].push(this._points[0])
+
+        // // this._points = [[1,2,3,4,5],[[1,1,1],[2,2,2],[3,3,3]]];
+        // // this._points[point_id] = null;
+        // this._points = var1;
+///////////////////
+
+
+        return true ;
+
+        // delete this._points[0][point_id];
+        // delete this._points[1][point_id];
+        // delete function replaces by empty, and is not directly usable because numPoints kind of ignores the deletion
+        // return true;
+
+
+
+////////////////////////////////////////////////////////
+///////////////////////// COPY  ////////////////////////
+////////////////////////////////////////////////////////
+
         // delete the point from the geometry array
-        if (this._points[point_id] === undefined) {return false; }
-        delete this._points[point_id];
+        // if (this._points[0][point_id] === undefined) {return false; }
+        // this._points[0][point_id] == null;
+        // this._points[1][point_id] == null;
+        // delete this._points[0][point_id];
+        // delete this._points[1][point_id];
         // delete the point from any geometrc objects
 
         // TODO decide how to do this
 
-        throw new Error("WARNING: implementation incomplete.");
+        // throw new Error("WARNING: implementation incomplete.");
 
         // delete attribute values for this point
         // for (let attrib of this._model.getAttribs(EGeomType.points)) {
@@ -277,18 +325,9 @@ public getObjData(path?: ifs.ITopoPath): any {
         //     group.removePoint(point_id);
         // }
 
-
-
-
-
-
-
-
-
-
-
-
-
+////////////////////////////////////////////////////////
+///////////////////////// COPY  ////////////////////////
+////////////////////////////////////////////////////////
     }
     /**
      * to be completed
@@ -427,7 +466,8 @@ public getObjData(path?: ifs.ITopoPath): any {
      * @param
      * @return
      */
-    public getTopos(geom_type: EGeomType): ifs.ITopo[] {
+    // public getTopos(geom_type: EGeomType): ifs.ITopo[] {
+    public getTopos(geom_type: EGeomType): (ifs.IVertex[] | ifs.IEdge[] | ifs.IWire[] | ifs.IFace[])  {
         switch (geom_type) {
             case EGeomType.vertices:
                 return this._getPaths(geom_type).map((p) => new Vertex(this, p));

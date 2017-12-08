@@ -62,7 +62,8 @@ export interface IGeom  {
     setObjPosition(obj_id: number, obj_data: any[]): any[];
     getObjPosition(obj_id: number): any[];
     // Topos
-    getTopos(topo_type: EGeomType): ITopo[];
+    // getTopos(topo_type: EGeomType): ITopo[];
+    getTopos(topo_type: EGeomType): (IVertex[] | IEdge[] | IWire[] | IFace[]);
     numTopos(topo_type: EGeomType): number;
     // Attribs
     getAttribTemplate(attrib_type: EGeomType): any[];
