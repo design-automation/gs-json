@@ -128,23 +128,23 @@ public getObjData(path?: ifs.ITopoPath): any {
     case EGeomType.vertices:
     switch (path.tt) {
     case EGeomType.wires:
-    if(this._objs[path.id][0][path.ti][path.si] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
-    if(this._objs[path.id][0][path.ti][path.si] == -1){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    if(this._objs[path.id][0][path.ti][path.si] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+    if(this._objs[path.id][0][path.ti][path.si] == -1){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
     return this._objs[path.id][0][path.ti][path.si];
     case EGeomType.faces:
-    if(this._objs[path.id][1][path.ti][path.si] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
-    if(this._objs[path.id][1][path.ti][path.si] == -1){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    if(this._objs[path.id][1][path.ti][path.si] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+    if(this._objs[path.id][1][path.ti][path.si] == -1){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
     return this._objs[path.id][1][path.ti][path.si];
-    }        
+    }
     case EGeomType.edges:
     switch (path.tt) {
     case EGeomType.wires:
     if(this._objs[path.id][0][path.ti][path.si + 1] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
-    if(this._objs[path.id][0][path.ti][path.si + 1] == -1){return [this._objs[path.id][0][path.ti][path.si],this._objs[path.id][0][path.ti][0],];}                    
+    if(this._objs[path.id][0][path.ti][path.si + 1] == -1){return [this._objs[path.id][0][path.ti][path.si],this._objs[path.id][0][path.ti][0],];}
     return [this._objs[path.id][0][path.ti][path.si],this._objs[path.id][0][path.ti][path.si + 1],];
-    case EGeomType.faces:                    
-    if(this._objs[path.id][1][path.ti][path.si + 1] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
-    if(this._objs[path.id][1][path.ti][path.si + 1] == -1){return [this._objs[path.id][1][path.ti][path.si],this._objs[path.id][1][path.ti][0],];}                   
+    case EGeomType.faces:
+    if(this._objs[path.id][1][path.ti][path.si + 1] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
+    if(this._objs[path.id][1][path.ti][path.si + 1] == -1){return [this._objs[path.id][1][path.ti][path.si],this._objs[path.id][1][path.ti][0],];}
     return [this._objs[path.id][1][path.ti][path.si],this._objs[path.id][1][path.ti][path.si + 1],];
     }
     }
@@ -152,13 +152,13 @@ public getObjData(path?: ifs.ITopoPath): any {
     switch (path.tt) {
     case EGeomType.wires:
     if (path.ti !== undefined) {
-    if(this._objs[path.id][0][path.ti] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    if(this._objs[path.id][0][path.ti] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
     return this._objs[path.id][0][path.ti];
     }
     return this._objs[path.id][0];
     case EGeomType.faces:
     if (path.ti !== undefined) {
-    if(this._objs[path.id][1][path.ti] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}                    
+    if(this._objs[path.id][1][path.ti] == undefined){throw new Error("Geom.getObjData(): Could not find geometry with path: " + path as string);}
     return this._objs[path.id][1][path.ti];
     }
     return this._objs[path.id][1];
@@ -258,7 +258,7 @@ public getObjData(path?: ifs.ITopoPath): any {
      * @return
      */
     public delPoint(point_id: number): boolean {
-        
+
                 // Point IDs & xyz ;
         delete this._points[0][point_id] ;
         delete this._points[1][point_id] ;
@@ -275,15 +275,15 @@ public getObjData(path?: ifs.ITopoPath): any {
         // Groups
         for(const a of this._model.getGroups()){if(a.hasPoint(point_id)) a.removePoint(point_id)};
         // Attribs
-        for(const a of this._model.getAttribs(EGeomType.points)){
-        a as ifs.IEntAttrib;
+        for(let a of this._model.getAttribs(EGeomType.points)){
+            a = a as ifs.IEntAttrib;
         if(!(a.getValue(point_id) === undefined)){a.delValue(point_id)};
         }
-        
-        
-        
-        
-        
+
+
+
+
+
 //////////////////
 
         // const var1:[number[],number[][]] = [[],[[null]]];
