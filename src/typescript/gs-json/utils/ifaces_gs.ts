@@ -312,7 +312,7 @@ export interface ITreeBranch2 {
   //  constructor(data?: number[][]) {
     has(a: number, b: number): boolean;
     add(a: number, b: number): void;
-    remove(a: number, b: number): boolean;
+    remove(a: number, b?: number): boolean;
     flatten(): number[][];
     toArray(): TTree2Data;
     fromArray(arr1: TTree2Data): void;
@@ -324,7 +324,7 @@ export interface ITreeBranch3 {
 //    constructor(data?: number[][][]);
     has(a: number, b: number, c: number): boolean;
     add(a: number, b: number, c: number): void;
-    remove(a: number, b: number, c: number): boolean;
+    remove(a: number, b?: number, c?: number): boolean;
     flatten(): number[][];
     toArray(): TTree3Data;
     fromArray(arr: TTree3Data): void;

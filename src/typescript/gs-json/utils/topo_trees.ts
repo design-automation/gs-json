@@ -1,7 +1,169 @@
 import * as ifs from "./ifaces_gs";
-import {TTreeData, TTree2Data, TTree3Data} from "./ifaces_json";
+import {TTreeData, TTree2Data, TTree3Data, ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
 import {Edge, Wire, Face, TopoPath} from "./topos";
+
+/**
+ * Class for storing Topo in a tree data structure.
+ * This class is only used by the Kernel class.
+ */
+export class TopoTree2 {
+    // topo
+    private _faces: ifs.ITreeBranch2;
+    private _wires: ifs.ITreeBranch2;
+    // subtopo
+    private _face_edges: ifs.ITreeBranch3;
+    private _face_vertices: ifs.ITreeBranch3;
+    private _wire_edges: ifs.ITreeBranch3;
+    private _wire_vertices: ifs.ITreeBranch3;
+
+    constructor(data?: TTreeData) {
+        if (data !== undefined) {
+            this.fromArray(data);
+        } else {
+            this._faces =         new TreeBranch2();
+            this._wires =         new TreeBranch2();
+            this._face_edges =    new TreeBranch3();
+            this._face_vertices = new TreeBranch3();
+            this._wire_edges =    new TreeBranch3();
+            this._wire_vertices = new TreeBranch3();
+        }
+    }
+
+    public hasTopo(path: ITopoPathData): boolean {
+        switch (path.tt) {
+            case EGeomType.wires:
+                if (path.st === EGeomType.vertices) {
+                    return this._wire_vertices.has(path.id, path.ti, path.si);
+                } else if (path.st === EGeomType.edges) {
+                    return this._wire_edges.has(path.id, path.ti, path.si);
+                } else {
+                    return this._wires.has(path.id, path.ti);
+                }
+            case EGeomType.faces:
+                if (path.st === EGeomType.vertices) {
+                    return this._face_vertices.has(path.id, path.ti, path.si);
+                } else if (path.st === EGeomType.edges) {
+                    return this._face_edges.has(path.id, path.ti, path.si);
+                } else {
+                    return this._faces.has(path.id, path.ti);
+                }
+        }
+    }
+
+    public addTopo(path: ITopoPathData): void {
+        switch (path.tt) {
+            case EGeomType.wires:
+                if (path.st === EGeomType.vertices) {
+                    this._wire_vertices.add(path.id, path.ti, path.si);
+                } else if (path.st === EGeomType.edges) {
+                    this._wire_edges.add(path.id, path.ti, path.si);
+                } else {
+                    return this._wires.add(path.id, path.ti);
+                }
+            case EGeomType.faces:
+                if (path.st === EGeomType.vertices) {
+                    this._face_vertices.add(path.id, path.ti, path.si);
+                } else if (path.st === EGeomType.edges) {
+                    this._face_edges.add(path.id, path.ti, path.si);
+                } else {
+                    return this._faces.add(path.id, path.ti);
+                }
+        }
+    }
+
+    public removeTopo(path: ITopoPathData): boolean {
+        switch (path.tt) {
+            case EGeomType.wires:
+                if (path.st === EGeomType.vertices) {
+                    return this._wire_vertices.remove(path.id, path.ti, path.si);
+                } else if (path.st === EGeomType.edges) {
+                    return this._wire_edges.remove(path.id, path.ti, path.si);
+                } else {
+                    return this._wires.remove(path.id, path.ti);
+                }
+            case EGeomType.faces:
+                if (path.st === EGeomType.vertices) {
+                    return this._face_vertices.remove(path.id, path.ti, path.si);
+                } else if (path.st === EGeomType.edges) {
+                    return this._face_edges.remove(path.id, path.ti, path.si);
+                } else {
+                    return this._faces.remove(path.id, path.ti);
+                }
+        }
+    }
+
+    public removeObj(id: number): boolean {
+        let found: boolean = false;
+        if (this._faces.remove(id)) {found = true};
+        if (this._wires.remove(id)) {found = true};
+        if (this._face_edges.remove(id)) {found = true};
+        if (this._face_vertices.remove(id)) {found = true};
+        if (this._wire_edges.remove(id)) {found = true};
+        if (this._wire_vertices.remove(id)) {found = true};
+        return found;
+    }
+
+    public getTopos(geom_type?: EGeomType): ITopoPathData[] {
+        let paths: ITopoPathData[] = [];
+        if (!geom_type || geom_type === EGeomType.faces) {
+            paths = [...paths,...this._faces.flatten().map((v) =>
+                Object({id: v[0], tt: 1, ti: v[1]}))];
+        }
+        if (!geom_type || geom_type === EGeomType.wires) {
+            paths = [...paths,
+            ...this._wires.flatten().map((v) =>
+                Object({id: v[0], tt: 0, ti: v[1]}))];
+        }
+        if (!geom_type || geom_type === EGeomType.edges) {
+            paths = [...paths,
+            ...this._face_edges.flatten().map((v) =>
+                Object({id: v[0], tt: 1, ti: v[1], st: 1, si: v[2]})),
+            ...this._wire_edges.flatten().map((v) =>
+                Object({id: v[0], tt: 0, ti: v[1], st: 1, si: v[2]}))];
+        }
+        if (!geom_type || geom_type === EGeomType.vertices) {
+            paths = [...paths,
+            ...this._face_vertices.flatten().map((v) =>
+                Object({id: v[0], tt: 1, ti: v[1], st: 0, si: v[2]})),
+            ...this._wire_vertices.flatten().map((v) =>
+                Object({id: v[0], tt: 0, ti: v[1], st: 0, si: v[2]}))];
+        }
+        return paths;
+    }
+
+    public toArray(): TTreeData {
+        return [
+            // topo
+            this._faces.toArray(),
+            this._wires.toArray(),
+            // subtopo
+            this._face_edges.toArray(),
+            this._face_vertices.toArray(),
+            this._wire_edges.toArray(),
+            this._wire_vertices.toArray(),
+       ];
+    }
+
+    public fromArray(data: TTreeData): void {
+        if (data === undefined) { throw new Error("Data array is undefined."); }
+        if (data.length !== 6) { throw new Error("Data array is invalid length."); }
+        // topo
+        this._faces = new TreeBranch2(data[0] as TTree2Data);
+        this._wires = new TreeBranch2(data[1] as TTree2Data);
+        // subtopo
+        this._face_edges =    new TreeBranch3(data[2] as TTree3Data);
+        this._face_vertices = new TreeBranch3(data[3] as TTree3Data);
+        this._wire_edges =    new TreeBranch3(data[4] as TTree3Data);
+        this._wire_vertices = new TreeBranch3(data[5] as TTree3Data);
+    }
+}
+
+//==================================================================================================
+//==================================================================================================
+//==================================================================================================
+//==================================================================================================
+
 
 /**
  * Class for storing Topo in a tree data structure.
@@ -265,6 +427,12 @@ export class TopoTree implements ifs.ITopoTree {
         }
     }
 }
+
+//==================================================================================================
+//==================================================================================================
+//==================================================================================================
+//==================================================================================================
+
 /**
  * Class for tree branches of depth 2.
  * This class is only used internally by the TopoTree class.
@@ -291,8 +459,9 @@ class TreeBranch2 implements ifs.ITreeBranch2 {
         this._tree.get(a).add(b);
     }
 
-    public remove(a: number, b: number): boolean {
+    public remove(a: number, b?: number): boolean {
         if (!this._tree.has(a)) {return false; }
+        if (b === undefined) {return this._tree.delete(a);}
         return this._tree.get(a).delete(b);
     }
 
@@ -338,8 +507,9 @@ class TreeBranch3 implements ifs.ITreeBranch3 {
         this._tree.get(a).add(b, c);
     }
 
-    public remove(a: number, b: number, c: number): boolean {
+    public remove(a: number, b?: number, c?: number): boolean {
         if (!this._tree.has(a)) {return false; }
+        if (b === undefined) {return this._tree.delete(a);}
         return this._tree.get(a).remove(b, c);
     }
 

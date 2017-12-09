@@ -1,3 +1,5 @@
+import {EGeomType, EObjType, EDataType} from "./enums";
+
 /**
  * Types, for parsing gs-json data.
  */
@@ -73,4 +75,15 @@ export interface IPointData {
     x: number;
     y: number;
     z: number;
+}
+
+export interface ITopoTree2 {
+// constructor(model: ifs.IModel, data?: (number[][]|number[][][]); []);
+    hasTopo(topo: ITopoPathData): boolean ;
+    addTopo(topo: ITopoPathData): void ;
+    removeTopo(topo: ITopoPathData): boolean ;
+    removeObj(id: number): boolean;
+    getTopos(geom_type?: EGeomType): ITopoPathData[] ;
+    toArray(): TTreeData;
+    fromArray(data: TTreeData): void ;
 }

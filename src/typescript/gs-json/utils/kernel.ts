@@ -1,8 +1,10 @@
 import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
 import {IMetadata, IModelData, IGeomData,  IAttribData,
-    IGroupData, TObjData, TPointsData, ITopoPathData} from "./ifaces_json";
+    IGroupData, TObjData, TPointsData, ITopoPathData, ITopoTree2} from "./ifaces_json";
 import {EGeomType, EDataType, EObjType, mapGeomTypeToString, mapDataTypeToString} from "./enums";
+import {TopoTree2} from "./topo_trees";
+
 /**
  * Kernel Class
  * This class controls all acces to the data and ensures that the data remains consistent.
@@ -14,6 +16,7 @@ export class Kernel {
     private _objs: TObjData[];
     private _attribs: Map<EGeomType, Map<string, IAttribData>>;
     private _groups: Map<string, IGroupData>;
+    private _topos_trees: Map<string, ITopoTree2>;
 
     /**
      * to be completed
@@ -29,6 +32,7 @@ export class Kernel {
         this._attribs.set(EGeomType.wires, new Map());
         this._attribs.set(EGeomType.faces, new Map());
         this._groups = new Map();
+        this._topos_trees = new Map();
         // Set the data
         if (data && data.metadata !== undefined) {
             this._metadata = data.metadata;
@@ -82,6 +86,8 @@ export class Kernel {
         if (data && data.attribs && data.groups !== undefined) {
             for (const group_data of data.groups) {
                 this._groups.set(group_data.name, group_data);
+                this._topos_trees.set(group_data.name, new TopoTree2(group_data.topos));
+                this._groups.get(group_data.name).topos = null;
             }
         }
     }
@@ -188,11 +194,12 @@ export class Kernel {
     public modelAddGroup(name: string, parent?: string): IGroupData {
         // name = name.replace(/\s/g, "_");
         let data: IGroupData = {name};
-        if (parent !== undefined && this.modelHasGroup(parent)) {
+        if (parent !== undefined && this._groups.has(parent)) {
             // parent = parent.replace(/\s/g, "_");
             data = {name, parent};
         }
         this._groups.set(name, data);
+        this._topos_trees.set(name, new TopoTree2());
         return data;
     }
 
@@ -202,7 +209,9 @@ export class Kernel {
      * @return
      */
     public modelDelGroup(name: string): boolean {
-        return this._groups.delete(name);
+        const group = this._groups.delete(name);
+        const tree = this._topos_trees.delete(name);
+        return (group && tree);
     }
 
     /**
@@ -260,7 +269,7 @@ export class Kernel {
      * @return a instance of type Point is returned
      */
     public geomAddPoint(xyz: number[]): number {
-        const new_id: number = this.geomNumPoints();
+        const new_id: number = this._points[0].length; //next in sparse array
         // create the point
         this._points[0].push(0); // add a point to the points list
         this.pointSetPosition(new_id, xyz);
@@ -315,9 +324,8 @@ export class Kernel {
      * @param
      * @return
      */
-    public geomNumPoints(obj_type?: EObjType): number { // TODO is this a good name?
-        if (obj_type) {return this.geomGetPointIDs(obj_type).length; }
-        return this._points[0].length; // works also for sparse arrays
+    public geomNumPoints(): number {
+        return this._points[0].filter((n) => n !== undefined).length; // ignores empty slots in spare array
     }
 
     /**
@@ -325,14 +333,10 @@ export class Kernel {
      * @param
      * @return
      */
-    public geomGetPointIDs(obj_type?: EObjType): number[] { // TODO is this a good name?
-        if (obj_type) {
-            let geom_filtered: any[] = this._objs.filter((n) => n !== undefined);
-            geom_filtered = geom_filtered.filter((n) =>
-                n[2][0] === obj_type).map((v, i) => [v[0], v[1]]); // not sure if this works
-            return Array.from(new Set(Arr.flatten(geom_filtered)));
-        }
-        return Arr.makeSeq(this.geomNumPoints());
+    public geomGetPointIDs(): number[] {
+        const point_ids: number[] = [];
+        this._points.forEach((v,i) => (v !== undefined) && point_ids.push(i)); // ignores empty slots in spare array
+        return point_ids
     }
 
     //  Geom Objects -------------------------------------------------------------------------------
@@ -345,7 +349,7 @@ export class Kernel {
      */
     public geomAddPolyline(points: ifs.IPoint[], is_closed: boolean): TObjData {
         if (points.length < 2) {throw new Error("Too few points for creating a polyline."); }
-        const new_id: number = this.geomNumObjs();
+        const new_id: number = this._objs.length;
         const wire_ids: number[] = points.map((v, i) => v.getID());
         // create the pline
         if (is_closed) {wire_ids.push(-1); }
@@ -365,7 +369,7 @@ export class Kernel {
      */
     public geomAddNurbsCurve(control_points: ifs.IPoint[], order: number, is_closed: boolean): TObjData {
         if (control_points.length < order) {throw new Error("Too few points for creating a NURBS curve."); }
-        const new_id: number = this.geomNumObjs();
+        const new_id: number = this._objs.length;
         const wire_ids: number[] = control_points.map((v, i) => v.getID());
         // create the pline
         if (is_closed) {wire_ids.push(-1); }
@@ -385,7 +389,7 @@ export class Kernel {
         for (const f of face_points) {
             if (f.length < 3) {throw new Error("Too few points for creating a face."); }
         }
-        const new_id: number = this.geomNumObjs();
+        const new_id: number = this._objs.length;
         const face_ids: number[][] = face_points.map((f) => f.map((v) => v.getID()));
         const wire_ids: number[][] = this._findPolymeshWires(face_ids);
         face_ids.forEach((f) => f.push(-1));
@@ -395,19 +399,6 @@ export class Kernel {
         this._addObjToAttribs(new_id);
         // return the new pline
         return this._objs[new_id];
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public geomGetObjIDs(obj_type?: EObjType): number[] {
-        let geom_filtered: any[] = this._objs.filter((n) => n !== undefined);
-        if (obj_type) {
-            geom_filtered = geom_filtered.filter((n) => n[2][0] === obj_type);
-        }
-        return geom_filtered.map((o, oi) => oi);
     }
 
     /**
@@ -455,9 +446,19 @@ export class Kernel {
      * @param
      * @return
      */
-    public geomNumObjs(obj_type?: EObjType): number {
-        if (obj_type) {return this.geomGetObjIDs(obj_type).length; }
-        return this._objs.length; // works also for sparse arrays
+    public geomNumObjs(): number {
+        return this._objs.filter((v) => (v !== undefined)).length; // ignores empty slots in sparse arrays
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public geomGetObjIDs(): number[] {
+        const obj_ids: number[] = [];
+        this._objs.forEach((v,i) => (v !== undefined) && obj_ids.push(i)); // ignores empty slots in spare array
+        return obj_ids
     }
 
     //  Geom Topo ----------------------------------------------------------------------------------
@@ -776,11 +777,11 @@ export class Kernel {
      */
     public pointGetVertices(id: number): ITopoPathData[] { // TODO replace implementation with reverse map
         const vertices: ITopoPathData[]  = [];
-        for (let oi = 0; oi < this._objs.length; oi++) {
-            this._objs[oi][0].forEach((w,wi) => w.forEach((v,vi) => (v === id) && vertices.push( // Slow
-                {id: oi, tt: 0, ti: wi, st: 0, si: vi})));
-            this._objs[oi][1].forEach((f,fi) => f.forEach((v,vi) => (v === id) && vertices.push( // Slow
-                {id: oi, tt: 1, ti: fi, st: 0, si: vi})));
+        for (const [obj_id_str, obj] of this._objs.entries()) { // sparse array
+            obj[0].forEach((w,wi) => w.forEach((v,vi) => (v === id) && vertices.push( // Slow
+                {id: Number(obj_id_str), tt: 0, ti: wi, st: 0, si: vi})));
+            obj[1].forEach((f,fi) => f.forEach((v,vi) => (v === id) && vertices.push( // Slow
+                {id: Number(obj_id_str), tt: 1, ti: fi, st: 0, si: vi})));
         }
         return vertices;
     }
@@ -791,7 +792,7 @@ export class Kernel {
      * @return
      */
     public pointIsUnused(point_id: number): boolean { // TODO replace implementation with reverse map
-        for (const obj of this._objs) {
+        for (const obj of this._objs.values()) { // sparse array
             if (Arr.flatten(obj.slice(0,3)).indexOf(point_id) !== -1) {return false;} // Slow
         }
         return true;
@@ -831,7 +832,7 @@ export class Kernel {
     }
 
     /**
-     * Get the vertices for this wire.
+     * Get the vertices for this wire or face.
      * @return An array of vertices.
      */
     public topoGetVertices(topo_path: ITopoPathData): ITopoPathData[] {
@@ -842,19 +843,19 @@ export class Kernel {
         return vertices;
     }
     /**
-     * Get the edges for this wire.
+     * Get the edges for this wire or face.
      * @return An array of edges.
      */
-    public topoGetEdges(wire_path: ITopoPathData): ITopoPathData[] {
+    public topoGetEdges(topo_path: ITopoPathData): ITopoPathData[] {
         const edges: ITopoPathData[] = [];
-        for (let i = 0; i < this.topoNumEdges(wire_path); i++) {
-            edges.push({id: wire_path.id, tt: wire_path.tt, ti: wire_path.ti, st: 1, si: i});
+        for (let i = 0; i < this.topoNumEdges(topo_path); i++) {
+            edges.push({id: topo_path.id, tt: topo_path.tt, ti: topo_path.ti, st: 1, si: i});
         }
         return edges;
     }
 
     /**
-     * Return true if this wire is closed.
+     * Return true if this wire is closed. For faces, the result is always true.
      * @return boolean
      */
     public topoIsClosed(topo_path: ITopoPathData): boolean {
@@ -867,6 +868,7 @@ export class Kernel {
      * @return An array of faces.
      */
     public topoFindSharedPoints(topo_path: ITopoPathData, num_shared_points?: number): ITopoPathData[] {
+        // TODO trees
         throw new Error ("Method not implemented.");
     }
 
@@ -875,7 +877,10 @@ export class Kernel {
      * @return The array of group names.
      */
     public topoGetGroups(path: ITopoPathData): string[] {
-        throw new Error("Method not implemented");
+        const group_names: string[] = [];
+        this._topos_trees.forEach((tree,group_name) =>
+            tree.hasTopo(path) && group_names.push(group_name));
+        return group_names;
     }
 
     //  Edges --------------------------------------------------------------------------------------
@@ -1028,7 +1033,7 @@ export class Kernel {
      */
     public entAttribGetValue(name: string, geom_type: EGeomType, id: number): any {
         const data: IAttribData = this._attribs.get(geom_type).get(name);
-        return data.values[1][data.values[0][id]]; // TODO check by reference or by value?
+        return data.values[1][data.values[0][id]];
     }
 
     /**
@@ -1228,9 +1233,15 @@ export class Kernel {
      * @return
      */
     public groupGetTopos(name: string, geom_type?: EGeomType): ITopoPathData[] {
-        const group: IGroupData = this._groups.get(name);
-        //return this.topos.getGroupTopos(geom_type); //TODO tree implementation of group topos
-        throw new Error("Method not implemented");
+        return this._topos_trees.get(name).getTopos();
+    }
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public groupAddTopo(name: string, topo: ITopoPathData): void {
+        this._topos_trees.get(name).addTopo(topo);
     }
 
     /**
@@ -1238,10 +1249,8 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupAddTopo(name: string, topo: ifs.ITopo): void {
-        const group: IGroupData = this._groups.get(name);
-        //group.topos.addGroupTopo(topo); //TODO tree implementation of group topos
-        throw new Error("Method not implemented");
+    public groupAddTopos(name: string, topos: ITopoPathData[]): void {
+        topos.forEach((v, i) => this._topos_trees.get(name).addTopo(v));
     }
 
     /**
@@ -1249,34 +1258,18 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupAddTopos(name: string, topos: ifs.ITopo[]): void {
-        const group: IGroupData = this._groups.get(name);
-        //topos.forEach((v, i) => group.addGroupTopo(v)); //TODO tree implementation of group topos
-        throw new Error("Method not implemented");
+    public groupRemoveTopo(name: string, topo: ITopoPathData): boolean {
+        return this._topos_trees.get(name).removeTopo(topo);
     }
-
     /**
      * to be completed
      * @param
      * @return
      */
-    public groupRemoveTopo(name: string, topo: ifs.ITopo): boolean {
-        const group: IGroupData = this._groups.get(name);
-        //return group.topos.removeGroupTopo(topo); //TODO tree implementation of group topos
-        throw new Error("Method not implemented");
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupRemoveTopos(name: string, topos: ifs.ITopo[]): boolean {
-        const group: IGroupData = this._groups.get(name);
+    public groupRemoveTopos(name: string, topos: ITopoPathData[]): boolean {
         let ok: boolean = true;
         for (const topo of topos) {
-            //if (!group.removeGroupTopo(topo)) {ok = false; } //TODO tree implementation of group topos
-            throw new Error("Method not implemented");
+            if (!this._topos_trees.get(name).removeTopo(topo)) {ok = false; }
         }
         return ok;
     }
@@ -1286,10 +1279,8 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupHasTopo(name: string, topo: ifs.ITopo): boolean {
-        const group: IGroupData = this._groups.get(name);
-        //return group.topos.groupHasTopo(topo); //TODO tree implementation of group topos
-        throw new Error("Method not implemented");
+    public groupHasTopo(name: string, topo: ITopoPathData): boolean {
+        return this._topos_trees.get(name).hasTopo(topo);
     }
 
     //  Points in group ----------------------------------------------------------------------------
@@ -1402,43 +1393,57 @@ export class Kernel {
      * @param
      * @return
      */
-    private _addObjToAttribs(id: number): boolean {
-        for (const name in this._attribs.get(EGeomType.objs)) {
-            this._attribs.get(EGeomType.objs).get(name).values[id] = 0;
+    private _addObjToAttribs(id: number): void {
+        for (const attrib of this._attribs.get(EGeomType.objs).values()) {
+            attrib.values[0][id] = 0;
         }
-        for (let name in this._attribs.get(EGeomType.wires)) {
-            this._attribs.get(EGeomType.wires).get(name).values[id] =
-                Arr.make(this._objs[id][0].length, 0);
+        for (const attrib of this._attribs.get(EGeomType.wires).values()) {
+            attrib.values[0][id] = Arr.make(this._objs[id][0].length, 0);
         }
-        for (let name in this._attribs.get(EGeomType.faces)) {
-            this._attribs.get(EGeomType.faces).get(name).values[id] =
-                Arr.make(this._objs[id][1].length, 0);
+        for (const attrib of this._attribs.get(EGeomType.faces).values()) {
+            attrib.values[0][id] = Arr.make(this._objs[id][1].length, 0);
         }
-        for (let name in this._attribs.get(EGeomType.edges)) {
-            this._attribs.get(EGeomType.edges).get(name).values[id] =
+        for (const attrib of this._attribs.get(EGeomType.edges).values()) {
+            attrib.values[0][id] =
                 [
-                    this._objs[id][0].map((w, wi) => Arr.make(w.length, 0)),//TODO deal with -1
-                    this._objs[id][0].map((f, fi) => Arr.make(f.length, 0)),//TODO deal with -1
+                    this._objs[id][0].map((w, wi) =>
+                        Arr.make(w.filter((v) => v !== -1).length, 0)),
+                    this._objs[id][1].map((f, fi) =>
+                        Arr.make(f.filter((v) => v !== -1).length, 0)),
                 ];
         }
-        for (let name in this._attribs.get(EGeomType.vertices)) {
-            this._attribs.get(EGeomType.vertices).get(name).values[id] =
+        for (const attrib of this._attribs.get(EGeomType.vertices).values()) {
+            attrib.values[0][id] =
                 [
-                    this._objs[id][0].map((w, wi) => Arr.make(w.length, 0)),//TODO deal with -1
-                    this._objs[id][0].map((f, fi) => Arr.make(f.length, 0)),//TODO deal with -1
+                    this._objs[id][0].map((w, wi) =>
+                        Arr.make(w.filter((v) => v !== -1).length, 0)),
+                    this._objs[id][1].map((f, fi) =>
+                        Arr.make(f.filter((v) => v !== -1).length, 0)),
                 ];
         }
-        throw new Error("Method not implemented");
     }
-
     /**
      * This method assumes that the object id is for an object that is about to be deleted.
      * It deletes the attributs values for all attributes in the model.
      * @param
      * @return
      */
-    private _delObjFromAttribs(id: number): boolean {
-        throw new Error("Method not implemented");
+    private _delObjFromAttribs(id: number): void {
+        for (const attrib of this._attribs.get(EGeomType.objs).values()) {
+            delete attrib.values[0][id];
+        }
+        for (const attrib of this._attribs.get(EGeomType.wires).values()) {
+            delete attrib.values[0][id];
+        }
+        for (const attrib of this._attribs.get(EGeomType.faces).values()) {
+            delete attrib.values[0][id];
+        }
+        for (const attrib of this._attribs.get(EGeomType.edges).values()) {
+            delete attrib.values[0][id];
+        }
+        for (const attrib of this._attribs.get(EGeomType.vertices).values()) {
+            delete attrib.values[0][id];;
+        }
     }
 
     /**
@@ -1447,18 +1452,22 @@ export class Kernel {
      * @param
      * @return
      */
-    private _addPointToAttribs(id: number): boolean {
-        throw new Error("Method not implemented");
+    private _addPointToAttribs(id: number): void {
+        for (const attrib of this._attribs.get(EGeomType.points).values()) {
+            attrib.values[0][id] = 0;
+        }
     }
 
     /**
      * This method assumes that the point id is for an point that is about to be deleted.
-     * It deletes the attributs values for all attributes in the model.
+     * It deletes the attributs values for this point for all attributes in the model.
      * @param
      * @return
      */
-    private _delPointFromAttribs(id: number): boolean {
-        throw new Error("Method not implemented");
+    private _delPointFromAttribs(id: number): void {
+        for (const attrib of this._attribs.get(EGeomType.points).values()) {
+            delete attrib.values[0][id];
+        }
     }
 
     /**
@@ -1467,8 +1476,49 @@ export class Kernel {
      * @param
      * @return
      */
-    private _delPointFromObjs(id: number): boolean {
-        throw new Error("Method not implemented");
+    private _delPointFromObjs(id: number): void {
+        for (const [obj_id_str, obj] of this._objs.entries()) { // sparse array
+            switch (obj[2][0]) {
+                case 100:
+                    for (let wi = 0; wi < obj[0].length; wi++) {
+                        const w: number[] = obj[0][wi];
+                        const point_index: number = w.indexOf(id);
+                        if (point_index !== -1) {
+                            let num_vertices = w.length;
+                            if (w[w.length - 1] === -1) {num_vertices--;}
+                            if (num_vertices > 3 ) {
+                                w.splice(point_index, 1); //delete one vertex
+                            } else {
+                                obj[0].splice(wi,1); //delete the whole wire
+                            }
+                        }
+                    }
+                    break;
+                case 200:
+                    let changed: boolean = false;
+                    for (let fi = 0; fi < obj[1].length; fi++) {
+                        const f: number[] = obj[1][fi];
+                        const point_index: number = f.indexOf(id);
+                        if (point_index !== -1) {
+                            changed = true;
+                            let num_vertices = f.length - 1;
+                            if (num_vertices > 3 ) {
+                                f.splice(point_index, 1); //delete one vertex
+                            } else {
+                                obj[1].splice(fi,1); //delete the whole face
+                            }
+                        }
+                    }
+                    if (changed) {
+                        if (obj[1].length === 0) {
+                            delete this._objs[obj_id_str]; //if no faces, delete whole obj
+                        } else {
+                            obj[0] = this._findPolymeshWires(obj[1]);
+                        }
+                    }
+                    break;
+            }
+        }
     }
 
     /**
@@ -1477,8 +1527,14 @@ export class Kernel {
      * @param
      * @return
      */
-    private _delObjFromGroups(id: number): boolean {
-        throw new Error("Method not implemented");
+    private _delObjFromGroups(id: number): void {
+        for (const [name, group] of this._groups.entries()) {
+            // objects
+            const oi: number = group.objs.indexOf(id);
+            if (oi !== -1) {group.objs.splice(oi, 1);}
+            // topos
+            this._topos_trees.get(name).removeObj(id);
+        }
     }
 
     /**
@@ -1487,8 +1543,11 @@ export class Kernel {
      * @param
      * @return
      */
-    private _delPointFromGroups(id: number): boolean {
-        throw new Error("Method not implemented");
+    private _delPointFromGroups(id: number): void {
+        for (const [name, group] of this._groups.entries()) {
+            const pi: number = group.points.indexOf(id);
+            if (pi !== -1) {group.objs.splice(pi, 1);}
+        }
     }
 
     //  --------------------------------------------------------------------------------------------
@@ -1496,9 +1555,9 @@ export class Kernel {
     /**
      * Add an attributes value.
      * @param path The path to a geometric entity or topological component.
-     * @return True if teh path does not exist.
+     * @return True if the path does not exist.
      */
-    private _addTopoAttribValue(name: string, geom_type: EGeomType, path: ITopoPathData): boolean  { // TODO make private
+    private _addTopoAttribValue(name: string, geom_type: EGeomType, path: ITopoPathData): boolean  {
         const data: IAttribData = this._attribs.get(geom_type).get(name);
         switch (geom_type) {
             case EGeomType.wires: case EGeomType.faces:
@@ -1520,7 +1579,7 @@ export class Kernel {
      * @param path The path to a geometric entity or topological component.
      * @return The attribute value.
      */
-    private _delTopoAttribValue(name: string, geom_type: EGeomType, path: ITopoPathData): any  { // TODO make private
+    private _delTopoAttribValue(name: string, geom_type: EGeomType, path: ITopoPathData): any  {
         const data: IAttribData = this._attribs.get(geom_type).get(name);
         let old_value: any;
         switch (geom_type) {
@@ -1631,7 +1690,8 @@ export class Kernel {
         for (let wf_index = 0; wf_index < wf_data.length; wf_index++) {
             for (let ve_index = 0; ve_index < wf_data[wf_index].length - v_or_e; ve_index++) {
                 if (wf_data[wf_index][ve_index] !== -1) {
-                    path_arr.push({id: Number(obj_id), tt: wf_topos, ti: wf_index, st: v_or_e, si: ve_index});
+                    path_arr.push(
+                        {id: Number(obj_id), tt: wf_topos, ti: wf_index, st: v_or_e, si: ve_index});
                 }
             }
         }
@@ -1645,11 +1705,11 @@ export class Kernel {
     private _getVEPathsFromObjsData(objs_data: any[], v_or_e: 0|1): ITopoPathData[] {
         const path_arr: ITopoPathData[] = [];
         // loop through all the objects
-        for (const obj_id in objs_data) {// TODO: check this works with sparse arrays
-            const w_data: number[][] = objs_data[obj_id][0];
-            this._getVEPathsFromWF(path_arr, Number(obj_id), w_data, 0, v_or_e);
-            const f_data: number[][] = objs_data[obj_id][1];
-            this._getVEPathsFromWF(path_arr, Number(obj_id), f_data, 1, v_or_e);
+        for (const obj_id_str of objs_data.keys()) {  // sparse array
+            const w_data: number[][] = objs_data[obj_id_str][0];
+            this._getVEPathsFromWF(path_arr, Number(obj_id_str), w_data, 0, v_or_e);
+            const f_data: number[][] = objs_data[obj_id_str][1];
+            this._getVEPathsFromWF(path_arr, Number(obj_id_str), f_data, 1, v_or_e);
         }
         return path_arr;
     }
@@ -1662,38 +1722,12 @@ export class Kernel {
     private _getWFPathsFromObjsData(objs_data: any[], wf_topos: 0|1): ITopoPathData[] {
         const path_arr: ITopoPathData[] = [];
         // loop through all the objects, and create paths for wires or faces
-        for (const obj_id in objs_data) {// TODO: check this works with sparse arrays
-            const wf_data: number[][] = objs_data[obj_id][wf_topos]; // wf_choice is 0 or 1, wires or faces
+        for (const obj_id_str of objs_data.keys()) { // sparse arrays
+            const wf_data: number[][] = objs_data[obj_id_str][wf_topos]; // wf_choice is 0 or 1, wires or faces
             for (let wf_index = 0; wf_index < wf_data.length; wf_index++) {
-                path_arr.push({id: Number(obj_id), tt: wf_topos, ti: wf_index});
+                path_arr.push({id: Number(obj_id_str), tt: wf_topos, ti: wf_index});
             }
         }
         return path_arr;
     }
-
-    //  Private methods for groups -----------------------------------------------------------------
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    private _groupToposToArray(name: string): any[] {
-        const group: IGroupData = this._groups.get(name);
-        //return group.topos.toArray(); //TODO tree implementation of group topos
-        throw new Error("Method not implemented");
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    private _groupToposFromArray(name: string, arr: any[]): void {
-        const group: IGroupData = this._groups.get(name);
-        //return group.topos.toArray(); //TODO tree implementation of group topos
-        throw new Error("Method not implemented");
-    }
-
-
 }
