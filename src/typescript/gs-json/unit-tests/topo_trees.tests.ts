@@ -7,8 +7,6 @@ describe("Tests for Class Topo Tree", () => {
     it("test_TopoTree_addTopo", () => {expect( topo_trees_tests.test_TopoTree_addTopo() ).toBe(true); });
     it("test_TopoTree_removeTopo", () => {expect( topo_trees_tests.test_TopoTree_removeTopo() ).toBe(true); });
     it("test_TopoTree_getTopos", () => {expect( topo_trees_tests.test_TopoTree_getTopos() ).toBe(true); });
-    it("test_TopoTree_toArray", () => {expect( topo_trees_tests.test_TopoTree_toArray() ).toBe(true); });
-    it("test_TopoTree_fromArray", () => {expect( topo_trees_tests.test_TopoTree_fromArray() ).toBe(true); });
 });
 
 // // not tested for now

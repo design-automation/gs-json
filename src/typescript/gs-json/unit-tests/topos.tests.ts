@@ -53,9 +53,6 @@ describe("Tests for Vertex class", () => {
     it("test_Vertex_verticesSharedPoint", () => {
         expect( topos_tests.test_Vertex_verticesSharedPoint() ).toBe(true);
     });
-    it("test_Vertex_verticesSamePosition", () => {
-        expect( topos_tests.test_Vertex_verticesSamePosition() ).toBe(true);
-    });
 });
 
 describe("Tests for Edge class", () => {
@@ -123,15 +120,4 @@ describe("Tests for Face class", () => {
         expect( topos_tests.test_Face_facesSharedPoints() ).toBe(true);
     });
 });
-
-describe("Tests for TopoPath class", () => {
-    it("test_TopoPath_constructor", () => {
-        expect( topos_tests.test_TopoPath_constructor() ).toBe(true);
-    });
-    it("test_TopoPath_equals", () => {
-        expect( topos_tests.test_TopoPath_equals() ).toBe(true);
-    });
-    it("test_TopoPath_equals", () => {
-        expect( topos_tests.test_TopoPath_toString() ).toBe(true);
-    });
-});
+

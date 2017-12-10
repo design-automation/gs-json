@@ -1,4 +1,5 @@
-import {EGeomType, EObjType, EDataType} from "./enums";
+import {
+        TGeomTypeStr, TDataTypeStr} from "./enums";
 
 /**
  * Types, for parsing gs-json data.
@@ -42,8 +43,8 @@ export interface IAttribsData {
 
 export interface IAttribData {
     name: string;
-    geom_type: "points" | "vertices" | "edges" | "wires" | "faces" | "objs";
-    data_type: "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]";
+    geom_type: TGeomTypeStr;
+    data_type: TDataTypeStr;
     values?: any[]; // TODO
 }
 
@@ -64,9 +65,9 @@ export interface ISkinData {
 
 export interface ITopoPathData {
     id: number;             // obj id
-    tt: 0 | 1;              // topo type
+    tt: (0 | 1);              // topo type
     ti?: number;             // topo index
-    st?: 0 | 1;              // sub topo-type
+    st?: (0 | 1);              // sub topo-type
     si?: number;             // subtopo index
 }
 
@@ -76,14 +77,4 @@ export interface IPointData {
     y: number;
     z: number;
 }
-
-export interface ITopoTree2 {
-// constructor(model: ifs.IModel, data?: (number[][]|number[][][]); []);
-    hasTopo(topo: ITopoPathData): boolean ;
-    addTopo(topo: ITopoPathData): void ;
-    removeTopo(topo: ITopoPathData): boolean ;
-    removeObj(id: number): boolean;
-    getTopos(geom_type?: EGeomType): ITopoPathData[] ;
-    toArray(): TTreeData;
-    fromArray(data: TTreeData): void ;
-}
+

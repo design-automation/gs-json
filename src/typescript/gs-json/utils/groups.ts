@@ -1,19 +1,16 @@
 import * as ifs from "./ifaces_gs";
-import {IGroupData, TTreeData} from "./ifaces_json";
+import {Kernel} from "./kernel";
+import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
-import {TopoTree} from "./topo_trees";
+import {Vertex, Edge, Wire, Face} from "./topos";
 
 /**
  * Group class.
  */
 export class Group implements ifs.IGroup {
-    private _model: ifs.IModel;
+    private _kernel: Kernel;
     private _name: string;
-    private _parent: string;
-    private _points: number[];
-    private _topos: TopoTree;
-    private _objs: number[];
-    private _props: Map<string, any>;
+
     /**
      * Creates an instance of the Group class.
      * The group data must already exists in the model.
@@ -23,42 +20,13 @@ export class Group implements ifs.IGroup {
      * @param data The attribute data in the model.
      * @return The Group object.
      */
-    constructor(model: ifs.IModel, data: IGroupData) {
-        this._model = model;
-        if (data === undefined) {
-            throw new Error("Data must be defined.");
-        }
-        if (data.name !== undefined) {
-            this._name = data.name;
-        } else {
-            throw new Error("Attribute name must be defined.");
-        }
-        if (data.parent !== undefined) {
-            this._parent = data.parent;
-        } else {
-            this._parent = null;
-        }
-        if (data.points !== undefined) {
-            this._points = data.points;
-        } else {
-            this._points = [];
-        }
-        if (data.topos !== undefined) {
-            this._topos = new TopoTree(model, data.topos);
-        } else {
-            this._topos = new TopoTree(model);
-        }
-        if (data.objs !== undefined) {
-            this._objs = data.objs;
-        } else {
-            this._objs = [];
-        }
-        if (data.props !== undefined) {
-            this._props = new Map(data.props);
-        } else {
-            this._props = new Map();
-        }
+    constructor(kernel: Kernel, name: string) {
+        this._kernel = kernel;
+        this._name = name;
     }
+
+    //  This group ---------------------------------------------------------------------------------
+
     /**
      * to be completed
      * @param
@@ -67,6 +35,7 @@ export class Group implements ifs.IGroup {
     public getName(): string {
         return this._name;
     }
+
     /**
      * to be completed
      * @param
@@ -74,19 +43,10 @@ export class Group implements ifs.IGroup {
      */
     public setName(name: string): string {
         const old_name: string = this._name;
-        this._model.setGroupName(old_name, name);
+        this._kernel.groupSetName(old_name, name);
         this._name = name;
         return old_name;
     }
-
-    /**
-     * This method allows to access a private property of type TopoTree of the class Group
-     * @return The topo tree, of type TopoTree
-     */
-    public getTopoTree(): TopoTree {  // TODO this should not be needed, maybe only for testing?
-        return this._topos;
-    }
-    // Groups
 
     /**
      * to be completed
@@ -94,7 +54,7 @@ export class Group implements ifs.IGroup {
      * @return
      */
     public getParentGroup(): string {
-        return this._parent;
+        return this._kernel.groupGetParent(this._name);
     }
     /**
      * to be completed
@@ -102,9 +62,7 @@ export class Group implements ifs.IGroup {
      * @return
      */
     public setParentGroup(name: string): string {
-        const old_parent_name: string = this._parent;
-        this._parent = name;
-        return old_parent_name;
+        return this._kernel.groupSetParent(this._name, name);
     }
     /**
      * to be completed
@@ -112,9 +70,7 @@ export class Group implements ifs.IGroup {
      * @return
      */
     public removeParentGroup(): string {
-        const old_parent_name: string = this._parent;
-        this._parent = null;
-        return old_parent_name;
+        return this._kernel.groupSetParent(this._name, null);
     }
     /**
      * to be completed
@@ -122,31 +78,29 @@ export class Group implements ifs.IGroup {
      * @return
      */
     public getChildGroups(): string[] {
-        return this._model.getGroups().filter((v) =>
-            v.getParentGroup() === this._name).map((v, i) => v.getName());
+        return this._kernel.groupGetChildren(this._name);
     }
 
-    // Objs
+    //  Objs ---------------------------------------------------------------------------------------
+
     /**
      * to be completed
      * @param
      * @return
      */
     public getObjIDs(obj_type?: EObjType): number[] {
-        if (obj_type === undefined) {return this._objs; }
-        return this._objs.filter((v) =>
-            this._model.getGeom().getObj(v).getObjType() === obj_type);
+        return this._kernel.groupGetObjIDs(this._name, obj_type);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public addObj(id: number): boolean {
-        if (id in this._objs) {return false;
-            } else {this._objs.push(id); } // double check, I still have duplicates
-        return true;
+        return this._kernel.groupAddObj(this._name, id);
     }
+
     /**
      * to be completed
      *
@@ -154,11 +108,7 @@ export class Group implements ifs.IGroup {
      * @return Returns true if all obj IDs were added, false otherwise.
      */
     public addObjs(ids: number[]): boolean {
-        let ok: boolean = true;
-        for (const id of ids) {
-            ok = this.addObj(id);
-        }
-        return ok;
+        return this._kernel.groupAddObjs(this._name, ids);
     }
     /**
      * to be completed
@@ -166,10 +116,7 @@ export class Group implements ifs.IGroup {
      * @return
      */
     public removeObj(id: number): boolean {
-        const index = this._objs.indexOf(id);
-        if (index === -1) {return false; }
-        this._objs.splice(index, 1);
-        return true;
+        return this._kernel.groupRemoveObj(this._name, id);
     }
     /**
      * to be completed
@@ -177,11 +124,7 @@ export class Group implements ifs.IGroup {
      * @return
      */
     public removeObjs(ids: number[]): boolean {
-        let ok: boolean = true;
-        for (const id of ids) {
-            ok = this.removeObj(id);
-        }
-        return ok;
+        return this._kernel.groupRemoveObjs(this._name, ids);
     }
     /**
      * to be completed
@@ -189,151 +132,167 @@ export class Group implements ifs.IGroup {
      * @return
      */
     public hasObj(id: number): boolean {
-        const index = this._objs.indexOf(id);
-        if (index === -1) {return false; }
-        return true;
+        return this._kernel.groupHasObj(this._name, id);
     }
+
+    //  Topos --------------------------------------------------------------------------------------
+
     /**
      * to be completed
      * @param
      * @return
      */
     public getTopos(geom_type?: EGeomType): ifs.ITopo[] {
-        return this._topos.getTopos(geom_type);
+        const paths: ITopoPathData[] = this._kernel.groupGetTopos(this._name, geom_type);
+        const topos: ifs.ITopo[] = [];
+        for (const path of paths) {
+            switch (path.st) {
+                case EGeomType.vertices:
+                    topos.push(new Vertex(this._kernel, path));
+                    break;
+                case EGeomType.edges:
+                    topos.push(new Edge(this._kernel, path));
+                    break;
+                default:
+                    switch (path.tt) {
+                        case EGeomType.wires:
+                            topos.push(new Wire(this._kernel, path));
+                            break;
+                        case EGeomType.faces:
+                            topos.push(new Face(this._kernel, path));
+                            break;
+                    }
+                    break;
+            }
+        }
+        return topos;
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public addTopo(topo: ifs.ITopo): void {
-        this._topos.addTopo(topo);
+        const path: ITopoPathData = topo.getTopoPath(); // TODO
+        return this._kernel.groupAddTopo(this._name, path);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public addTopos(topos: ifs.ITopo[]): void {
-        topos.forEach((v, i) => this.addTopo(v));
+        const paths: ITopoPathData[] = topos.map((p) => p.getTopoPath()); // TODO
+        return this._kernel.groupAddTopos(this._name, paths);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public removeTopo(topo: ifs.ITopo): boolean {
-        return this._topos.removeTopo(topo);
+        const path: ITopoPathData = topo.getTopoPath(); // TODO
+        return this._kernel.groupRemoveTopo(this._name, path);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public removeTopos(topos: ifs.ITopo[]): boolean {
-        let ok: boolean = true;
-        for (const topo of topos) {
-            if (!this.removeTopo(topo)) {ok = false; }
-        }
-        return ok;
+        const paths: ITopoPathData[] = topos.map((p) => p.getTopoPath()); // TODO
+        return this._kernel.groupRemoveTopos(this._name, paths);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public hasTopo(topo: ifs.ITopo): boolean {
-        return this._topos.hasTopo(topo);
-    }
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public topoToArray(): TTreeData {
-        return this._topos.toArray();
+        const path: ITopoPathData = topo.getTopoPath(); // TODO
+        return this._kernel.groupHasTopo(this._name, path);
     }
 
-   // Points in this group
+    //  Points in this group -----------------------------------------------------------------------
+
     /**
      * to be completed
      * @param
      * @return
      */
     public getPointIDs(): number[] {
-        return this._points;
+        return this._kernel.groupGetPointIDs(this._name);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public addPoint(id: number): boolean {
-        if (id in this._points) {return false; }
-        this._points.push(id);
-        return true;
+        return this._kernel.groupAddPoint(this._name, id);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public addPoints(ids: number[]): boolean {
-        let ok: boolean = true;
-        for (const id of ids) {
-            if (!this.addPoint(id)) {ok = false; }
-        }
-        return ok;
+        return this._kernel.groupAddPoints(this._name, ids);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public removePoint(id: number): boolean {
-        const index = this._points.indexOf(id);
-        if (index === -1) {return false; }
-        this._points.splice(index, 1);
-        return true;
+        return this._kernel.groupRemovePoint(this._name, id);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public removePoints(ids: number[]): boolean {
-        let ok: boolean = true;
-        for (const id of ids) {
-            if (!this.removePoint(id)) {ok = false; }
-        }
-        return ok;
+        return this._kernel.groupRemovePoints(this._name, ids);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
     public hasPoint(id: number): boolean {
-        const index = this._points.indexOf(id);
-        if (index === -1) {return false; }
-        return true;
+        return this._kernel.groupHasPoint(this._name, id);
     }
-    // Properties
+
+    //  Properties ---------------------------------------------------------------------------------
+
     /**
      * to be completed
      * @param
      * @return
      */
-    public getProps(): Map<string, any> {
-        return this._props;
+     //Map<string, any> { // TODO
+    public getProps(): Array<[string, any]> {
+        return this._kernel.groupGetProps(this._name);
     }
+
     /**
      * to be completed
      * @param
      * @return
      */
-    public setProps(new_Map: Map<string, any>): Map<string, any> {
-        this._props = new_Map ;
-        return this._props;
+     //Map<string, any>): Map<string, any> { // TODO
+    public setProps(props: Array<[string, any]>): Array<[string, any]> {
+        return this._kernel.groupSetProps(this._name, props);
     }
 }

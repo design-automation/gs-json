@@ -41,11 +41,8 @@ export function test_Model_constructor(): boolean {
 export function test_Model_getGeom(): boolean {
     const m: gs.Model = new gs.Model(test_data.open_box());
     const g: gs.IGroup = m.addGroup("Box");
-    const t: gs.ITopoTree = g.getTopoTree();
     const f1: gs.IFace = m.getGeom().getObj(0).getFaces()[0];
-    if (t.hasTopo(f1) === true) {return false; }
-    t.addTopo(f1);
-    if (!(t.hasTopo(f1) === true)) {return false; }
+    if (f1.getObjID() !== 0) {return false;}
     return true;
 }
 

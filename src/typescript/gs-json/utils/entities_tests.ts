@@ -1,6 +1,7 @@
 import * as gs from "./gs-json";
 import * as test_data from "./test_data";
 import * as ifs from "./ifaces_gs";
+import {ITopoPathData} from "./ifaces_json";
 import {Model} from "./model";
 import {Arr} from "./arr";
 
@@ -19,7 +20,7 @@ export function test_ent_getGeom(): boolean {
     let points: ifs.IPoint[] = m.getGeom().getPoints();
     if (!Arr.equal(points, [])) {return false; }
     points = [m.getGeom().addPoint([1, 3, 9])];
-    const p2: ifs.IPoint[] = points[0].getGeom().getPoints();
+    const p2: ifs.IPoint[] = m.getGeom().getPoints();
     if (!(p2[0].getPosition() === points[0].getPosition())) {return false; }
     // Works well for the Point case, Polyline and Polymesh need as well
     // to be tested, and getAttribs() need first to be tested (Model).
@@ -43,7 +44,7 @@ export function test_ent_getModel(): boolean {
     const m: gs.Model = new gs.Model();
     const geom: gs.IGeom = m.getGeom();
     const a: ifs.IPoint = geom.addPoint([6,3,8]);
-    if(!(a.getModel().getGeom().numPoints() === 1)) {return false;}
+    if(!(m.getGeom().numPoints() === 1)) {return false;}
     return true;
 }
 
@@ -94,8 +95,8 @@ export function test_ent_getGroupNames(): boolean {
     const gpr2: ifs.IGroup = m.addGroup("test2");
     gpr2.addPoint(0);
 
-    if(!Arr.equal(a1.getGroupNames(),["test1"])){return false;}
-    if(!Arr.equal(p1.getGroupNames(),["test2"])){return false;}
+    if(!Arr.equal(a1.getGroupNames(),["test1"])) {return false;}
+    if(!Arr.equal(p1.getGroupNames(),["test2"])) {return false;}
 
     // console.log(a1.getGroupNames())
     // console.log(p1.getGroupNames())
@@ -124,17 +125,17 @@ export function test_ent_getGroupNames(): boolean {
 }
 
 export function test_ent_addToGroup(): boolean {
-    let m:gs.IModel = new gs.Model(test_data.box_with_groups());
-    let geom:gs.IGeom = m.getGeom();
-    let a1:ifs.IObj = geom.getObj(0);
-    let gpr1:gs.IGroup = m.addGroup("test1");
-    console.log(gpr1.hasObj(0))
+    const m: gs.IModel = new gs.Model(test_data.box_with_groups());
+    const geom: gs.IGeom = m.getGeom();
+    const a1: ifs.IObj = geom.getObj(0);
+    const gpr1: gs.IGroup = m.addGroup("test1");
+    console.log(gpr1.hasObj(0));
     console.log(true);
-    if(gpr1.hasObj(0)){return false;}
-    a1.addToGroup("test1");
-    console.log(gpr1.hasObj(0))
-    if(gpr1.hasObj(0)){return false;}
-    return true;
+    if(gpr1.hasObj(0)) {return false;}
+    a1.addToGroup("test1");
+    console.log(gpr1.hasObj(0));
+    if(gpr1.hasObj(0)) {return false;}
+    return true;
 }
 
 // Point tests, extends Entities by 4 complementary methods
@@ -178,20 +179,20 @@ export function test_point_getVertices(): boolean {
     const p5: gs.IPoint = m.getGeom().getPoint(5);
     const p6: gs.IPoint = m.getGeom().getPoint(6);
     const p7: gs.IPoint = m.getGeom().getPoint(7);
-    if(!(p0.getVertices().length === 3)){return false;}
-    if(!(p0.getVertices()[0].getWireOrFace().getTopoPath().ti === 0)){return false;}
-    if(!(p0.getVertices()[0].getTopoPath().si === 0)){return false;}
-    if(!(p0.getVertices()[1].getTopoPath().ti === 0)){return false;}
-    if(!(p0.getVertices()[1].getTopoPath().si === 3)){return false;}
-    if(!(p0.getVertices()[2].getTopoPath().ti === 3)){return false;}
-    if(!(p0.getVertices()[2].getTopoPath().si === 0)){return false;}
-    if(!(p1.getVertices().length === 3)){return false;}
-    if(!(p2.getVertices().length === 3)){return false;}
-    if(!(p3.getVertices().length === 3)){return false;}
-    if(!(p4.getVertices().length === 3)){return false;}
-    if(!(p5.getVertices().length === 3)){return false;}
-    if(!(p6.getVertices().length === 3)){return false;}
-    if(!(p7.getVertices().length === 3)){return false;}
+    if(!(p0.getVertices().length === 3)) {return false;}
+    if(!(p0.getVertices()[0].getWireOrFace().getTopoPath().ti === 0)) {return false;}
+    if(!(p0.getVertices()[0].getTopoPath().si === 0)) {return false;}
+    if(!(p0.getVertices()[1].getTopoPath().ti === 0)) {return false;}
+    if(!(p0.getVertices()[1].getTopoPath().si === 3)) {return false;}
+    if(!(p0.getVertices()[2].getTopoPath().ti === 3)) {return false;}
+    if(!(p0.getVertices()[2].getTopoPath().si === 0)) {return false;}
+    if(!(p1.getVertices().length === 3)) {return false;}
+    if(!(p2.getVertices().length === 3)) {return false;}
+    if(!(p3.getVertices().length === 3)) {return false;}
+    if(!(p4.getVertices().length === 3)) {return false;}
+    if(!(p5.getVertices().length === 3)) {return false;}
+    if(!(p6.getVertices().length === 3)) {return false;}
+    if(!(p7.getVertices().length === 3)) {return false;}
     return true;
 }
 
@@ -208,7 +209,7 @@ export function test_obj_getVertices(): boolean {
     const m: gs.IModel = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IObj = geom.getObj(0);
-    const path1: gs.ITopoPath = a1.getVertices()[0][0][0].getTopoPath();
+    const path1: ITopoPathData = a1.getVertices()[0][0][0].getTopoPath();
     geom.numTopos(gs.EGeomType.vertices);
     a1.getVertices(); // Looks fine
     return true;
@@ -218,7 +219,7 @@ export function test_obj_getEdges(): boolean {
     const m: gs.IModel = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IObj = geom.getObj(0);
-    const path1: gs.ITopoPath = a1.getEdges()[0][0][0].getTopoPath() ;
+    const path1: ITopoPathData = a1.getEdges()[0][0][0].getTopoPath() ;
     geom.numTopos(gs.EGeomType.edges);
     a1.getEdges(); // Looks fine
     return true;
@@ -228,7 +229,7 @@ export function test_obj_getWires(): boolean {
     const m: gs.IModel = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IObj = geom.getObj(0);
-    const path1: gs.ITopoPath = a1.getWires()[0].getTopoPath() ;
+    const path1: ITopoPathData = a1.getWires()[0].getTopoPath() ;
     geom.numTopos(gs.EGeomType.wires);
     a1.getWires(); // Looks fine
     return true;
@@ -238,7 +239,7 @@ export function test_obj_getFaces(): boolean {
     const m: gs.IModel = new gs.Model(test_data.open_box());
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IObj = geom.getObj(0);
-    const path1: gs.ITopoPath = a1.getFaces()[0].getTopoPath() ;
+    const path1: ITopoPathData = a1.getFaces()[0].getTopoPath() ;
     geom.numTopos(gs.EGeomType.faces);
     a1.getFaces(); // Looks fine
 

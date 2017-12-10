@@ -57,7 +57,7 @@ export function test_Attrib_setValue(): boolean {
 
 export function test_Attrib_count(): boolean {
     const m: gs.IModel = new gs.Model();
-    let a1: number[] = [Math.floor(Math.random() * 10),
+    const a1: number[] = [Math.floor(Math.random() * 10),
         Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
     const a2: number[] = [Math.floor(Math.random() * 10),
         Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];

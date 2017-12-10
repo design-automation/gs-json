@@ -37,13 +37,13 @@ export const enum EObjType {
 
 // =================== MAPS ===================
 // mapStringToAttribType, mapStringToDataType
-type geom_type_str = "points" | "vertices" | "edges" | "wires" | "faces" | "objs";
-type data_type_Str = "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]";
+export type TGeomTypeStr = "points" | "vertices" | "edges" | "wires" | "faces" | "objs";
+export type TDataTypeStr = "string"|"number"|"boolean"|"string[]"|"number[]"|"boolean[]";
 /**
  * Map, from string to EGeomType.
  * This is used when parsing JSON.
  */
-export let mapStringToGeomType = new Map<geom_type_str, EGeomType> ([
+export let mapStringToGeomType = new Map<TGeomTypeStr, EGeomType> ([
     ["objs", EGeomType.objs],
     ["faces", EGeomType.faces],
     ["wires", EGeomType.wires],
@@ -55,7 +55,7 @@ export let mapStringToGeomType = new Map<geom_type_str, EGeomType> ([
  * Map, from EGeomType to string.
  * This is used when generating JSON.
  */
-export let mapGeomTypeToString = new Map<EGeomType, geom_type_str> ([
+export let mapGeomTypeToString = new Map<EGeomType, TGeomTypeStr> ([
     [EGeomType.objs, "objs"],
     [EGeomType.faces, "faces"],
     [EGeomType.wires, "wires"],
@@ -67,7 +67,7 @@ export let mapGeomTypeToString = new Map<EGeomType, geom_type_str> ([
  * Map, from strings to DataType.
  * This is used when parsing JSON.
  */
-export let mapStringToDataType = new Map<data_type_Str, EDataType> ([
+export let mapStringToDataType = new Map<TDataTypeStr, EDataType> ([
     ["string", EDataType.type_str],
     ["number", EDataType.type_num],
     ["boolean", EDataType.type_bool],
@@ -79,11 +79,31 @@ export let mapStringToDataType = new Map<data_type_Str, EDataType> ([
  * Map, from DataType to strings.
  * This is used when generating JSON.
  */
-export let mapDataTypeToString = new Map<EDataType, data_type_Str> ([
+export let mapDataTypeToString = new Map<EDataType, TDataTypeStr> ([
     [EDataType.type_str, "string"],
     [EDataType.type_num, "number"],
     [EDataType.type_bool, "boolean"],
     [EDataType.type_str_arr, "string[]"],
     [EDataType.type_num_arr, "number[]"],
     [EDataType.type_bool_arr, "boolean[]"],
+]);
+/**
+ * Map, from GeomType to int.
+ * This is used when generating JSON.
+ */
+export let mapGeomTypeToTopoPathIndex = new Map<EGeomType, (0 | 1)> ([
+    [EGeomType.faces, 1],
+    [EGeomType.wires, 0],
+    [EGeomType.edges, 1],
+    [EGeomType.vertices, 0],
+]);
+
+export let mapTTPathIndexToGeomType = new Map<(0 | 1), EGeomType> ([
+    [1, EGeomType.faces],
+    [0, EGeomType.wires],
+]);
+
+export let mapSTPathIndexToGeomType = new Map<(0 | 1), EGeomType> ([
+    [1, EGeomType.edges],
+    [0, EGeomType.vertices],
 ]);

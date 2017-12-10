@@ -1,9 +1,14 @@
-import * as ifs from "./ifaces_gs";
 import {Arr} from "./arr";
-import {IMetadata, IModelData, IGeomData,  IAttribData,
-    IGroupData, TObjData, TPointsData, ITopoPathData, ITopoTree2} from "./ifaces_json";
-import {EGeomType, EDataType, EObjType, mapGeomTypeToString, mapDataTypeToString} from "./enums";
-import {TopoTree2} from "./topo_trees";
+
+import {IMetadata, IModelData,  IAttribData,
+    IGroupData, TObjData, TPointsData, ITopoPathData} from "./ifaces_json";
+
+import {EGeomType, EDataType, EObjType, TDataTypeStr,
+    mapGeomTypeToString, mapDataTypeToString,
+    mapStringToDataType} from "./enums";
+
+import {ITopoTree} from "./ifaces_trees";
+import {TopoTree} from "./topo_trees";
 
 /**
  * Kernel Class
@@ -16,7 +21,7 @@ export class Kernel {
     private _objs: TObjData[];
     private _attribs: Map<EGeomType, Map<string, IAttribData>>;
     private _groups: Map<string, IGroupData>;
-    private _topos_trees: Map<string, ITopoTree2>;
+    private _topos_trees: Map<string, ITopoTree>;
 
     /**
      * to be completed
@@ -86,7 +91,7 @@ export class Kernel {
         if (data && data.attribs && data.groups !== undefined) {
             for (const group_data of data.groups) {
                 this._groups.set(group_data.name, group_data);
-                this._topos_trees.set(group_data.name, new TopoTree2(group_data.topos));
+                this._topos_trees.set(group_data.name, new TopoTree(group_data.topos));
                 this._groups.get(group_data.name).topos = null;
             }
         }
@@ -199,7 +204,7 @@ export class Kernel {
             data = {name, parent};
         }
         this._groups.set(name, data);
-        this._topos_trees.set(name, new TopoTree2());
+        this._topos_trees.set(name, new TopoTree());
         return data;
     }
 
@@ -230,7 +235,7 @@ export class Kernel {
      * @param
      * @return
      */
-    public modelPurgePoints(): number {
+    public modelPurge(): number {
         throw new Error ("Method not implemented.");
     }
 
@@ -336,7 +341,7 @@ export class Kernel {
     public geomGetPointIDs(): number[] {
         const point_ids: number[] = [];
         this._points.forEach((v,i) => (v !== undefined) && point_ids.push(i)); // ignores empty slots in spare array
-        return point_ids
+        return point_ids;
     }
 
     //  Geom Objects -------------------------------------------------------------------------------
@@ -347,17 +352,16 @@ export class Kernel {
      * @param is_closed Indicates whether the polyline is closed.
      * @return Object of type Polyline
      */
-    public geomAddPolyline(points: ifs.IPoint[], is_closed: boolean): TObjData {
-        if (points.length < 2) {throw new Error("Too few points for creating a polyline."); }
+    public geomAddPolyline(point_ids: number[], is_closed: boolean): number {
+        if (point_ids.length < 2) {throw new Error("Too few points for creating a polyline."); }
         const new_id: number = this._objs.length;
-        const wire_ids: number[] = points.map((v, i) => v.getID());
         // create the pline
-        if (is_closed) {wire_ids.push(-1); }
-        this._objs.push([[wire_ids], [], [100]]); // add the obj
+        if (is_closed) {point_ids.push(-1); }
+        this._objs.push([[point_ids], [], [100]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
-        return this._objs[new_id];
+        return new_id;
     }
 
     /**
@@ -367,17 +371,16 @@ export class Kernel {
      * @param is_closed Indicates whether the polyline is closed.
      * @return Object of type Polyline
      */
-    public geomAddNurbsCurve(control_points: ifs.IPoint[], order: number, is_closed: boolean): TObjData {
-        if (control_points.length < order) {throw new Error("Too few points for creating a NURBS curve."); }
+    public geomAddNurbsCurve(ctrl_point_ids: number[], order: number, is_closed: boolean): number {
+        if (ctrl_point_ids.length < order) {throw new Error("Too few points for creating a NURBS curve."); }
         const new_id: number = this._objs.length;
-        const wire_ids: number[] = control_points.map((v, i) => v.getID());
         // create the pline
-        if (is_closed) {wire_ids.push(-1); }
-        this._objs.push([[wire_ids], [], [120, order]]); // add the obj
+        if (is_closed) {ctrl_point_ids.push(-1); }
+        this._objs.push([[ctrl_point_ids], [], [120, order]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
-        return this._objs[new_id];
+        return new_id;
     }
 
     /**
@@ -385,20 +388,19 @@ export class Kernel {
      * @param
      * @return Object of type Polymesh
      */
-    public geomAddPolymesh(face_points: ifs.IPoint[][]): TObjData {
-        for (const f of face_points) {
+    public geomAddPolymesh(face_points_ids: number[][]): number {
+        for (const f of face_points_ids) {
             if (f.length < 3) {throw new Error("Too few points for creating a face."); }
         }
         const new_id: number = this._objs.length;
-        const face_ids: number[][] = face_points.map((f) => f.map((v) => v.getID()));
-        const wire_ids: number[][] = this._findPolymeshWires(face_ids);
-        face_ids.forEach((f) => f.push(-1));
-        wire_ids.forEach((w) => w.push(-1));
-        this._objs.push([wire_ids, face_ids, [100]]); // add the obj
+        const wire_points_ids: number[][] = this._findPolymeshWires(face_points_ids);
+        face_points_ids.forEach((f) => f.push(-1)); // close
+        wire_points_ids.forEach((w) => w.push(-1)); // close
+        this._objs.push([wire_points_ids, face_points_ids, [100]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
-        return this._objs[new_id];
+        return new_id;
     }
 
     /**
@@ -458,7 +460,7 @@ export class Kernel {
     public geomGetObjIDs(): number[] {
         const obj_ids: number[] = [];
         this._objs.forEach((v,i) => (v !== undefined) && obj_ids.push(i)); // ignores empty slots in spare array
-        return obj_ids
+        return obj_ids;
     }
 
     //  Geom Topo ----------------------------------------------------------------------------------
@@ -568,6 +570,35 @@ export class Kernel {
     }
 
     /**
+     * Within the parent object, find all faces or wires with shared points.
+     * The order of the points is ignored.
+     * Returns an array of topos.
+     * If the input path is a wire, it returns wires.
+     * If the input path is a face, it returns faces.
+     * @return An array containing the two sub-arrays of edges.
+     */
+    public geomFindTopoSharedPoints(path: ITopoPathData): ITopoPathData[] {
+        // Code Copied from topos.ts
+        // if(num_shared_points === undefined){num_shared_points = 1;}
+        // if( num_shared_points === 0){throw new Error("WARNING: num_shared point needs a non zero value") ;}
+        // const faces:ifs.IFace[] = [];
+        // const Obj:ifs.IObj = this.getGeom().getObj(this.getObjID());
+        // for(const b of Obj.getFaces()){
+        // let counter:number = 0;
+        // for (const c of b.getVertices()){
+        // for(const a of this.getGeom().getObjData(this.getTopoPath())){
+        // if(!(a===-1)){if(!(this.getTopoPath().ti === c.getTopoPath().ti)){if(a === c.getPoint().getID()){counter = counter + 1;}}}
+        // };
+        // var duplicate:boolean = false;
+        // for(const k of faces){if( k.getTopoPath() === b.getTopoPath()){duplicate = true;}}
+        // if(!duplicate){if(counter >= num_shared_points){faces.push(new Face(this.geom, b.getTopoPath()));}}
+        // }
+        // }
+        // return faces;
+        throw new Error("Method not implemented.");
+    }
+
+    /**
      * Within the parent object, find all vertices with the same point position.
      * Returns an array containing two sub-arrays.
      * 1) The wire vertices, and 2) the face vertices.
@@ -639,11 +670,11 @@ export class Kernel {
         const w_vertices: ITopoPathData[][] = [];
         if (vertex_type === undefined || vertex_type === EGeomType.wires) {
             for (let wi = 0; wi < this._objs[id][0].length; wi++) {
-                const wire:number[] = this._objs[id][0][wi];
+                const wire: number[] = this._objs[id][0][wi];
                 const v_paths: ITopoPathData[] = [];
                 for (let vi = 0; vi < wire.length; vi++) {
                     if (wire[vi] !== -1) {
-                        v_paths.push({id: id, tt: 0, ti: wi, st: 0, si: vi});
+                        v_paths.push({id, tt: 0, ti: wi, st: 0, si: vi});
                     }
                 }
                 w_vertices.push(v_paths);
@@ -652,11 +683,11 @@ export class Kernel {
         const f_vertices: ITopoPathData[][] = [];
         if (vertex_type === undefined || vertex_type === EGeomType.faces) {
             for (let fi = 0; fi < this._objs[id][1].length; fi++) {
-                const face:number[] = this._objs[id][0][fi];
+                const face: number[] = this._objs[id][0][fi];
                 const v_paths: ITopoPathData[] = [];
                 for (let vi = 0; vi < face.length; vi++) {
                     if (face[vi] !== -1) {
-                        v_paths.push({id: id, tt: 1, ti: fi, st: 0, si: vi});
+                        v_paths.push({id, tt: 1, ti: fi, st: 0, si: vi});
                     }
                 }
                 w_vertices.push(v_paths);
@@ -674,11 +705,11 @@ export class Kernel {
         const w_edges: ITopoPathData[][] = [];
         if (edge_type === undefined || edge_type === EGeomType.wires) {
             for (let wi = 0; wi < this._objs[id][0].length; wi++) {
-                const wire:number[] = this._objs[id][0][wi];
+                const wire: number[] = this._objs[id][0][wi];
                 const e_paths: ITopoPathData[] = [];
                 for (let vi = 0; vi < wire.length; vi++) {
                     if (vi < wire.length - 1 || wire[vi] === -1) {
-                        e_paths.push({id: id, tt: 0, ti: wi, st: 1, si: vi});
+                        e_paths.push({id, tt: 0, ti: wi, st: 1, si: vi});
                     }
                 }
                 w_edges.push(e_paths);
@@ -687,11 +718,11 @@ export class Kernel {
         const f_edges: ITopoPathData[][] = [];
         if (edge_type === undefined || edge_type === EGeomType.faces) {
             for (let fi = 0; fi < this._objs[id][1].length; fi++) {
-                const face:number[] = this._objs[id][0][fi];
+                const face: number[] = this._objs[id][0][fi];
                 const e_paths: ITopoPathData[] = [];
                 for (let vi = 0; vi < face.length; vi++) {
                     if (vi < face.length - 1 || face[vi] === -1) {
-                        e_paths.push({id: id, tt: 1, ti: fi, st: 1, si: vi});
+                        e_paths.push({id, tt: 1, ti: fi, st: 1, si: vi});
                     }
                 }
                 f_edges.push(e_paths);
@@ -705,7 +736,7 @@ export class Kernel {
      * @return The array of wires.
      */
     public objGetWires(id: number): ITopoPathData[] {
-        return this._objs[id][0].map((w,wi) => Object({id: id, tt: 0, ti: wi}));
+        return this._objs[id][0].map((w,wi) => Object({id, tt: 0, ti: wi}));
     }
 
     /**
@@ -713,7 +744,7 @@ export class Kernel {
      * @return The array of faces.
      */
     public objGetFaces(id: number): ITopoPathData[] {
-        return this._objs[id][1].map((f,fi) => Object({id: id, tt: 1, ti: fi}));
+        return this._objs[id][1].map((f,fi) => Object({id, tt: 1, ti: fi}));
     }
 
     /**
@@ -953,7 +984,7 @@ export class Kernel {
      */
     public vertexGetEdge(vertex_path: ITopoPathData): ITopoPathData {
         let edge_index: number = vertex_path.si;
-        const wire_or_face:ITopoPathData = this.vertexGetTopo(vertex_path);
+        const wire_or_face: ITopoPathData = this.vertexGetTopo(vertex_path);
         if (edge_index > this.topoNumEdges(wire_or_face) - 1) {
             if (!this.topoIsClosed(wire_or_face)) {return null; }
             edge_index = 0;
@@ -1017,10 +1048,20 @@ export class Kernel {
      * @param
      * @return
      */
-    public attribGetName(geom_type: EGeomType): string[] {
+    public attribGetNames(geom_type: EGeomType): string[] {
         const names: string[] = [];
         this._attribs.get(geom_type).forEach((a) => names.push(a.name));
         return names;
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public attribGetDataType(name: string, geom_type: EGeomType): EDataType {
+        const data_type_str: TDataTypeStr = this._attribs.get(geom_type).get(name).data_type;
+        return mapStringToDataType.get(data_type_str);
     }
 
     //  Attribute values for Entities --------------------------------------------------------------
@@ -1080,7 +1121,7 @@ export class Kernel {
      * @param value The new value.
      * @return The old value.
      */
-    public topoAttribSetValue(name: string, geom_type:EGeomType, path: ITopoPathData, value: any): any {
+    public topoAttribSetValue(name: string, geom_type: EGeomType, path: ITopoPathData, value: any): any {
         const data: IAttribData = this._attribs.get(geom_type).get(name);
         let index: number = Arr.indexOf(value, data.values);
         if (index === -1) {
@@ -1167,8 +1208,7 @@ export class Kernel {
      */
     public groupAddObj(name: string, id: number): boolean {
         const group: IGroupData = this._groups.get(name);
-        if (id in group.objs) {return false;}
-        else {group.objs.push(id); } // double check, I still have duplicates
+        if (id in group.objs) {return false;} else {group.objs.push(id); } // double check, I still have duplicates
         return true;
     }
 
@@ -1442,7 +1482,7 @@ export class Kernel {
             delete attrib.values[0][id];
         }
         for (const attrib of this._attribs.get(EGeomType.vertices).values()) {
-            delete attrib.values[0][id];;
+            delete attrib.values[0][id];
         }
     }
 
@@ -1501,7 +1541,7 @@ export class Kernel {
                         const point_index: number = f.indexOf(id);
                         if (point_index !== -1) {
                             changed = true;
-                            let num_vertices = f.length - 1;
+                            const num_vertices = f.length - 1;
                             if (num_vertices > 3 ) {
                                 f.splice(point_index, 1); //delete one vertex
                             } else {
@@ -1593,36 +1633,6 @@ export class Kernel {
                 return old_value;
         }
         return null;
-    }
-
-    /**
-     * Template is an array full of zeros, but with the right structure for the attribute data
-     * @param
-     * @return
-     */
-    private _getAttribTemplate(geom_type: EGeomType): any[] {
-        switch (geom_type) {
-            case EGeomType.objs:
-                return Arr.make(this.geomNumObjs(), 0);
-            case EGeomType.faces:
-                return this._objs.map((o) =>
-                        [o[1].map((f) => Arr.make(f.length, 0))]);
-            case EGeomType.wires:
-                return this._objs.map((o) =>
-                        [o[0].map((w) => Arr.make(w.length, 0))]);
-            case EGeomType.edges:
-                return this._objs.map((o) => [
-                    o[0].map((w) => Arr.make(w.length - 1, 0)),
-                    o[1].map((f) => Arr.make(f.length - 1, 0)),
-                ]);
-            case EGeomType.vertices:
-                return this._objs.map((o) => [
-                    o[0].map((w) => Arr.make(w.filter((wi) => (wi !== -1)).length, 0)),
-                    o[1].map((f) => Arr.make(f.filter((fi) => (fi !== -1)).length, 0)),
-                ]);
-            case EGeomType.points:
-                return Arr.make(this.geomNumPoints(), 0);
-        }
     }
 
     //  --------------------------------------------------------------------------------------------
