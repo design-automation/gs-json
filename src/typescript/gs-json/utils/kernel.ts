@@ -90,9 +90,12 @@ export class Kernel {
         // Groups
         if (data && data.attribs && data.groups !== undefined) {
             for (const group_data of data.groups) {
-                this._groups.set(group_data.name, group_data);
+                if (group_data.parent == undefined) {group_data.parent = null;}
+                if (group_data.objs == undefined) {group_data.objs = [];}
+                if (group_data.points == undefined) {group_data.points = [];}
                 this._topos_trees.set(group_data.name, new TopoTree(group_data.topos));
-                this._groups.get(group_data.name).topos = null;
+                group_data.topos = [];
+                this._groups.set(group_data.name, group_data);
             }
         }
     }
@@ -197,14 +200,13 @@ export class Kernel {
      * @return
      */
     public modelAddGroup(name: string, parent?: string): IGroupData {
-        // name = name.replace(/\s/g, "_");
-        let data: IGroupData = {name};
+        let data: IGroupData = {name: name, parent: null, objs: [], points: []};
         if (parent !== undefined && this._groups.has(parent)) {
-            // parent = parent.replace(/\s/g, "_");
-            data = {name, parent};
+            data.parent = parent;
         }
         this._groups.set(name, data);
         this._topos_trees.set(name, new TopoTree());
+
         return data;
     }
 
@@ -340,7 +342,7 @@ export class Kernel {
      */
     public geomGetPointIDs(): number[] {
         const point_ids: number[] = [];
-        this._points.forEach((v,i) => (v !== undefined) && point_ids.push(i)); // ignores empty slots in spare array
+        this._points[0].forEach((v,i) => (v !== undefined) && point_ids.push(i)); // ignores empty slots in spare array
         return point_ids;
     }
 
@@ -683,7 +685,7 @@ export class Kernel {
         const f_vertices: ITopoPathData[][] = [];
         if (vertex_type === undefined || vertex_type === EGeomType.faces) {
             for (let fi = 0; fi < this._objs[id][1].length; fi++) {
-                const face: number[] = this._objs[id][0][fi];
+                const face: number[] = this._objs[id][1][fi];
                 const v_paths: ITopoPathData[] = [];
                 for (let vi = 0; vi < face.length; vi++) {
                     if (face[vi] !== -1) {
@@ -718,7 +720,7 @@ export class Kernel {
         const f_edges: ITopoPathData[][] = [];
         if (edge_type === undefined || edge_type === EGeomType.faces) {
             for (let fi = 0; fi < this._objs[id][1].length; fi++) {
-                const face: number[] = this._objs[id][0][fi];
+                const face: number[] = this._objs[id][1][fi];
                 const e_paths: ITopoPathData[] = [];
                 for (let vi = 0; vi < face.length; vi++) {
                     if (vi < face.length - 1 || face[vi] === -1) {
@@ -847,7 +849,7 @@ export class Kernel {
      */
     public topoNumVertices(topo_path: ITopoPathData): number {
         const vertices: number[] = this._objs[topo_path.id][topo_path.tt][topo_path.ti];
-        if (vertices[length - 1] === -1) {
+        if (vertices[vertices.length - 1] === -1) {
             return vertices.length - 1;
         } else {
             return vertices.length;
@@ -890,7 +892,7 @@ export class Kernel {
      * @return boolean
      */
     public topoIsClosed(topo_path: ITopoPathData): boolean {
-        const wf_topo: number[] = this._points[topo_path.id][topo_path.tt][topo_path.ti];
+        const wf_topo: number[] = this._objs[topo_path.id][topo_path.tt][topo_path.ti];
         return (wf_topo[wf_topo.length - 1] === -1);
     }
 
@@ -947,9 +949,11 @@ export class Kernel {
     public edgeNext(edge_path: ITopoPathData): ITopoPathData {
         let edge_index: number = edge_path.si + 1;
         const wf_path: ITopoPathData = this.edgeGetTopo(edge_path);
-        if (edge_index > this.topoNumEdges(wf_path) - 1) {
-            if (!this.topoIsClosed(wf_path)) {return null; }
-            edge_index = this.topoNumEdges(wf_path) - 1;
+        if (edge_index === this.topoNumEdges(wf_path) - 1) {
+            if (!this.topoIsClosed(wf_path)) {return null;}
+            edge_index = 0;
+        } else {
+            edge_index += 1;
         }
         return {id: edge_path.id, tt: edge_path.tt, ti: edge_path.ti, st: edge_path.st, si: edge_index};
     }
@@ -961,9 +965,11 @@ export class Kernel {
     public edgePrevious(edge_path: ITopoPathData): ITopoPathData {
         let edge_index: number = edge_path.si - 1;
         const wf_path: ITopoPathData = this.edgeGetTopo(edge_path);
-        if (edge_index < 0) {
+        if (edge_index === 0) {
             if (!this.topoIsClosed(wf_path)) {return null; }
             edge_index = this.topoNumEdges(wf_path) - 1;
+        } else {
+            edge_index -= 1;
         }
         return {id: edge_path.id, tt: edge_path.tt, ti: edge_path.ti, st: edge_path.st, si: edge_index};
     }
@@ -975,7 +981,7 @@ export class Kernel {
      * @return The point object.
      */
     public vertexGetPoint(vertex_path: ITopoPathData): number {
-        return this._objs[vertex_path.id][vertex_path.tt][vertex_path.ti][vertex_path.st][vertex_path.si];
+        return this._objs[vertex_path.id][vertex_path.tt][vertex_path.ti][vertex_path.si];
     }
 
     /**
@@ -1005,13 +1011,15 @@ export class Kernel {
      * @return The next vertex object.
      */
     public vertexNext(vertex_path: ITopoPathData): ITopoPathData {
-        let edge_index: number = vertex_path.si;
+        let vertex_index: number = vertex_path.si;
         const wf_topos: ITopoPathData = this.vertexGetTopo(vertex_path);
-        if (edge_index > this.topoNumEdges(wf_topos) - 1) {
-            if (!this.topoIsClosed(wf_topos)) {return null; }
-            edge_index += 1;
+        if (vertex_index === this.topoNumVertices(wf_topos) - 1) {
+            if (!this.topoIsClosed(wf_topos)) {return null;}
+            vertex_index = 0;
+        } else {
+            vertex_index += 1;
         }
-        return {id: vertex_path.id, tt: vertex_path.tt, ti: vertex_path.ti, st: 0, si: edge_index};
+        return {id: vertex_path.id, tt: vertex_path.tt, ti: vertex_path.ti, st: 0, si: vertex_index};
     }
 
     /**
@@ -1019,13 +1027,15 @@ export class Kernel {
      * @return The previous vertex object.
      */
     public vertexPrevious(vertex_path: ITopoPathData): ITopoPathData {
-        let edge_index: number = vertex_path.si;
+        let vertex_index: number = vertex_path.si;
         const wf_topos: ITopoPathData = this.vertexGetTopo(vertex_path);
-        if (edge_index === 0) {
+        if (vertex_index === 0) {
             if (!this.topoIsClosed(wf_topos)) {return null; }
-            edge_index = this.topoNumVertices(wf_topos) - 1;
+            vertex_index = this.topoNumVertices(wf_topos) - 1;
+        } else {
+            vertex_index -= 1;
         }
-        return {id: vertex_path.id, tt: vertex_path.tt, ti: vertex_path.ti, st: 0, si: edge_index};
+        return {id: vertex_path.id, tt: vertex_path.tt, ti: vertex_path.ti, st: 0, si: vertex_index};
     }
 
     //  Attributes ---------------------------------------------------------------------------------
@@ -1171,7 +1181,7 @@ export class Kernel {
      */
     public groupSetParent(name: string, parent: string): string {
         const old_parent_name: string = this._groups.get(name).parent;
-        this._groups.get(name).parent = name;
+        this._groups.get(name).parent = parent;
         return old_parent_name;
     }
 
@@ -1208,7 +1218,7 @@ export class Kernel {
      */
     public groupAddObj(name: string, id: number): boolean {
         const group: IGroupData = this._groups.get(name);
-        if (id in group.objs) {return false;} else {group.objs.push(id); } // double check, I still have duplicates
+        if (id in group.objs) {return false;} else {group.objs.push(id); }
         return true;
     }
 
@@ -1341,8 +1351,7 @@ export class Kernel {
      */
     public groupAddPoint(name: string, id: number): boolean {
         const group: IGroupData = this._groups.get(name);
-        if (id in group.points) {return false; }
-        group.points.push(id);
+        if (id in group.points) {return false;} else {group.points.push(id); }
         return true;
     }
 

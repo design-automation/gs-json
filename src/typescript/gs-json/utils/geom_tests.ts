@@ -1,6 +1,5 @@
-import * as gs from "./gs-json";
-import * as test_data from "./test_data";
 import {Arr} from "./arr";
+import * as gs from "./gs-json";
 import * as td from "./test_data";
 
 export function test_createPoint(): boolean {
@@ -23,7 +22,7 @@ export function test_Geom_constructor(): boolean {
     const a: number[] = [1,2,3];
     m1.getGeom().addPoint(a);
     // TODO
-    // if(!(gs.Arr.equal(m1.getGeom().getPointData(0)[1],a))) {return false;}
+    // if(!(Arr.equal(m1.getGeom().getPointData(0)[1],a))) {return false;}
     return true;
 }
 
@@ -142,19 +141,19 @@ export function test_Geom_getPointIDs(): boolean {
     const m: gs.IModel = new gs.Model();
     const geom: gs.IGeom = m.getGeom();
 
-    if(!(gs.Arr.equal(geom.getPointIDs(),[]))) {return false;}
+    if(!(Arr.equal(geom.getPointIDs(),[]))) {return false;}
     geom.addPoint([1,3,8]);
-    if(!(gs.Arr.equal(geom.getPointIDs(),[0]))) {return false;}
+    if(!(Arr.equal(geom.getPointIDs(),[0]))) {return false;}
     geom.addPoint([6,4,3]);
-    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1]))) {return false;}
+    if(!(Arr.equal(geom.getPointIDs(),[0,1]))) {return false;}
     geom.addPoint([8,8,8]);
-    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1,2]))) {return false;}
+    if(!(Arr.equal(geom.getPointIDs(),[0,1,2]))) {return false;}
     geom.addPoint([3,4,5]);
-    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1,2,3]))) {return false;}
+    if(!(Arr.equal(geom.getPointIDs(),[0,1,2,3]))) {return false;}
     geom.addPoint([2,3,5]);
-    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1,2,3,4]))) {return false;}
+    if(!(Arr.equal(geom.getPointIDs(),[0,1,2,3,4]))) {return false;}
     geom.addPoint([1,5,2]);
-    if(!(gs.Arr.equal(geom.getPointIDs(),[0,1,2,3,4,5]))) {return false;}
+    if(!(Arr.equal(geom.getPointIDs(),[0,1,2,3,4,5]))) {return false;}
     return true;
 }
 
@@ -195,12 +194,12 @@ export function test_Geom_getPoint(): boolean {
     const p5: gs.IPoint = geom.addPoint([2,3,5]);
     const p6: gs.IPoint = geom.addPoint([1,5,2]);
 
-    if(!(gs.Arr.equal(geom.getPointPosition(0),p1.getPosition()))) {return false;}
-    if(!(gs.Arr.equal(geom.getPointPosition(1),p2.getPosition()))) {return false;}
-    if(!(gs.Arr.equal(geom.getPointPosition(2),p3.getPosition()))) {return false;}
-    if(!(gs.Arr.equal(geom.getPointPosition(3),p4.getPosition()))) {return false;}
-    if(!(gs.Arr.equal(geom.getPointPosition(4),p5.getPosition()))) {return false;}
-    if(!(gs.Arr.equal(geom.getPointPosition(5),p6.getPosition()))) {return false;}
+    if(!(Arr.equal(geom.getPointPosition(0),p1.getPosition()))) {return false;}
+    if(!(Arr.equal(geom.getPointPosition(1),p2.getPosition()))) {return false;}
+    if(!(Arr.equal(geom.getPointPosition(2),p3.getPosition()))) {return false;}
+    if(!(Arr.equal(geom.getPointPosition(3),p4.getPosition()))) {return false;}
+    if(!(Arr.equal(geom.getPointPosition(4),p5.getPosition()))) {return false;}
+    if(!(Arr.equal(geom.getPointPosition(5),p6.getPosition()))) {return false;}
     return true;
 }
 
@@ -227,8 +226,8 @@ export function test_Geom_delPoint(): boolean {
 
     m.getGeom().delPoint(4);
     // console.log(m);
-    console.log(m.getGeom());
-    console.log(m.getGeom().getPointPosition(4));
+    //console.log(m.getGeom());
+    //console.log(m.getGeom().getPointPosition(4));
     // This sub Point looks kind of solved..
 
     // const var1:number[] = m.getGeom().getPointIDs();
@@ -292,7 +291,7 @@ export function test_Geom_setPointPosition(): boolean {
     const geom: gs.IGeom = m.getGeom();
     geom.addPoint([1,3,8]);
     geom.setPointPosition(0,[4,8,9]);
-    if(!(gs.Arr.equal(geom.getPointPosition(0),[4,8,9]))) {return false;}
+    if(!(Arr.equal(geom.getPointPosition(0),[4,8,9]))) {return false;}
     return true;
 }
 
@@ -300,29 +299,29 @@ export function test_Geom_getPointPosition(): boolean {
     const m: gs.Model = new gs.Model();
     const geom: gs.IGeom = m.getGeom();
     geom.addPoint([1,3,8]);
-    if(!(gs.Arr.equal(geom.getPointPosition(0),[1,3,8]))) {return false;}
+    if(!(Arr.equal(geom.getPointPosition(0),[1,3,8]))) {return false;}
     return true;
 }
 
 export function test_Geom_getObjIDs(): boolean {
-    const m: gs.Model = new gs.Model(test_data.open_box());
+    const m: gs.Model = new gs.Model(td.open_box());
     const geom: gs.IGeom = m.getGeom();
     const p1 = geom.addPoint([0,0,0]);
     const p2 = geom.addPoint([2,0,0]);
     const p3 = geom.addPoint([3,6,0]);
     const p4 = geom.addPoint([7,4,9]);
-    if(!((gs.Arr.equal(geom.getObjIDs(),[0])))) {return false;}
+    if(!((Arr.equal(geom.getObjIDs(),[0])))) {return false;}
     const pline1: gs.IPolyline = geom.addPolyline([p1,p2,p3,p4], true);
-    if(!((gs.Arr.equal(geom.getObjIDs(),[0,1])))) {return false;}
+    if(!((Arr.equal(geom.getObjIDs(),[0,1])))) {return false;}
     const pline2: gs.IPolyline = geom.addPolyline([p1,p2,p3], false);
-    if(!((gs.Arr.equal(geom.getObjIDs(),[0,1,2])))) {return false;}
+    if(!((Arr.equal(geom.getObjIDs(),[0,1,2])))) {return false;}
     const pline3: gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
-    if(!((gs.Arr.equal(geom.getObjIDs(),[0,1,2,3])))) {return false;}
+    if(!((Arr.equal(geom.getObjIDs(),[0,1,2,3])))) {return false;}
     return true;
 }
 
 export function test_Geom_getObjs(): boolean {
-    const m: gs.Model = new gs.Model(test_data.open_box());
+    const m: gs.Model = new gs.Model(td.open_box());
     const geom: gs.IGeom = m.getGeom();
     const p1 = geom.addPoint([0,0,0]);
     const p2 = geom.addPoint([2,0,0]);
@@ -332,18 +331,18 @@ export function test_Geom_getObjs(): boolean {
     const pline2: gs.IPolyline = geom.addPolyline([p1,p2,p3], false);
     const pline3: gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
 
-    if(!(gs.Arr.equal([geom.getObjs()[0].getObjType()],[200]))) {return false;}
-    if(!(gs.Arr.equal([geom.getObjs()[1].getObjType()],[100]))) {return false;}
-    if(!(gs.Arr.equal([geom.getObjs()[2].getObjType()],[100]))) {return false;}
+    if(!(Arr.equal([geom.getObjs()[0].getObjType()],[200]))) {return false;}
+    if(!(Arr.equal([geom.getObjs()[1].getObjType()],[100]))) {return false;}
+    if(!(Arr.equal([geom.getObjs()[2].getObjType()],[100]))) {return false;}
 
     return true;
 }
 
 export function test_Geom_getObj(): boolean {
-    const m: gs.Model = new gs.Model(test_data.open_box());
+    const m: gs.Model = new gs.Model(td.open_box());
     const geom: gs.IGeom = m.getGeom();
     const polymesh: gs.IObj = geom.getObj(0);
-    if(!(gs.Arr.equal([polymesh.getObjType()],[200]))) {return false;}
+    if(!(Arr.equal([polymesh.getObjType()],[200]))) {return false;}
     return true;
 }
 
@@ -351,25 +350,25 @@ export function test_Geom_delObj(): boolean {
 
     // This test requires the delPoint implementation before running
 
-    // let m:gs.Model = new gs.Model(test_data.open_box());
+    // let m:gs.Model = new gs.Model(td.open_box());
     // let geom:gs.IGeom = m.getGeom();
-    // if(!((gs.Arr.equal(geom.getObjIDs(),[0])))){return false;}
+    // if(!((Arr.equal(geom.getObjIDs(),[0])))){return false;}
     // geom.delObj(0,true);
     // let p1 = geom.addPoint([0,0,0]);
     // let p2 = geom.addPoint([2,0,0]);
     // let p3 = geom.addPoint([3,6,0]);
     // let p4 = geom.addPoint([7,4,9]);
     // let pline1:gs.IPolyline = geom.addPolyline([p1,p2,p3,p4], true);
-    // if(!((gs.Arr.equal(geom.getObjIDs(),[0])))){return false;}
+    // if(!((Arr.equal(geom.getObjIDs(),[0])))){return false;}
     // let a:number = geom.getPointIDs().length;
     // geom.delObj(0,false);
-    // if(!(gs.Arr.equal(geom.getObjIDs(),[]))){return false;}
+    // if(!(Arr.equal(geom.getObjIDs(),[]))){return false;}
     // if( !(a-geom.getPointIDs().length == 4)){return false;}
     return true;
 }
 
 export function test_Geom_numObjs(): boolean {
-    const m: gs.Model = new gs.Model(test_data.open_box());
+    const m: gs.Model = new gs.Model(td.open_box());
     const geom: gs.IGeom = m.getGeom();
 
     //numObjs no longer allos you to specify EObjType
@@ -393,7 +392,7 @@ export function test_Geom_numObjs(): boolean {
 }
 
 export function test_Geom_getTopos(): boolean {
-    const m: gs.Model = new gs.Model(test_data.open_box());
+    const m: gs.Model = new gs.Model(td.open_box());
     const geom: gs.IGeom = m.getGeom();
     if(!(geom.getTopos(
     gs.EGeomType.edges).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
@@ -407,7 +406,7 @@ export function test_Geom_getTopos(): boolean {
 }
 
 export function test_Geom_numTopos(): boolean {
-    const m: gs.Model = new gs.Model(test_data.box_with_attribs());
+    const m: gs.Model = new gs.Model(td.box_with_attribs());
     const geom: gs.IGeom = m.getGeom();
     if(!(geom.getTopos(
     gs.EGeomType.edges).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
@@ -427,7 +426,7 @@ export function test_Geom_numTopos(): boolean {
 
 // METHOD DELETED
 // export function test_Geom_getAttribTemplate(): boolean {
-//     const m: gs.Model = new gs.Model(test_data.open_box());
+//     const m: gs.Model = new gs.Model(td.open_box());
 //     const geom: gs.IGeom = m.getGeom();
 
 //     const p1 = geom.addPoint([0,0,0]);
@@ -446,9 +445,9 @@ export function test_Geom_numTopos(): boolean {
 //     gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
 //     if(!(geom.getAttribTemplate(
 //     gs.EGeomType.faces)[0][0].length === geom.numTopos(gs.EGeomType.faces))) {return false;}
-//     if(!(gs.Arr.flatten(geom.getAttribTemplate(
+//     if(!(Arr.flatten(geom.getAttribTemplate(
 //     gs.EGeomType.edges)).length === geom.numTopos(gs.EGeomType.edges))) {return false;}
-//     if(!(gs.Arr.flatten(geom.getAttribTemplate(
+//     if(!(Arr.flatten(geom.getAttribTemplate(
 //     gs.EGeomType.vertices)).length === geom.numTopos(gs.EGeomType.vertices))) {return false;}
 
 //     return true;
@@ -456,10 +455,10 @@ export function test_Geom_numTopos(): boolean {
 
 // METHOD  DELETED
 // export function test_Geom_getPointData(): boolean {
-//     const m: gs.Model = new gs.Model(test_data.open_box());
+//     const m: gs.Model = new gs.Model(td.open_box());
 //     const geom: gs.IGeom = m.getGeom();
 //     for ( const k  of  m.getGeom().getPointIDs()) {
-//         if(!(gs.Arr.equal(m.getGeom().getPoint(
+//         if(!(Arr.equal(m.getGeom().getPoint(
 //             geom.getPointIDs()[k]).getPosition(),geom.getPointData(k)[1]))) {return false;} // compiles well
 //     }
 //     return true;
@@ -467,7 +466,7 @@ export function test_Geom_numTopos(): boolean {
 
 // METHOD DELETED
 // export function test_Geom_getObjData(): boolean { // A REVERIFIER
-//     const m: gs.Model = new gs.Model(test_data.open_box());
+//     const m: gs.Model = new gs.Model(td.open_box());
 //     const geom: gs.IGeom = m.getGeom();
 //     // const path:gs.ITopoPath = ;
 
@@ -602,7 +601,7 @@ export function test_Geom_numTopos(): boolean {
 //     // .getGeom().getObj()[k])
 //     // console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getObj()[0][2])
 //     // console.log(m.getGeom().getObj(geom.getObjIDs()[k]).getGeom().getModel().getObj()[0][3])
-//     // if(!(gs.Arr.equal(m.getGeom().getObj(geom.getObjIDs()[k]).numWires(),geom.getObjData(k)[1])))
+//     // if(!(Arr.equal(m.getGeom().getObj(geom.getObjIDs()[k]).numWires(),geom.getObjData(k)[1])))
 //     // {return false;} // compiles well
 //     // }
 //     // let m:gs.IModel = new gs.Model();

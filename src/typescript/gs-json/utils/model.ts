@@ -10,9 +10,6 @@ import {Group} from "./groups";
  */
 export class Model implements ifs.IModel {
     private _kernel: Kernel;
-    private _geom: ifs.IGeom;
-    private _attribs: Map<EGeomType, Map<string, ifs.IEntAttrib|ifs.ITopoAttrib>>;
-    private _groups: Map<string, ifs.IGroup>;
 
     /**
      * to be completed
@@ -20,17 +17,7 @@ export class Model implements ifs.IModel {
      * @return
      */
     constructor(data?: IModelData) {
-
-        this._attribs = new Map();
-        this._attribs.set(EGeomType.points, new Map());
-        this._attribs.set(EGeomType.objs, new Map());
-        this._attribs.set(EGeomType.vertices, new Map());
-        this._attribs.set(EGeomType.edges, new Map());
-        this._attribs.set(EGeomType.wires, new Map());
-        this._attribs.set(EGeomType.faces, new Map());
-
-        this._groups = new Map();
-
+        this._kernel = new Kernel(data);
     }
 
     //  Geom ---------------------------------------------------------------------------------------
@@ -76,6 +63,7 @@ export class Model implements ifs.IModel {
      */
     public getAttrib(name: string, geom_type?: EGeomType): ifs.IEntAttrib|ifs.ITopoAttrib {
         const data: IAttribData = this._kernel.modelGetAttrib(name, geom_type);
+        if (data === undefined) {return null;}
         switch (geom_type) {
             case EGeomType.points: case EGeomType.objs:
                 return new EntAttrib(this._kernel, data.name, geom_type);
@@ -137,6 +125,7 @@ export class Model implements ifs.IModel {
      */
     public getGroup(name: string): ifs.IGroup {
         const data: IGroupData = this._kernel.modelGetGroup(name);
+        if (data === undefined) {return null;}
         return new Group(this._kernel, data.name);
     }
 

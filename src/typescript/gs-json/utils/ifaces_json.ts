@@ -1,5 +1,4 @@
-import {
-        TGeomTypeStr, TDataTypeStr} from "./enums";
+import {TGeomTypeStr, TDataTypeStr} from "./enums";
 
 /**
  * Types, for parsing gs-json data.
@@ -77,4 +76,4 @@ export interface IPointData {
     y: number;
     z: number;
 }
-
+

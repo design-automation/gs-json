@@ -3,7 +3,7 @@ import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
 import {Vertex, Edge, Wire, Face} from "./topos";
-
+import {mapSTPathIndexToGeomType, mapTTPathIndexToGeomType} from "./enums";
 /**
  * Group class.
  */
@@ -146,7 +146,9 @@ export class Group implements ifs.IGroup {
         const paths: ITopoPathData[] = this._kernel.groupGetTopos(this._name, geom_type);
         const topos: ifs.ITopo[] = [];
         for (const path of paths) {
-            switch (path.st) {
+            const path_tt = mapTTPathIndexToGeomType.get(path.tt);
+            const path_st = mapSTPathIndexToGeomType.get(path.st);
+            switch (path_st) {
                 case EGeomType.vertices:
                     topos.push(new Vertex(this._kernel, path));
                     break;
@@ -154,7 +156,7 @@ export class Group implements ifs.IGroup {
                     topos.push(new Edge(this._kernel, path));
                     break;
                 default:
-                    switch (path.tt) {
+                    switch (path_tt) {
                         case EGeomType.wires:
                             topos.push(new Wire(this._kernel, path));
                             break;

@@ -67,11 +67,11 @@ export function test_Attrib_count(): boolean {
         Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
     // add 4 points
     m.getGeom().addPoint(a1);
-    // m.getGeom().addPoint(a2);
-    // m.getGeom().addPoint(a3);
-    // m.getGeom().addPoint(a4);
+    m.getGeom().addPoint(a2);
+    m.getGeom().addPoint(a3);
+    m.getGeom().addPoint(a4);
     // create a point attribute, all values should be null
-    //const b: gs.IAttrib = m.addAttrib("Color of points", gs.EGeomType.points, gs.EDataType.type_str);
+    const b: gs.IAttrib = m.addAttrib("Color of points", gs.EGeomType.points, gs.EDataType.type_str);
     //if (b.count() !== 4) {return false; }
     return true;
 }

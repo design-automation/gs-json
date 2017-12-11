@@ -41,7 +41,7 @@ describe("Tests for Group class", () => {
         expect( groups_tests.test_Groups_removeObjs() ).toBe(true);
     });
 
-    it("test_Groups_getTopoIDs", () => {
+    it("test_Groups_getTopos", () => {
         expect( groups_tests.test_Groups_getTopos() ).toBe(true);
     });
     it("test_Groups_addTopo", () => {

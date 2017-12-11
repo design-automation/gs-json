@@ -29,7 +29,7 @@ export function open_box(): gs.IModelData {
                 [
                     [
                         [0, 1, 2, 3, -1],
-                   ],
+                    ],
                     [
                         [1, 5, 4, 0, -1],
                         [2, 6, 5, 1, -1],
@@ -670,4 +670,4 @@ export function Random_Closed(): gs.IModelData {
     skins : null,
 };
 }
-
+
