@@ -204,27 +204,32 @@ export function test_Geom_getPoint(): boolean {
 }
 
 export function test_Geom_delPoint(): boolean {
-    //////////////////////////////////////////////////////////////
-    ////////////////// PLAN, COMPUTER THINKING ///////////////////
-    //////////////////////////////////////////////////////////////
-    // La base de donnee est composee de points, d'objets, et d'autres constantes internes au groupe.
-    // Dans un premier temps nous retirons du tableau un point d'une configuration donnee
-    // Etape 1: retirer le point du pt ID et des xyz.
-    // Etape 2: retirer les traces de cet id dans les objets de la geometrie.
-    // Etape 3: idem pr les attributs, les groupes.
-    // Etape 4: Pr le traitement du retrait d'un objet, il s'agira de retirer l'objet des attributs.
+
+    // const m: gs.Model = new gs.Model(td.open_box());    
+    // m.getGeom().delPoints([0,1,2,3,4,5,6,7]);
+    // console.log(m.getGeom());
+
+
+
+    // console.log(m.getGeom().getPoints());
+
+    // if(!(m.getGeom().numPoints() == 5)){return false;}
+    // for(let k:number = 0 ; k < 4; k++){
+    // m.getGeom().delPoint(5-k);
+    // if(!(m.getGeom().numPoints() == 5 - (k+1) )){return false;}
+    // }
 
     ///////////////////////////////////////
     // Etape 1: test du retrait du Point ID.
 
-    const m: gs.Model = new gs.Model(td.open_box());
+    // const m: gs.Model = new gs.Model(td.open_box());
     // console.log(m.getGeom().getPointIDs());
     // Re-check all other functions after using a delPoint.
     // Interfers with getPointIDS (for the reason that makeSeq is used)
 
     // m.getGeom().delPoint(4)
 
-    m.getGeom().delPoint(4);
+    // m.getGeom().delPoint(4);
     // console.log(m);
     //console.log(m.getGeom());
     //console.log(m.getGeom().getPointPosition(4));
@@ -347,7 +352,31 @@ export function test_Geom_getObj(): boolean {
 }
 
 export function test_Geom_delObj(): boolean {
+    const m: gs.Model = new gs.Model(td.open_box());
+    if(!(m.getGeom().numObjs() === 1)){return false;}
+    m.getGeom().delObj(0,true);
+    if(!(m.getGeom().numObjs() === 0)){return false;}
+    const p1 = m.getGeom().addPoint([0,0,0]);
+    const p2 = m.getGeom().addPoint([2,0,0]);
+    const p3 = m.getGeom().addPoint([3,6,0]);
+    const p4 = m.getGeom().addPoint([7,4,9]);
+    const pline1: gs.IPolyline = m.getGeom().addPolyline([p1,p2,p3,p4], true);
+    const pline2: gs.IPolyline = m.getGeom().addPolyline([p1,p2,p3], false);
+    const pline3: gs.IPolyline = m.getGeom().addPolyline([p1,p3,p4], false);
+    const gp1: gs.IGroup = m.addGroup("Groupe 1");
+    gp1.addObjs([1,2,3])
+    if(!(m.getGeom().numObjs() === 3)){return false;}
+    m.getGeom().delObj(3,true);
+    if(m.getGroup("Groupe 1").hasObj(3)){return false;}
+    if(!(m.getGeom().numObjs() === 2)){return false;}
+    m.getGeom().delObj(2,true);
+    if(!(m.getGeom().numObjs() === 1)){return false;}
+    m.getGeom().delObj(1,true);
+    if(!(m.getGeom().numObjs() === 0)){return false;}
+    // To Do: Attribute checking
+    console.log(m)
 
+ 
     // This test requires the delPoint implementation before running
 
     // let m:gs.Model = new gs.Model(td.open_box());
