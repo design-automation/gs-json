@@ -11,7 +11,7 @@ import {Vertex, Edge, Wire, Face} from "./topos";
  * An abstrcat class that is the superclass for all geometric entities, both Point and Obj.
  * An entity may be part of a group and may have attributes.
  */
-abstract class Ent {
+export abstract class Ent {
     protected _kernel: Kernel;
     protected _id: number;
     /**
@@ -149,7 +149,7 @@ export class Point extends Ent implements ifs.IPoint {
  * The superclass for all geometric objects,
  * including Polyline and Polymesh.
  */
-abstract class Obj extends Ent implements ifs.IObj {
+export abstract class Obj extends Ent implements ifs.IObj {
     /**
      * Get the geometry type.
      * This method overrides the method in the Ent class.
