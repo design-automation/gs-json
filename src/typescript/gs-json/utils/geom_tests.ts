@@ -353,6 +353,21 @@ export function test_Geom_getObj(): boolean {
 
 export function test_Geom_delObj(): boolean {
     const m: gs.Model = new gs.Model(td.open_box());
+
+    // /////////////////////////////////////////////////
+    // // Case 2: With Attributes
+    // const att1: gs.IEntAttrib = m.addAttrib("Attribute1", gs.EGeomType.objs, gs.EDataType.type_num) as gs.IEntAttrib;
+    // const att2: gs.IEntAttrib = m.addAttrib("Attribute2", gs.EGeomType.points, gs.EDataType.type_num) as gs.IEntAttrib;
+
+    // const p1 = m.getGeom().addPoint([0,0,0]);
+    // pb with add point to attribs
+
+    // // End of Case 2
+    // /////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////
+    // Case 1: Groups, Polylines/Points added then correctly deleted
+    const gp1: gs.IGroup = m.addGroup("Group1");
     if(!(m.getGeom().numObjs() === 1)){return false;}
     m.getGeom().delObj(0,true);
     if(!(m.getGeom().numObjs() === 0)){return false;}
@@ -363,22 +378,83 @@ export function test_Geom_delObj(): boolean {
     const pline1: gs.IPolyline = m.getGeom().addPolyline([p1,p2,p3,p4], true);
     const pline2: gs.IPolyline = m.getGeom().addPolyline([p1,p2,p3], false);
     const pline3: gs.IPolyline = m.getGeom().addPolyline([p1,p3,p4], false);
-    const gp1: gs.IGroup = m.addGroup("Groupe 1");
     gp1.addObjs([1,2,3])
     if(!(m.getGeom().numObjs() === 3)){return false;}
     m.getGeom().delObj(3,true);
-    if(m.getGroup("Groupe 1").hasObj(3)){return false;}
+    if(gp1.hasObj(3)){return false;}
+    if(!gp1.hasObj(2)){return false;}
+    if(!gp1.hasObj(1)){return false;}
     if(!(m.getGeom().numObjs() === 2)){return false;}
     m.getGeom().delObj(2,true);
+    if(gp1.hasObj(3)){return false;}
+    if(gp1.hasObj(2)){return false;}
+    if(!gp1.hasObj(1)){return false;}
     if(!(m.getGeom().numObjs() === 1)){return false;}
     m.getGeom().delObj(1,true);
+    if(gp1.hasObj(3)){return false;}
+    if(gp1.hasObj(2)){return false;}
+    if(gp1.hasObj(1)){return false;}    
     if(!(m.getGeom().numObjs() === 0)){return false;}
-    // To Do: Attribute checking
-    console.log(m)
+    // End Case 1; Correctly implemented
+    /////////////////////////////////////////////////
 
+
+    // console.log(m.getAttrib("Attribute1", gs.EGeomType.objs));
+    // console.log(att1.getValue(0));
+    // console.log(att1.getValue(1));
+
+
+    // console.log(att1.setValue(0, 1));
+
+    // Now we do the same with Attributes, to check:
+
+    // Then, the deleting functions for Points, and should be Okay..         
+
+
+    // console.log(m)
+
+//    console.log(m.getAttrib("Attribute1"))
+
+
+//    const att1: gs.IEntAttrib = m.getAttrib("Attribute1", gs.EGeomType.objs) as gs.IEntAttrib ;
+    // console.log(att1)
+    // att1
+    // att1.setValue(pline1.getID(), 123)
+ //  console.log( ">>>>>" , att1.getName())
+    // att1.setValue(pline2.getID(), 1234)
+    // att1.setValue(pline3.getID(), 123456)
  
-    // This test requires the delPoint implementation before running
+    // console.log(att1)
+ 
+    // attrib.setValue(faces[3].getTopoPath(), 1234)
+    // const attrib: gs.ITopoAttrib = m1.getAttrib("faces_id", gs.EGeomType.faces) as gs.ITopoAttrib;
 
+    // att1.setValue(pline1.getID(), [123])
+
+    // const m1: gs.IModel = new gs.Model(td.box_with_attribs());
+    // const faces: gs.IFace[] = m1.getGeom().getObj(0).getFaces();
+    // const attrib: gs.ITopoAttrib = m1.getAttrib("faces_id", gs.EGeomType.faces) as gs.ITopoAttrib;
+    // attrib.setValue(faces[3].getTopoPath(), 1234);
+    //  console.log(attrib)
+
+    // // console.log(att1.getName());
+    // console.log(att1)
+
+    // console.log(att1.getValue(1));
+    // console.log(att1.getValue(2));
+    // console.log(att1.getValue(3));
+
+    // att1.setValue()
+
+    // console.log(att1.getName())
+    // console.log(m.getAttribs(gs.EGeomType.objs));
+
+
+    // const att1: gs.IAttrib = m.addAttrib()
+
+    // To Do: Attribute checking
+
+    // This test requires the delPoint implementation before running
     // let m:gs.Model = new gs.Model(td.open_box());
     // let geom:gs.IGeom = m.getGeom();
     // if(!((Arr.equal(geom.getObjIDs(),[0])))){return false;}
