@@ -475,24 +475,18 @@ export function test_Geom_delObj(): boolean {
 export function test_Geom_numObjs(): boolean {
     const m: gs.Model = new gs.Model(td.open_box());
     const geom: gs.IGeom = m.getGeom();
-
     //numObjs no longer allos you to specify EObjType
-
-    // if(!(geom.numObjs(gs.EObjType.polymesh) === 1 )) {return false;}
-    // if(!(geom.numObjs(gs.EObjType.polyline) === 0 )) {return false;}
-    // const p1 = geom.addPoint([0,0,0]);
-    // const p2 = geom.addPoint([2,0,0]);
-    // const p3 = geom.addPoint([3,6,0]);
-    // const p4 = geom.addPoint([7,4,9]);
-    // const pline1: gs.IPolyline = geom.addPolyline([p1,p2,p3,p4], true);
-    // if(!(geom.numObjs(gs.EObjType.polymesh) === 1 )) {return false;}
-    // if(!(geom.numObjs(gs.EObjType.polyline) === 1 )) {return false;}
-    // const pline2: gs.IPolyline = geom.addPolyline([p1,p2,p3], false);
-    // if(!(geom.numObjs(gs.EObjType.polymesh) === 1 )) {return false;}
-    // if(!(geom.numObjs(gs.EObjType.polyline) === 2 )) {return false;}
-    // const pline3: gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
-    // if(!(geom.numObjs(gs.EObjType.polymesh) === 1 )) {return false;}
-    // if(!(geom.numObjs(gs.EObjType.polyline) === 3 )) {return false;}
+    if(!(geom.numObjs() === 1 )) {return false;}
+    const p1 = geom.addPoint([0,0,0]);
+    const p2 = geom.addPoint([2,0,0]);
+    const p3 = geom.addPoint([3,6,0]);
+    const p4 = geom.addPoint([7,4,9]);
+    const pline1: gs.IPolyline = geom.addPolyline([p1,p2,p3,p4], true);
+    if(!(geom.numObjs() === 2 )) {return false;}
+    const pline2: gs.IPolyline = geom.addPolyline([p1,p2,p3], false);
+    if(!(geom.numObjs() === 3 )) {return false;}
+    const pline3: gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
+    if(!(geom.numObjs() === 4 )) {return false;}
     return true;
 }
 
