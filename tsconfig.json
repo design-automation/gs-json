@@ -9,12 +9,12 @@
         "sourceMap": true,
         "declaration":true,
         "types": [ "jasmine", "node" ],
-        "typeRoots": [ "./node_modules/@types" ],
+        "typeRoots": [ "./node_modules/@types" ]
     },
     "include": [
         "./src/**/*.ts"
     ],
     "exclude": [
-        "./node_modules",
+        "./node_modules"
     ]
 }
