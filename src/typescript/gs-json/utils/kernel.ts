@@ -301,8 +301,8 @@ export class Kernel {
      */
     public geomDelPoint(id: number): boolean {
         // delete the point from the geometry array
-        if (this._points[id] === undefined) {return false; }
-        delete this._points[id];
+        if (this._points[0][id] === undefined) {return false; }
+        delete this._points[0][id];
         // delete the point from any geometrc objects
         this._delPointFromObjs(id);
         // delete the point from attribs

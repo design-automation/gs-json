@@ -205,6 +205,97 @@ export function test_Geom_getPoint(): boolean {
 
 export function test_Geom_delPoint(): boolean {
 
+    const m: gs.Model = new gs.Model(td.open_box());
+    if(m.getGeom().delPoint(m.getGeom().numPoints())){return false;}
+    m.getGeom().delPoint(0);
+    if(!(m.getGeom().numPoints() === 7)){return false;}
+    m.getGeom().delPoint(1);
+    if(!(m.getGeom().numPoints() === 6)){return false;}
+    m.getGeom().delPoint(2);
+    if(!(m.getGeom().numPoints() === 5)){return false;}
+    m.getGeom().delPoint(3);
+    if(!(m.getGeom().numPoints() === 4)){return false;}
+
+
+
+    // console.log(m.getGeom().delPoint(0))
+    // console.log(m.getGeom().numPoints())
+
+
+
+    // console.log(m.getGeom().numPoints())
+
+    // console.log(m.getGeom().getPoint(0))
+
+
+    // if(!(m.getGeom().delPoint(3))){return false;}
+
+    // console.log(m.getGeom().getPointIDs())
+
+    // console.log(m.getGeom().getPoints())
+
+    // m.getGeom().delPoint(1);
+    // m.getGeom().delPoint(2);
+    // m.getGeom().delPoint(3);
+    // m.getGeom().delPoint(4);
+    // m.getGeom().delPoint(5);
+    // m.getGeom().delPoint(6);
+    // m.getGeom().delPoint(7);
+
+    // console.log(m);
+
+    // console.log(m.getGeom().getPoints())
+
+
+    // const gp1: gs.IGroup = m.addGroup("Group1");
+
+
+    // if(!(m.getGeom().numObjs() === 1)){return false;}
+    // m.getGeom().delObj(0,true);
+    // if(!(m.getGeom().numObjs() === 0)){return false;}
+    // const p1 = m.getGeom().addPoint([0,0,0]);
+    // const p2 = m.getGeom().addPoint([2,0,0]);
+    // const p3 = m.getGeom().addPoint([3,6,0]);
+    // const p4 = m.getGeom().addPoint([7,4,9]);
+    // const pline1: gs.IPolyline = m.getGeom().addPolyline([p1,p2,p3,p4], true);
+    // const pline2: gs.IPolyline = m.getGeom().addPolyline([p1,p2,p3], false);
+    // const pline3: gs.IPolyline = m.getGeom().addPolyline([p1,p3,p4], false);
+    // gp1.addObjs([1,2,3])
+    // if(!(m.getGeom().numObjs() === 3)){return false;}
+    // m.getGeom().delObj(3,true);
+    // if(gp1.hasObj(3)){return false;}
+    // if(!gp1.hasObj(2)){return false;}
+    // if(!gp1.hasObj(1)){return false;}
+    // if(!(m.getGeom().numObjs() === 2)){return false;}
+    // m.getGeom().delObj(2,true);
+    // if(gp1.hasObj(3)){return false;}
+    // if(gp1.hasObj(2)){return false;}
+    // if(!gp1.hasObj(1)){return false;}
+    // if(!(m.getGeom().numObjs() === 1)){return false;}
+    // m.getGeom().delObj(1,true);
+    // if(gp1.hasObj(3)){return false;}
+    // if(gp1.hasObj(2)){return false;}
+    // if(gp1.hasObj(1)){return false;}    
+    // if(!(m.getGeom().numObjs() === 0)){return false;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // const m: gs.Model = new gs.Model(td.open_box());    
     // m.getGeom().delPoints([0,1,2,3,4,5,6,7]);
     // console.log(m.getGeom());
