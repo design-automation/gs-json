@@ -1,3 +1,4 @@
+import {Arr} from "./arr";
 import * as ifs from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
@@ -173,7 +174,7 @@ export abstract class Obj extends Ent implements ifs.IObj {
     /**
      * Get the points for this object. If the point_type is not specified, then
      * points for both wires and faces are returned.
-     * @return The array of points.
+     * @return A nested array of points, with sub-arrays for wires and faces.
      */
     public getPoints(point_type?: EGeomType.wires|EGeomType.faces): ifs.IPoint[][][] {
         const ids: number[][][] = this._kernel.objGetPoints(this._id, point_type);
@@ -184,11 +185,20 @@ export abstract class Obj extends Ent implements ifs.IObj {
     }
 
     /**
+     * Get the points for this object. If the point_type is not specified, then
+     * points for both wires and faces are returned.
+     * @return A flat array of points.
+     */
+    public getPointsArr(): ifs.IPoint[] {
+        return Arr.flatten(this.getPoints());
+    }
+
+    /**
      * Get the set of unique points for this object.
      * @return The array of point IDs.
      */
-    public getPointIDsSet(): Set<number> {
-        return this._kernel.objGetGetPointSet(this._id);
+    public getPointsSet(): Set<number> {
+        return new Set(Arr.flatten(this.getPoints()));
     }
 
     //  Topos --------------------------------------------------------------------------------------

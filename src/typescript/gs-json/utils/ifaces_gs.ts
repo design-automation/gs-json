@@ -37,6 +37,7 @@ export interface IModel {
 export interface IGeom  {
     // Creation
     addPoint(xyz: number[]): IPoint;
+    addPoints(xyz_arr: number[][]): IPoint[];
     addPolyline(wire_points: IPoint[], is_closed: boolean): IPolyline;
     addPolymesh(face_points: IPoint[][]): IPolymesh;
     // Points
@@ -101,7 +102,8 @@ export interface IObj extends IEnt {
     getObjType(): EObjType;
     // points
     getPoints(point_type?: EGeomType.wires|EGeomType.faces): IPoint[][][];
-    getPointIDsSet(): Set<number>;
+    getPointsArr(): IPoint[];
+    getPointsSet(): Set<number>;
     // topo
     getVertices(vertex_type?: EGeomType.wires|EGeomType.faces): IVertex[][][];
     getEdges(edge_type?: EGeomType.wires|EGeomType.faces): IEdge[][][];

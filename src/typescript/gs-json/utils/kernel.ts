@@ -656,14 +656,6 @@ export class Kernel {
     }
 
     /**
-     * Get the set of unique points for this object.
-     * @return The array of point IDs.
-     */
-    public objGetGetPointSet(id: number): Set<number> {
-        return new Set(Arr.flatten(this.objGetPoints(id)));
-    }
-
-    /**
      * Get the vertices for this object. If the vertex_type is not specified, then
      * vertices for both wires and faces are returned.
      * @return The array of vertices.
