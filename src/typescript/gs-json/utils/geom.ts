@@ -24,12 +24,21 @@ export class Geom implements ifs.IGeom {
 
     /**
      * Adds a new point to the model at position xyz.
-     * @param cartesian xyz coordinates are required to create a point
-     * @return a instance of type Point is returned
+     * @param xyz xyz coordinates are required to create a point
+     * @return A point instance.
      */
     public addPoint(xyz: number[]): ifs.IPoint {
         const id: number = this._kernel.geomAddPoint(xyz);
         return new Point(this._kernel, id);
+    }
+
+    /**
+     * Adds a set of new points to the model, from an array of xyz coordinates.
+     * @param xyz An array of xyz coordinates.
+     * @return An array Point instances.
+     */
+    public addPoints(xyz_arr: number[][]): ifs.IPoint[] {
+        return xyz_arr.map((xyz) => this.addPoint(xyz));
     }
 
     /**
