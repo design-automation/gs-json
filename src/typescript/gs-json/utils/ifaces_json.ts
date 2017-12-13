@@ -44,7 +44,7 @@ export interface IAttribData {
     name: string;
     geom_type: TGeomTypeStr;
     data_type: TDataTypeStr;
-    values?: any[]; // TODO
+    values: any[]; // TODO
 }
 
 export interface IGroupData {

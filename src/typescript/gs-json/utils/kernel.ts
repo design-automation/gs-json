@@ -149,9 +149,42 @@ export class Kernel {
      */
     public modelAddAttrib(name: string, geom_type: EGeomType, data_type: EDataType): IAttribData {
         // name = name.replace(/\s/g, "_");
-        const data: IAttribData = {name,
-                                   geom_type: mapGeomTypeToString.get(geom_type),  //TODO string not good
-                                   data_type: mapDataTypeToString.get(data_type)}; //TODO string not good
+        const data: IAttribData = {name: name,
+                                   geom_type: mapGeomTypeToString.get(geom_type),  // TODO string not good
+                                   data_type: mapDataTypeToString.get(data_type), // TODO string not good
+                                   values: [[],[null]]};
+
+        //populate the attribute with indexes all pointing to the null value
+        switch (geom_type) {
+            case EGeomType.points:
+                data.values[0] = Arr.make(this.geomNumPoints(), 0);
+                break;
+            case EGeomType.vertices:
+                data.values[0] = this._objs.map((o, oi) => [
+                    o[0].map((w, wi) => Arr.make(this.topoNumVertices({id: oi, tt: 0, ti: wi}), 0)),
+                    o[1].map((f, fi) => Arr.make(this.topoNumVertices({id: oi, tt: 1, ti: fi}), 0)),
+                ]);
+                break;
+            case EGeomType.edges:
+                data.values[0] = this._objs.map((o, oi) => [
+                    o[0].map((w, wi) => Arr.make(this.topoNumEdges({id: oi, tt: 0, ti: wi}), 0)),
+                    o[1].map((f, fi) => Arr.make(this.topoNumEdges({id: oi, tt: 1, ti: fi}), 0)),
+                ]);
+                break;
+            case EGeomType.wires:
+                data.values[0] = this._objs.map((o) => Arr.make(o[0].length, 0));
+                break;
+            case EGeomType.faces:
+                data.values[0] = this._objs.map((o) => Arr.make(o[1].length, 0));
+                break;
+            case EGeomType.objs:
+                data.values[0] = Arr.make(this.geomNumObjs(), 0);
+                break;
+            default:
+                // code...
+                break;
+        }
+        //save and return data
         this._attribs.get(geom_type).set(name, data);
         return data;
     }
@@ -200,7 +233,7 @@ export class Kernel {
      * @return
      */
     public modelAddGroup(name: string, parent?: string): IGroupData {
-        let data: IGroupData = {name: name, parent: null, objs: [], points: []};
+        const data: IGroupData = {name: name, parent: null, objs: [], points: []};
         if (parent !== undefined && this._groups.has(parent)) {
             data.parent = parent;
         }
