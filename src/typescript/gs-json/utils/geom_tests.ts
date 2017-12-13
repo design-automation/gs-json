@@ -193,7 +193,7 @@ export function test_Geom_getPoint(): boolean {
     const p4: gs.IPoint = geom.addPoint([3,4,5]);
     const p5: gs.IPoint = geom.addPoint([2,3,5]);
     const p6: gs.IPoint = geom.addPoint([1,5,2]);
-
+ 
     if(!(Arr.equal(geom.getPointPosition(0),p1.getPosition()))) {return false;}
     if(!(Arr.equal(geom.getPointPosition(1),p2.getPosition()))) {return false;}
     if(!(Arr.equal(geom.getPointPosition(2),p3.getPosition()))) {return false;}
@@ -205,8 +205,8 @@ export function test_Geom_getPoint(): boolean {
 
 export function test_Geom_delPoint(): boolean {
     const m: gs.Model = new gs.Model(td.open_box());
-    const gp1: gs.IGroup = m.addGroup("GroupPoints");
 
+    const gp1: gs.IGroup = m.addGroup("GroupPoints");
     gp1.addPoints(m.getGeom().getPointIDs());
     const att1: gs.IEntAttrib = m.addAttrib("AttributePoints", gs.EGeomType.points, gs.EDataType.type_num) as gs.IEntAttrib;
 
@@ -229,6 +229,22 @@ export function test_Geom_delPoint(): boolean {
     if(gp1.hasPoint(k)){return false;}
     if(!(att1.getValue(k) === undefined)){return false;}
 
+    ////////////////////////////////////////////////////////////
+    ///// Check Point Listing IDs for a selected Object:
+    const list:number[] = [];
+    let duplicate:boolean = false;
+    for(const point of m.getGeom().getObj(0).getPointsArr()){
+        duplicate = false;
+        for(const a of list){
+        if(a === point.getID()){duplicate = true;}
+        }
+        if(duplicate === false){list.push(point.getID());}
+    }
+    console.log(">>>>>>>>> deleted", k)
+    console.log(">>>>>>> Point IDs in Object", list)
+    console.log(">>> Number of different points in the object", list.length);
+    ////////////////////////////////////////////////////////////
+
     k = m.getGeom().getPointIDs()[0];
     att1.setValue(k, k);
     if(!(m.getGeom().numPoints() === 6)){return false;}
@@ -236,6 +252,9 @@ export function test_Geom_delPoint(): boolean {
     m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     if(gp1.hasPoint(k)){return false;}
     if(!(att1.getValue(k) === undefined)){return false;}
+
+
+
 
     k = m.getGeom().getPointIDs()[0];
     att1.setValue(k, k);
@@ -245,6 +264,10 @@ export function test_Geom_delPoint(): boolean {
     if(gp1.hasPoint(k)){return false;}
     if(!(att1.getValue(k) === undefined)){return false;}
 
+
+
+
+
     k = m.getGeom().getPointIDs()[0];
     att1.setValue(k, k);
     if(!(m.getGeom().numPoints() === 4)){return false;}
@@ -252,6 +275,9 @@ export function test_Geom_delPoint(): boolean {
     m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     if(gp1.hasPoint(k)){return false;}
     if(!(att1.getValue(k) === undefined)){return false;}
+
+
+
 
     k = m.getGeom().getPointIDs()[0];
     att1.setValue(k, k);
@@ -268,6 +294,10 @@ export function test_Geom_delPoint(): boolean {
     m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     if(gp1.hasPoint(k)){return false;}
     if(!(att1.getValue(k) === undefined)){return false;}
+
+
+
+
 
     k = m.getGeom().getPointIDs()[0];
     att1.setValue(k, k);
@@ -355,6 +385,7 @@ export function test_Geom_getObj(): boolean {
     const geom: gs.IGeom = m.getGeom();
     const polymesh: gs.IObj = geom.getObj(0);
     if(!(Arr.equal([polymesh.getObjType()],[200]))) {return false;}
+
     return true;
 }
 
@@ -421,6 +452,7 @@ export function test_Geom_numObjs(): boolean {
     if(!(geom.numObjs() === 3 )) {return false;}
     const pline3: gs.IPolyline = geom.addPolyline([p1,p3,p4], false);
     if(!(geom.numObjs() === 4 )) {return false;}
+
     return true;
 }
 
@@ -435,6 +467,7 @@ export function test_Geom_getTopos(): boolean {
     gs.EGeomType.faces).length === geom.numTopos(gs.EGeomType.faces))) {return false;}
     if(!(geom.getTopos(
     gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
+
     return true;
 }
 
@@ -449,6 +482,7 @@ export function test_Geom_numTopos(): boolean {
     gs.EGeomType.faces).length === geom.numTopos(gs.EGeomType.faces))) {return false;}
     if(!(geom.getTopos(
     gs.EGeomType.wires).length === geom.numTopos(gs.EGeomType.wires))) {return false;}
+
     return true;
 }
 
