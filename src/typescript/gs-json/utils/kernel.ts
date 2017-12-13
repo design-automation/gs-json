@@ -1620,7 +1620,7 @@ export class Kernel {
     private _delPointFromGroups(id: number): void {
         for (const [name, group] of this._groups.entries()) {
             const pi: number = group.points.indexOf(id);
-            if (pi !== -1) {group.objs.splice(pi, 1);}
+            if (pi !== -1) {group.points.splice(pi, 1);}
         }
     }
 
