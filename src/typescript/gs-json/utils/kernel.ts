@@ -1563,10 +1563,24 @@ export class Kernel {
                                 obj[0].splice(wi,1); //delete the whole wire
                             }
                         }
-                    }
+                    }                   
+                    if(Arr.equal(obj[0] , [])){ this.geomDelObj(obj_id_str, true)} // delete the whole object if empty wire
                     break;
                 case 200:
                     let changed: boolean = false;
+                    for (let wi = 0; wi < obj[0].length; wi++) {
+                        const w: number[] = obj[0][wi];
+                        const point_index: number = w.indexOf(id);
+                        if (point_index !== -1) {
+                            let num_vertices = w.length;
+                            if (w[w.length - 1] === -1) {num_vertices--;}
+                            if (num_vertices > 3 ) {
+                                obj[0][wi].splice(point_index, 1); //delete one vertex
+                            } else {
+                                obj[0].splice(wi,1); //delete the whole wire
+                            }
+                        }
+                    }
                     for (let fi = 0; fi < obj[1].length; fi++) {
                         const f: number[] = obj[1][fi];
                         const point_index: number = f.indexOf(id);
@@ -1574,7 +1588,7 @@ export class Kernel {
                             changed = true;
                             const num_vertices = f.length - 1;
                             if (num_vertices > 3 ) {
-                                f.splice(point_index, 1); //delete one vertex
+                                obj[1][fi].splice(point_index, 1); //delete one vertex
                             } else {
                                 obj[1].splice(fi,1); //delete the whole face
                             }
@@ -1617,7 +1631,7 @@ export class Kernel {
     private _delPointFromGroups(id: number): void {
         for (const [name, group] of this._groups.entries()) {
             const pi: number = group.points.indexOf(id);
-            if (pi !== -1) {group.objs.splice(pi, 1);}
+            if (pi !== -1) {group.points.splice(pi, 1);}
         }
     }
 
