@@ -90,9 +90,9 @@ export class Kernel {
         // Groups
         if (data && data.attribs && data.groups !== undefined) {
             for (const group_data of data.groups) {
-                if (group_data.parent == undefined) {group_data.parent = null;}
-                if (group_data.objs == undefined) {group_data.objs = [];}
-                if (group_data.points == undefined) {group_data.points = [];}
+                if (group_data.parent === undefined) {group_data.parent = null;}
+                if (group_data.objs === undefined) {group_data.objs = [];}
+                if (group_data.points === undefined) {group_data.points = [];}
                 this._topos_trees.set(group_data.name, new TopoTree(group_data.topos));
                 group_data.topos = [];
                 this._groups.set(group_data.name, group_data);
@@ -179,9 +179,6 @@ export class Kernel {
                 break;
             case EGeomType.objs:
                 data.values[0] = Arr.make(this.geomNumObjs(), 0);
-                break;
-            default:
-                // code...
                 break;
         }
         //save and return data
