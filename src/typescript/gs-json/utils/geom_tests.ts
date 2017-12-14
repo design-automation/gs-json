@@ -239,7 +239,7 @@ export function test_Geom_delPoint(): boolean {
     if(!(att2.getValue(k) === undefined)){return false;}
     for (const point of Arr.flatten(m2.getGeom().getObj(0).getPoints())){
     if(point.getID() === k){return false;}}
- 
+
     k = m2.getGeom().getPointIDs()[0];
     if(!(m2.getGeom().numPoints() === 5)){return false;}
     if(!gp2.hasPoint(k)){return false;}    
@@ -248,7 +248,7 @@ export function test_Geom_delPoint(): boolean {
     if(!(att2.getValue(k) === undefined)){return false;}
     for (const point of Arr.flatten(m2.getGeom().getObj(0).getPoints())){
     if(point.getID() === k){return false;}}
-    
+
     k = m2.getGeom().getPointIDs()[0];
     if(!(m2.getGeom().numPoints() === 4)){return false;}
     if(!gp2.hasPoint(k)){return false;}
@@ -288,7 +288,7 @@ export function test_Geom_delPoint(): boolean {
     if(!(m2.getGeom().numObjs() === 0)){}
     /// Polyline, Case 100,
     ////////////////////////////////////////////////////////////
-
+ 
     //////////////////////////////////////////////////////
     /// Polymesh, Case 200 //////
     const m: gs.Model = new gs.Model(td.open_box());
@@ -305,7 +305,7 @@ export function test_Geom_delPoint(): boolean {
     if(!(att1.getValue(k) === undefined)){return false;}
     for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
     if(point.getID() === k){return false;}}
-
+  
     k = m.getGeom().getPointIDs()[0];
     att1.setValue(k, k);
     if(!(m.getGeom().numPoints() === 7)){return false;}
@@ -313,14 +313,7 @@ export function test_Geom_delPoint(): boolean {
     m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     if(gp1.hasPoint(k)){return false;}
     if(!(att1.getValue(k) === undefined)){return false;}
-
-    // // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
-    // // // if(point.getID() === k){return false;}
-    // // // console.log(point.getID())
-    // }
-    // console.log(k)
-
-
+ 
     k = m.getGeom().getPointIDs()[0];
     att1.setValue(k, k);
     if(!(m.getGeom().numPoints() === 6)){return false;}
@@ -371,6 +364,17 @@ export function test_Geom_delPoint(): boolean {
     /// Polymesh, Case 200 //////
     //////////////////////////////////////////////////////
 
+    return true;
+
+   ///////////////////////////////////////
+    // Points number controller ///////////
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // if(point.getID() === k){return false;}
+    // console.log(point.getID())
+    // }
+    // Points number controller ///////////
+    ///////////////////////////////////////
+
     ////////////////////////////////////////////////////////////
     ///// Check Point Listing IDs for a selected Object:
     // const list:number[] = [];
@@ -387,7 +391,6 @@ export function test_Geom_delPoint(): boolean {
     // console.log(">>> Number of different points in the object", list.length);
     ////////////////////////////////////////////////////////////
 
-    return true;
 }
 
 export function test_Geom_numPoints(): boolean {
