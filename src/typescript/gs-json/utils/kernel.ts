@@ -452,12 +452,12 @@ export class Kernel {
         this._delObjFromGroups(id);
         // delete the points
         if (!keep_unused_points) {
-            const unused_points: number[] = [];
-            this._objs.forEach((o,oi) => o[0].forEach((w, wi) => w.forEach((v, vi) =>
-                this.pointIsUnused(v) && unused_points.push(v))));
-            this._objs.forEach((o,oi) => o[1].forEach((f, fi) => f.forEach((v, vi) =>
-                this.pointIsUnused(v) && unused_points.push(v))));
-            this.geomDelPoints(unused_points);
+            const unused_points: Set<number> = new Set();
+            data[0].forEach((w, wi) => w.forEach((v, vi) =>
+                this.pointIsUnused(v) && unused_points.add(v)));
+            data[1].forEach((f, fi) => f.forEach((v, vi) =>
+                this.pointIsUnused(v) && unused_points.add(v)));
+            this.geomDelPoints(Array.from(unused_points));
         }
         return true;
     }
