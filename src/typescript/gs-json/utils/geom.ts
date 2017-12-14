@@ -43,7 +43,8 @@ export class Geom implements ifs.IGeom {
 
     /**
      * Adds a new polyline to the model.
-     * @param wire_points which is a collection of Points
+     * @param points A collection of Points.
+     * @param is_closed True if the polyline is closed.
      * @return Object of type Polyline
      */
     public addPolyline(points: ifs.IPoint[], is_closed: boolean): ifs.IPolyline {

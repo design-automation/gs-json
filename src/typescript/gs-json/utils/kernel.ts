@@ -1550,6 +1550,7 @@ export class Kernel {
     private _delPointFromObjs(id: number): void {
         for (const [obj_id_str, obj] of this._objs.entries()) { // sparse array
             switch (obj[2][0]) {
+                // Polyline
                 case 100:
                     for (let wi = 0; wi < obj[0].length; wi++) {
                         const w: number[] = obj[0][wi];
@@ -1557,30 +1558,19 @@ export class Kernel {
                         if (point_index !== -1) {
                             let num_vertices = w.length;
                             if (w[w.length - 1] === -1) {num_vertices--;}
-                            if (num_vertices > 3 ) {
+                            if (num_vertices > 2 ) {
                                 w.splice(point_index, 1); //delete one vertex
                             } else {
                                 obj[0].splice(wi,1); //delete the whole wire
                             }
                         }
-                    }                   
-                    if(Arr.equal(obj[0] , [])){ this.geomDelObj(obj_id_str, true)} // delete the whole object if empty wire
+                    }
+                    //check if no wires, delete whole oject
+                    if(obj[0].length === 0) {delete this._objs[obj_id_str]; }
                     break;
+                // Polymesh
                 case 200:
                     let changed: boolean = false;
-                    for (let wi = 0; wi < obj[0].length; wi++) {
-                        const w: number[] = obj[0][wi];
-                        const point_index: number = w.indexOf(id);
-                        if (point_index !== -1) {
-                            let num_vertices = w.length;
-                            if (w[w.length - 1] === -1) {num_vertices--;}
-                            if (num_vertices > 3 ) {
-                                obj[0][wi].splice(point_index, 1); //delete one vertex
-                            } else {
-                                obj[0].splice(wi,1); //delete the whole wire
-                            }
-                        }
-                    }
                     for (let fi = 0; fi < obj[1].length; fi++) {
                         const f: number[] = obj[1][fi];
                         const point_index: number = f.indexOf(id);
@@ -1602,6 +1592,9 @@ export class Kernel {
                         }
                     }
                     break;
+                // Not found
+                default:
+                    throw new Error("Object type not found: " + obj[2][0]);
             }
         }
     }
