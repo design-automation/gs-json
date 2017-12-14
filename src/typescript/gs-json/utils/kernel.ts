@@ -1566,7 +1566,8 @@ export class Kernel {
                                 obj[0].splice(wi,1); //delete the whole wire
                             }
                         }
-                    }
+                    }                   
+                    if(Arr.equal(obj[0] , [])){ this.geomDelObj(obj_id_str, true)} // delete the whole object if empty wire
                     break;
                 case 200:
                     let changed: boolean = false;

@@ -204,108 +204,166 @@ export function test_Geom_getPoint(): boolean {
 }
 
 export function test_Geom_delPoint(): boolean {
-    const m: gs.Model = new gs.Model(td.open_box());
 
-    const gp1: gs.IGroup = m.addGroup("GroupPoints");
-    gp1.addPoints(m.getGeom().getPointIDs());
-    const att1: gs.IEntAttrib = m.addAttrib("AttributePoints", gs.EGeomType.points, gs.EDataType.type_num) as gs.IEntAttrib;
+    ////////////////////////////////////////////////////////////
+    /// Polyline, Case 100,
+    const m: gs.Model = new gs.Model();
+    const p1 = m.getGeom().addPoint([0,0,0]);
+    const p2 = m.getGeom().addPoint([2,0,0]);
+    const p3 = m.getGeom().addPoint([3,6,0]);
+    const p4 = m.getGeom().addPoint([7,4,9]);
+    const p5 = m.getGeom().addPoint([1,2,6]);
+    const p6 = m.getGeom().addPoint([7,8,99]);
+    const pline1: gs.IPolyline = m.getGeom().addPolyline([p1,p2,p3,p4,p5,p6], true);
 
-    let k:number = m.getGeom().getPointIDs()[0] ;
-    att1.setValue(k, k);
-    if(!(m.getGeom().numPoints() === 8)){return false;}
-    if(!gp1.hasPoint(k)){return false;}
+    let k:number = m.getGeom().getPointIDs()[0];
+    if(!(m.getGeom().numPoints() === 6)){return false;}
     m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
-    if(gp1.hasPoint(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
     for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
-    if(point.getID() === k){return false;}
-    }
-
+    if(point.getID() === k){return false;}}
+ 
     k = m.getGeom().getPointIDs()[0];
-    att1.setValue(k, k);
-    if(!(m.getGeom().numPoints() === 7)){return false;}
-    if(!gp1.hasPoint(k)){return false;}
+    if(!(m.getGeom().numPoints() === 5)){return false;}
     m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
-    if(gp1.hasPoint(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
+    for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    if(point.getID() === k){return false;}}
+ 
+    k = m.getGeom().getPointIDs()[0];
+    if(!(m.getGeom().numPoints() === 4)){return false;}
+    m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    if(point.getID() === k){return false;}}
+ 
+    k = m.getGeom().getPointIDs()[0];
+    if(!(m.getGeom().numPoints() === 3)){return false;}
+    m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+
+    console.log(pline1);
+ 
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // if(point.getID() === k){return false;}}
+    // console.log(pline1)
+ 
+    // k = m.getGeom().getPointIDs()[0];
+    // if(!(m.getGeom().numPoints() === 2)){return false;}
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // if(!(m.getGeom().numObjs() === 0)){return false;}
+ 
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // if(point.getID() === k){return false;}}
+    // console.log(pline1)
+ 
+    // console.log(m.getGeom().getObj(0))
+    // console.log(m.getGeom().numObjs())
+    // m.getGeom().delObj(0, true)
+    // console.log(pline1)
+    // console.log(m.getGeom().numObjs())
+ 
+
+
+
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+
+    // console.log(pline1.getPoints())
+
+    /// Polyline, Case 100,
+    ////////////////////////////////////////////////////////////
+
+
+
+
+    //////////////////////////////////////////////////////
+    /// Polymesh, Case 200 //////
+    // const m: gs.Model = new gs.Model(td.open_box());
+    // const gp1: gs.IGroup = m.addGroup("GroupPoints");
+    // gp1.addPoints(m.getGeom().getPointIDs());
+    // const att1: gs.IEntAttrib = m.addAttrib("AttributePoints", gs.EGeomType.points, gs.EDataType.type_num) as gs.IEntAttrib;
+
+    // let k:number = m.getGeom().getPointIDs()[0] ;
+    // att1.setValue(k, k);
+    // if(!(m.getGeom().numPoints() === 8)){return false;}
+    // if(!gp1.hasPoint(k)){return false;}
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // if(gp1.hasPoint(k)){return false;}
+    // if(!(att1.getValue(k) === undefined)){return false;}
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // if(point.getID() === k){return false;}}
+
+    // k = m.getGeom().getPointIDs()[0];
+    // att1.setValue(k, k);
+    // if(!(m.getGeom().numPoints() === 7)){return false;}
+    // if(!gp1.hasPoint(k)){return false;}
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // if(gp1.hasPoint(k)){return false;}
+    // if(!(att1.getValue(k) === undefined)){return false;}
+
+    // k = m.getGeom().getPointIDs()[0];
+    // att1.setValue(k, k);
+    // if(!(m.getGeom().numPoints() === 6)){return false;}
+    // if(!gp1.hasPoint(k)){return false;}
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // if(gp1.hasPoint(k)){return false;}
+    // if(!(att1.getValue(k) === undefined)){return false;}
+
+    // k = m.getGeom().getPointIDs()[0];
+    // att1.setValue(k, k);
+    // if(!(m.getGeom().numPoints() === 5)){return false;}
+    // if(!gp1.hasPoint(k)){return false;}
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // if(gp1.hasPoint(k)){return false;}
+    // if(!(att1.getValue(k) === undefined)){return false;}
+
+    // k = m.getGeom().getPointIDs()[0];
+    // att1.setValue(k, k);
+    // if(!(m.getGeom().numPoints() === 4)){return false;}
+    // if(!gp1.hasPoint(k)){return false;}
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // if(gp1.hasPoint(k)){return false;}
+    // if(!(att1.getValue(k) === undefined)){return false;}
+
+    // k = m.getGeom().getPointIDs()[0];
+    // att1.setValue(k, k);
+    // if(!(m.getGeom().numPoints() === 3)){return false;}
+    // if(!gp1.hasPoint(k)){return false;}
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // if(gp1.hasPoint(k)){return false;}
+    // if(!(att1.getValue(k) === undefined)){return false;}
+
+    // k = m.getGeom().getPointIDs()[0];
+    // att1.setValue(k, k);
+    // if(!(m.getGeom().numPoints() === 2)){return false;}
+    // if(!gp1.hasPoint(k)){return false;}
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // if(gp1.hasPoint(k)){return false;}
+    // if(!(att1.getValue(k) === undefined)){return false;}
+
+    // k = m.getGeom().getPointIDs()[0];
+    // att1.setValue(k, k);
+    // if(!(m.getGeom().numPoints() === 1)){return false;}
+    // if(!gp1.hasPoint(k)){return false;}
+    // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
+    // if(gp1.hasPoint(k)){return false;}
+    // if(!(att1.getValue(k) === undefined)){return false;}
+    /// Polymesh, Case 200 //////
+    //////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
     ///// Check Point Listing IDs for a selected Object:
-    const list:number[] = [];
-    let duplicate:boolean = false;
-    for(const point of m.getGeom().getObj(0).getPointsArr()){
-        duplicate = false;
-        for(const a of list){
-        if(a === point.getID()){duplicate = true;}
-        }
-        if(duplicate === false){list.push(point.getID());}
-    }
-    console.log(">>>>>>>>> deleted", k)
-    console.log(">>>>>>> Point IDs in Object", list)
-    console.log(">>> Number of different points in the object", list.length);
+    // const list:number[] = [];
+    // let duplicate:boolean = false;
+    // for(const point of m.getGeom().getObj(0).getPointsArr()){
+    //     duplicate = false;
+    //     for(const a of list){
+    //     if(a === point.getID()){duplicate = true;}
+    //     }
+    //     if(duplicate === false){list.push(point.getID());}
+    // }
+    // console.log(">>>>>>>>> deleted", k)
+    // console.log(">>>>>>> Point IDs in Object", list)
+    // console.log(">>> Number of different points in the object", list.length);
     ////////////////////////////////////////////////////////////
-
-    k = m.getGeom().getPointIDs()[0];
-    att1.setValue(k, k);
-    if(!(m.getGeom().numPoints() === 6)){return false;}
-    if(!gp1.hasPoint(k)){return false;}
-    m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
-    if(gp1.hasPoint(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
-
-
-
-
-    k = m.getGeom().getPointIDs()[0];
-    att1.setValue(k, k);
-    if(!(m.getGeom().numPoints() === 5)){return false;}
-    if(!gp1.hasPoint(k)){return false;}
-    m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
-    if(gp1.hasPoint(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
-
-
-
-
-
-    k = m.getGeom().getPointIDs()[0];
-    att1.setValue(k, k);
-    if(!(m.getGeom().numPoints() === 4)){return false;}
-    if(!gp1.hasPoint(k)){return false;}
-    m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
-    if(gp1.hasPoint(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
-
-
-
-
-    k = m.getGeom().getPointIDs()[0];
-    att1.setValue(k, k);
-    if(!(m.getGeom().numPoints() === 3)){return false;}
-    if(!gp1.hasPoint(k)){return false;}
-    m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
-    if(gp1.hasPoint(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
-
-    k = m.getGeom().getPointIDs()[0];
-    att1.setValue(k, k);
-    if(!(m.getGeom().numPoints() === 2)){return false;}
-    if(!gp1.hasPoint(k)){return false;}
-    m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
-    if(gp1.hasPoint(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
-
-
-
-
-
-    k = m.getGeom().getPointIDs()[0];
-    att1.setValue(k, k);
-    if(!(m.getGeom().numPoints() === 1)){return false;}
-    if(!gp1.hasPoint(k)){return false;}
-    m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
-    if(gp1.hasPoint(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
 
     return true;
 }
