@@ -267,8 +267,11 @@ export class Kernel {
      * @param
      * @return
      */
-    public modelPurge(): number {
-        throw new Error ("Method not implemented.");
+    public modelPurge(): void {
+        this._purgeDelUnusedPoints();
+        this._purgeDelUnusedPointValues();
+        this._purgeDelSparsePoints();
+        this._purgeDelSparseObjs();
     }
 
     /**
@@ -1777,5 +1780,90 @@ export class Kernel {
             }
         }
         return path_arr;
+    }
+
+    //  --------------------------------------------------------------------------------------------
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    private _purgeDelUnusedPoints(): void {
+        //delete all unused points
+        for (const point_id_str of this._points[0]) {
+            if (this.pointIsUnused(point_id_str)) {
+                delete this._points[0][point_id_str];
+            }
+        }
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    private _purgeDelUnusedPointValues(): void {
+        //find unused values in points[1]
+        const val_idxs: number[] = [];
+        this._points[1].forEach((p, pi) =>
+            (this._points[0].indexOf(pi) == -1) && val_idxs.push(pi));
+        //delete unused values in points[1]
+        for (const val_idx of val_idxs) {
+            this._points.splice(val_idx, 1);
+        }
+        //shift pointers in points[0] to point to new values in points[1]
+        let decrement: number = 0;
+        for (let i=0;i<this._points[0].length;i++) {
+            if (this._points[0][i] !== undefined) {
+                if (val_idxs.indexOf(i) !== -1) {
+                    decrement++;
+                }
+                this._points[0][i] = this._points[0][i] - decrement;
+            }
+        }
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    private _purgeDelSparsePoints(): void {
+        // delete the sparse points
+        const shift_map: Map<number, number> = new Map();
+        let end: number = this._points[0].length - 1;
+        for (let i = 0; i < this._points[0].length; i++) {
+            if (this._points[0][i] === undefined) {
+                for (let j = end; j > 0; j--) {
+                    if (this._points[0][j] !== undefined) {
+                        end = j - 1;
+                        this._points[0][i] = j;
+                        shift_map.set(j, i);
+                        break;
+                    }
+                }
+            }
+        }
+        this._points.length = end + 1;
+        // change the points in the objs
+        for (let [oi, o] of this._objs.entries()) {
+            for (let [fi, f] of o.entries()) {
+                for (let [vi, v] of f.entries()) {
+                    f[vi] = shift_map.get(vi);
+                }
+            }
+        }
+
+        throw new Error("Not implemented");
+    }
+
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    private _purgeDelSparseObjs(): void {
+        throw new Error("Not implemented");
     }
 }

@@ -24,7 +24,7 @@ export interface IModel {
     hasGroup(name: string): boolean;
     setGroupName(old_name, new_name): boolean;
     // Clean up nulls and unused points
-    purge(): number;
+    purge(): void;
     // Runs some check
     validate(): boolean;
     //Export the whole model to JSON

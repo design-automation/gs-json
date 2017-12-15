@@ -173,8 +173,8 @@ export class Model implements ifs.IModel {
      * @param
      * @return
      */
-    public purge(): number {
-        return this._kernel.modelPurge();
+    public purge(): void {
+        this._kernel.modelPurge();
     }
 
     /**
