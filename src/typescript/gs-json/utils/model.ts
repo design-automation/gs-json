@@ -42,7 +42,9 @@ export class Model implements ifs.IModel {
         const attribs_data: IAttribData[] = this._kernel.modelGetAttribs(geom_type);
         const attribs: Array<ifs.IEntAttrib|ifs.ITopoAttrib> = [];
         for (const data of attribs_data) {
-            const geom_type: EGeomType = mapStringToGeomType.get(data.geom_type);
+            if (geom_type === undefined) {
+                geom_type = mapStringToGeomType.get(data.geom_type);
+            }
             switch (geom_type) {
                 case EGeomType.points: case EGeomType.objs:
                     attribs.push(new EntAttrib(this._kernel, data.name, geom_type));

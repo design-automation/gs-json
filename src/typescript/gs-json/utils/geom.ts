@@ -2,7 +2,7 @@ import * as ifs from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
-import {Point, Polyline, Polymesh} from "./entities";
+import {Point, Polyline, NurbsCurve, Polymesh} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
 
 /**
@@ -51,6 +51,18 @@ export class Geom implements ifs.IGeom {
         const point_ids: number[] = points.map((p) => p.getID());
         const id: number = this._kernel.geomAddPolyline(point_ids, is_closed);
         return new Polyline(this._kernel, id);
+    }
+
+    /**
+     * Adds a new nurbs curve to the model.
+     * @param points A collection of Points, which are the curve control points
+     * @param is_closed True if the polyline is closed.
+     * @return Object of type Polyline
+     */
+    public addNurbsCurve(points: ifs.IPoint[], is_closed: boolean, order: number): ifs.INurbsCurve {
+        const point_ids: number[] = points.map((p) => p.getID());
+        const id: number = this._kernel.geomAddNurbsCurve(point_ids, is_closed, order);
+        return new NurbsCurve(this._kernel, id);
     }
 
     /**

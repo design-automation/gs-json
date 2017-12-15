@@ -286,6 +286,44 @@ export abstract class Obj extends Ent implements ifs.IObj {
 //  ================================================================================================
 
 /**
+ * Class Ray.
+ * A ray is displayed as one wire and no faces.
+ * The wire has two vertices.
+ * A ray may be part of a group and may have attributes.
+ */
+export class Ray  extends Obj implements ifs.IRay {
+
+    /**
+     * Get the object type: "ray".
+     * @return Ray object type.
+     */
+    public getObjType(): EObjType {
+        return EObjType.ray;
+    }
+}
+
+//  ================================================================================================
+
+/**
+ * Class Plane.
+ * A plane is displayed as one wire and one square face. TODO
+ * The wire has two vertices, the square face has four vertices.
+ * A ray may be part of a group and may have attributes.
+ */
+export class Plane  extends Obj implements ifs.IPlane {
+
+    /**
+     * Get the object type: "plane".
+     * @return Plane object type.
+     */
+    public getObjType(): EObjType {
+        return EObjType.plane;
+    }
+}
+
+//  ================================================================================================
+
+/**
  * Class Polyline.
  * A polyline consists of one wire and no faces.
  * The wire has a sequence of vertices.
@@ -300,6 +338,26 @@ export class Polyline  extends Obj implements ifs.IPolyline {
      */
     public getObjType(): EObjType {
         return EObjType.polyline;
+    }
+}
+
+//  ================================================================================================
+
+/**
+ * Class NurbsCurve.
+ * A Nurbs Curve consists of one wire and no faces.
+ * The wire has a sequence of vertices, which ae the cruve control points.
+ * The wire may be open or closed.
+ * A NurbsCurve may be part of a group and may have attributes.
+ */
+export class NurbsCurve  extends Obj implements ifs.INurbsCurve {
+
+    /**
+     * Get the object type: "polyline".
+     * @return Polyline object type.
+     */
+    public getObjType(): EObjType {
+        return EObjType.nurbs_curve;
     }
 }
 

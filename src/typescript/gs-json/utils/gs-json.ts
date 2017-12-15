@@ -1,3 +1,4 @@
+export * from "./arr";
 export * from "./enums";
 export * from "./ifaces_json";
 export * from "./ifaces_gs";

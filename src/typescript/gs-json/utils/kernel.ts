@@ -382,10 +382,45 @@ export class Kernel {
     //  Geom Objects -------------------------------------------------------------------------------
 
     /**
+     * Adds a new ray to the model that passes through a sequence of points.
+     * @param origin The ray origin point.
+     * @param dir The ray direction, as a vector.
+     * @return ID of object.
+     */
+    public geomAddRay(origin: number[], dir: number[]): number {
+        const new_id: number = this._objs.length;
+        // create the ray
+        const end: number[] = [origin[0] + dir[0], origin[1] + dir[1], origin[2] + dir[2]];
+        this._objs.push([[origin, end], [], [1, origin, dir]]); // add the obj
+        // update all attributes
+        this._addObjToAttribs(new_id);
+        // return the new pline
+        return new_id;
+    }
+
+    /**
+     * Adds a new plane to the model that passes through a sequence of points.
+     * @param origin The ray origin point.
+     * @param normal The plane normal, as a vector.
+     * @return ID of object.
+     */
+    public geomAddPlane(origin: number[], normal: number[]): number {
+        const new_id: number = this._objs.length;
+        // create the ray
+        const end: number[] = [origin[0] + normal[0], origin[1] + normal[1], origin[2] + normal[2]];
+        //TODO add a little square plane here
+        this._objs.push([[origin, end], [], [2, origin, normal]]); // add the obj
+        // update all attributes
+        this._addObjToAttribs(new_id);
+        // return the new pline
+        return new_id;
+    }
+
+    /**
      * Adds a new polyline to the model that passes through a sequence of points.
      * @param points An array of Points.
      * @param is_closed Indicates whether the polyline is closed.
-     * @return Object of type Polyline
+     * @return ID of object.
      */
     public geomAddPolyline(point_ids: number[], is_closed: boolean): number {
         if (point_ids.length < 2) {throw new Error("Too few points for creating a polyline."); }
@@ -404,9 +439,9 @@ export class Kernel {
      * @param control_points, which is a collection of Points
      * @param is_closed Indicates whether the polyline is closed.
      * @param is_closed Indicates whether the polyline is closed.
-     * @return Object of type Polyline
+     * @return ID of object.
      */
-    public geomAddNurbsCurve(ctrl_point_ids: number[], order: number, is_closed: boolean): number {
+    public geomAddNurbsCurve(ctrl_point_ids: number[], is_closed: boolean, order: number): number {
         if (ctrl_point_ids.length < order) {throw new Error("Too few points for creating a NURBS curve."); }
         const new_id: number = this._objs.length;
         // create the pline
@@ -421,7 +456,7 @@ export class Kernel {
     /**
      * to be completed
      * @param
-     * @return Object of type Polymesh
+     * @return ID of object.
      */
     public geomAddPolymesh(face_points_ids: number[][]): number {
         for (const f of face_points_ids) {

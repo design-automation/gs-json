@@ -27,6 +27,9 @@ export enum EDataType {
  * Enum, the different types of geometric objects (see the subclasses of the Obj class.)
  */
 export const enum EObjType {
+    acorn = 0,
+    ray = 1,
+    plane = 2,
     polyline = 100,
     nurbs_curve = 120,
     bezier_curve = 121,

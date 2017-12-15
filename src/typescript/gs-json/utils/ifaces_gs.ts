@@ -118,9 +118,30 @@ export interface IObj extends IEnt {
 }
 
 /**
+ * Interface, for a Ray class.
+ */
+export interface IRay  extends IObj {
+    getObjType(): EObjType;
+}
+
+/**
+ * Interface, for a Plane class.
+ */
+export interface IPlane  extends IObj {
+    getObjType(): EObjType;
+}
+
+/**
  * Interface, for a Polyline class.
  */
 export interface IPolyline  extends IObj {
+    getObjType(): EObjType;
+}
+
+/**
+ * Interface, for a Polyline class.
+ */
+export interface INurbsCurve  extends IObj {
     getObjType(): EObjType;
 }
 
@@ -193,26 +214,9 @@ export interface IFace extends ITopo {
     getEdges(): IEdge[];
     numVertices(): number;
     numEdges(): number;
-    facesSharedPoints(num_shared_points?: number): IFace[];
     isClosed(): boolean;
-    facesSharedPoints(): IFace[];
+    facesSharedPoints(num_shared_points?: number): IFace[];
 }
-
-/**
- * Interface, for the TopoPath class.
- * This is used to define a path to a topological component.
- * (Vertex, Edge, Wire, or Face).
- */
-// export interface ITopoPath {
-//     id: number;             // id, point_id or an obj_id
-//     tt: EGeomType.wires|EGeomType.faces;          // topo type, wires or faces
-//     ti: number;             // topo index
-//     st: EGeomType.vertices|EGeomType.edges;       // sub topo-type, vertices or edges
-//     si: number;             // sub topo-index
-//     data(): ITopoPathData;
-//     equals(path: ITopoPath): boolean;
-//     toString(): string;
-// }
 
 //  INTERFACES for Attrib and Group classes ========================================================
 //  IAttrib, IGroup
