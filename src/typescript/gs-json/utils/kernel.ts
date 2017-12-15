@@ -1552,6 +1552,7 @@ export class Kernel {
      */
     private _delPointFromObjs(id: number): void {
         for (const [obj_id_str, obj] of this._objs.entries()) { // sparse array
+            console.log(">>> This Obj Entries", [obj_id_str, obj])
             switch (obj[2][0]) {
                 // Polyline
                 case 100:
@@ -1569,19 +1570,19 @@ export class Kernel {
                         }
                     }
                     //check if no wires, delete whole oject
-                    if(obj[0].length === 0) {delete this._objs[obj_id_str]; }
+                    if(obj[0].length === 0) {delete this._objs[obj_id_str];}
                     break;
                 // Polymesh
                 case 200:
                     let changed: boolean = false;
                     for (let fi = 0; fi < obj[1].length; fi++) {
                         const f: number[] = obj[1][fi];
-                        const point_index: number = f.indexOf(id);
-                        if (point_index !== -1) {
+                        const point_index_f: number = f.indexOf(id);
+                        if (point_index_f !== -1) {
                             changed = true;
                             const num_vertices = f.length - 1;
-                            if (num_vertices > 3 ) {
-                                obj[1][fi].splice(point_index, 1); //delete one vertex
+                            if (num_vertices > 2 ) {
+                                obj[1][fi].splice(point_index_f, 1); //delete one vertex
                             } else {
                                 obj[1].splice(fi,1); //delete the whole face
                             }
