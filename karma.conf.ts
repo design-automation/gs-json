@@ -5,8 +5,8 @@ module.exports = (config) => {
         browsers : ["Chrome"],
         basePath: "",
         files: [
-            {pattern: "./src/assets/gs-json/*.gs", watched: false, included: false, served: true, nocache: false},
-            {pattern: "./src/typescript/gs-json/**/*.ts" },
+            {pattern: "src/assets/gs-json/*.gs", watched: false, included: false, served: true, nocache: false},
+            {pattern: "src/typescript/gs-json/**/*.ts" },
         ],
         karmaTypescriptConfig: {
             compilerOptions: {
