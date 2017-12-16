@@ -3,13 +3,14 @@ module.exports = (config) => {
     config.set({
         frameworks: ["jasmine", "karma-typescript"],
         browsers : ["Chrome"],
-        basePath: "./src/",
+        basePath: "",
         files: [
-            {pattern: "assets/gs-json/*.gs", watched: false, included: false, served: true, nocache: false},
-            {pattern: "typescript/gs-json/**/*.ts" },
+            {pattern: "./src/assets/gs-json/*.gs", watched: false, included: false, served: true, nocache: false},
+            {pattern: "./src/typescript/gs-json/**/*.ts" },
         ],
         karmaTypescriptConfig: {
             compilerOptions: {
+                moduleResolution: "node",
                 target: "ES6",
                 module: "commonjs",
             },
@@ -35,7 +36,7 @@ module.exports = (config) => {
         reporters: ["progress", "karma-typescript", "kjhtml"],
         port: 9876,
         colors: true,
-        logLevel: config.LOG_INFO,
-        singleRun: false,
+        logLevel: config.LOG_DEBUG,
+        singleRun: true,
     });
 };

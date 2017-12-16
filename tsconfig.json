@@ -1,7 +1,7 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "rootDir": "./src",
+        "rootDir": "",
         "outDir": "./dist",
         "target": "ES6",
         "module": "ES6",
@@ -12,9 +12,12 @@
         "typeRoots": [ "./node_modules/@types" ]
     },
     "include": [
-        "./src/**/*.ts"
+        "*.ts",
+        "src/**/*.ts"
     ],
     "exclude": [
-        "./node_modules"
+        "src/**/*.tests.ts",
+        "src/**/*_tests.ts",
+        "node_modules"
     ]
 }
