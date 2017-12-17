@@ -5,15 +5,16 @@ module.exports = (config) => {
         browsers : ["Chrome"],
         basePath: "",
         files: [
-            {pattern: "src/assets/gs-json/*.gs", watched: false, included: false, served: true, nocache: false},
-            {pattern: "src/typescript/gs-json/**/*.ts" },
+            {pattern: "src/assets/gs-json/*.gs",
+                watched: false, included: false, served: true, nocache: false},
+            {pattern: "src/typescript/gs-json/**/*.ts",
+                watched: true,  included: true,  served: true, nocache: false},
         ],
         karmaTypescriptConfig: {
             compilerOptions: {
-                moduleResolution: "node",
-                target: "ES6",
                 module: "commonjs",
             },
+            tsconfig: "./tsconfig.json",
         },
         plugins: [
             require("karma-typescript"),
