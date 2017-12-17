@@ -2,8 +2,14 @@
     "name": "gs-json",
     "license": "GPL-3.0",
     "version": "0.1.1",
+    "author": "Patrick Janssen",
     "description": "gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs').",
-    "types": "index.ts",
+    "homepage": "https://github.com/phtj/gs-json#readme",
+    "types": "index.d.ts",
+    "main": "index.js",
+    "directories": {
+        "doc": "docs"
+    },
     "scripts": {
         "test": "karma start ./karma.conf.ts",
         "docs": "typedoc --out  ./docs/typescript ./src/typescript/gs-json/utils --module commonjs --theme minimal"
@@ -12,7 +18,6 @@
         "type": "git",
         "url": "https://github.com/phtj/gs-json.git"
     },
-    "author": "Patrick Janssen",
     "devDependencies": {
         "@types/jasmine": "^2.6.3",
         "@types/node": "^8.0.53",
@@ -29,5 +34,14 @@
         "karma-typescript-preprocessor": "^0.3.1",
         "typedoc": "^0.9.0",
         "typescript": "^2.6.1"
-    }
+    },
+    "bugs": {
+        "url": "https://github.com/phtj/gs-json/issues"
+    },
+    "keywords": [
+        "3d",
+        "modelling",
+        "geometry",
+        "semantics"
+    ]
 }
