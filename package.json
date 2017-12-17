@@ -5,12 +5,13 @@
     "author": "Patrick Janssen",
     "description": "gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs').",
     "homepage": "https://github.com/phtj/gs-json#readme",
-    "types": "index.d.ts",
-    "main": "index.js",
+    "types": "dist/index.d.ts",
+    "main": "dist/index.js",
     "directories": {
         "doc": "docs"
     },
     "scripts": {
+        "build": "tsc",
         "test": "karma start ./karma.conf.ts",
         "docs": "typedoc --out  ./docs/typescript ./src/typescript/gs-json/utils --module commonjs --theme minimal"
     },
