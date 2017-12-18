@@ -138,7 +138,7 @@ export class Kernel {
      * @param
      * @return
      */
-    public modelGetAttrib(name: string, geom_type?: EGeomType): IAttribData {
+    public modelGetAttrib(name: string, geom_type: EGeomType): IAttribData {
         return this._attribs.get(geom_type).get(name);
     }
 
