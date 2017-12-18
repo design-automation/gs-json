@@ -1,1 +1,10 @@
 src/
+coverage/
+
+
+.travis.yml
+index.ts
+karma.conf.ts
+*sublime-project
+*sublime-workspace
+tslint.json
