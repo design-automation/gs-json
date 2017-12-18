@@ -1,8 +1,9 @@
 src/
 coverage/
 
-
+.nojekyll
 .travis.yml
+debug.log
 index.ts
 karma.conf.ts
 *sublime-project
