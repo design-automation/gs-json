@@ -37,7 +37,7 @@ module.exports = (config) => {
         reporters: ["progress", "karma-typescript", "kjhtml"],
         port: 9876,
         colors: true,
-        logLevel: config.LOG_DEBUG,
-        singleRun: true,
+        logLevel: config.LOG_INFO, //LOG_DEBUG,
+        singleRun: false,
     });
 };
