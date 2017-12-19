@@ -303,3 +303,6 @@ export function test_Polymesh_getObjType(): boolean {
 
     return true;
 }
+
+export function test_Plane_getCartesians(): void {    
+}

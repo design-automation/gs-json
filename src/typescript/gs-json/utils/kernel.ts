@@ -397,7 +397,6 @@ export class Kernel {
         // return the new pline
         return new_id;
     }
-
     /**
      * Adds a new plane to the model that passes through a sequence of points.
      * @param origin The ray origin point.
@@ -415,7 +414,14 @@ export class Kernel {
         // return the new pline
         return new_id;
     }
-
+    /**
+     * Get an array composed of xyz origin and normal vector of a given plan
+     * @param ID of a plan.
+     * @return Returns an array with origin's xyz and normal vector
+     */
+    public geomGetPlane(id: number): [number[],number[]] {
+        return [this._objs[id][0][0],this._objs[id][2][2]];
+    }
     /**
      * Adds a new polyline to the model that passes through a sequence of points.
      * @param points An array of Points.

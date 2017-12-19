@@ -2,7 +2,7 @@ import * as ifs from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
-import {Point, Polyline, NurbsCurve, Polymesh} from "./entities";
+import {Point, Polyline, NurbsCurve, Polymesh, Plane, Ray} from "./entities";
 import {Vertex, Edge, Wire, Face} from "./topos";
 
 /**
@@ -75,6 +75,33 @@ export class Geom implements ifs.IGeom {
         const id: number = this._kernel.geomAddPolymesh(point_ids);
         return new Polymesh(this._kernel, id);
     }
+    /**
+     * Adds a new ray to the model.
+     * @param origin_point An array of arrays of points.
+     * @return Object of type Ray
+     */
+    public addRay(origin_point: ifs.IPoint, dir_vector: ifs.IPoint[]): ifs.IRay {
+        const dir: number[] = [dir_vector[1].getPosition()[0] - dir_vector[0].getPosition()[0],
+                               dir_vector[1].getPosition()[1] - dir_vector[0].getPosition()[1],
+                               dir_vector[1].getPosition()[2] - dir_vector[0].getPosition()[2]];
+        const origin: number[] = origin_point.getPosition();
+        const id: number = this._kernel.geomAddRay(origin, dir);
+        return new Ray(this._kernel, id);
+    }
+    /**
+     * Adds a new plane to the model.
+     * @param Origin: 
+     * @return Object of type Plane
+     */
+    public addPlane(origin_point: ifs.IPoint, normal_vector: ifs.IPoint[]): ifs.IPlane {
+        const normal: number[] = [normal_vector[1].getPosition()[0] - normal_vector[0].getPosition()[0],
+                                  normal_vector[1].getPosition()[1] - normal_vector[0].getPosition()[1],
+                                  normal_vector[1].getPosition()[2] - normal_vector[0].getPosition()[2]]
+        const origin: number[] = origin_point.getPosition();
+        const id: number = this._kernel.geomAddPlane(origin, normal);
+        return new Plane(this._kernel, id);
+    }
+
 
     //  Points -------------------------------------------------------------------------------------
 
