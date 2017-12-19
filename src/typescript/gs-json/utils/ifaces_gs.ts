@@ -40,6 +40,9 @@ export interface IGeom  {
     addPoints(xyz_arr: number[][]): IPoint[];
     addPolyline(wire_points: IPoint[], is_closed: boolean): IPolyline;
     addPolymesh(face_points: IPoint[][]): IPolymesh;
+    addNurbsCurve(points: IPoint[], is_closed: boolean, order: number): INurbsCurve;
+    addRay(origin_point: IPoint, dir_vector: IPoint[]): IRay;
+    addPlane(origin_point: IPoint, normal_vector: IPoint[]): IPlane;
     // Points
     getPointIDs(): number[];
     getPoints(obj_type?: EObjType): IPoint[];
@@ -122,6 +125,8 @@ export interface IObj extends IEnt {
  */
 export interface IRay  extends IObj {
     getObjType(): EObjType;
+    getID(): number;
+    addRay(origin: number[], dir: number[]): number;
 }
 
 /**
@@ -129,6 +134,9 @@ export interface IRay  extends IObj {
  */
 export interface IPlane  extends IObj {
     getObjType(): EObjType;
+    getID(): number;
+    addPlane(origin: number[], normal: number[]): number;
+    getCartesians(): number[];
 }
 
 /**
