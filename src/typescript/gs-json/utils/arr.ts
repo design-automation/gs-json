@@ -123,7 +123,7 @@ export class Arr {
     public static deepCount(arr: any[]): number {
         if (arr === undefined) {return 0; }
         let a: number = 0 ;
-        for ( const i of arr) {
+        for ( const i in arr) {
             if (Array.isArray(arr[i])) {
                 a = a + Arr.deepCount(arr[i]);
             } else {
