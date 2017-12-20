@@ -1,5 +1,6 @@
 import {Arr} from "./arr";
 import * as mathjs from "mathjs";
+import * as threejs from "threejs";
 
 import {IMetadata, IModelData,  IAttribData,
     IGroupData, TObjData, TPointsData, ITopoPathData} from "./ifaces_json";
