@@ -36,7 +36,7 @@ export function test_Geom_addPoint(): boolean {
     if (model.getGeom().numPoints() !== num_Point) {return false;}
     // test 1.2
     for(let j: number = 0; j < model.getGeom().numPoints(); j++) {
-        for (let k: number = 0 ; k<p1.length ; k++) {
+        for (const k of p1) {
             // TODO
             // if(model.getGeom().getPointData(j)[1][k] !== p1[k] ) {return false;}
         }
@@ -49,7 +49,7 @@ export function test_Geom_addPoint(): boolean {
     // test 2.1
     if (model.getGeom().numPoints() !== num_Point) {return false;}
     // test 2.2
-    for (let k: number = 0 ; k<p2.length ; k++) {
+    for (const k of p2) {
         // TODO
         // if(model.getGeom().getPointData(1)[1][k] !== p2[k] ) {return false;}
     }
@@ -60,7 +60,7 @@ export function test_Geom_addPoint(): boolean {
     // test 3.1
     if (model.getGeom().numPoints() !== num_Point) {return false;}
     // test 3.2
-    for (let k: number = 0 ; k<p3.length ; k++) {
+    for (const k of p3) {
         // TODO
         // if(model.getGeom().getPointData(2)[1][k] !== p3[k] ) {return false;}
     }
@@ -210,7 +210,8 @@ export function test_Geom_delPoint(): boolean {
     // const m2: gs.Model = new gs.Model();
     // const gp2: gs.IGroup = m2.addGroup("GroupPoints, Case 100");
     // gp2.addPoints(m2.getGeom().getPointIDs());
-    // const att2: gs.IEntAttrib = m2.addAttrib("AttributePoints, Case 100", gs.EGeomType.points, gs.EDataType.type_num) as gs.IEntAttrib;
+    // const att2: gs.IEntAttrib = m2.addAttrib("AttributePoints, Case 100",
+    // gs.EGeomType.points, gs.EDataType.type_num) as gs.IEntAttrib;
 
     // const p1 = m2.getGeom().addPoint([0,0,0]);
     // const p2 = m2.getGeom().addPoint([2,0,0]);
@@ -294,7 +295,8 @@ export function test_Geom_delPoint(): boolean {
     // const m: gs.Model = new gs.Model(td.open_box());
     // const gp1: gs.IGroup = m.addGroup("GroupPoints");
     // gp1.addPoints(m.getGeom().getPointIDs());
-    // const att1: gs.IEntAttrib = m.addAttrib("AttributePoints", gs.EGeomType.points, gs.EDataType.type_num) as gs.IEntAttrib;
+    // const att1: gs.IEntAttrib = m.addAttrib("AttributePoints",
+    // gs.EGeomType.points, gs.EDataType.type_num) as gs.IEntAttrib;
 
     // k = m.getGeom().getPointIDs()[0] ;
     // att1.setValue(k, k);
@@ -305,7 +307,8 @@ export function test_Geom_delPoint(): boolean {
     // if(!(att1.getValue(k) === undefined)){return false;}
     // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
     // if(point.getID() === k){return false;}}
-    // // console.log(m.getGeom().getObj(0)) : shows [5] instead of [1,2,3,-1] for the Wire (0 was deleted from [0,1,2,3,-1])
+    // console.log(m.getGeom().getObj(0)) : shows [5] instead of [1,2,3,-1]
+    // for the Wire (0 was deleted from [0,1,2,3,-1])
 
     // k = m.getGeom().getPointIDs()[0];
     // att1.setValue(k, k);
@@ -314,7 +317,8 @@ export function test_Geom_delPoint(): boolean {
     // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     // if(gp1.hasPoint(k)){return false;}
     // if(!(att1.getValue(k) === undefined)){return false;}
-    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){ // For Loop that checks the presence of residual points in the object
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // For Loop that checks the presence of residual points in the object
     // if(point.getID() === k){return false;}} // If failing, DelPoint is to be checked
 
     // k = m.getGeom().getPointIDs()[0];
@@ -324,7 +328,8 @@ export function test_Geom_delPoint(): boolean {
     // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     // if(gp1.hasPoint(k)){return false;}
     // if(!(att1.getValue(k) === undefined)){return false;}
-    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){ // For Loop that checks the presence of residual points in the object
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // For Loop that checks the presence of residual points in the object
     // if(point.getID() === k){return false;}} // If failing, DelPoint is to be checked
 
     // k = m.getGeom().getPointIDs()[0];
@@ -334,7 +339,8 @@ export function test_Geom_delPoint(): boolean {
     // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     // if(gp1.hasPoint(k)){return false;}
     // if(!(att1.getValue(k) === undefined)){return false;}
-    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){ // For Loop that checks the presence of residual points in the object
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // For Loop that checks the presence of residual points in the object
     // if(point.getID() === k){return false;}} // If failing, DelPoint is to be checked
 
     // k = m.getGeom().getPointIDs()[0];
@@ -344,7 +350,8 @@ export function test_Geom_delPoint(): boolean {
     // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     // if(gp1.hasPoint(k)){return false;}
     // if(!(att1.getValue(k) === undefined)){return false;}
-    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){ // For Loop that checks the presence of residual points in the object
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // For Loop that checks the presence of residual points in the object
     // if(point.getID() === k){return false;}} // If failing, DelPoint is to be checked
 
     // k = m.getGeom().getPointIDs()[0];
@@ -354,7 +361,8 @@ export function test_Geom_delPoint(): boolean {
     // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     // if(gp1.hasPoint(k)){return false;}
     // if(!(att1.getValue(k) === undefined)){return false;}
-    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){ // For Loop that checks the presence of residual points in the object
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // For Loop that checks the presence of residual points in the object
     // if(point.getID() === k){return false;}} // If failing, DelPoint is to be checked
 
     // k = m.getGeom().getPointIDs()[0];
@@ -364,7 +372,8 @@ export function test_Geom_delPoint(): boolean {
     // m.getGeom().delPoint(m.getGeom().getPointIDs()[0]);
     // if(gp1.hasPoint(k)){return false;}
     // if(!(att1.getValue(k) === undefined)){return false;}
-    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){ // For Loop that checks the presence of residual points in the object
+    // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){
+    // For Loop that checks the presence of residual points in the object
     // if(point.getID() === k){return false;}} // If failing, DelPoint is to be checked
 
     // /// Polymesh, Case 200 //////
@@ -406,7 +415,8 @@ export function test_Geom_delPoint(): boolean {
     // if(gp1.hasPoint(k)){return false;}
     // if(!(att1.getValue(k) === undefined)){return false;}
     // for (const point of Arr.flatten(m.getGeom().getObj(0).getPoints())){ // Line 1/2
-    // if(point.getID() === k){return false;}} // Line 2/2: This loop checks whether the deleted point id is still inside the object or not.
+    // if(point.getID() === k){return false;}}
+    // Line 2/2: This loop checks whether the deleted point id is still inside the object or not.
 
     /// Polymesh, Case 200 //////
     //////////////////////////////////////////////////////
@@ -511,39 +521,39 @@ export function test_Geom_delObj(): boolean {
     const gp1: gs.IGroup = m.addGroup("Group1");
     gp1.addObjs(m.getGeom().getObjIDs());
     const att1: gs.IEntAttrib = m.addAttrib("Attribute1", gs.EGeomType.objs, gs.EDataType.type_num) as gs.IEntAttrib;
-    for(const k of m.getGeom().getObjIDs()){att1.setValue(k, k)};
+    for(const j of m.getGeom().getObjIDs()) {att1.setValue(j, j);}
 
-    let k:number = m.getGeom().getObjIDs()[0];
-    if(!(m.getGeom().numObjs() === 4)){return false;}
-    if(!gp1.hasObj(k)){return false;}
+    let k: number = m.getGeom().getObjIDs()[0];
+    if(!(m.getGeom().numObjs() === 4)) {return false;}
+    if(!gp1.hasObj(k)) {return false;}
     m.getGeom().delObj(m.getGeom().getObjIDs()[0], true);
-    if(gp1.hasObj(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
-    if(!(m.getGeom().numPoints() === 14)){return false;}
-
-    k = m.getGeom().getObjIDs()[0];
-    if(!(m.getGeom().numObjs() === 3)){return false;}
-    if(!gp1.hasObj(k)){return false;}
-    m.getGeom().delObj(m.getGeom().getObjIDs()[0], true);
-    if(gp1.hasObj(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
-    if(!(m.getGeom().numPoints() === 14)){return false;}
+    if(gp1.hasObj(k)) {return false;}
+    if(!(att1.getValue(k) === undefined)) {return false;}
+    if(!(m.getGeom().numPoints() === 14)) {return false;}
 
     k = m.getGeom().getObjIDs()[0];
-    if(!(m.getGeom().numObjs() === 2)){return false;}
-    if(!gp1.hasObj(k)){return false;}
+    if(!(m.getGeom().numObjs() === 3)) {return false;}
+    if(!gp1.hasObj(k)) {return false;}
     m.getGeom().delObj(m.getGeom().getObjIDs()[0], true);
-    if(gp1.hasObj(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
-    if(!(m.getGeom().numPoints() === 14)){return false;}
+    if(gp1.hasObj(k)) {return false;}
+    if(!(att1.getValue(k) === undefined)) {return false;}
+    if(!(m.getGeom().numPoints() === 14)) {return false;}
 
     k = m.getGeom().getObjIDs()[0];
-    if(!(m.getGeom().numObjs() === 1)){return false;}
-    if(!gp1.hasObj(k)){return false;}
+    if(!(m.getGeom().numObjs() === 2)) {return false;}
+    if(!gp1.hasObj(k)) {return false;}
     m.getGeom().delObj(m.getGeom().getObjIDs()[0], true);
-    if(gp1.hasObj(k)){return false;}
-    if(!(att1.getValue(k) === undefined)){return false;}
-    if(!(m.getGeom().numPoints() === 14)){return false;}
+    if(gp1.hasObj(k)) {return false;}
+    if(!(att1.getValue(k) === undefined)) {return false;}
+    if(!(m.getGeom().numPoints() === 14)) {return false;}
+
+    k = m.getGeom().getObjIDs()[0];
+    if(!(m.getGeom().numObjs() === 1)) {return false;}
+    if(!gp1.hasObj(k)) {return false;}
+    m.getGeom().delObj(m.getGeom().getObjIDs()[0], true);
+    if(gp1.hasObj(k)) {return false;}
+    if(!(att1.getValue(k) === undefined)) {return false;}
+    if(!(m.getGeom().numPoints() === 14)) {return false;}
     // Case 1: Point kept = True
     ////////////////////////////
 
@@ -551,7 +561,7 @@ export function test_Geom_delObj(): boolean {
     // Case 2: Point kept = False
     // @ DelObj(): to be checked for the case points are not kept
 
-    //Temporary diable this bit TODO
+    // Temporary diable this bit TODO
 
     // const m_f: gs.Model = new gs.Model(td.open_box());
     // const p1_f = m_f.getGeom().addPoint([0,0,0]);
@@ -564,7 +574,8 @@ export function test_Geom_delObj(): boolean {
 
     // const gp1_f: gs.IGroup = m_f.addGroup("Group1");
     // gp1_f.addObjs(m_f.getGeom().getObjIDs());
-    // const att1_f: gs.IEntAttrib = m_f.addAttrib("Attribute1", gs.EGeomType.objs, gs.EDataType.type_num) as gs.IEntAttrib;
+    // const att1_f: gs.IEntAttrib = m_f.addAttrib("Attribute1",
+    // gs.EGeomType.objs, gs.EDataType.type_num) as gs.IEntAttrib;
     // for(const k of m_f.getGeom().getObjIDs()){att1_f.setValue(k, k)};
 
     // if(!( m_f.getGeom().numPoints() === 14)) {return false;}
@@ -584,7 +595,7 @@ export function test_Geom_delObj(): boolean {
 export function test_Geom_numObjs(): boolean {
     const m: gs.Model = new gs.Model(td.open_box());
     const geom: gs.IGeom = m.getGeom();
-    //numObjs no longer allos you to specify EObjType
+    // numObjs no longer allos you to specify EObjType
     if(!(geom.numObjs() === 1 )) {return false;}
     const p1 = geom.addPoint([0,0,0]);
     const p2 = geom.addPoint([2,0,0]);
@@ -682,11 +693,15 @@ export function test_Geom_numTopos(): boolean {
 //     // const path:gs.ITopoPath = ;
 
 //     // Vertices/Edges (Wires)
-//     if(!Arr.equal([m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 3))],[3])){return false;}
-//     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 2)),[2,3])){return false;}
+//     if(!Arr.equal([m.getGeom().getObjData(new gs.TopoPath(0,
+//     gs.EGeomType.wires, 0, gs.EGeomType.vertices, 3))],[3])){return false;}
+//     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0,
+//     gs.EGeomType.wires, 0, gs.EGeomType.edges, 2)),[2,3])){return false;}
 //     // Vertices/Edges (Faces)
-//     if(!Arr.equal([m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 3, gs.EGeomType.vertices, 2))],[7])){return false;}
-//     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 3, gs.EGeomType.edges, 1)),[4,7])){return false;}
+//     if(!Arr.equal([m.getGeom().getObjData(new gs.TopoPath(0,
+//     gs.EGeomType.faces, 3, gs.EGeomType.vertices, 2))],[7])){return false;}
+//     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0,
+//     gs.EGeomType.faces, 3, gs.EGeomType.edges, 1)),[4,7])){return false;}
 //     // Wire
 //     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0)),[0, 1, 2, 3, -1])){return false;}
 //     // Face
@@ -696,9 +711,9 @@ export function test_Geom_numTopos(): boolean {
 //     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0))[2],[200])){return false;}
 //     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0))[1][3],[0, 4, 7, 3, -1])){return false;}
 
-//     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//     ///////////////////////////////////////////////////////////////////////////////
+//     ///////////////////////////////////////////////////////////////////////////////
+//     ///////////////////////////////////////////////////////////////////////////////
 
 //     //Exceptions, All 11 below tests, if released, must show errors:
 //     // Case object undefined:    console.log(m.getGeom().getObjData(new gs.TopoPath(0))) = OK
@@ -717,19 +732,22 @@ export function test_Geom_numTopos(): boolean {
 //     // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 4)))
 //     // Case Edges (Wires) undefined or linked to a -1: (test 8/11 and 9/11) OK
 //     // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 44)))
-//     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)),[3,0])){return false;}
+//     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0,
+//     gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)),[3,0])){return false;}
 //     // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 3)))
 //     // Case Edges (Faces) undefined or linked to a -1: (test 10/11 and 11/11) OK
 //     // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 88)))
-//     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)),[0,1])){return false;}
+//     if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0,
+//     gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)),[0,1])){return false;}
 //     // console.log(m.getGeom().getObjData(new gs.TopoPath(0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 3)))
 
-//     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//     ////////////////////////////////////////////////////////////////////////////////////////////////
+//     ////////////////////////////////////////////////////////////////////////////////////////////////
+//     ////////////////////////////////////////////////////////////////////////////////////////////////
 
 //     // console.log(m.getGeom().getObjData(new gs.TopoPath(0))[0])
-//     // // if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0)),[[0, 1, 2, 3, -1],[[1, 5, 4, 0, -1],[2, 6, 5, 1, -1],[3, 7, 6, 2, -1],[0, 4, 7, 3, -1],[5, 6, 7, 4, -1],],[200]])){return false;}
+//     // // if(!Arr.equal(m.getGeom().getObjData(new gs.TopoPath(0)),[[0, 1, 2, 3, -1],
+//     [[1, 5, 4, 0, -1],[2, 6, 5, 1, -1],[3, 7, 6, 2, -1],[0, 4, 7, 3, -1],[5, 6, 7, 4, -1],],[200]])){return false;}
 //     // console.log(m.getGeom().getObjData(new gs.TopoPath(0)))
 //     // // Exceptions, 2 cases, first, when path shows -1 or undefined
 

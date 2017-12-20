@@ -150,7 +150,7 @@ export function test_point_setPosition(): boolean {
     point.setPosition([4,5,6]);
     if((Arr.equal(point.getPosition(),[11,22,33]))) {return false;}
     if(!(Arr.equal(point.getPosition(),[4,5,6]))) {return false;}
-    //if(!(Arr.equal(point.getPosition(),null))) {return false;}
+    // if(!(Arr.equal(point.getPosition(),null))) {return false;}
     // point.setPosition([1,2]); //what should this do?
     // point.setPosition([1,2,3,4]); //what should this do?
     // point.setPosition([1,,2]); //sparse array
@@ -198,7 +198,7 @@ export function test_obj_getGeomType(): boolean {
     const m: gs.IModel = new gs.Model(test_data.box_with_groups());
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IObj = geom.getObj(0);
-    if(!(a1.getGeomType() == gs.EGeomType.objs)) {return false;}
+    if(!(a1.getGeomType() === gs.EGeomType.objs)) {return false;}
     return true;
 }
 
@@ -228,7 +228,7 @@ export function test_obj_getWires(): boolean {
     const a1: gs.IObj = geom.getObj(0);
     const path1: gs.ITopoPathData = a1.getWires()[0].getTopoPath() ;
     geom.numTopos(gs.EGeomType.wires);
-    //a1.getWires(); // Looks fine
+    // a1.getWires(); // Looks fine
     return true;
 }
 
@@ -311,5 +311,5 @@ export function test_Plane_getCartesians(): void {
     const V1: gs.IPoint = g.addPoint([1,0,0]);
     const V2: gs.IPoint = g.addPoint([0,1,0]);
     const P1: gs.IPlane = g.addPlane(A1, V1, V2);
-    console.log(P1.getCartesians());
+    P1.getCartesians();
 }

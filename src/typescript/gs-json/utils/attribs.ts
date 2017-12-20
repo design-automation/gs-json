@@ -73,7 +73,7 @@ export abstract class Attrib implements ifs.IAttrib {
      * @return The number of attribute values.
      */
     public count(): number  {
-        //This is not so clear for toptos
+        // This is not so clear for toptos
         // This method in general does not make sense,
         // For points, it returns number of points
         // for object it returns number of objs

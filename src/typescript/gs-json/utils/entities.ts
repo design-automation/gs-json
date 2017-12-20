@@ -351,7 +351,6 @@ export class Plane extends Obj implements ifs.IPlane {
  * A polyline may be part of a group and may have attributes.
  */
 export class Polyline  extends Obj implements ifs.IPolyline {
-
     /**
      * Get the object type: "polyline".
      * @return Polyline object type.
@@ -371,7 +370,6 @@ export class Polyline  extends Obj implements ifs.IPolyline {
  * A NurbsCurve may be part of a group and may have attributes.
  */
 export class NurbsCurve  extends Obj implements ifs.INurbsCurve {
-
     /**
      * Get the object type: "polyline".
      * @return Polyline object type.

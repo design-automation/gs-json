@@ -149,12 +149,13 @@ export class Kernel {
      */
     public modelAddAttrib(name: string, geom_type: EGeomType, data_type: EDataType): IAttribData {
         // name = name.replace(/\s/g, "_");
-        const data: IAttribData = {name: name,
-                                   geom_type: mapGeomTypeToString.get(geom_type),  // TODO string not good
+        const data: IAttribData = {
                                    data_type: mapDataTypeToString.get(data_type), // TODO string not good
+                                   geom_type: mapGeomTypeToString.get(geom_type),  // TODO string not good
+                                   name: name,
                                    values: [[],[null]]};
 
-        //populate the attribute with indexes all pointing to the null value
+        // populate the attribute with indexes all pointing to the null value
         switch (geom_type) {
             case EGeomType.points:
                 data.values[0] = Arr.make(this.geomNumPoints(), 0);
@@ -181,7 +182,7 @@ export class Kernel {
                 data.values[0] = Arr.make(this.geomNumObjs(), 0);
                 break;
         }
-        //save and return data
+        // save and return data
         this._attribs.get(geom_type).set(name, data);
         return data;
     }
@@ -309,7 +310,7 @@ export class Kernel {
      * @return a instance of type Point is returned
      */
     public geomAddPoint(xyz: number[]): number {
-        const new_id: number = this._points[0].length; //next in sparse array
+        const new_id: number = this._points[0].length; // next in sparse array
         // create the point
         this._points[0].push(0); // add a point to the points list
         this.pointSetPosition(new_id, xyz);
@@ -421,12 +422,10 @@ export class Kernel {
                                  yaxis_point[1] - origin[1],
                                  yaxis_point[2] - origin[2]];
 
-        //TODO
-
-
+        // TODO
         const z_vec = x_vec;
 
-        if(Arr.equal(z_vec,[0,0,0])){
+        if(Arr.equal(z_vec,[0,0,0])) {
             throw new Error("A triplet different from (0,0,0) is required for the plan's normal vector");
         }
         const new_id: number = this._objs.length;
@@ -680,7 +679,8 @@ export class Kernel {
         // let counter:number = 0;
         // for (const c of b.getVertices()){
         // for(const a of this.getGeom().getObjData(this.getTopoPath())){
-        // if(!(a===-1)){if(!(this.getTopoPath().ti === c.getTopoPath().ti)){if(a === c.getPoint().getID()){counter = counter + 1;}}}
+        // if(!(a===-1)){if(!(this.getTopoPath().ti === c.getTopoPath().ti))
+        // {if(a === c.getPoint().getID()){counter = counter + 1;}}}
         // };
         // var duplicate:boolean = false;
         // for(const k of faces){if( k.getTopoPath() === b.getTopoPath()){duplicate = true;}}
@@ -1504,7 +1504,7 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupGetProps(name: string): Array<[string, any]> { //TODO change to Map
+    public groupGetProps(name: string): Array<[string, any]> { // TODO change to Map
         return this._groups.get(name).props;
     }
 
@@ -1513,7 +1513,7 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupSetProps(name: string, new_map: Array<[string, any]>): Array<[string, any]> { //TODO
+    public groupSetProps(name: string, new_map: Array<[string, any]>): Array<[string, any]> { // TODO
         const old_map = this._groups.get(name).props;
         this._groups.get(name).props = new_map ;
         return old_map;
@@ -1618,7 +1618,7 @@ export class Kernel {
      */
     private _delPointFromObjs(id: number): void {
         for (const [obj_id_str, obj] of this._objs.entries()) { // sparse array
-            console.log(">>> This Obj Entries", [obj_id_str, obj])
+            // console.log(">>> This Obj Entries", [obj_id_str, obj])
             switch (obj[2][0]) {
                 // Polyline
                 case 100:
@@ -1629,13 +1629,13 @@ export class Kernel {
                             let num_vertices = w.length;
                             if (w[w.length - 1] === -1) {num_vertices--;}
                             if (num_vertices > 2 ) {
-                                w.splice(point_index, 1); //delete one vertex
+                                w.splice(point_index, 1); // delete one vertex
                             } else {
-                                obj[0].splice(wi,1); //delete the whole wire
+                                obj[0].splice(wi,1); // delete the whole wire
                             }
                         }
                     }
-                    //check if no wires, delete whole oject
+                    // check if no wires, delete whole oject
                     if(obj[0].length === 0) {delete this._objs[obj_id_str];}
                     break;
                 // Polymesh
@@ -1648,15 +1648,15 @@ export class Kernel {
                             changed = true;
                             const num_vertices = f.length - 1;
                             if (num_vertices > 2 ) {
-                                obj[1][fi].splice(point_index_f, 1); //delete one vertex
+                                obj[1][fi].splice(point_index_f, 1); // delete one vertex
                             } else {
-                                obj[1].splice(fi,1); //delete the whole face
+                                obj[1].splice(fi,1); // delete the whole face
                             }
                         }
                     }
                     if (changed) {
                         if (obj[1].length === 0) {
-                            delete this._objs[obj_id_str]; //if no faces, delete whole obj
+                            delete this._objs[obj_id_str]; // if no faces, delete whole obj
                         } else {
                             obj[0] = this._findPolymeshWires(obj[1]);
                         }
@@ -1856,7 +1856,7 @@ export class Kernel {
      * @return
      */
     private _purgeDelUnusedPoints(): void {
-        //delete all unused points
+        // delete all unused points
         for (const point_id_str of this._points[0]) {
             if (this.pointIsUnused(point_id_str)) {
                 delete this._points[0][point_id_str];
@@ -1870,15 +1870,15 @@ export class Kernel {
      * @return
      */
     private _purgeDelUnusedPointValues(): void {
-        //find unused values in points[1]
+        // find unused values in points[1]
         const val_idxs: number[] = [];
         this._points[1].forEach((p, pi) =>
-            (this._points[0].indexOf(pi) == -1) && val_idxs.push(pi));
-        //delete unused values in points[1]
+            (this._points[0].indexOf(pi) === -1) && val_idxs.push(pi));
+        // delete unused values in points[1]
         for (const val_idx of val_idxs) {
             this._points.splice(val_idx, 1);
         }
-        //shift pointers in points[0] to point to new values in points[1]
+        // shift pointers in points[0] to point to new values in points[1]
         let decrement: number = 0;
         for (let i=0;i<this._points[0].length;i++) {
             if (this._points[0][i] !== undefined) {
@@ -1923,7 +1923,6 @@ export class Kernel {
 
         throw new Error("Not implemented");
     }
-
 
     /**
      * to be completed

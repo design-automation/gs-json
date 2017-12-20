@@ -5,26 +5,7 @@ import * as gs from "./gs-json";
  */
 export function open_box(): gs.IModelData {
     return {
-        metadata: {
-            filetype: "gs-json",
-            version: "0.1.1",
-            crs: {epsg: 3857},
-            location: "+0-0",
-        },
         geom: {
-            points: [
-                [0, 1, 2, 3, 4, 5, 6, 7],
-                [
-                    [-0.7, -1.0, 0.0],
-                    [0.2, -1.0, 0.0],
-                    [0.2, -1.0, 3.0],
-                    [-0.7, -1.0, 3.0],
-                    [-0.7, 1.0, 0.0],
-                    [0.2, 1.0, 0.0],
-                    [0.2, 1.0, 3.0],
-                    [-0.7, 1.0, 3.0],
-               ],
-           ],
             objs: [
                 [
                     [
@@ -40,6 +21,26 @@ export function open_box(): gs.IModelData {
                     [200],
                ],
            ],
+            points: [
+                [0, 1, 2, 3, 4, 5, 6, 7],
+                [
+                    [-0.7, -1.0, 0.0],
+                    [0.2, -1.0, 0.0],
+                    [0.2, -1.0, 3.0],
+                    [-0.7, -1.0, 3.0],
+                    [-0.7, 1.0, 0.0],
+                    [0.2, 1.0, 0.0],
+                    [0.2, 1.0, 3.0],
+                    [-0.7, 1.0, 3.0],
+               ],
+           ],
+
+        },
+        metadata: {
+            crs: {epsg: 3857},
+            filetype: "gs-json",
+            location: "+0-0",
+            version: "0.1.1",
         },
     };
 }
@@ -52,26 +53,86 @@ export function open_box(): gs.IModelData {
  */
 export function box_with_attribs(): gs.IModelData {
     return {
-    metadata: {
-        filetype: "gs-json",
-        version: "0.1.1",
-        crs: {epsg: 3857},
-        location: "+0-0",
-    },
-    geom: {
-        points: [
-            [0, 1, 2, 3, 4, 5, 6, 7],
-            [
-                [-0.7, -1.0, 0.0],
-                [0.2, -1.0, 0.0],
-                [0.2, -1.0, 3.0],
-                [-0.7, -1.0, 3.0],
-                [-0.7, 1.0, 0.0],
-                [0.2, 1.0, 0.0],
-                [0.2, 1.0, 3.0],
-                [-0.7, 1.0, 3.0],
-           ],
+    attribs: {
+        edges: [
+            {
+                data_type: "number",
+                geom_type: "edges",
+                name: "edge_id",
+                values: [
+                    [[0, 0, 0, 0, 0, 0]],
+                    [0],
+               ],
+            },
        ],
+        faces: [
+            {
+                data_type: "number",
+                geom_type: "faces",
+                name: "faces_id",
+                values: [
+                    [[0, 0, 0, 0, 0, 0]],
+                    [0],
+               ],
+            },
+            {
+                data_type: "number",
+                geom_type: "faces",
+                name: "test3",
+                values: [
+                    [[0, 1, 2, 3, 4, 5]],
+                    [2.0, 12.0, 22.0, 32.0, 42.0, 52.0],
+               ],
+            },
+       ],
+        objs: [
+            {
+                data_type: "number",
+                geom_type: "objs",
+                name: "obj_id",
+                values: [
+                    [0],
+                    [1234],
+               ],
+            },
+       ],
+        points: [
+            {
+                data_type: "number",
+                geom_type: "points",
+                name: "test1",
+                values: [
+                    [0, 1, 2, 3, 4, 5, 6, 7],
+                    [641.600585938, 800.463806152, 510.895019531,
+                     775.474304199, 879.505859375, 205.040100098, 522.06060791, 885.056274414],
+               ],
+            },
+       ],
+        vertices: [
+            {
+                data_type: "string",
+                geom_type: "vertices",
+                name: "test2",
+                values: [
+                    [[[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []],
+                    [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []]],
+                    ["id_0", "id_1", "id_2", "id_3"],
+               ],
+            },
+       ],
+        wires: [
+            {
+                data_type: "number",
+                geom_type: "wires",
+                name: "wires_id",
+                values: [
+                    [[0, 0, 0, 0, 0, 0]],
+                    [0],
+               ],
+            },
+       ],
+        },
+    geom: {
         objs: [
             [
                 [
@@ -88,84 +149,27 @@ export function box_with_attribs(): gs.IModelData {
                 [200],
            ],
        ],
-    },
-    attribs: {
         points: [
-            {
-                name: "test1",
-                geom_type: "points",
-                data_type: "number",
-                values: [
-                    [0, 1, 2, 3, 4, 5, 6, 7],
-                    [641.600585938, 800.463806152, 510.895019531, 775.474304199, 879.505859375, 205.040100098, 522.06060791, 885.056274414],
-               ],
-            },
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            [
+                [-0.7, -1.0, 0.0],
+                [0.2, -1.0, 0.0],
+                [0.2, -1.0, 3.0],
+                [-0.7, -1.0, 3.0],
+                [-0.7, 1.0, 0.0],
+                [0.2, 1.0, 0.0],
+                [0.2, 1.0, 3.0],
+                [-0.7, 1.0, 3.0],
+           ],
        ],
-        vertices: [
-            {
-                name: "test2",
-                geom_type: "vertices",
-                data_type: "string",
-                values: [
-                    [[[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []], [[0, 1, 2, 3], []]],
-                    ["id_0", "id_1", "id_2", "id_3"],
-               ],
-            },
-       ],
-        faces: [
-            {
-                name: "faces_id",
-                geom_type: "faces",
-                data_type: "number",
-                values: [
-                    [[0, 0, 0, 0, 0, 0]],
-                    [0],
-               ],
-            },
-            {
-                name: "test3",
-                geom_type: "faces",
-                data_type: "number",
-                values: [
-                    [[0, 1, 2, 3, 4, 5]],
-                    [2.0, 12.0, 22.0, 32.0, 42.0, 52.0],
-               ],
-            },
-       ],
-        wires: [
-            {
-                name: "wires_id",
-                geom_type: "wires",
-                data_type: "number",
-                values: [
-                    [[0, 0, 0, 0, 0, 0]],
-                    [0],
-               ],
-            },
-       ],
-        edges: [
-            {
-                name: "edge_id",
-                geom_type: "edges",
-                data_type: "number",
-                values: [
-                    [[0, 0, 0, 0, 0, 0]],
-                    [0],
-               ],
-            },
-       ],
-        objs: [
-            {
-                name: "obj_id",
-                geom_type: "objs",
-                data_type: "number",
-                values: [
-                    [0],
-                    [1234],
-               ],
-            },
-       ],
-        },
+    },
+    metadata: {
+        crs: {epsg: 3857},
+        filetype: "gs-json",
+        location: "+0-0",
+        version: "0.1.1",
+                },
+
     };
 }
 
@@ -174,26 +178,8 @@ export function box_with_attribs(): gs.IModelData {
  */
 export function box_with_groups(): gs.IModelData {
     return {
-    metadata: {
-        filetype: "gs-json",
-        version: "0.1.1",
-        crs: {epsg: 3857},
-        location: "+0-0",
-    },
+    attribs: null,
     geom: {
-        points: [
-            [0, 1, 2, 3, 4, 5, 6, 7],
-            [
-                [-0.7, -1.0, 0.0], // 0
-                [0.2, -1.0, 0.0], // 1
-                [0.2, -1.0, 3.0], // 2
-                [-0.7, -1.0, 3.0], // 3
-                [-0.7, 1.0, 0.0], // 4
-                [0.2, 1.0, 0.0],  // 5
-                [0.2, 1.0, 3.0],  // 6
-                [-0.7, 1.0, 3.0],  // 7
-           ],
-       ],
         objs: [
             [
                 [
@@ -209,8 +195,20 @@ export function box_with_groups(): gs.IModelData {
                 [200],
            ],
        ],
+        points: [
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            [
+                [-0.7, -1.0, 0.0], // 0
+                [0.2, -1.0, 0.0], // 1
+                [0.2, -1.0, 3.0], // 2
+                [-0.7, -1.0, 3.0], // 3
+                [-0.7, 1.0, 0.0], // 4
+                [0.2, 1.0, 0.0],  // 5
+                [0.2, 1.0, 3.0],  // 6
+                [-0.7, 1.0, 3.0],  // 7
+           ],
+       ],
     },
-    attribs: null,
     groups: [
         {
             name: "building_obj",
@@ -233,6 +231,7 @@ export function box_with_groups(): gs.IModelData {
         {
             name: "walls",
             parent: "building_obj",
+            props: [["descr", "Three walls."], ["material", "brick"], ["thickness", 300]],
             topos: [
                 [[0, [1, 3, 4]]], // obj 0, faces 1, 3, 4
                 [],
@@ -241,7 +240,6 @@ export function box_with_groups(): gs.IModelData {
                 [],
                 [],
            ],
-            props: [["descr", "Three walls."], ["material", "brick"], ["thickness", 300]],
         },
         {
             name: "floor",
@@ -332,6 +330,12 @@ export function box_with_groups(): gs.IModelData {
             points: [0, 1, 4, 5],
         },
    ],
+    metadata: {
+        crs: {epsg: 3857},
+        filetype: "gs-json",
+        location: "+0-0",
+        version: "0.1.1",
+    },
     skins : null,
 };
 }
@@ -341,26 +345,8 @@ export function box_with_groups(): gs.IModelData {
  */
 export function Unclosed_with_groups(): gs.IModelData {
     return {
-    metadata: {
-        filetype: "gs-json",
-        version: "0.1.1",
-        crs: {epsg: 3857},
-        location: "+0-0",
-    },
+    attribs: null,
     geom: {
-        points: [
-            [0, 1, 2, 3, 4, 5, 6, 7],
-            [
-                [-0.7, -1.0, 0.0], // 0
-                [0.2, -1.0, 0.0], // 1
-                [0.2, -1.0, 3.0], // 2
-                [-0.7, -1.0, 3.0], // 3
-                [-0.7, 1.0, 0.0], // 4
-                [0.2, 1.0, 0.0],  // 5
-                [0.2, 1.0, 3.0],  // 6
-                [-0.7, 1.0, 3.0],  // 7
-           ],
-       ],
         objs: [
             [
                 [
@@ -376,8 +362,21 @@ export function Unclosed_with_groups(): gs.IModelData {
                 [200],
            ],
        ],
+        points: [
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            [
+                [-0.7, -1.0, 0.0], // 0
+                [0.2, -1.0, 0.0], // 1
+                [0.2, -1.0, 3.0], // 2
+                [-0.7, -1.0, 3.0], // 3
+                [-0.7, 1.0, 0.0], // 4
+                [0.2, 1.0, 0.0],  // 5
+                [0.2, 1.0, 3.0],  // 6
+                [-0.7, 1.0, 3.0],  // 7
+           ],
+       ],
+
     },
-    attribs: null,
     groups: [
         {
             name: "building_obj",
@@ -400,6 +399,7 @@ export function Unclosed_with_groups(): gs.IModelData {
         {
             name: "walls",
             parent: "building_obj",
+            props: [["descr", "Three walls."], ["material", "brick"], ["thickness", 300]],
             topos: [
                 [[0, [1, 3, 4]]], // obj 0, faces 1, 3, 4
                 [],
@@ -408,7 +408,6 @@ export function Unclosed_with_groups(): gs.IModelData {
                 [],
                 [],
            ],
-            props: [["descr", "Three walls."], ["material", "brick"], ["thickness", 300]],
         },
         {
             name: "floor",
@@ -499,32 +498,20 @@ export function Unclosed_with_groups(): gs.IModelData {
             points: [0, 1, 4, 5],
         },
    ],
+    metadata: {
+        crs: {epsg: 3857},
+        filetype: "gs-json",
+        location: "+0-0",
+        version: "0.1.1",
+    },
     skins : null,
 };
 }
 
 export function Random_Closed(): gs.IModelData {
     return {
-    metadata: {
-        filetype: "gs-json",
-        version: "0.1.1",
-        crs: {epsg: 3857},
-        location: "+0-0",
-    },
+    attribs: null,
     geom: {
-        points: [
-            [0, 1, 2, 3, 4, 5, 6, 7],
-            [
-                [-0.7, -1.0, 0.0], // 0
-                [0.2, -1.0, 0.0], // 1
-                [0.2, -1.0, 3.0], // 2
-                [-0.7, -1.0, 3.0], // 3
-                [-0.7, 1.0, 0.0], // 4
-                [0.2, 1.0, 0.0],  // 5
-                [0.2, 1.0, 3.0],  // 6
-                [-0.7, 1.0, 3.0],  // 7
-           ],
-       ],
         objs: [
             [
                 [
@@ -544,8 +531,20 @@ export function Random_Closed(): gs.IModelData {
                 [200],
            ],
        ],
+        points: [
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            [
+                [-0.7, -1.0, 0.0], // 0
+                [0.2, -1.0, 0.0], // 1
+                [0.2, -1.0, 3.0], // 2
+                [-0.7, -1.0, 3.0], // 3
+                [-0.7, 1.0, 0.0], // 4
+                [0.2, 1.0, 0.0],  // 5
+                [0.2, 1.0, 3.0],  // 6
+                [-0.7, 1.0, 3.0],  // 7
+           ],
+       ],
     },
-    attribs: null,
     groups: [
         {
             name: "building_obj",
@@ -568,6 +567,7 @@ export function Random_Closed(): gs.IModelData {
         {
             name: "walls",
             parent: "building_obj",
+            props: [["descr", "Three walls."], ["material", "brick"], ["thickness", 300]],
             topos: [
                 [[0, [1, 3, 4]]], // obj 0, faces 1, 3, 4
                 [],
@@ -576,7 +576,6 @@ export function Random_Closed(): gs.IModelData {
                 [],
                 [],
            ],
-            props: [["descr", "Three walls."], ["material", "brick"], ["thickness", 300]],
         },
         {
             name: "floor",
@@ -667,7 +666,12 @@ export function Random_Closed(): gs.IModelData {
             points: [0, 1, 4, 5],
         },
    ],
+    metadata: {
+        crs: {epsg: 3857},
+        filetype: "gs-json",
+        location: "+0-0",
+        version: "0.1.1",
+    },
     skins : null,
 };
 }
-

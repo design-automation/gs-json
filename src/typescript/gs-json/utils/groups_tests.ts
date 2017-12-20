@@ -2,7 +2,6 @@ import {Arr} from "./arr";
 import * as gs from "./gs-json";
 import * as td from "./test_data";
 
-
 // Testing methods the Groups Class, composed of 1 constructor and 17 methods
 export function test_Groups_constructor(): boolean {
     const m: gs.Model = new gs.Model(td.box_with_groups());
@@ -144,7 +143,6 @@ export function test_Groups_getTopos(): boolean {
     if (!Arr.equal(g1.getTopos(), [])) {return false; }
     g1.addTopo(m.getGeom().getObj(0).getFaces()[0]);
     if (Arr.equal(g1.getTopos(), [])) {return false; }
-
 
     if (!Arr.equal(g2.getTopos(), [])) {return false; }
     g2.addTopo(m.getGeom().getObj(0).getWires()[0]);

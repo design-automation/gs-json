@@ -30,7 +30,7 @@ export class Arr {
      * @returns True or false.
      */
     public static equal(arr1: any[], arr2: any[]): boolean {
-        if (!Array.isArray(arr1) || !Array.isArray(arr2)) {return arr1 == arr2; }
+        if (!Array.isArray(arr1) || !Array.isArray(arr2)) {return arr1 === arr2; }
         if (arr1.length !== arr2.length) {return false; }
         for (let i = 0; i < arr1.length; i++) {
             if (arr1[i] !== arr2[i]) {return false;}
@@ -123,7 +123,7 @@ export class Arr {
     public static deepCount(arr: any[]): number {
         if (arr === undefined) {return 0; }
         let a: number = 0 ;
-        for (let i = 0; i < arr.length; i++) {
+        for ( const i of arr) {
             if (Array.isArray(arr[i])) {
                 a = a + Arr.deepCount(arr[i]);
             } else {

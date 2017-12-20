@@ -76,4 +76,3 @@ export interface IPointData {
     y: number;
     z: number;
 }
-

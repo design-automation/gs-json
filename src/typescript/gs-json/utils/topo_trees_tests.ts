@@ -81,6 +81,7 @@ export function test_TopoTree_getTopos2(): boolean {
     T1.addTopo(f4.getTopoPath());
     T1.addTopo(f5.getTopoPath());
     for(let k = 0 ; k < T1.getTopos().length ; k++) {T2.addTopo(T1.getTopos()[k]);}
+
     if( !(
         T2.hasTopo(f1.getTopoPath()) &&
         T2.hasTopo(f2.getTopoPath()) &&

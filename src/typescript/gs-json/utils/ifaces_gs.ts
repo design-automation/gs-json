@@ -27,7 +27,7 @@ export interface IModel {
     purge(): void;
     // Runs some check
     validate(): boolean;
-    //Export the whole model to JSON
+    // Export the whole model to JSON
     toJSON(): string;
 }
 
@@ -186,7 +186,7 @@ export interface IVertex extends ITopo {
     next(): IVertex;
     previous(): IVertex;
     verticesSharedPoint(): IVertex[][];
-    //verticesSamePosition(): IVertex[][]; leave this out for now
+    // verticesSamePosition(): IVertex[][]; leave this out for now
 }
 
 /**
@@ -288,6 +288,6 @@ export interface IGroup {
     hasPoint(id: number): boolean;
 
     // Properties for this group (key-value pairs)
-    getProps(): Array<[string, any]>; //TODO
-    setProps(new_Map: Array<[string, any]>): Array<[string, any]>; //TODO
+    getProps(): Array<[string, any]>; // TODO
+    setProps(new_Map: Array<[string, any]>): Array<[string, any]>; // TODO
 }

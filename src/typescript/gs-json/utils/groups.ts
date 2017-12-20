@@ -283,7 +283,7 @@ export class Group implements ifs.IGroup {
      * @param
      * @return
      */
-     //Map<string, any> { // TODO
+     // Map<string, any> { // TODO
     public getProps(): Array<[string, any]> {
         return this._kernel.groupGetProps(this._name);
     }
@@ -293,7 +293,7 @@ export class Group implements ifs.IGroup {
      * @param
      * @return
      */
-     //Map<string, any>): Map<string, any> { // TODO
+     // Map<string, any>): Map<string, any> { // TODO
     public setProps(props: Array<[string, any]>): Array<[string, any]> {
         return this._kernel.groupSetProps(this._name, props);
     }
