@@ -291,30 +291,13 @@ export abstract class Obj extends Ent implements ifs.IObj {
  * The wire has two vertices.
  * A ray may be part of a group and may have attributes.
  */
-export class Ray  extends Obj implements ifs.IRay {
+export class Ray extends Obj implements ifs.IRay {
     /**
      * Get the object type: "ray".
      * @return Ray object type.
      */
     public getObjType(): EObjType {
         return EObjType.ray;
-    }
-    /**
-     * Get the ID number of this entity.
-     * @return The entity ID number.
-     */
-    public getID(): number {
-        return this._id;
-    }
-   /**
-    * Add a Ray to the Geometry by refering to an origin (3D cartesian x,y,z coordinates)
-    * and a non null vector for setting the ray's direction.
-    * @param xyz Cartesian coordinates origin
-    * @param 3D vector (as a number) for setting the ray's direction
-    * @return The ID of the created ray
-    */
-    public addRay(origin: number[], dir: number[]): number {
-        return this._kernel.geomAddRay(origin, dir);
     }
 }
 
@@ -326,7 +309,7 @@ export class Ray  extends Obj implements ifs.IRay {
  * The wire has two vertices, the square face has four vertices.
  * A ray may be part of a group and may have attributes.
  */
-export class Plane  extends Obj implements ifs.IPlane {
+export class Plane extends Obj implements ifs.IPlane {
     /**
      * Get the object type: "plane".
      * @return Plane object type.
@@ -334,36 +317,27 @@ export class Plane  extends Obj implements ifs.IPlane {
     public getObjType(): EObjType {
         return EObjType.plane;
     }
-    /**
-     * Get the ID number of this entity.
-     * @return The entity ID number.
-     */
-    public getID(): number {
-        return this._id;
+
+    public getOrigin(): number[] {
+        return this._kernel.objGetParams(this._id)[1];
     }
-    /**
-    * Add a 2D plan in a 3D geometry 
-    * @param xyz Cartesian coordinates of a point that belong to the defined 2D plan
-    * @param a non zero normal vector to the plan
-    * @return ID of the created plan
-    */
-    public addPlane(origin: number[], normal: number[]): number {
-       if(normal === null){throw new Error("A normal vector is required");}
-       if(Arr.equal(normal,[0,0,0])){throw new Error("A non zero vector is required");}
-        return this._kernel.geomAddPlane(origin, normal);
+
+    public getVectors(): number[][] {
+        return this._kernel.objGetParams(this._id).slice(2,3);
     }
+
     /**
      * Get the 4 cartesian coefficient of a plan, especially usefull for distance calculations.
      * In 3 dimensions, a cartesian equation of a 2D plan is: a.x + b.y + c.z + d = 0 ;
-     * @return Returns an array that contains the x, y, z coordinates of a point which belongs to the plan as well as a normal vector
+     * @return Returns an array that contains the x, y, z coordinates of a point which belongs to
+     * the plan as well as a normal vector
      * @return Array of real numbers: [a,b,c,d] (where a,b,c is a triplet set such as (a,b,c) !=== (0,0,0))
      */
     public getCartesians(): number[] {
-        const origin: number[] = this._kernel.geomGetPlane(this._id)[0];
-        const normal: number[] = this._kernel.geomGetPlane(this._id)[1];
-        if(Arr.equal(normal,[0,0,0])){throw new Error("A triplet different from (0,0,0) is required for the plan's normal vector");}
-        const d:number = -(origin[0]*normal[0] + origin[1]*normal[1] + origin[2]*normal[2]);
-        return [this._kernel.geomGetPlane(this._id)[1][0],this._kernel.geomGetPlane(this._id)[1][1],this._kernel.geomGetPlane(this._id)[1][2],d];
+        const origin: number[] = this._kernel.objGetParams(this._id)[1];
+        const z_vec: number[] = this._kernel.objGetParams(this._id)[4];
+        const d: number = -(origin[0] * z_vec[0] + origin[1] * z_vec[1] + origin[2] * z_vec[2]);
+        return [z_vec[0], z_vec[1], z_vec[2], d];
     }
 }
 

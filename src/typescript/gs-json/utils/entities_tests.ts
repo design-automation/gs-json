@@ -304,12 +304,12 @@ export function test_Polymesh_getObjType(): boolean {
     return true;
 }
 
-export function test_Plane_getCartesians(): void {    
+export function test_Plane_getCartesians(): void {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const A1: gs.IPoint = g.addPoint([0,0,0]);
-    const V1: gs.IPoint = g.addPoint([0,0,0]);
-    const V2: gs.IPoint = g.addPoint([0,0,1]);
-    const P1: gs.IPlane = g.addPlane(A1, [V1,V2]);
+    const V1: gs.IPoint = g.addPoint([1,0,0]);
+    const V2: gs.IPoint = g.addPoint([0,1,0]);
+    const P1: gs.IPlane = g.addPlane(A1, V1, V2);
     console.log(P1.getCartesians());
 }

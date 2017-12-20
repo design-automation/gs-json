@@ -387,41 +387,58 @@ export class Kernel {
      * @param dir The ray direction, as a vector.
      * @return ID of object.
      */
-    public geomAddRay(origin: number[], dir: number[]): number {
+    public geomAddRay(origin_id: number, ray_point_id: number): number {
+        const origin: number[] = this.pointGetPosition(origin_id);
+        const ray_point: number[] = this.pointGetPosition(ray_point_id);
+        const ray_vec: number[] = [ray_point[0] - origin[0],
+                                   ray_point[1] - origin[1],
+                                   ray_point[2] - origin[2]];
         const new_id: number = this._objs.length;
         // create the ray
-        const end: number[] = [origin[0] + dir[0], origin[1] + dir[1], origin[2] + dir[2]];
-        this._objs.push([[origin, end], [], [1, origin, dir]]); // add the obj
+        this._objs.push([
+            [[origin_id, ray_point_id]],
+            [], [1, origin, ray_vec]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
         return new_id;
     }
+
     /**
      * Adds a new plane to the model that passes through a sequence of points.
      * @param origin The ray origin point.
      * @param normal The plane normal, as a vector.
      * @return ID of object.
      */
-    public geomAddPlane(origin: number[], normal: number[]): number {
+    public geomAddPlane(origin_id: number, xaxis_point_id: number, yaxis_point_id: number): number {
+        const origin: number[] = this.pointGetPosition(origin_id);
+        const xaxis_point: number[] = this.pointGetPosition(xaxis_point_id);
+        const yaxis_point: number[] = this.pointGetPosition(yaxis_point_id);
+        const x_vec: number[] = [xaxis_point[0] - origin[0],
+                                 xaxis_point[1] - origin[1],
+                                 xaxis_point[2] - origin[2]];
+        const y_vec: number[] = [yaxis_point[0] - origin[0],
+                                 yaxis_point[1] - origin[1],
+                                 yaxis_point[2] - origin[2]];
+
+        //TODO
+
+
+        const z_vec = x_vec;
+
+        if(Arr.equal(z_vec,[0,0,0])){
+            throw new Error("A triplet different from (0,0,0) is required for the plan's normal vector");
+        }
         const new_id: number = this._objs.length;
-        // create the ray
-        const end: number[] = [origin[0] + normal[0], origin[1] + normal[1], origin[2] + normal[2]];
-        //TODO add a little square plane here
-        this._objs.push([[origin, end], [], [2, origin, normal]]); // add the obj
+        this._objs.push([
+            [[origin_id, xaxis_point_id], [origin_id, yaxis_point_id]],
+            [], [2, origin, x_vec, y_vec, z_vec]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
         return new_id;
     }
-    /**
-     * Get an array composed of xyz origin and normal vector of a given plan
-     * @param ID of a plan.
-     * @return Returns an array with origin's xyz and normal vector
-     */
-    public geomGetPlane(id: number): [number[],number[]] {
-        return [this._objs[id][0][0],this._objs[id][2][2]];
-    }
+
     /**
      * Adds a new polyline to the model that passes through a sequence of points.
      * @param points An array of Points.
@@ -829,6 +846,14 @@ export class Kernel {
      */
     public objNumFaces(id: number): number {
         return this._objs[id][1].length;
+    }
+
+    /**
+     * Get the parameters for this object.
+     * @return The parameters array.
+     */
+    public objGetParams(id: number): any {
+        return this._objs[id][2];
     }
 
     /**

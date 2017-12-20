@@ -80,28 +80,21 @@ export class Geom implements ifs.IGeom {
      * @param origin_point An array of arrays of points.
      * @return Object of type Ray
      */
-    public addRay(origin_point: ifs.IPoint, dir_vector: ifs.IPoint[]): ifs.IRay {
-        const dir: number[] = [dir_vector[1].getPosition()[0] - dir_vector[0].getPosition()[0],
-                               dir_vector[1].getPosition()[1] - dir_vector[0].getPosition()[1],
-                               dir_vector[1].getPosition()[2] - dir_vector[0].getPosition()[2]];
-        const origin: number[] = origin_point.getPosition();
-        const id: number = this._kernel.geomAddRay(origin, dir);
+    public addRay(origin_point: ifs.IPoint, ray_point: ifs.IPoint): ifs.IRay {
+        const id: number = this._kernel.geomAddRay(origin_point.getID(), ray_point.getID());
         return new Ray(this._kernel, id);
     }
     /**
      * Adds a new plane to the model.
-     * @param Origin: 
+     * @param Origin:
      * @return Object of type Plane
      */
-    public addPlane(origin_point: ifs.IPoint, normal_vector: ifs.IPoint[]): ifs.IPlane {
-        const normal: number[] = [normal_vector[1].getPosition()[0] - normal_vector[0].getPosition()[0],
-                                  normal_vector[1].getPosition()[1] - normal_vector[0].getPosition()[1],
-                                  normal_vector[1].getPosition()[2] - normal_vector[0].getPosition()[2]]
-        const origin: number[] = origin_point.getPosition();
-        const id: number = this._kernel.geomAddPlane(origin, normal);
+    public addPlane(origin_point: ifs.IPoint, xaxis_point: ifs.IPoint, yaxis_point: ifs.IPoint):
+                    ifs.IPlane {
+        const id: number = this._kernel.geomAddPlane(origin_point.getID(), xaxis_point.getID(),
+            yaxis_point.getID());
         return new Plane(this._kernel, id);
     }
-
 
     //  Points -------------------------------------------------------------------------------------
 
@@ -200,11 +193,20 @@ export class Geom implements ifs.IGeom {
         for (const id of ids) {
             const obj_type = this._kernel.objGetType(id);
             switch (obj_type) {
+                case EObjType.ray:
+                    objs.push(new Ray(this._kernel, id));
+                    break;
+                case EObjType.plane:
+                    objs.push(new Plane(this._kernel, id));
+                    break;
                 case EObjType.polyline:
                     objs.push(new Polyline(this._kernel, id));
                     break;
                 case EObjType.polymesh:
                     objs.push(new Polymesh(this._kernel, id));
+                    break;
+                case EObjType.nurbs_curve:
+                    objs.push(new NurbsCurve(this._kernel, id));
                     break;
                 default:
                     throw new Error("Object type does not exist.");
@@ -222,10 +224,16 @@ export class Geom implements ifs.IGeom {
     public getObj(id: number): ifs.IObj {
         const obj_type = this._kernel.objGetType(id);
         switch (obj_type) {
+            case EObjType.ray:
+                return new Ray(this._kernel, id);
+            case EObjType.plane:
+                return new Plane(this._kernel, id);
             case EObjType.polyline:
                 return new Polyline(this._kernel, id);
             case EObjType.polymesh:
                 return new Polymesh(this._kernel, id);
+            case EObjType.nurbs_curve:
+                return new NurbsCurve(this._kernel, id);
             default:
                 throw new Error("Object type does not exist.");
             // TODO add more here
