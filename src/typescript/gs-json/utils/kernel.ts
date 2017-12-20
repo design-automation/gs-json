@@ -1,4 +1,5 @@
 import {Arr} from "./arr";
+import * as mathjs from "mathjs";
 
 import {IMetadata, IModelData,  IAttribData,
     IGroupData, TObjData, TPointsData, ITopoPathData} from "./ifaces_json";
@@ -421,13 +422,28 @@ export class Kernel {
         const y_vec: number[] = [yaxis_point[0] - origin[0],
                                  yaxis_point[1] - origin[1],
                                  yaxis_point[2] - origin[2]];
-
-        // TODO
-        const z_vec = x_vec;
-
+        const z_vec: number[] = [ (+1) * (xaxis_point[1] * yaxis_point[2] - xaxis_point[2] * yaxis_point[1]),
+                                  (-1) * (xaxis_point[0] * yaxis_point[2] - xaxis_point[2] * yaxis_point[0]),
+                                  (+1) * (xaxis_point[0] * yaxis_point[1] - xaxis_point[1] * yaxis_point[0])];
         if(Arr.equal(z_vec,[0,0,0])) {
-            throw new Error("A triplet different from (0,0,0) is required for the plan's normal vector");
+            throw new Error("Two non colinear x_vec and y_vec axis are required for defining the plan");
         }
+
+        // normalizing
+        const x_norm: number = Math.sqrt(Math.pow(x_vec[0],2)+Math.pow(x_vec[1],2)+Math.pow(x_vec[2],2));
+        const y_norm: number = Math.sqrt(Math.pow(y_vec[0],2)+Math.pow(y_vec[1],2)+Math.pow(y_vec[2],2));
+        const z_norm: number = Math.sqrt(Math.pow(z_vec[0],2)+Math.pow(z_vec[1],2)+Math.pow(z_vec[2],2));
+
+        x_vec[0] = x_vec[0]/x_norm ;
+        x_vec[1] = x_vec[1]/x_norm ;
+        x_vec[2] = x_vec[2]/x_norm ;
+        y_vec[0] = y_vec[0]/y_norm ;
+        y_vec[1] = y_vec[1]/y_norm ;
+        y_vec[2] = y_vec[2]/y_norm ;
+        z_vec[0] = z_vec[0]/z_norm ;
+        z_vec[1] = z_vec[1]/z_norm ;
+        z_vec[2] = z_vec[2]/z_norm ;
+
         const new_id: number = this._objs.length;
         this._objs.push([
             [[origin_id, xaxis_point_id], [origin_id, yaxis_point_id]],
