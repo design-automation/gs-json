@@ -21,7 +21,8 @@
         "url": "https://github.com/phtj/gs-json.git"
     },
     "dependencies": {
-        "@types/mathjs": "0.0.35"
+        "@types/mathjs": "0.0.35",
+        "@types/three": "^0.84.35"
     },
     "devDependencies": {
         "@types/jasmine": "^2.6.3",
