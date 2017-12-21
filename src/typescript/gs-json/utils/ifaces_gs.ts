@@ -75,6 +75,8 @@ export interface IEnt  {
     // constructor(geom: ifs.IGeom, id: number)
     getID(): number;
     getGeomType(): EGeomType;
+    getModel(): IModel;
+    getGeom(): IGeom;
     // attribs
     getAttribNames(): string[];
     getAttribValue(name: string): any;
