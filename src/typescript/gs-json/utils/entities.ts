@@ -4,6 +4,8 @@ import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
 import {Vertex, Edge, Wire, Face} from "./topos";
+import {Geom} from "./geom";
+import {Model} from "./model";
 
 //  ================================================================================================
 
@@ -37,6 +39,22 @@ export abstract class Ent {
      */
     public getID(): number {
         return this._id;
+    }
+
+    /**
+     * Get the Geom object that this entity belongs to.
+     * @return A Geom object.
+     */
+    public getGeom(): ifs.IGeom {
+        return this._kernel.getModel().getGeom();
+    }
+
+    /**
+     * Get the Model object that this entity belongs to.
+     * @return A Model object.
+     */
+    public getModel(): ifs.IModel {
+        return this._kernel.getModel();
     }
 
     /**

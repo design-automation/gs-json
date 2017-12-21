@@ -2,6 +2,8 @@ import {Arr} from "./arr";
 import * as mathjs from "mathjs";
 import * as threejs from "threejs";
 
+import {IModel} from "./ifaces_gs";
+
 import {IMetadata, IModelData,  IAttribData,
     IGroupData, TObjData, TPointsData, ITopoPathData} from "./ifaces_json";
 
@@ -15,9 +17,10 @@ import {TopoTree} from "./topo_trees";
 /**
  * Kernel Class
  * This class controls all acces to the data and ensures that the data remains consistent.
- * No other class should have any irect access to this data.
+ * No other class should have any direct access to this data.
  */
 export class Kernel {
+    private _model: IModel;
     private _metadata: IMetadata;
     private _points: TPointsData;
     private _objs: TObjData[];
@@ -100,6 +103,16 @@ export class Kernel {
                 this._groups.set(group_data.name, group_data);
             }
         }
+    }
+
+    //  The Model object ---------------------------------------------------------------------------
+
+    /**
+     * Get the Model object
+     * @return The Model object
+     */
+    public getModel(): IModel {
+        return this._model;
     }
 
     //  Model attributes ---------------------------------------------------------------------------

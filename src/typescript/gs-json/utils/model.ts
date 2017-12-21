@@ -17,7 +17,7 @@ export class Model implements ifs.IModel {
      * @return
      */
     constructor(data?: IModelData) {
-        this._kernel = new Kernel(data);
+        this._kernel = new Kernel(this, data);
     }
 
     //  Geom ---------------------------------------------------------------------------------------
