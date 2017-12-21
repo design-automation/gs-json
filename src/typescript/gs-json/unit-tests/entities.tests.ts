@@ -50,9 +50,12 @@ describe("Tests for Obj class", () => {
     it("test_obj_getGeomType", () => {
         expect( entities_tests.test_obj_getGeomType() ).toBe(true);
     });
-    // it('test_obj_getObjType', () => {
-    //     expect( entities_tests.test_obj_getObjType() ).toBe(true);
-    // });
+    it("test_obj_getObjType", () => {
+        expect( entities_tests.test_obj_getObjType() ).toBe(true);
+    });
+    it("test_obj_getPoints", () => {
+        expect( entities_tests.test_obj_getPoints() ).toBe(true);
+    });
     it("test_obj_getVertices", () => {
         expect( entities_tests.test_obj_getVertices() ).toBe(true);
     });

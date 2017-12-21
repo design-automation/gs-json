@@ -196,10 +196,23 @@ export abstract class Obj extends Ent implements ifs.IObj {
      */
     public getPoints(point_type?: EGeomType.wires|EGeomType.faces): ifs.IPoint[][][] {
         const ids: number[][][] = this._kernel.objGetPoints(this._id, point_type);
-        return [
-            ids[0].map((w) => w.map((id) => new Point(this._kernel, id))), // wires
-            ids[1].map((f) => f.map((id) => new Point(this._kernel, id))), // faces
-        ];
+        switch (point_type) {
+            case EGeomType.wires:
+                return [
+                    ids[0].map((w) => w.map((id) => new Point(this._kernel, id))), // wires
+                    [], // faces
+                ];
+            case EGeomType.faces:
+                return [
+                    [], // wires
+                    ids[1].map((f) => f.map((id) => new Point(this._kernel, id))), // faces
+                ];
+            default:
+                return [
+                    ids[0].map((w) => w.map((id) => new Point(this._kernel, id))), // wires
+                    ids[1].map((f) => f.map((id) => new Point(this._kernel, id))), // faces
+                ];
+        }
     }
 
     /**

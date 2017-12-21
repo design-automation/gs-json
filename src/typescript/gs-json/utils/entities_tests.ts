@@ -194,11 +194,33 @@ export function test_point_getVertices(): boolean {
 }
 
 // Object tests, extends Entities by 6 complementary methods
+
 export function test_obj_getGeomType(): boolean {
     const m: gs.IModel = new gs.Model(test_data.box_with_groups());
     const geom: gs.IGeom = m.getGeom();
     const a1: gs.IObj = geom.getObj(0);
     if(!(a1.getGeomType() === gs.EGeomType.objs)) {return false;}
+    return true;
+}
+
+export function test_obj_getObjType(): boolean {
+    const m: gs.IModel = new gs.Model(test_data.box_with_groups());
+    const geom: gs.IGeom = m.getGeom();
+    const a1: gs.IObj = geom.getObj(0);
+    if(!(a1.getObjType() === gs.EObjType.polymesh)) {return false;}
+    return true;
+}
+
+export function test_obj_getPoints(): boolean {
+    //const m: gs.IModel = new gs.Model(test_data.box_with_groups());
+    const m: gs.IModel = new gs.Model(test_data.mixed());
+    const geom: gs.IGeom = m.getGeom();
+    const a1: gs.IObj = geom.getObj(0);
+    const wires: gs.IPoint[][] = a1.getPoints()[0];
+    const faces: gs.IPoint[][] = a1.getPoints()[1];
+    console.log(wires.length, faces.length);
+    if(!(wires.length === 1)) {return false;}
+    if(!(faces.length === 0)) {return false;}
     return true;
 }
 
