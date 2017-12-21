@@ -142,6 +142,7 @@ export interface IPlane  extends IObj {
  */
 export interface IPolyline  extends IObj {
     getObjType(): EObjType;
+    isClosed(): boolean;
 }
 
 /**
@@ -149,6 +150,7 @@ export interface IPolyline  extends IObj {
  */
 export interface INurbsCurve  extends IObj {
     getObjType(): EObjType;
+    isClosed(): boolean;
 }
 
 /**
