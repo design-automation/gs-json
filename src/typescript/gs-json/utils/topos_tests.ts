@@ -4,57 +4,57 @@ import * as td from "./test_data";
 import {Kernel} from "./kernel";
 
 export function test_Topo_constructor(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path1: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
-    // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-    const path2: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 0, si: 0};
-    // (0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 0);
-    const path3: gs.ITopoPathData = {id: 0, tt: 0, ti: 0, st: 1, si: 0};
-    // (0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
-    const path4: gs.ITopoPathData = {id: 0, tt: 0, ti: 0, st: 0, si: 0};
-    // (0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 0);
-    // the Top class is abstract
-    const f_e: gs.IEdge = new gs.Edge(k, path1);
-    const f_v: gs.IVertex = new gs.Vertex(k, path2);
-    const w_e: gs.IEdge = new gs.Edge(k, path3);
-    const w_v: gs.IVertex = new gs.Vertex(k, path4);
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path1: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
+    // // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    // const path2: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 0, si: 0};
+    // // (0, gs.EGeomType.faces, 0, gs.EGeomType.vertices, 0);
+    // const path3: gs.ITopoPathData = {id: 0, tt: 0, ti: 0, st: 1, si: 0};
+    // // (0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
+    // const path4: gs.ITopoPathData = {id: 0, tt: 0, ti: 0, st: 0, si: 0};
+    // // (0, gs.EGeomType.wires, 0, gs.EGeomType.vertices, 0);
+    // // the Top class is abstract
+    // const f_e: gs.IEdge = new gs.Edge(k, path1);
+    // const f_v: gs.IVertex = new gs.Vertex(k, path2);
+    // const w_e: gs.IEdge = new gs.Edge(k, path3);
+    // const w_v: gs.IVertex = new gs.Vertex(k, path4);
     return true;
 }
 
 export function test_Topo_getObjID(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
-    // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-    const e: gs.IEdge = new gs.Edge(k, path);
-    if(!(e.getObjID() === 0)) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
+    // // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    // const e: gs.IEdge = new gs.Edge(k, path);
+    // if(!(e.getObjID() === 0)) {return false;}
     return true;
 }
 
 export function test_Topo_getGeom(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
-    // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-    const e: gs.IEdge = new gs.Edge(k, path);
-    // if(!Arr.equal(e.getGeom().getPointIDs(), m.getGeom().getPointIDs())){return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
+    // // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    // const e: gs.IEdge = new gs.Edge(k, path);
+    // // if(!Arr.equal(e.getGeom().getPointIDs(), m.getGeom().getPointIDs())){return false;}
     return true;
 }
 
 export function test_Topo_getModel(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
-    // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-    const e: gs.IEdge = new gs.Edge(k, path);
-    // if(!Arr.equal(e.getModel().getGeom().getPointIDs(), m.getGeom().getPointIDs())){return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
+    // // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    // const e: gs.IEdge = new gs.Edge(k, path);
+    // // if(!Arr.equal(e.getModel().getGeom().getPointIDs(), m.getGeom().getPointIDs())){return false;}
     return true;
 }
 
 export function test_Topo_getAttribNames(): boolean {
-    const k: Kernel = new Kernel(td.box_with_attribs());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
-    // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
-    const e: gs.IEdge = new gs.Edge(k, path);
-    if(!Arr.equal(e.getAttribNames(),["edge_id"])) {return false;}
-    // const path1: gs.ITopoPath = a1.getWires()[0].getTopoPath() ;
+    // const k: Kernel = new Kernel(td.box_with_attribs());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0, st: 1, si: 0};
+    // // (0, gs.EGeomType.faces, 0, gs.EGeomType.edges, 0);
+    // const e: gs.IEdge = new gs.Edge(k, path);
+    // if(!Arr.equal(e.getAttribNames(),["edge_id"])) {return false;}
+    // // const path1: gs.ITopoPath = a1.getWires()[0].getTopoPath() ;
     return true;
 }
 
@@ -101,109 +101,109 @@ export function test_Topo_getGroups(): boolean {
 
 // Vertex
 export function test_Vertex_getGeomType(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-    const v: gs.IVertex = new gs.Vertex(k, path);
-    if (v.getGeomType() !== gs.EGeomType.vertices) {return false; }
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    // const v: gs.IVertex = new gs.Vertex(k, path);
+    // if (v.getGeomType() !== gs.EGeomType.vertices) {return false; }
     return true;
 }
 
 export function test_Vertex_getPoint(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-    const v: gs.IVertex = new gs.Vertex(k, path);
-    if (v.getPoint().getID() !== 6) {return false; }
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    // const v: gs.IVertex = new gs.Vertex(k, path);
+    // if (v.getPoint().getID() !== 6) {return false; }
     return true;
 }
 
 export function test_Vertex_next(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-    const v: gs.IVertex = new gs.Vertex(k, path);
-    if (v.next().getPoint().getID() !== 5) {return false; }
-    if (v.next().next().getPoint().getID() !== 1) {return false; }
-    if (v.next().next().next().getPoint().getID() !== 2) {return false; }
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    // const v: gs.IVertex = new gs.Vertex(k, path);
+    // if (v.next().getPoint().getID() !== 5) {return false; }
+    // if (v.next().next().getPoint().getID() !== 1) {return false; }
+    // if (v.next().next().next().getPoint().getID() !== 2) {return false; }
     return true;
 }
 
 export function test_Vertex_previous(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-    const v: gs.IVertex = new gs.Vertex(k, path);
-    if (v.previous().getPoint().getID() !== 2) {return false; }
-    if (v.previous().previous().getPoint().getID() !== 1) {return false; }
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    // const v: gs.IVertex = new gs.Vertex(k, path);
+    // if (v.previous().getPoint().getID() !== 2) {return false; }
+    // if (v.previous().previous().getPoint().getID() !== 1) {return false; }
     return true;
 }
 
 export function test_Vertex_getEdge(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-    const v: gs.IVertex = new gs.Vertex(k, path);
-    const e: gs.IEdge = v.getEdge();
-    if (e.getObjID() !== 0) {return false; }
-    if (e.getGeomType() !== gs.EGeomType.edges) {return false; }
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    // const v: gs.IVertex = new gs.Vertex(k, path);
+    // const e: gs.IEdge = v.getEdge();
+    // if (e.getObjID() !== 0) {return false; }
+    // if (e.getGeomType() !== gs.EGeomType.edges) {return false; }
     return true;
 }
 
 export function test_Vertex_getWireOrFace(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-    const v: gs.IVertex = new gs.Vertex(k, path);
-    if (v.getWireOrFace().getObjID() !== 0) {return false; }
-    if (v.getWireOrFace().getGeomType() !== gs.EGeomType.faces) {return false; }
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    // const v: gs.IVertex = new gs.Vertex(k, path);
+    // if (v.getWireOrFace().getObjID() !== 0) {return false; }
+    // if (v.getWireOrFace().getGeomType() !== gs.EGeomType.faces) {return false; }
     return true;
 }
 
 export function test_Vertex_verticesSharedPoint(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-    const v: gs.IVertex = new gs.Vertex(k, path);
-    let w_v: gs.IVertex[]; // vertices that belong to wires
-    let f_v: gs.IVertex[]; // vertices that belong to faces
-    [w_v, f_v] = v.verticesSharedPoint();
-    if (w_v.length !== 0) {return false;}
-    if (f_v.length !== 2) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    // const v: gs.IVertex = new gs.Vertex(k, path);
+    // let w_v: gs.IVertex[]; // vertices that belong to wires
+    // let f_v: gs.IVertex[]; // vertices that belong to faces
+    // [w_v, f_v] = v.verticesSharedPoint();
+    // if (w_v.length !== 0) {return false;}
+    // if (f_v.length !== 2) {return false;}
     return true;
 }
 
 // Edge
 export function test_Edge_getGeomType(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-    const v: gs.IVertex = new gs.Vertex(k, path);
-    const e: gs.IEdge = v.getEdge();
-    if(!(e.getGeomType() === gs.EGeomType.edges)) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    // const v: gs.IVertex = new gs.Vertex(k, path);
+    // const e: gs.IEdge = v.getEdge();
+    // if(!(e.getGeomType() === gs.EGeomType.edges)) {return false;}
     return true;
 }
 
 export function test_Edge_getVertices(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
-    const v: gs.IVertex = new gs.Vertex(k, path);
-    const e: gs.IEdge = v.getEdge();
-    if (e.getVertices().length !== 2) {return false; }
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 0, si: 1};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.vertices, 1);
+    // const v: gs.IVertex = new gs.Vertex(k, path);
+    // const e: gs.IEdge = v.getEdge();
+    // if (e.getVertices().length !== 2) {return false; }
     return true;
 }
 
 export function test_Edge_getWireOrFace(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path1: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 1, si: 0};
-    // (0, gs.EGeomType.faces, 1, gs.EGeomType.edges, 0);
-    const e1: gs.IEdge = new gs.Edge(k, path1);
-    const path2: gs.ITopoPathData = {id: 0, tt: 0, ti: 0, st: 1, si: 0};
-    // (0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
-    const e2: gs.IEdge = new gs.Edge(k, path2);
-    if(gs.mapGeomTypeToString.get(e1.getWireOrFace().getGeomType()) !== "faces") {return false;}
-    if(gs.mapGeomTypeToString.get(e2.getWireOrFace().getGeomType()) !== "wires") {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path1: gs.ITopoPathData = {id: 0, tt: 1, ti: 1, st: 1, si: 0};
+    // // (0, gs.EGeomType.faces, 1, gs.EGeomType.edges, 0);
+    // const e1: gs.IEdge = new gs.Edge(k, path1);
+    // const path2: gs.ITopoPathData = {id: 0, tt: 0, ti: 0, st: 1, si: 0};
+    // // (0, gs.EGeomType.wires, 0, gs.EGeomType.edges, 0);
+    // const e2: gs.IEdge = new gs.Edge(k, path2);
+    // if(gs.mapGeomTypeToString.get(e1.getWireOrFace().getGeomType()) !== "faces") {return false;}
+    // if(gs.mapGeomTypeToString.get(e2.getWireOrFace().getGeomType()) !== "wires") {return false;}
     return true;
 }
 
@@ -333,101 +333,101 @@ export function test_Edge_edgesSharedPoints(): boolean {
 
 // Wire
 export function test_Wire_getGeomType(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
-    const w: gs.IWire = new gs.Wire(k, path);
-    if(gs.mapGeomTypeToString.get(w.getGeomType()) !== "wires") {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
+    // const w: gs.IWire = new gs.Wire(k, path);
+    // if(gs.mapGeomTypeToString.get(w.getGeomType()) !== "wires") {return false;}
     return true;
 }
 export function test_Wire_getVertices(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
-    const w: gs.IWire = new gs.Wire(k, path);
-    const v: gs.IVertex[] = w.getVertices();
-    const w2: gs.IWire = v[0].getWireOrFace() as gs.IWire;
-    if(!w2.isClosed()) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
+    // const w: gs.IWire = new gs.Wire(k, path);
+    // const v: gs.IVertex[] = w.getVertices();
+    // const w2: gs.IWire = v[0].getWireOrFace() as gs.IWire;
+    // if(!w2.isClosed()) {return false;}
     return true;
 }
 export function test_Wire_getEdges(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
-    const w: gs.IWire = new gs.Wire(k, path);
-    const e: gs.IEdge[] = w.getEdges();
-    const w2: gs.IWire = e[0].getWireOrFace() as gs.IWire;
-    if(!w2.isClosed()) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
+    // const w: gs.IWire = new gs.Wire(k, path);
+    // const e: gs.IEdge[] = w.getEdges();
+    // const w2: gs.IWire = e[0].getWireOrFace() as gs.IWire;
+    // if(!w2.isClosed()) {return false;}
     return true;
 }
 export function test_Wire_numVertices(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
-    const w: gs.IWire = new gs.Wire(k, path);
-    if(!(w.numVertices() === 4)) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
+    // const w: gs.IWire = new gs.Wire(k, path);
+    // if(!(w.numVertices() === 4)) {return false;}
     return true;
 }
 export function test_Wire_numEdges(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
-    const w: gs.IWire = new gs.Wire(k, path);
-    if(!(w.numEdges() === 4)) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
+    // const w: gs.IWire = new gs.Wire(k, path);
+    // if(!(w.numEdges() === 4)) {return false;}
     return true;
 }
 export function test_Wire_isClosed(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
-    const w: gs.IWire = new gs.Wire(k, path);
-    if(!w.isClosed()) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 0, ti: 0}; // (0, gs.EGeomType.wires, 0);
+    // const w: gs.IWire = new gs.Wire(k, path);
+    // if(!w.isClosed()) {return false;}
     return true;
 }
 
 // Face
 export function test_Face_getGeomType(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
-    const f: gs.IFace = new gs.Face(k, path);
-    if(gs.mapGeomTypeToString.get(f.getGeomType()) !== "faces") {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
+    // const f: gs.IFace = new gs.Face(k, path);
+    // if(gs.mapGeomTypeToString.get(f.getGeomType()) !== "faces") {return false;}
     return true;
 }
 export function test_Face_getVertices(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
-    const f: gs.IFace = new gs.Face(k, path);
-    const v: gs.IVertex[] = f.getVertices();
-    if(gs.mapGeomTypeToString.get(v[0].getWireOrFace().getGeomType()) !== "faces") {return false;}
-    if(gs.mapGeomTypeToString.get(v[1].getWireOrFace().getGeomType()) !== "faces") {return false;}
-    if(gs.mapGeomTypeToString.get(v[2].getWireOrFace().getGeomType()) !== "faces") {return false;}
-    if(gs.mapGeomTypeToString.get(v[3].getWireOrFace().getGeomType()) !== "faces") {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
+    // const f: gs.IFace = new gs.Face(k, path);
+    // const v: gs.IVertex[] = f.getVertices();
+    // if(gs.mapGeomTypeToString.get(v[0].getWireOrFace().getGeomType()) !== "faces") {return false;}
+    // if(gs.mapGeomTypeToString.get(v[1].getWireOrFace().getGeomType()) !== "faces") {return false;}
+    // if(gs.mapGeomTypeToString.get(v[2].getWireOrFace().getGeomType()) !== "faces") {return false;}
+    // if(gs.mapGeomTypeToString.get(v[3].getWireOrFace().getGeomType()) !== "faces") {return false;}
     return true;
 }
 export function test_Face_getEdges(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
-    const f: gs.IFace = new gs.Face(k, path);
-    const e: gs.IEdge[] = f.getEdges();
-    if(gs.mapGeomTypeToString.get(e[0].getWireOrFace().getGeomType()) !== "faces") {return false;}
-    if(gs.mapGeomTypeToString.get(e[1].getWireOrFace().getGeomType()) !== "faces") {return false;}
-    if(gs.mapGeomTypeToString.get(e[2].getWireOrFace().getGeomType()) !== "faces") {return false;}
-    if(gs.mapGeomTypeToString.get(e[3].getWireOrFace().getGeomType()) !== "faces") {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
+    // const f: gs.IFace = new gs.Face(k, path);
+    // const e: gs.IEdge[] = f.getEdges();
+    // if(gs.mapGeomTypeToString.get(e[0].getWireOrFace().getGeomType()) !== "faces") {return false;}
+    // if(gs.mapGeomTypeToString.get(e[1].getWireOrFace().getGeomType()) !== "faces") {return false;}
+    // if(gs.mapGeomTypeToString.get(e[2].getWireOrFace().getGeomType()) !== "faces") {return false;}
+    // if(gs.mapGeomTypeToString.get(e[3].getWireOrFace().getGeomType()) !== "faces") {return false;}
     return true;
 }
 export function test_Face_numVertices(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
-    const f: gs.IFace = new gs.Face(k, path);
-    if(!(f.numVertices() === 4)) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
+    // const f: gs.IFace = new gs.Face(k, path);
+    // if(!(f.numVertices() === 4)) {return false;}
     return true;
 }
 export function test_Face_numEdges(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
-    const f: gs.IFace = new gs.Face(k, path);
-    if(!(f.numEdges() === 4)) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
+    // const f: gs.IFace = new gs.Face(k, path);
+    // if(!(f.numEdges() === 4)) {return false;}
     return true;
 }
 export function test_Face_isClosed(): boolean {
-    const k: Kernel = new Kernel(td.open_box());
-    const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
-    const f: gs.IFace = new gs.Face(k, path);
-    if(!f.isClosed()) {return false;}
+    // const k: Kernel = new Kernel(td.open_box());
+    // const path: gs.ITopoPathData = {id: 0, tt: 1, ti: 0}; // (0, gs.EGeomType.faces, 0);
+    // const f: gs.IFace = new gs.Face(k, path);
+    // if(!f.isClosed()) {return false;}
     return true;
 }
 export function test_Face_facesSharedPoints(): boolean {

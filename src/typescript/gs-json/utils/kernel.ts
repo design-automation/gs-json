@@ -1,6 +1,6 @@
 import {Arr} from "./arr";
-import * as mathjs from "mathjs";
-import * as threejs from "threejs";
+//import * as mathjs from "mathjs"; // TODO not being used at the moment
+//import * as threejs from "three"; // TODO not being used at the moment
 
 import {IModel} from "./ifaces_gs";
 
@@ -33,7 +33,7 @@ export class Kernel {
      * @param
      * @return
      */
-    constructor(data?: IModelData) {
+    constructor(model: IModel, data?: IModelData) {
         this._attribs = new Map();
         this._attribs.set(EGeomType.points, new Map());
         this._attribs.set(EGeomType.objs, new Map());
