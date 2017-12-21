@@ -376,6 +376,15 @@ export class Polyline  extends Obj implements ifs.IPolyline {
     public getObjType(): EObjType {
         return EObjType.polyline;
     }
+
+    /**
+     * Checks if the polyline is closed.
+     * @return Return true if the polyline is closed.
+     */
+    public isClosed(): boolean {
+        return this.getWires()[0].isClosed();
+    }
+
 }
 
 //  ================================================================================================
@@ -394,6 +403,14 @@ export class NurbsCurve  extends Obj implements ifs.INurbsCurve {
      */
     public getObjType(): EObjType {
         return EObjType.nurbs_curve;
+    }
+
+    /**
+     * Checks if the curve is closed.
+     * @return Return true if the curve is closed.
+     */
+    public isClosed(): boolean {
+        return this.getWires()[0].isClosed();
     }
 }
 
