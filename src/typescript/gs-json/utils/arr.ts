@@ -1,6 +1,7 @@
 /**
  * A set of static methods for working with arrays.
  */
+
 export class Arr {
     /**
      * Make an array of numbers. All elements in the array will have the same value.

@@ -30,6 +30,7 @@ export const enum EObjType {
     acorn = 0,
     ray = 1,
     plane = 2,
+    conic_curve = 3,
     polyline = 100,
     nurbs_curve = 120,
     bezier_curve = 121,

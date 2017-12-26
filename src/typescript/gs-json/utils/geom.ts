@@ -1,14 +1,21 @@
-import * as ifs from "./ifaces_gs";
+import {IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane, IConicCurve,
+        IPolyline, IPolymesh, INurbsCurve} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
-import {Point, Polyline, NurbsCurve, Polymesh, Plane, Ray} from "./entities";
-import {Vertex, Edge, Wire, Face} from "./topos";
+import {Point} from "./entity_point";
+import {Polyline} from "./entity_obj_polyline";
+import {ConicCurve} from "./entity_obj_coniccurve";
+import {NurbsCurve} from "./entity_obj_nurbscurve";
+import {Polymesh} from "./entity_obj_polymesh";
+import {Plane} from "./entity_obj_plane";
+import {Ray} from "./entity_obj_ray";
+import {Vertex, Edge, Wire, Face} from "./topo_sub";
 
 /**
  * Class Geom
  */
-export class Geom implements ifs.IGeom {
+export class Geom implements IGeom {
     private _kernel: Kernel;
 
     /**
@@ -27,7 +34,7 @@ export class Geom implements ifs.IGeom {
      * @param xyz xyz coordinates are required to create a point
      * @return A point instance.
      */
-    public addPoint(xyz: number[]): ifs.IPoint {
+    public addPoint(xyz: number[]): IPoint {
         const id: number = this._kernel.geomAddPoint(xyz);
         return new Point(this._kernel, id);
     }
@@ -37,7 +44,7 @@ export class Geom implements ifs.IGeom {
      * @param xyz An array of xyz coordinates.
      * @return An array Point instances.
      */
-    public addPoints(xyz_arr: number[][]): ifs.IPoint[] {
+    public addPoints(xyz_arr: number[][]): IPoint[] {
         return xyz_arr.map((xyz) => this.addPoint(xyz));
     }
 
@@ -47,10 +54,23 @@ export class Geom implements ifs.IGeom {
      * @param is_closed True if the polyline is closed.
      * @return Object of type Polyline
      */
-    public addPolyline(points: ifs.IPoint[], is_closed: boolean): ifs.IPolyline {
+    public addPolyline(points: IPoint[], is_closed: boolean): IPolyline {
         const point_ids: number[] = points.map((p) => p.getID());
         const id: number = this._kernel.geomAddPolyline(point_ids, is_closed);
         return new Polyline(this._kernel, id);
+    }
+
+    /**
+     * Adds a new conic curve to the model.
+     * @param Origin:
+     * @return Object of type Plane
+     */
+    public addConicCurve(origin_point: IPoint, x_vec: number[], y_vec: number[],
+                         angles: [number, number]):
+                    IConicCurve {
+        const id: number = this._kernel.geomAddConicCurve(origin_point.getID(),
+            x_vec, y_vec, angles);
+        return new ConicCurve(this._kernel, id);
     }
 
     /**
@@ -59,7 +79,7 @@ export class Geom implements ifs.IGeom {
      * @param is_closed True if the polyline is closed.
      * @return Object of type Polyline
      */
-    public addNurbsCurve(points: ifs.IPoint[], is_closed: boolean, order: number): ifs.INurbsCurve {
+    public addNurbsCurve(points: IPoint[], is_closed: boolean, order: number): INurbsCurve {
         const point_ids: number[] = points.map((p) => p.getID());
         const id: number = this._kernel.geomAddNurbsCurve(point_ids, is_closed, order);
         return new NurbsCurve(this._kernel, id);
@@ -70,7 +90,7 @@ export class Geom implements ifs.IGeom {
      * @param face_points An array of arrays of points.
      * @return Object of type Polymesh
      */
-    public addPolymesh(face_points: ifs.IPoint[][]): ifs.IPolymesh {
+    public addPolymesh(face_points: IPoint[][]): IPolymesh {
         const point_ids: number[][] = face_points.map((f) => f.map((p) => p.getID()));
         const id: number = this._kernel.geomAddPolymesh(point_ids);
         return new Polymesh(this._kernel, id);
@@ -80,7 +100,7 @@ export class Geom implements ifs.IGeom {
      * @param origin_point An array of arrays of points.
      * @return Object of type Ray
      */
-    public addRay(origin_point: ifs.IPoint, ray_point: ifs.IPoint): ifs.IRay {
+    public addRay(origin_point: IPoint, ray_point: IPoint): IRay {
         const id: number = this._kernel.geomAddRay(origin_point.getID(), ray_point.getID());
         return new Ray(this._kernel, id);
     }
@@ -89,8 +109,8 @@ export class Geom implements ifs.IGeom {
      * @param Origin:
      * @return Object of type Plane
      */
-    public addPlane(origin_point: ifs.IPoint, xaxis_point: ifs.IPoint, yaxis_point: ifs.IPoint):
-                    ifs.IPlane {
+    public addPlane(origin_point: IPoint, xaxis_point: IPoint, yaxis_point: IPoint):
+                    IPlane {
         const id: number = this._kernel.geomAddPlane(origin_point.getID(), xaxis_point.getID(),
             yaxis_point.getID());
         return new Plane(this._kernel, id);
@@ -112,7 +132,7 @@ export class Geom implements ifs.IGeom {
      * @param
      * @return
      */
-    public getPoints(): ifs.IPoint[] {
+    public getPoints(): IPoint[] {
         const ids: number[] = this._kernel.geomGetPointIDs();
         return ids.map((id) => new Point(this._kernel, id));
     }
@@ -122,7 +142,7 @@ export class Geom implements ifs.IGeom {
      * @param
      * @return
      */
-    public getPoint(id: number): ifs.IPoint {
+    public getPoint(id: number): IPoint {
         return new Point(this._kernel, id);
     }
 
@@ -187,9 +207,9 @@ export class Geom implements ifs.IGeom {
      * @param
      * @return
      */
-    public getObjs(): ifs.IObj[] {
+    public getObjs(): IObj[] {
         const ids: number[] = this._kernel.geomGetObjIDs();
-        const objs: ifs.IObj[] = [];
+        const objs: IObj[] = [];
         for (const id of ids) {
             const obj_type = this._kernel.objGetType(id);
             switch (obj_type) {
@@ -221,7 +241,7 @@ export class Geom implements ifs.IGeom {
      * @param
      * @return
      */
-    public getObj(id: number): ifs.IObj {
+    public getObj(id: number): IObj {
         const obj_type = this._kernel.objGetType(id);
         switch (obj_type) {
             case EObjType.ray:
@@ -265,8 +285,8 @@ export class Geom implements ifs.IGeom {
      * @param
      * @return
      */
-    // public getTopos(geom_type: EGeomType): ifs.ITopo[] {
-    public getTopos(geom_type: EGeomType): (ifs.IVertex[] | ifs.IEdge[] | ifs.IWire[] | ifs.IFace[])  {
+    // public getTopos(geom_type: EGeomType): ITopo[] {
+    public getTopos(geom_type: EGeomType): (IVertex[] | IEdge[] | IWire[] | IFace[])  {
         const paths: ITopoPathData[] = this._kernel.geomGetTopoPaths(geom_type);
         switch (geom_type) {
             case EGeomType.vertices:

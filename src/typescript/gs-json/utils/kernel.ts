@@ -1,6 +1,6 @@
 import {Arr} from "./arr";
 //import * as mathjs from "mathjs"; // TODO not being used at the moment
-//import * as threejs from "three"; // TODO not being used at the moment
+//import * as three from "three"; // TODO not being used at the moment
 
 import {IModel} from "./ifaces_gs";
 
@@ -167,7 +167,7 @@ export class Kernel {
         const data: IAttribData = {
                                    data_type: mapDataTypeToString.get(data_type), // TODO string not good
                                    geom_type: mapGeomTypeToString.get(geom_type),  // TODO string not good
-                                   name: name,
+                                   name,
                                    values: [[],[null]]};
 
         // populate the attribute with indexes all pointing to the null value
@@ -246,7 +246,7 @@ export class Kernel {
      * @return
      */
     public modelAddGroup(name: string, parent?: string): IGroupData {
-        const data: IGroupData = {name: name, parent: null, objs: [], points: []};
+        const data: IGroupData = {name, parent: null, objs: [], points: []};
         if (parent !== undefined && this._groups.has(parent)) {
             data.parent = parent;
         }
@@ -413,7 +413,7 @@ export class Kernel {
         // create the ray
         this._objs.push([
             [[origin_id, ray_point_id]],
-            [], [1, origin, ray_vec]]); // add the obj
+            [], [EObjType.ray, origin, ray_vec]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
@@ -461,7 +461,7 @@ export class Kernel {
         const new_id: number = this._objs.length;
         this._objs.push([
             [[origin_id, xaxis_point_id], [origin_id, yaxis_point_id]],
-            [], [2, origin, x_vec, y_vec, z_vec]]); // add the obj
+            [], [EObjType.plane, origin, x_vec, y_vec, z_vec]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
@@ -479,10 +479,34 @@ export class Kernel {
         const new_id: number = this._objs.length;
         // create the pline
         if (is_closed) {point_ids.push(-1); }
-        this._objs.push([[point_ids], [], [100]]); // add the obj
+        this._objs.push([[point_ids], [], [EObjType.polyline]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
+        return new_id;
+    }
+
+    /**
+     * Adds a new conic curve to the model defined by origin and two points on x and y axes, and
+     * two angles.
+     * @param origin_id The origin point.
+     * @param xaxis_point_id The conic curve x axis point.
+     * @param yaxis_point_id The conic curve y axis point.
+     * @param ang_a The angles, can be undefined, in which case a closed conic is generated
+     * @return ID of object.
+     */
+    public geomAddConicCurve(origin_id: number, x_vec: number[], y_vec: number[],
+                        angles?: [number, number]): number {
+        const new_id: number = this._objs.length;
+        // add the obj
+        this._objs.push([
+            [[origin_id]], // wire with just a single point
+            [], // faces, none
+            [EObjType.conic_curve, ...this.pointGetPosition(origin_id), x_vec, y_vec, angles], // params
+        ]);
+        // update all attributes
+        this._addObjToAttribs(new_id);
+        // return the new conic id
         return new_id;
     }
 
@@ -498,7 +522,7 @@ export class Kernel {
         const new_id: number = this._objs.length;
         // create the pline
         if (is_closed) {ctrl_point_ids.push(-1); }
-        this._objs.push([[ctrl_point_ids], [], [120, order]]); // add the obj
+        this._objs.push([[ctrl_point_ids], [], [EObjType.nurbs_curve, order]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
@@ -518,7 +542,7 @@ export class Kernel {
         const wire_points_ids: number[][] = this._findPolymeshWires(face_points_ids);
         face_points_ids.forEach((f) => f.push(-1)); // close
         wire_points_ids.forEach((w) => w.push(-1)); // close
-        this._objs.push([wire_points_ids, face_points_ids, [100]]); // add the obj
+        this._objs.push([wire_points_ids, face_points_ids, [EObjType.polymesh]]); // add the obj
         // update all attributes
         this._addObjToAttribs(new_id);
         // return the new pline
@@ -1943,9 +1967,9 @@ export class Kernel {
         }
         this._points.length = end + 1;
         // change the points in the objs
-        for (let [oi, o] of this._objs.entries()) {
-            for (let [fi, f] of o.entries()) {
-                for (let [vi, v] of f.entries()) {
+        for (const [oi, o] of this._objs.entries()) {
+            for (const [fi, f] of o.entries()) {
+                for (const [vi, v] of f.entries()) {
                     f[vi] = shift_map.get(vi);
                 }
             }

@@ -1,13 +1,14 @@
-import * as ifs from "./ifaces_gs";
+import {IGroup, ITopo} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
-import {Vertex, Edge, Wire, Face} from "./topos";
+import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {mapSTPathIndexToGeomType, mapTTPathIndexToGeomType} from "./enums";
+
 /**
  * Group class.
  */
-export class Group implements ifs.IGroup {
+export class Group implements IGroup {
     private _kernel: Kernel;
     private _name: string;
 
@@ -142,9 +143,9 @@ export class Group implements ifs.IGroup {
      * @param
      * @return
      */
-    public getTopos(geom_type?: EGeomType): ifs.ITopo[] {
+    public getTopos(geom_type?: EGeomType): ITopo[] {
         const paths: ITopoPathData[] = this._kernel.groupGetTopos(this._name, geom_type);
-        const topos: ifs.ITopo[] = [];
+        const topos: ITopo[] = [];
         for (const path of paths) {
             const path_tt = mapTTPathIndexToGeomType.get(path.tt);
             const path_st = mapSTPathIndexToGeomType.get(path.st);
@@ -175,7 +176,7 @@ export class Group implements ifs.IGroup {
      * @param
      * @return
      */
-    public addTopo(topo: ifs.ITopo): void {
+    public addTopo(topo: ITopo): void {
         const path: ITopoPathData = topo.getTopoPath(); // TODO
         return this._kernel.groupAddTopo(this._name, path);
     }
@@ -185,7 +186,7 @@ export class Group implements ifs.IGroup {
      * @param
      * @return
      */
-    public addTopos(topos: ifs.ITopo[]): void {
+    public addTopos(topos: ITopo[]): void {
         const paths: ITopoPathData[] = topos.map((p) => p.getTopoPath()); // TODO
         return this._kernel.groupAddTopos(this._name, paths);
     }
@@ -195,7 +196,7 @@ export class Group implements ifs.IGroup {
      * @param
      * @return
      */
-    public removeTopo(topo: ifs.ITopo): boolean {
+    public removeTopo(topo: ITopo): boolean {
         const path: ITopoPathData = topo.getTopoPath(); // TODO
         return this._kernel.groupRemoveTopo(this._name, path);
     }
@@ -205,7 +206,7 @@ export class Group implements ifs.IGroup {
      * @param
      * @return
      */
-    public removeTopos(topos: ifs.ITopo[]): boolean {
+    public removeTopos(topos: ITopo[]): boolean {
         const paths: ITopoPathData[] = topos.map((p) => p.getTopoPath()); // TODO
         return this._kernel.groupRemoveTopos(this._name, paths);
     }
@@ -215,7 +216,7 @@ export class Group implements ifs.IGroup {
      * @param
      * @return
      */
-    public hasTopo(topo: ifs.ITopo): boolean {
+    public hasTopo(topo: ITopo): boolean {
         const path: ITopoPathData = topo.getTopoPath(); // TODO
         return this._kernel.groupHasTopo(this._name, path);
     }

@@ -1,109 +1,13 @@
-import * as ifs from "./ifaces_gs";
-import {Kernel} from "./kernel";
+import {IPoint, IVertex, IEdge, IWire, IFace} from "./ifaces_gs";
+import {Topo} from "./topo";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
-import {Point} from "./entities";
-import {Group} from "./groups";
-
-//  ================================================================================================
-
-/**
- * Topo class.
- * An abstrcat class that is the superclass for all topological components:
- * vertices, edges, wires, and faces.
- */
-export abstract class Topo implements ifs.ITopo {
-    protected _kernel: Kernel;
-    protected _path: ITopoPathData;
-    /**
-     * Creates an instance of one of the subclasses of Topo.
-     * The entity must already exists in the geometry.
-     * In general, you do not need to create topological components.
-     * Topology will be created for you when you create geometric objects.
-     * @param geom The Geom object to which the topo belongs.
-     * @param path The path of the entity. This path must already exist in the geometry.
-     * @return The Topo object.
-     */
-    constructor(kernel: Kernel, path: ITopoPathData) {
-        this._kernel = kernel;
-        this._path = path;
-    }
-
-    //  This topo ----------------------------------------------------------------------------------
-
-    /**
-     * Get the ID of the object to which this topological component belongs.
-     * @return The object ID number.
-     */
-    public getObjID(): number {
-        return this._path.id;
-    }
-
-    /**
-     * Get the geometry type for this topological component.
-     * This method mst be overridden by the sub-classes.
-     * @return The geometry type.
-     */
-    public getGeomType(): EGeomType {
-        // Do not implement this method.
-        throw new Error ("Method to be overridden by subclass.");
-    }
-
-    /**
-     * Get the geometry path for this topological component.
-     * @return The geometry path.
-     */
-    public getTopoPath(): ITopoPathData {
-        return this._path;
-    }
-
-    //  Attributes ---------------------------------------------------------------------------------
-
-    /**
-     * Get the attribute names for this topological component.
-     * @return The array of attribute names.
-     */
-    public getAttribNames(): string[] {
-        return this._kernel.attribGetNames(this.getGeomType());
-    }
-
-    /**
-     * Get an attribute value for this topological component.
-     * @param name The attribute name.
-     * @return The attribute value.
-     */
-    public getAttribValue(name: string): any {
-        return this._kernel.topoAttribGetValue(name, this.getGeomType(), this._path);
-    }
-
-    /**
-     * Set an attribute value for this topological component.
-     * @param name The attribute name.
-     * @param value The new attribute value.
-     * @return The old attribute value.
-     */
-    public setAttribValue(name: string, value: any): any {
-        return this._kernel.topoAttribSetValue(name, this.getGeomType(), this._path, value);
-    }
-
-    //  Groups -------------------------------------------------------------------------------------
-
-    /**
-     * Get the group names for all the groups for which this topological component is a member.
-     * @return The array of groups.
-     */
-    public getGroups(): ifs.IGroup[] {
-        const names: string[] = this._kernel.topoGetGroups(this._path);
-        return names.map((name) => new Group(this._kernel, name));
-    }
-}
-
-//  ================================================================================================
+import {Point} from "./entity_point";
 
 /**
  * Vertex class.
  */
-export class Vertex extends Topo implements ifs.IVertex {
+export class Vertex extends Topo implements IVertex {
     /**
      * Get the geometry type: "vertices".
      * This method overrides the method in the Topo class.
@@ -117,7 +21,7 @@ export class Vertex extends Topo implements ifs.IVertex {
      * Get the point associated with this vertex.
      * @return The point object.
      */
-    public getPoint(): ifs.IPoint {
+    public getPoint(): IPoint {
         const id: number = this._kernel.vertexGetPoint(this._path);
         return new Point(this._kernel, id);
     }
@@ -126,7 +30,7 @@ export class Vertex extends Topo implements ifs.IVertex {
      * Get the edge for which this is the start vertex.
      * @return The edge object.
      */
-    public getEdge(): ifs.IEdge {
+    public getEdge(): IEdge {
         const path: ITopoPathData = this._kernel.vertexGetEdge(this._path);
         return new Edge(this._kernel, path);
     }
@@ -134,7 +38,7 @@ export class Vertex extends Topo implements ifs.IVertex {
      * Get the wire or face to which this vertex belongs.
      * @return The wire or face object.
      */
-    public getWireOrFace(): ifs.IWire|ifs.IFace {
+    public getWireOrFace(): IWire|IFace {
         const path: ITopoPathData = this._kernel.vertexGetTopo(this._path);
         if (path.tt === 0) { // wire
             return new Wire(this._kernel, path);
@@ -146,7 +50,7 @@ export class Vertex extends Topo implements ifs.IVertex {
      * Find the next vertex in the sequence of vertices in the wire or face.
      * @return The next vertex object.
      */
-    public next(): ifs.IVertex {
+    public next(): IVertex {
         const path: ITopoPathData = this._kernel.vertexNext(this._path);
         if (path === null) {return null;}
         return new Vertex(this._kernel, path);
@@ -155,7 +59,7 @@ export class Vertex extends Topo implements ifs.IVertex {
      * Find the previous vertex in the sequence of vertices in the wire or face.
      * @return The previous vertex object.
      */
-    public previous(): ifs.IVertex {
+    public previous(): IVertex {
         const path: ITopoPathData = this._kernel.vertexPrevious(this._path);
         if (path === null) {return null;}
         return new Vertex(this._kernel, path);
@@ -166,7 +70,7 @@ export class Vertex extends Topo implements ifs.IVertex {
      * 1) The wire vertices, and 2) the face vertices.
      * @return An array containing the two sub-arrays of vertices.
      */
-    public verticesSharedPoint(): ifs.IVertex[][] {
+    public verticesSharedPoint(): IVertex[][] {
         const paths: ITopoPathData[][] = this._kernel.geomFindVerticesSharedPoint(this._path);
         return [
             paths[0].map((path) => new Vertex(this._kernel, path)), // wires
@@ -179,7 +83,7 @@ export class Vertex extends Topo implements ifs.IVertex {
      * 1) The wire vertices, and 2) the face vertices.
      * @return An array containing the two sub-arrays of vertices.
      */
-    public verticesSamePosition(): ifs.IVertex[][] {
+    public verticesSamePosition(): IVertex[][] {
         const paths: ITopoPathData[][] = this._kernel.geomFindVerticesSamePosition(this._path);
         return [
             paths[0].map((path) => new Vertex(this._kernel, path)), // wires
@@ -188,12 +92,11 @@ export class Vertex extends Topo implements ifs.IVertex {
     }
 }
 
-//  ================================================================================================
 
 /**
  * Edge class.
  */
-export class Edge extends Topo implements ifs.IEdge {
+export class Edge extends Topo implements IEdge {
     /**
      * Get the geometry type: "edges".
      * This method overrides the method in the Topo class.
@@ -207,7 +110,7 @@ export class Edge extends Topo implements ifs.IEdge {
      * Get the two vertices for this edge.
      * @return An array of two edges.
      */
-    public getVertices(): ifs.IVertex[] {
+    public getVertices(): IVertex[] {
         const paths: ITopoPathData[] = this._kernel.edgeGetVertices(this._path);
         return paths.map((path) => new Vertex(this._kernel, path));
     }
@@ -216,7 +119,7 @@ export class Edge extends Topo implements ifs.IEdge {
      * Get the wire or face to which this edge belongs.
      * @return The wire or face.
      */
-    public getWireOrFace(): ifs.IWire|ifs.IFace {
+    public getWireOrFace(): IWire|IFace {
         const path: ITopoPathData = this._kernel.edgeGetTopo(this._path);
         if (path.tt === 0) { // wire
             return new Wire(this._kernel, path);
@@ -229,7 +132,7 @@ export class Edge extends Topo implements ifs.IEdge {
      * Find the next edge in the sequence of edges in the wire or face.
      * @return The next edge object.
      */
-    public next(): ifs.IEdge {
+    public next(): IEdge {
         const path: ITopoPathData = this._kernel.edgeNext(this._path);
         if (path === null) {return null;}
         return new Edge(this._kernel, path);
@@ -239,7 +142,7 @@ export class Edge extends Topo implements ifs.IEdge {
      * Find the previous edge in the sequence of edges in the wire or face.
      * @return The previous edge object.
      */
-    public previous(): ifs.IEdge {
+    public previous(): IEdge {
         const path: ITopoPathData = this._kernel.edgePrevious(this._path);
         if (path === null) {return null;}
         return new Edge(this._kernel, path);
@@ -252,7 +155,7 @@ export class Edge extends Topo implements ifs.IEdge {
      * 1) The wire edges, and 2) the face edges.
      * @return An array containing the two sub-arrays of edges.
      */
-    public edgesSharedPoints(): ifs.IEdge[][] {
+    public edgesSharedPoints(): IEdge[][] {
         const paths: ITopoPathData[][] = this._kernel.geomFindEdgesSharedPoints(this._path);
         return [
             paths[0].map((path) => new Edge(this._kernel, path)), // wires
@@ -261,12 +164,12 @@ export class Edge extends Topo implements ifs.IEdge {
     }
 }
 
-//  ================================================================================================
+
 
 /**
  * Wire class
  */
-export class Wire extends Topo implements ifs.IWire {
+export class Wire extends Topo implements IWire {
     /**
      * Get the geometry type: "wires".
      * This method overrides the method in the Topo class.
@@ -280,7 +183,7 @@ export class Wire extends Topo implements ifs.IWire {
      * Get the vertices for this wire.
      * @return An array of vertices.
      */
-    public getVertices(): ifs.IVertex[] {
+    public getVertices(): IVertex[] {
         const paths: ITopoPathData[] = this._kernel.topoGetVertices(this._path);
         return paths.map((path) => new Vertex(this._kernel, path));
     }
@@ -289,7 +192,7 @@ export class Wire extends Topo implements ifs.IWire {
      * Get the edges for this wire.
      * @return An array of edges.
      */
-    public getEdges(): ifs.IEdge[] {
+    public getEdges(): IEdge[] {
         const paths: ITopoPathData[] = this._kernel.topoGetEdges(this._path);
         return paths.map((path) => new Edge(this._kernel, path));
     }
@@ -322,18 +225,17 @@ export class Wire extends Topo implements ifs.IWire {
      * Within the parent object, find all wires that share at least n points.
      * @return An array of wires.
      */
-    public wiresSharedPoints(num_shared_points?: number): ifs.IWire[] {
+    public wiresSharedPoints(num_shared_points?: number): IWire[] {
         const paths: ITopoPathData[] = this._kernel.geomFindTopoSharedPoints(this._path);
         return paths.map((path) => new Wire(this._kernel, path));
     }
 }
 
-//  ================================================================================================
 
 /**
  * Face class
  */
-export class Face extends Topo implements ifs.IFace {
+export class Face extends Topo implements IFace {
     /**
      * Get the geometry type: "faces".
      * This method overrides the method in the Topo class.
@@ -347,7 +249,7 @@ export class Face extends Topo implements ifs.IFace {
      * Get the vertices for this wire.
      * @return An array of vertices.
      */
-    public getVertices(): ifs.IVertex[] {
+    public getVertices(): IVertex[] {
         const paths: ITopoPathData[] = this._kernel.topoGetVertices(this._path);
         return paths.map((path) => new Vertex(this._kernel, path));
     }
@@ -356,7 +258,7 @@ export class Face extends Topo implements ifs.IFace {
      * Get the edges for this wire.
      * @return An array of edges.
      */
-    public getEdges(): ifs.IEdge[] {
+    public getEdges(): IEdge[] {
         const paths: ITopoPathData[] = this._kernel.topoGetEdges(this._path);
         return paths.map((path) => new Edge(this._kernel, path));
     }
@@ -391,7 +293,7 @@ export class Face extends Topo implements ifs.IFace {
      * Within the parent object, find all faces that share at least n points.
      * @return An array of faces.
      */
-    public facesSharedPoints(num_shared_points?: number): ifs.IFace[] {
+    public facesSharedPoints(num_shared_points?: number): IFace[] {
         const paths: ITopoPathData[] = this._kernel.geomFindTopoSharedPoints(this._path);
         return paths.map((path) => new Face(this._kernel, path));
     }

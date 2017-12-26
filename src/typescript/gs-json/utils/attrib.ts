@@ -1,7 +1,8 @@
-import * as ifs from "./ifaces_gs";
+import {IAttrib} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EDataType} from "./enums";
+
 /**
  * Attrib abstract class.
  * An class that represents a semantic attribute.
@@ -10,7 +11,7 @@ import {EGeomType, EDataType} from "./enums";
  * topological components (vertices, edges, wires, faces).
  * An instance of this class stores a list of attributes values.
  */
-export abstract class Attrib implements ifs.IAttrib {
+export abstract class Attrib implements IAttrib {
     protected _kernel: Kernel;
     protected _name: string;
     protected _geom_type: EGeomType;
@@ -82,60 +83,3 @@ export abstract class Attrib implements ifs.IAttrib {
     }
 }
 
-/**
- * EntAttrib class for entities (points and objects).
- * An class that represents a semantic attribute that is attached to a point or object.
- * An instance of this class stores a list of attributes values.
- */
-export class EntAttrib extends Attrib implements ifs.IEntAttrib {
-    /**
-     * Get a single attribute value.
-     * The data type of the attribute value can be found using the getDataType() method.
-     * @param id The id of a geometric entity.
-     * @return The value.
-     */
-    public getValue(id: number): any {
-        return this._kernel.entAttribGetValue(this._name, this._geom_type, id);
-    }
-
-    /**
-     * Set a single attribute value.
-     * The data type of the attribute value can be found using the getDataType() method.
-     * @param id The id of a geometric entity.
-     * @param value The new value.
-     * @return The old value.
-     */
-    public setValue(id: number, value: any): any {
-        return this._kernel.entAttribSetValue(this._name, this._geom_type, id, value);
-    }
-
-}
-
-/**
- * TopoAttrib class for topos (vertices, edges, wires, and faces).
- * Semantic attributes that are attached to points or objects.
- * An instance of this class stores a list of attributes values.
- */
-export class TopoAttrib extends Attrib implements ifs.ITopoAttrib {
-
-    /**
-     * Get a single attribute value.
-     * The data type of the attribute value can be found using the getDataType() method.
-     * @param path The path to a topological component.
-     * @return The value.
-     */
-    public getValue(path: ITopoPathData): any {
-        return this._kernel.topoAttribGetValue(this._name, this._geom_type, path);
-    }
-
-    /**
-     * Set a single attribute value.
-     * The data type of the attribute value can be found using the getDataType() method.
-     * @param path The path to a topological component.
-     * @param value The new value.
-     * @return The old value.
-     */
-    public setValue(path: ITopoPathData, value: any): any {
-        return this._kernel.topoAttribSetValue(this._name, this._geom_type, path, value);
-    }
-}

@@ -1,14 +1,15 @@
-import * as ifs from "./ifaces_gs";
+import {IModel, IGeom, IGroup, IEntAttrib, ITopoAttrib} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {IModelData,  IAttribData, IGroupData} from "./ifaces_json";
 import {EGeomType, EDataType, mapStringToGeomType} from "./enums";
 import {Geom} from "./geom";
-import {EntAttrib, TopoAttrib} from "./attribs";
+import {EntAttrib} from "./attrib_entattrib";
+import {TopoAttrib} from "./attrib_topoattrib";
 import {Group} from "./groups";
 /**
  * Model Class
  */
-export class Model implements ifs.IModel {
+export class Model implements IModel {
     private _kernel: Kernel;
 
     /**
@@ -27,7 +28,7 @@ export class Model implements ifs.IModel {
      * @param
      * @return
      */
-    public getGeom(): ifs.IGeom {
+    public getGeom(): IGeom {
         return new Geom(this._kernel);
     }
 
@@ -38,9 +39,9 @@ export class Model implements ifs.IModel {
      * @param
      * @return
      */
-    public getAttribs(geom_type?: EGeomType): Array<ifs.IEntAttrib|ifs.ITopoAttrib> {
+    public getAttribs(geom_type?: EGeomType): Array<IEntAttrib|ITopoAttrib> {
         const attribs_data: IAttribData[] = this._kernel.modelGetAttribs(geom_type);
-        const attribs: Array<ifs.IEntAttrib|ifs.ITopoAttrib> = [];
+        const attribs: Array<IEntAttrib|ITopoAttrib> = [];
         for (const data of attribs_data) {
             if (geom_type === undefined) {
                 geom_type = mapStringToGeomType.get(data.geom_type);
@@ -63,7 +64,7 @@ export class Model implements ifs.IModel {
      * @param
      * @return
      */
-    public getAttrib(name: string, geom_type?: EGeomType): ifs.IEntAttrib|ifs.ITopoAttrib {
+    public getAttrib(name: string, geom_type?: EGeomType): IEntAttrib|ITopoAttrib {
         const data: IAttribData = this._kernel.modelGetAttrib(name, geom_type);
         if (data === undefined) {return null;}
         switch (geom_type) {
@@ -79,7 +80,7 @@ export class Model implements ifs.IModel {
      * @param
      * @return
      */
-    public addAttrib(name: string, geom_type: EGeomType, data_type: EDataType): ifs.IEntAttrib|ifs.ITopoAttrib {
+    public addAttrib(name: string, geom_type: EGeomType, data_type: EDataType): IEntAttrib|ITopoAttrib {
         name = name.replace(/\s/g, "_");
         const data: IAttribData = this._kernel.modelAddAttrib(name, geom_type, data_type);
         switch (geom_type) {
@@ -115,7 +116,7 @@ export class Model implements ifs.IModel {
      * @param
      * @return
      */
-    public getGroups(): ifs.IGroup[] {
+    public getGroups(): IGroup[] {
         const groups_data: IGroupData[] = this._kernel.modelGetGroups();
         return groups_data.map((v) => new Group(this._kernel, v.name));
     }
@@ -125,7 +126,7 @@ export class Model implements ifs.IModel {
      * @param
      * @return
      */
-    public getGroup(name: string): ifs.IGroup {
+    public getGroup(name: string): IGroup {
         const data: IGroupData = this._kernel.modelGetGroup(name);
         if (data === undefined) {return null;}
         return new Group(this._kernel, data.name);
@@ -136,7 +137,7 @@ export class Model implements ifs.IModel {
      * @param
      * @return
      */
-    public addGroup(name: string, parent?: string): ifs.IGroup {
+    public addGroup(name: string, parent?: string): IGroup {
         const data: IGroupData = this._kernel.modelAddGroup(name, parent);
         return new Group(this._kernel, data.name);
     }

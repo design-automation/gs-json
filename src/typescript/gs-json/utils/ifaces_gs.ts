@@ -127,6 +127,7 @@ export interface IObj extends IEnt {
  */
 export interface IRay  extends IObj {
     getObjType(): EObjType;
+    render(scale: number): number[][][];
 }
 
 /**
@@ -137,6 +138,7 @@ export interface IPlane  extends IObj {
     getOrigin(): number[];
     getVectors(): number[][];
     getCartesians(): number[];
+    render(scale: number): number[][][];
 }
 
 /**
@@ -145,6 +147,19 @@ export interface IPlane  extends IObj {
 export interface IPolyline  extends IObj {
     getObjType(): EObjType;
     isClosed(): boolean;
+}
+
+/**
+ * Interface, for a ConicCurve class.
+ */
+export interface IConicCurve  extends IObj {
+    getObjType(): EObjType;
+    isClosed(): boolean;
+    getOrigin(): number[];
+    getVectors(): number[][];
+    getRadii(): number[];
+    length(): number;
+    render(resolution: number): number[][][];
 }
 
 /**
