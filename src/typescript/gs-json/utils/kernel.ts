@@ -1219,6 +1219,25 @@ export class Kernel {
         return mapStringToDataType.get(data_type_str);
     }
 
+    /**
+     * Get all the values for the attribute.
+     * @return A sparse array of values.
+     */
+    public attribGetValues(name: string, geom_type: EGeomType): any[] {
+        const values: any[] = this._attribs.get(geom_type).get(name).values;
+        return values[0].map((v,i) => values[1][v]);
+    }
+
+    /**
+     * Get the number of attribute values. If the attribis an entAttrib, then this is equal to the
+     * number of points or objects. If it is a topoAttrib, then this is equal to the number of topo
+     * entities in the model of that type.
+     * @return The numbe of attribute values.
+     */
+    public attribCount(name: string, geom_type: EGeomType): number {
+        return this._attribs.get(geom_type).get(name).values[0].length;
+    }
+
     //  Attribute values for Entities --------------------------------------------------------------
 
     /**

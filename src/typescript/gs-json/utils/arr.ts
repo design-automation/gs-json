@@ -64,10 +64,15 @@ export class Arr {
      * @param arr The multidimensional array to flatten.
      * @returns A new 1D array.
      */
-    public static flatten(arr: any[]): any[] {
+    public static flatten(arr: any[], depth?: number): any[] {
         if (arr === undefined) {return []; }
         return arr.reduce(function(flat, toFlatten) {
-            return flat.concat(Array.isArray(toFlatten) ? Arr.flatten(toFlatten) : toFlatten);
+            if (depth === undefined) {
+                return flat.concat(Array.isArray(toFlatten) ? Arr.flatten(toFlatten) : toFlatten);
+            } else {
+                return flat.concat((Array.isArray(toFlatten) && (depth !== 0)) ?
+                    Arr.flatten(toFlatten, depth - 1) : toFlatten);
+            }
         }, []);
     }
     /**

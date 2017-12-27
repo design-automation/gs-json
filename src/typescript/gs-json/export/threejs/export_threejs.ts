@@ -23,12 +23,14 @@ export function exportThreejsUrl(url: string): boolean {
  * This is an example function that goes through a gs-json file and extracts some entities.
  */
 export function exportThreejsData(model: gs.IModel): void {
+
     for (const p of model.getGeom().getPoints()) {
         // Do something here with your points
         // For example, get the position of each point
         const xyz: number[] = p.getPosition();
     }
-    for (const polyline of model.getGeom().getObjs(gs.EObjType.polymesh)) {
+
+    for (const polyline of model.getGeom().getObjs(gs.EObjType.polyline)) {
         // Do something here with your polylines
         // For example, get the wires and faces
         const wires: gs.IWire[] = polyline.getWires();
@@ -38,6 +40,7 @@ export function exportThreejsData(model: gs.IModel): void {
             // Do something here.
         }
     }
+
     for (const polymesh of model.getGeom().getObjs(gs.EObjType.polymesh)) {
         // Do something here with your polymeshes.
         // For example, get the wires and faces

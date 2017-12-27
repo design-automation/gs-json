@@ -70,16 +70,19 @@ export abstract class Attrib implements IAttrib {
     }
 
     /**
-     * Get the number of attribute values. DEPRECEATED.
+     * Get all the attribute values for this attribte. This will return a sparse array.
+     * @return The array of attribute values.
+     */
+    public getValues(): any[] {
+        return this._kernel.attribGetValues(this._name, this._geom_type);
+    }
+
+    /**
+     * Get the number of attribute values.
      * @return The number of attribute values.
      */
     public count(): number  {
-        // This is not so clear for toptos
-        // This method in general does not make sense,
-        // For points, it returns number of points
-        // for object it returns number of objs
-        // For topos, the return value has no clear meaning
-        throw new Error("not implemented");
+        return this._kernel.attribCount(this._name, this._geom_type);
     }
 }
 
