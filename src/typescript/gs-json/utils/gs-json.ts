@@ -18,3 +18,4 @@ export * from "./topo_sub";
 export * from "./attrib_entattrib";
 export * from "./attrib_topoattrib";
 export * from "./groups";
+export * from "./test_gen_models";
