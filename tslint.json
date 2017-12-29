@@ -6,6 +6,7 @@
     "jsRules": {},
     "rules": {
         "ordered-imports": false,
+        "object-literal-sort-keys": false,
         "align": [true, "parameters", "statements", "members"],
         "prefer-const": true,
         "whitespace": true,

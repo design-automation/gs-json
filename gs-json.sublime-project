@@ -10,6 +10,10 @@
             "name": "JS Dist Code"
         },
         {
+            "path": "dist2015",
+            "name": "JS Dist Code 2015"
+        },
+        {
             "path": "docs/typescript",
             "name": "TS Documentation"
         },
@@ -31,7 +35,7 @@
         "trim_trailing_white_space_on_save": true,
         "translate_tabs_to_spaces": true,
         "tab_size": 4,
-        "rulers": [4,8,100]
+        "rulers": [4,8,110,115,120]
     },
     "build_systems":
     [

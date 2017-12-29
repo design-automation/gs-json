@@ -305,16 +305,35 @@ export class Kernel {
      * @return
      */
     public modelToJSON(): string {
-        //
-        // const
-        // const points:TPointsData = this._geom.
-        // const json = {
-        //     metadata : this._metadata,
-        //     test : {points: [], objs: []},
-        //     attribs : [],
-        //     groups : [],
-        // };
-        return "";
+        const jsonData: IModelData = {
+            metadata: this._metadata,
+            geom: {
+                points: this._points,
+                objs: this._objs,
+            },
+        };
+        if (this._attribs !== undefined) {
+            jsonData.attribs = {};
+            if (this._attribs.get(EGeomType.points) !== undefined) {
+                jsonData.attribs.points = Array.from(this._attribs.get(EGeomType.points).values());
+            }
+            if (this._attribs.get(EGeomType.vertices) !== undefined) {
+                jsonData.attribs.vertices = Array.from(this._attribs.get(EGeomType.vertices).values());
+            }
+            if (this._attribs.get(EGeomType.edges) !== undefined) {
+                jsonData.attribs.edges = Array.from(this._attribs.get(EGeomType.edges).values());
+            }
+            if (this._attribs.get(EGeomType.wires) !== undefined) {
+                jsonData.attribs.wires = Array.from(this._attribs.get(EGeomType.wires).values());
+            }
+            if (this._attribs.get(EGeomType.faces) !== undefined) {
+                jsonData.attribs.faces = Array.from(this._attribs.get(EGeomType.faces).values());
+            }
+            if (this._attribs.get(EGeomType.objs) !== undefined) {
+                jsonData.attribs.objs = Array.from(this._attribs.get(EGeomType.objs).values());
+            }
+        }
+        return JSON.stringify(jsonData, null, 4);
     }
 
     //  Geom Points --------------------------------------------------------------------------------
@@ -590,22 +609,22 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Does not count empty slots in sparse arrays.
      * @param
      * @return
      */
     public geomNumObjs(): number {
-        return this._objs.filter((v) => (v !== undefined)).length; // ignores empty slots in sparse arrays
+        return this._objs.filter((v) => (v !== undefined)).length;
     }
 
     /**
-     * to be completed
+     * Skips empty slots in spare array.
      * @param
      * @return
      */
     public geomGetObjIDs(): number[] {
         const obj_ids: number[] = [];
-        this._objs.forEach((v,i) => (v !== undefined) && obj_ids.push(i)); // ignores empty slots in spare array
+        this._objs.forEach((v,i) => (v !== undefined) && obj_ids.push(i));
         return obj_ids;
     }
 
@@ -1260,7 +1279,7 @@ export class Kernel {
      */
     public entAttribSetValue(name: string, geom_type: EGeomType, id: number, value: any): any {
         const data: IAttribData = this._attribs.get(geom_type).get(name);
-        let index: number = Arr.indexOf(value, data.values);
+        let index: number = Arr.indexOf(value, data.values[1]);
         if (index === -1) {
             index = data.values[1].push(value) - 1;
         }
@@ -1297,7 +1316,7 @@ export class Kernel {
      */
     public topoAttribSetValue(name: string, geom_type: EGeomType, path: ITopoPathData, value: any): any {
         const data: IAttribData = this._attribs.get(geom_type).get(name);
-        let index: number = Arr.indexOf(value, data.values);
+        let index: number = Arr.indexOf(value, data.values[1]);
         if (index === -1) {
             index = data.values[1].push(value) - 1;
         }
@@ -1308,10 +1327,11 @@ export class Kernel {
                 data.values[0][path.id][path.ti] = index;
                 return old_value;
             case EGeomType.vertices: case EGeomType.edges:
-                old_value = data.values[1][data.values[0][path.id][path.ti][path.si]];
-                data.values[0][path.id][path.ti][path.si] = index;
+                old_value = data.values[1][data.values[0][path.id][path.tt][path.ti][path.si]];
+                data.values[0][path.id][path.tt][path.ti][path.si] = index;
                 return old_value;
         }
+        throw new Error("Topo not found: " + path);
     }
 
     //  Group manipulation methods -----------------------------------------------------------------

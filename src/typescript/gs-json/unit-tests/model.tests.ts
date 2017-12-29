@@ -44,4 +44,7 @@ describe("Tests for Model class", () => {
     it("test_Model_validateModel", () => {
         expect( model_tests.test_Model_validateModel() ).toBe(true);
     });
+    it("test_Model_toJSON", () => {
+        expect( model_tests.test_Model_toJSON() ).toBe(true);
+    });
 });

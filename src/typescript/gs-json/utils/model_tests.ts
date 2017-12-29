@@ -171,3 +171,9 @@ export function test_Model_purgeNulls(): boolean { // OPTIONAL testing as of now
 export function test_Model_validateModel(): boolean { // OPTIONAL testing as of now
     return true;
 }
+
+export function test_Model_toJSON(): boolean {
+    const m: gs.Model = new gs.Model(td.open_box());
+    console.log(m.toJSON());
+    return true;
+}

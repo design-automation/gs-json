@@ -11,6 +11,9 @@
         "doc": "docs"
     },
     "scripts": {
+        "build_models": "npm run build2015 && npm run gen_models",
+        "gen_models": "node ./dist2015/src/typescript/gs-json/utils/test_gen_models.js",
+        "build2015": "tsc && babel --presets es2015 ./dist --out-dir ./dist2015",
         "prepare": "npm run build",
         "build": "tsc",
         "test": "karma start ./karma.conf.ts",
@@ -28,12 +31,14 @@
     "devDependencies": {
         "@types/jasmine": "^2.6.3",
         "@types/node": "^8.0.53",
+        "babel-cli": "^6.26.0",
+        "babel-preset-es2015": "^6.24.1",
         "jasmine": "^2.8.0",
         "jasmine-core": "^2.8.0",
-        "karma": "^1.7.1",
+        "karma": "^2.0.0",
         "karma-chrome-launcher": "^2.2.0",
         "karma-cli": "^1.0.1",
-        "karma-coverage-istanbul-reporter": "^1.3.1",
+        "karma-coverage-istanbul-reporter": "^1.3.3",
         "karma-html-reporter": "^0.2.7",
         "karma-jasmine": "^1.1.0",
         "karma-jasmine-html-reporter": "^0.2.2",
