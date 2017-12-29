@@ -4,7 +4,7 @@ import * as fs from "fs";
 /**
  * Write a file.
  */
-export function writeJSONFile(model: gs.IModel, filename: string): boolean {
+export function genModelWriteToJSONFile(model: gs.IModel, filename: string): boolean {
     fs.writeFile("./src/assets/gs-json/" + filename, model.toJSON(), (err) => {
         if (err) {
             console.log("Error writing file: " + filename);
@@ -19,7 +19,7 @@ export function writeJSONFile(model: gs.IModel, filename: string): boolean {
 /**
  * Generates an empty model with nothing in it.
  */
-export function genEmptyModel(): gs.IModel {
+export function genModelEmpty(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     return m;
 }
@@ -27,7 +27,7 @@ export function genEmptyModel(): gs.IModel {
 /**
  * Generates a model with 4 points. Two of the points have the same position.
  */
-export function genPointsModel(): gs.IModel {
+export function genModelPoints(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     m.getGeom().addPoints([
             [0,0,0],
@@ -41,7 +41,7 @@ export function genPointsModel(): gs.IModel {
 /**
  * Generates an open polyline with three points.
  */
-export function genOpenPolylineModel(): gs.IModel {
+export function genModelOpenPolyline(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [0,0,0],
@@ -55,7 +55,7 @@ export function genOpenPolylineModel(): gs.IModel {
 /**
  * Generates a closed polyline with six points.
  */
-export function genClosedPolylineModel(): gs.IModel {
+export function genModelClosedPolyline(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [-7.931049823760986, 4.17618989944458, 0.0],
@@ -73,7 +73,7 @@ export function genClosedPolylineModel(): gs.IModel {
 /**
  * Generates a 10 x 10 x 10 box. The box is a single polymesh.
  */
-export function genBoxModel(): gs.IModel {
+export function genModelBox(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [0,0,0],    // 0
@@ -103,7 +103,7 @@ export function genBoxModel(): gs.IModel {
  * A face attribute called "face type" with a string data type.
  * An edge attribute called "horizontal" with a boolean data type.
  */
-export function genBoxWithAttribsModel(): gs.IModel {
+export function genModelBoxWithAttribs(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [0,0,0],    // 0
@@ -161,7 +161,7 @@ export function genBoxWithAttribsModel(): gs.IModel {
 /**
  * Generates a 10 x 10 x 10 box with one open side. The box is a single polymesh.
  */
-export function genBoxOpen1Model(): gs.IModel {
+export function genModelBoxOpen1(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [0,0,0],    // 0
@@ -187,7 +187,7 @@ export function genBoxOpen1Model(): gs.IModel {
  * Generates a 10 x 10 x 10 box with two open side. The box is a single polymesh.
  * The two open sides are adjacent to one another, so a single wire is generated.
  */
-export function genBoxOpen2Model(): gs.IModel {
+export function genModelBoxOpen2(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [0,0,0],    // 0
@@ -212,7 +212,7 @@ export function genBoxOpen2Model(): gs.IModel {
  * Generates a 10 x 10 x 10 box with two disjoint open side. The box is a single polymesh.
  * The openings are disjoint, so two wires are generated.
  */
-export function genBoxOpen2DisjointModel(): gs.IModel {
+export function genModelBoxOpen2Disjoint(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [0,0,0],    // 0
@@ -236,7 +236,7 @@ export function genBoxOpen2DisjointModel(): gs.IModel {
 /**
  * Generates two boxes. Each box is a single polymesh.
  */
-export function genTwoBoxesOpenModel(): gs.IModel {
+export function genModelTwoBoxesOpen(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [-0.7794438004493713, -1.0, 0.0],
@@ -275,7 +275,7 @@ export function genTwoBoxesOpenModel(): gs.IModel {
 /**
  * Generates a model with 6 polylines and two open boxes.
  */
-export function genPolyinesBoxesModel(): gs.IModel {
+export function genModelPolyinesBoxes(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [-0.7794438004493713, -1.0, 0.0],
@@ -405,7 +405,7 @@ export function genPolyinesBoxesModel(): gs.IModel {
 /**
  * Generates a model with 6 polylines and two open boxes.
  */
-export function genGridModel(): gs.IModel {
+export function genModelGrid(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [-5.0, -5.0, 5.2243194580078125],
@@ -591,7 +591,7 @@ export function genGridModel(): gs.IModel {
 /**
  * Generates a model of a torus with two holes in it.
  */
-export function genTorusModel(): gs.IModel {
+export function genModelTorus(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
             [1.5, 1.1682431022563833e-06, -4.371138828673793e-08],
@@ -1168,21 +1168,20 @@ export function genTorusModel(): gs.IModel {
 /**
  * Write all models to disk as json files.
  */
-export function writeFiles(): void {
-    writeJSONFile(genEmptyModel(), "empty_model.gs");
-    writeJSONFile(genPointsModel(), "points_model.gs");
-    writeJSONFile(genOpenPolylineModel(), "open_polyline_model.gs");
-    writeJSONFile(genClosedPolylineModel(), "closed_polyline_model.gs");
-    writeJSONFile(genBoxModel(), "box_model.gs");
-    writeJSONFile(genBoxWithAttribsModel(), "box_with_attribs_model.gs");
-    writeJSONFile(genBoxOpen1Model(), "box_open1_model.gs");
-    writeJSONFile(genBoxOpen2Model(), "box_open2_model.gs");
-    writeJSONFile(genBoxOpen2DisjointModel(), "box_open2_disjoint_model.gs");
-    writeJSONFile(genTwoBoxesOpenModel(), "two_boxes_model.gs");
-    writeJSONFile(genPolyinesBoxesModel(), "polylines_boxes_model.gs");
-    writeJSONFile(genGridModel(), "grid_model.gs");
-    writeJSONFile(genTorusModel(), "torus_model.gs");
-
+export function genModelsWriteFiles(): void {
+    genModelWriteToJSONFile(genModelEmpty(), "model_empty.gs");
+    genModelWriteToJSONFile(genModelPoints(), "model_points.gs");
+    genModelWriteToJSONFile(genModelOpenPolyline(), "model_open_polyline.gs");
+    genModelWriteToJSONFile(genModelClosedPolyline(), "model_closed_polyline.gs");
+    genModelWriteToJSONFile(genModelBox(), "model_box.gs");
+    genModelWriteToJSONFile(genModelBoxWithAttribs(), "model_box_with_attribs.gs");
+    genModelWriteToJSONFile(genModelBoxOpen1(), "model_box_open1.gs");
+    genModelWriteToJSONFile(genModelBoxOpen2(), "model_box_open2.gs");
+    genModelWriteToJSONFile(genModelBoxOpen2Disjoint(), "model_box_open2_disjoint.gs");
+    genModelWriteToJSONFile(genModelTwoBoxesOpen(), "model_two_boxes.gs");
+    genModelWriteToJSONFile(genModelPolyinesBoxes(), "model_polylines_boxes.gs");
+    genModelWriteToJSONFile(genModelGrid(), "model_grid.gs");
+    genModelWriteToJSONFile(genModelTorus(), "model_torus.gs");
 }
 /**
  * If this module is being run directly, then files will be written to disk.
@@ -1191,5 +1190,5 @@ export function writeFiles(): void {
  * Just type "npm run build_models" in the shell.
  */
 if(require.main === module)  {
-    writeFiles();
+    genModelsWriteFiles();
 }
