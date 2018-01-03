@@ -39,12 +39,4 @@ export class Plane extends Obj implements IPlane {
         const d: number = -(origin[0] * z_vec[0] + origin[1] * z_vec[1] + origin[2] * z_vec[2]);
         return [z_vec[0], z_vec[1], z_vec[2], d];
     }
-
-    /**
-     * Returns a set of xyz values for rendering this object.
-     * @return Return a list of lists of xyz values.
-     */
-    public render(scale: number): number[][][] {
-        throw new Error("Method not implemented."); //TODO
-    }
 }

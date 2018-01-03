@@ -26,7 +26,6 @@ export function test_obj_getPoints(): boolean {
     const a1: gs.IObj = geom.getObj(0);
     const wires: gs.IPoint[][] = a1.getPoints()[0];
     const faces: gs.IPoint[][] = a1.getPoints()[1];
-    console.log(wires.length, faces.length);
     if(!(wires.length === 1)) {return false;}
     if(!(faces.length === 0)) {return false;}
     return true;

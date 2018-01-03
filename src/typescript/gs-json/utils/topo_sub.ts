@@ -18,6 +18,24 @@ export class Vertex extends Topo implements IVertex {
     }
 
     /**
+     * Get a compact string representation of the geometry path for this topological component, dtsrting with
+     * the obj ID.
+     * @return The geometry path str.
+     */
+    public getTopoPathStr(): string {
+        const w_or_f: string = ["w","f"][this._path.tt];
+        return "o" + this.getObjID() + ":" + w_or_f + this._path.ti + ":v" + this._path.si;
+    }
+
+    /**
+     * Get the centroid of this topo. This is used for attaching labels.
+     * @return The xyz of the centroid.
+     */
+    public getLabelCentroid(): number[] {
+        return this.getPoint().getPosition();
+    }
+
+    /**
      * Get the point associated with this vertex.
      * @return The point object.
      */
@@ -107,6 +125,31 @@ export class Edge extends Topo implements IEdge {
     }
 
     /**
+     * Get a compact string representation of the geometry path for this topological component, dtsrting with
+     * the obj ID.
+     * @return The geometry path str.
+     */
+    public getTopoPathStr(): string {
+        const w_or_f: string = ["w","f"][this._path.tt];
+        return "o" + this.getObjID() + ":" + w_or_f + this._path.ti + ":e" + this._path.si;
+    }
+
+    /**
+     * Get the centroid of this topo. This is used for attaching labels.
+     * @return The xyz of the centroid.
+     */
+    public getLabelCentroid(): number[] {
+        const xyzs: number[][] = this.getVertices().map((v) => v.getPoint().getPosition());
+        let centroid: number[] = [0,0,0];
+        for (const xyz of xyzs) {
+            centroid[0] += xyz[0];
+            centroid[1] += xyz[1];
+            centroid[2] += xyz[2];
+        }
+        return [centroid[0]/2, centroid[1]/2, centroid[2]/2];
+    }
+
+    /**
      * Get the two vertices for this edge.
      * @return An array of two edges.
      */
@@ -180,6 +223,31 @@ export class Wire extends Topo implements IWire {
     }
 
     /**
+     * Get a compact string representation of the geometry path for this topological component, dtsrting with
+     * the obj ID.
+     * @return The geometry path str.
+     */
+    public getTopoPathStr(): string {
+        return "o" + this.getObjID() + ":w" + this._path.ti;
+    }
+
+    /**
+     * Get the centroid of this topo. This is used for attaching labels.
+     * @return The xyz of the centroid.
+     */
+    public getLabelCentroid(): number[] {
+        const xyzs: number[][] = this.getVertices().map((v) => v.getPoint().getPosition());
+        let centroid: number[] = [0,0,0];
+        for (const xyz of xyzs) {
+            centroid[0] += xyz[0];
+            centroid[1] += xyz[1];
+            centroid[2] += xyz[2];
+        }
+        const num_vertices = xyzs.length;
+        return [centroid[0]/num_vertices, centroid[1]/num_vertices, centroid[2]/num_vertices];
+    }
+
+    /**
      * Get the vertices for this wire.
      * @return An array of vertices.
      */
@@ -243,6 +311,31 @@ export class Face extends Topo implements IFace {
      */
     public getGeomType(): EGeomType {
         return EGeomType.faces;
+    }
+
+    /**
+     * Get a compact string representation of the geometry path for this topological component, dtsrting with
+     * the obj ID.
+     * @return The geometry path str.
+     */
+    public getTopoPathStr(): string {
+        return "o" + this.getObjID() + ":f" + this._path.ti;
+    }
+
+    /**
+     * Get the centroid of this topo. This is used for attaching labels.
+     * @return The xyz of the centroid.
+     */
+    public getLabelCentroid(): number[] {
+        const xyzs: number[][] = this.getVertices().map((v) => v.getPoint().getPosition());
+        let centroid: number[] = [0,0,0];
+        for (const xyz of xyzs) {
+            centroid[0] += xyz[0];
+            centroid[1] += xyz[1];
+            centroid[2] += xyz[2];
+        }
+        const num_vertices = xyzs.length;
+        return [centroid[0]/num_vertices, centroid[1]/num_vertices, centroid[2]/num_vertices];
     }
 
     /**

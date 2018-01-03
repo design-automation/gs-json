@@ -45,6 +45,22 @@ export class Point extends Ent implements IPoint {
         return paths.map((path) => new Vertex(this._kernel, path));
     }
 
+    /**
+     * Get the label of this point.
+     * @return The xyz of the centroid.
+     */
+    public getLabel(): string {
+        return "p" + this._id;
+    }
+
+    /**
+     * Get the label centroid of this points.
+     * @return The xyz of the label.
+     */
+    public getLabelCentroid(): number[] {
+        return this.getPosition();
+    }
+
     //  Groups -------------------------------------------------------------------------------------
 
     /**

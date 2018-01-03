@@ -1,4 +1,5 @@
 import * as gs from "./gs-json";
+import * as td from "./gen_gs_models";
 
 // Polyline test, extend Obj by 1 method
 export function test_Polyline_getObjType(): boolean {
@@ -15,3 +16,4 @@ export function test_Polyline_getObjType(): boolean {
 
     return true;
 }
+

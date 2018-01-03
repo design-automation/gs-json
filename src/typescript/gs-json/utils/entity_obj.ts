@@ -30,6 +30,30 @@ export abstract class Obj extends Ent implements IObj {
         throw new Error ("Method to be overridden by subclass.");
     }
 
+    /**
+     * Get the label for this object.
+     * @return The xyz of the centroid.
+     */
+    public getLabel(): string {
+        return "o" + this._id;
+    }
+
+    /**
+     * Get the label centroid for this object.
+     * @return The xyz of the label.
+     */
+    public getLabelCentroid(): number[] {
+        const xyzs: number[][] = this.getPointsSet().map((v) => v.getPosition());
+        let centroid: number[] = [0,0,0];
+        for (const xyz of xyzs) {
+            centroid[0] += xyz[0];
+            centroid[1] += xyz[1];
+            centroid[2] += xyz[2];
+        }
+        const num_vertices = xyzs.length;
+        return [centroid[0]/num_vertices, centroid[1]/num_vertices, centroid[2]/num_vertices];
+    }
+
     //  Points -------------------------------------------------------------------------------------
 
     /**
@@ -38,7 +62,7 @@ export abstract class Obj extends Ent implements IObj {
      * @return A nested array of points, with sub-arrays for wires and faces.
      */
     public getPoints(point_type?: EGeomType.wires|EGeomType.faces): IPoint[][][] {
-        const ids: number[][][] = this._kernel.objGetPoints(this._id, point_type);
+        const ids: number[][][] = this._kernel.objGetPointIDs(this._id, point_type);
         switch (point_type) {
             case EGeomType.wires:
                 return [
@@ -71,8 +95,17 @@ export abstract class Obj extends Ent implements IObj {
      * Get the set of unique points for this object.
      * @return The array of point IDs.
      */
-    public getPointsSet(): Set<number> {
-        return new Set(Arr.flatten(this.getPoints()));
+    public getPointsSet(): IPoint[] {
+        const exclude: number[] = [];
+        const unique_points: IPoint[] = [];
+        for (const point of this.getPointsArr()) {
+            const id: number = point.getID();
+            if (exclude.indexOf(id) === -1) {
+                exclude.push(id);
+                unique_points.push(point);
+            }
+        }
+        return unique_points;
     }
 
     //  Topos --------------------------------------------------------------------------------------

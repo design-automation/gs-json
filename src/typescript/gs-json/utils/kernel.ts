@@ -807,7 +807,7 @@ export class Kernel {
      * points for both wires and faces are returned.
      * @return The array of points.
      */
-    public objGetPoints(id: number, point_type?: EGeomType.wires|EGeomType.faces): number[][][] {
+    public objGetPointIDs(id: number, point_type?: EGeomType.wires|EGeomType.faces): number[][][] {
         let w_points: number[][] = [];
         if (point_type === undefined || point_type === EGeomType.wires) {
             w_points = this._objs[id][0].map((w) => w.filter((v) => (v !== -1)));
@@ -865,10 +865,8 @@ export class Kernel {
             for (let wi = 0; wi < this._objs[id][0].length; wi++) {
                 const wire: number[] = this._objs[id][0][wi];
                 const e_paths: ITopoPathData[] = [];
-                for (let vi = 0; vi < wire.length; vi++) {
-                    if (vi < wire.length - 1 || wire[vi] === -1) {
-                        e_paths.push({id, tt: 0, ti: wi, st: 1, si: vi});
-                    }
+                for (let ei = 0; ei < wire.length - 1; ei++) {
+                    e_paths.push({id, tt: 0, ti: wi, st: 1, si: ei});
                 }
                 w_edges.push(e_paths);
             }
@@ -878,10 +876,8 @@ export class Kernel {
             for (let fi = 0; fi < this._objs[id][1].length; fi++) {
                 const face: number[] = this._objs[id][1][fi];
                 const e_paths: ITopoPathData[] = [];
-                for (let vi = 0; vi < face.length; vi++) {
-                    if (vi < face.length - 1 || face[vi] === -1) {
-                        e_paths.push({id, tt: 1, ti: fi, st: 1, si: vi});
-                    }
+                for (let ei = 0; ei < face.length - 1; ei++) {
+                    e_paths.push({id, tt: 1, ti: fi, st: 1, si: ei});
                 }
                 f_edges.push(e_paths);
             }
@@ -1711,7 +1707,6 @@ export class Kernel {
      */
     private _delPointFromObjs(id: number): void {
         for (const [obj_id_str, obj] of this._objs.entries()) { // sparse array
-            // console.log(">>> This Obj Entries", [obj_id_str, obj])
             switch (obj[2][0]) {
                 // Polyline
                 case 100:

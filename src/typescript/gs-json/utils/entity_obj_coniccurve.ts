@@ -1,4 +1,4 @@
-import {IConicCurve} from "./ifaces_gs";
+import {IPoint, IConicCurve} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 //import {Vector3} from "three";
@@ -58,11 +58,19 @@ export class ConicCurve extends Obj implements IConicCurve {
     }
 
     /**
-     * Returns a set of xyz values for rendering this object.
-     * @return Return a list of lists of xyz values.
+     * Evalues t.
+     * 0 = start of conic, 1 = end of conic.
+     * @return Return the xyz.
      */
-    public render(resolution: number): number[][][] {
+    public evaluate(t: number): IPoint {
         throw new Error("Method not implemented."); //TODO
     }
 
+    /**
+     * Evalues and angle between 0 and 2PI.
+     * @return Return the xyz.
+     */
+    public evaluateAngle(angle: number): IPoint {
+        throw new Error("Method not implemented."); //TODO
+    }
 }

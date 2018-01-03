@@ -1,4 +1,5 @@
 import * as gs from "./gs-json";
+import * as td from "./gen_gs_models";
 
 // Polymesh test, extend Obj by 1 method
 export function test_Polymesh_getObjType(): boolean {
@@ -44,3 +45,4 @@ export function test_Polymesh_getObjType(): boolean {
 
     return true;
 }
+

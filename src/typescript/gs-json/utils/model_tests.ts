@@ -174,6 +174,6 @@ export function test_Model_validateModel(): boolean { // OPTIONAL testing as of 
 
 export function test_Model_toJSON(): boolean {
     const m: gs.Model = new gs.Model(td.open_box());
-    console.log(m.toJSON());
+    m.toJSON();
     return true;
 }

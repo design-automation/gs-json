@@ -1,4 +1,5 @@
 import * as gs from "../../utils/gs-json";
+//import * as three from "three";
 
 /**
  * This is an example function that reads a file with some gs-json data.
@@ -30,31 +31,30 @@ export function exportThreejsData(model: gs.IModel): void {
         const xyz: number[] = p.getPosition();
     }
 
-    for (const polyline of model.getGeom().getObjs(gs.EObjType.polyline)) {
-        // Do something here with your polylines
-        // For example, get the wires and faces
-        const wires: gs.IWire[] = polyline.getWires();
-        for (const wire of wires) {
-            const is_closed: boolean = wire.isClosed();
-            const point_IDs: number[] = wire.getVertices().map((v, i) => v.getPoint().getID());
-            // Do something here.
-        }
-    }
-
-    for (const polymesh of model.getGeom().getObjs(gs.EObjType.polymesh)) {
-        // Do something here with your polymeshes.
-        // For example, get the wires and faces
-        const wires: gs.IWire[] = polymesh.getWires();
-        for (const wire of wires) {
-            const is_closed: boolean = wire.isClosed();
-            const point_IDs: number[] = wire.getVertices().map((v, i) => v.getPoint().getID());
-            // Do something here.
-        }
-        const faces: gs.IFace[] = polymesh.getFaces();
-        for (const face of faces) {
-            const point_IDs: number[] = face.getVertices().map((v, i) => v.getPoint().getID());
-            // Do something here.
-        }
+    for (const obj of model.getGeom().getObjs()) {
+        //const data: gs.IThreeData = obj.getRenderData();
+        // Do something here with the daata
+        // Create a mesh, if it exists
+        // if (data.tri_mesh !== undefined ) {
+        //     for (const point of data.tri_mesh.points) {
+        //         // geometry.vertices.push(new THREE.Vector3( ...point ));
+        //     }
+        //     for (const face of data.tri_mesh.faces) {
+        //         // geometry.faces.push( new THREE.Face3( ...face ) );
+        //     }
+        // }
+        // if (data.wires !== undefined ) {
+        //     for (const wire of data.wires) {
+        //         for (const point of wire.points) {
+        //             // geometry.vertices.push(new THREE.Vector3( ...point ));
+        //         }
+        //         if (wire.is_closed) {
+        //             // line = new THREE.Line( geometry, material );
+        //         } else {
+        //             // line_loop = new THREE.LineLoop( geometry, material );
+        //         }
+        //     }
+        // }
 
     }
 }

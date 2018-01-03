@@ -89,6 +89,8 @@ export interface IEnt  {
 export interface IPoint extends IEnt {
     // constructor cannot be used to create a new point
     // use the "add" method in Geom class
+    getLabel(): string;
+    getLabelCentroid(): number[];
     getPosition(): number[];
     setPosition(xyz: number[]): number[];
     getVertices(): IVertex[];
@@ -105,10 +107,12 @@ export interface IObj extends IEnt {
     // constructor cannot be used to create a new point
     // use the "add" method in Geom class
     getObjType(): EObjType;
+    getLabel(): string;
+    getLabelCentroid(): number[];
     // points
     getPoints(point_type?: EGeomType.wires|EGeomType.faces): IPoint[][][];
     getPointsArr(): IPoint[];
-    getPointsSet(): Set<number>;
+    getPointsSet(): IPoint[];
     // topo
     getVertices(vertex_type?: EGeomType.wires|EGeomType.faces): IVertex[][][];
     getEdges(edge_type?: EGeomType.wires|EGeomType.faces): IEdge[][][];
@@ -127,7 +131,6 @@ export interface IObj extends IEnt {
  */
 export interface IRay  extends IObj {
     getObjType(): EObjType;
-    render(scale: number): number[][][];
 }
 
 /**
@@ -138,7 +141,6 @@ export interface IPlane  extends IObj {
     getOrigin(): number[];
     getVectors(): number[][];
     getCartesians(): number[];
-    render(scale: number): number[][][];
 }
 
 /**
@@ -159,7 +161,6 @@ export interface IConicCurve  extends IObj {
     getVectors(): number[][];
     getRadii(): number[];
     length(): number;
-    render(resolution: number): number[][][];
 }
 
 /**
@@ -187,6 +188,9 @@ export interface ITopo {
     getObjID(): number;
     getGeomType(): EGeomType;
     getTopoPath(): ITopoPathData;
+    getTopoPathStr(): string;
+    getLabel(): string;
+    getLabelCentroid(): number[];
     // attribs
     getAttribNames(): string[];
     setAttribValue(name: string, value: any): any;

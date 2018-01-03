@@ -54,6 +54,33 @@ export abstract class Topo implements ITopo {
         return this._path;
     }
 
+    /**
+     * Get a compact string representation of the geometry path for this topological component.
+     * @return The geometry path str.
+     */
+    public getTopoPathStr(): string {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
+    /**
+     * Get the label of this topo.
+     * @return The xyz of the centroid.
+     */
+    public getLabel(): string {
+        return this.getTopoPathStr();
+    }
+
+    /**
+     * Get the label centroid of this topo.
+     * This is calculated as the average of the point positions.
+     * @return The xyz of the centroid.
+     */
+    public getLabelCentroid(): number[] {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
     //  Attributes ---------------------------------------------------------------------------------
 
     /**

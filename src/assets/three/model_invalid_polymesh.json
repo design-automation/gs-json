@@ -1,0 +1,757 @@
+{
+    "metadata": {
+        "version": 4.5,
+        "type": "Object",
+        "generator": "gs-json"
+    },
+    "geometries": [
+        {
+            "uuid": "6405df7a-1ae1-4d52-b9ab-01d3c2e40dec",
+            "type": "BufferGeometry",
+            "data": {
+                "attributes": {
+                    "position": {
+                        "itemSize": 3,
+                        "type": "Float32Array",
+                        "array": [
+                            0,
+                            0,
+                            0,
+                            10,
+                            0,
+                            0,
+                            10,
+                            10,
+                            0,
+                            5,
+                            -5,
+                            0,
+                            0,
+                            10,
+                            0
+                        ],
+                        "normalized": false
+                    }
+                },
+                "index": {
+                    "type": "Uint16Array",
+                    "array": [
+                        3,
+                        4,
+                        0,
+                        0,
+                        1,
+                        2
+                    ]
+                }
+            }
+        },
+        {
+            "uuid": "51544e9a-a22a-4c85-b64c-1d4bcd0c1d95",
+            "type": "BufferGeometry",
+            "data": {
+                "attributes": {
+                    "position": {
+                        "itemSize": 3,
+                        "type": "Float32Array",
+                        "array": [
+                            0,
+                            0,
+                            0,
+                            10,
+                            0,
+                            0,
+                            10,
+                            10,
+                            0,
+                            5,
+                            -5,
+                            0,
+                            0,
+                            10,
+                            0
+                        ],
+                        "normalized": false
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "9ad150c3-6a8e-4417-a517-721476920f9f",
+            "type": "BufferGeometry",
+            "data": {
+                "attributes": {
+                    "position": {
+                        "itemSize": 3,
+                        "type": "Float32Array",
+                        "array": [],
+                        "normalized": false
+                    }
+                }
+            }
+        }
+    ],
+    "materials": [
+        {
+            "uuid": "944c7b94-67bf-442c-9383-056904a4d14d",
+            "type": "LineBasicMaterial",
+            "color": 0,
+            "vertexColors": 0,
+            "side": 2,
+            "blending": 0,
+            "depthFunc": 3,
+            "depthTest": true,
+            "depthWrite": true
+        },
+        {
+            "uuid": "fb78f688-6385-4f18-8d14-bb2676249591",
+            "type": "LineBasicMaterial",
+            "color": 255,
+            "vertexColors": 0,
+            "side": 2,
+            "blending": 0,
+            "depthFunc": 3,
+            "depthTest": true,
+            "depthWrite": true
+        },
+        {
+            "uuid": "75328abf-c18a-417c-bd61-4c92daca122a",
+            "type": "MeshPhongMaterial",
+            "color": 16777215,
+            "emissive": 0,
+            "specular": 16777215,
+            "shininess": 10,
+            "vertexColors": 0,
+            "side": 2,
+            "blending": 0,
+            "depthFunc": 3,
+            "depthTest": true,
+            "depthWrite": true,
+            "transparent": false,
+            "wireframe": false,
+            "flatShading": true
+        },
+        {
+            "uuid": "21ab3ed0-67fa-40fe-b543-fc9578c9e9cb",
+            "type": "MeshPhongMaterial",
+            "color": 0,
+            "emissive": 0,
+            "specular": 16777215,
+            "shininess": 40,
+            "vertexColors": 0,
+            "side": 1,
+            "blending": 0,
+            "depthFunc": 3,
+            "depthTest": true,
+            "depthWrite": true,
+            "transparent": true,
+            "opacity": 0.5,
+            "wireframe": false,
+            "flatShading": true
+        }
+    ],
+    "object": {
+        "type": "Scene",
+        "name": "Scene",
+        "children": [
+            {
+                "uuid": "4d3ace29-3ca4-46bb-bc28-9e084f29d564",
+                "type": "Group",
+                "name": "0_Polymesh",
+                "children": [
+                    {
+                        "uuid": "ec71258e-8293-447d-ba83-a9e44e7214e6",
+                        "type": "Mesh",
+                        "name": "Polymesh Faces",
+                        "geometry": "6405df7a-1ae1-4d52-b9ab-01d3c2e40dec",
+                        "material": "75328abf-c18a-417c-bd61-4c92daca122a",
+                        "castShadow": true,
+                        "receiveShadow": true
+                    },
+                    {
+                        "uuid": "e2f66a8e-ae60-400b-b30f-e677c48aedd0",
+                        "type": "LineLoop",
+                        "name": "Polymesh Wires",
+                        "geometry": "51544e9a-a22a-4c85-b64c-1d4bcd0c1d95",
+                        "material": "fb78f688-6385-4f18-8d14-bb2676249591",
+                        "castShadow": false,
+                        "receiveShadow": false
+                    },
+                    {
+                        "uuid": "38ad8b2a-6f4c-4ac3-a56f-38f067b74009",
+                        "type": "LineSegments",
+                        "name": "Polymesh Face Edges",
+                        "geometry": "9ad150c3-6a8e-4417-a517-721476920f9f",
+                        "material": "944c7b94-67bf-442c-9383-056904a4d14d",
+                        "castShadow": false,
+                        "receiveShadow": false
+                    },
+                    {
+                        "uuid": "f2855a68-88fc-470c-b807-15e7b54adb05",
+                        "type": "Group",
+                        "name": "Vertices",
+                        "children": [
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:v0",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:v1",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    10,
+                                    0,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:v2",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    10,
+                                    10,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:v3",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    5,
+                                    -5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:v4",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    10,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:v0",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:v1",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    10,
+                                    0,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:v2",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    10,
+                                    10,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:v3",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    5,
+                                    -5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:v4",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    10,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "c1eecf3e-b24b-40b6-97da-0e5a09136867",
+                        "type": "Group",
+                        "name": "Edges",
+                        "children": [
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:e0",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    5,
+                                    0,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:e1",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    10,
+                                    5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:e2",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    7.5,
+                                    2.5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:e3",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    2.5,
+                                    2.5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0:e4",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:e0",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    5,
+                                    0,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:e1",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    10,
+                                    5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:e2",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    7.5,
+                                    2.5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:e3",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    2.5,
+                                    2.5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            },
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0:e4",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    5,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "dc382731-dda0-4846-9657-947940cdd6b0",
+                        "type": "Group",
+                        "name": "Wires",
+                        "children": [
+                            {
+                                "type": "Sprite",
+                                "name": "o0:w0",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    5,
+                                    3,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f2b22573-ada2-4027-8fe3-b4df9151d69f",
+                        "type": "Group",
+                        "name": "Faces",
+                        "children": [
+                            {
+                                "type": "Sprite",
+                                "name": "o0:f0",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    5,
+                                    3,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "804c703d-65d0-4656-b341-97145da64a36",
+                        "type": "Group",
+                        "name": "Edges",
+                        "children": [
+                            {
+                                "type": "Sprite",
+                                "name": "o0",
+                                "matrix": [
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    5,
+                                    3,
+                                    0,
+                                    1
+                                ],
+                                "visible": false
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

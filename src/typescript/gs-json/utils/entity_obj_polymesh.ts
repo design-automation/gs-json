@@ -1,5 +1,6 @@
-import {IPolymesh} from "./ifaces_gs";
-import {EObjType} from "./enums";
+import {Arr} from "./arr";
+import {IPoint, IVertex, IEdge, IWire, IFace, IPolymesh} from "./ifaces_gs";
+import {EGeomType, EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 
 /**
@@ -22,4 +23,5 @@ export class Polymesh extends Obj implements IPolymesh {
     public getObjType(): EObjType {
         return EObjType.polymesh;
     }
+
 }

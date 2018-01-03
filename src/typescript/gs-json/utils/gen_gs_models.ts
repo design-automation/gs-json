@@ -4,7 +4,7 @@ import * as fs from "fs";
 /**
  * Write a file.
  */
-export function genModelWriteToJSONFile(model: gs.IModel, filename: string): boolean {
+function genModelWriteToJSONFile(model: gs.IModel, filename: string): boolean {
     fs.writeFile("./src/assets/gs-json/" + filename, model.toJSON(), (err) => {
         if (err) {
             console.log("Error writing file: " + filename);
@@ -269,6 +269,49 @@ export function genModelTwoBoxesOpen(): gs.IModel {
             [points[10], points[9], points[8], points[11]],
             [points[13], points[14], points[15], points[12]],
         ]);
+    return m;
+}
+
+
+/**
+ * Generates a polymesh with a single polygon with difficult geometry.
+ * Duplicate points.
+ * Coliniear points.
+ * Concave shape.
+ */
+export function genModelDifficultPolymesh(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const points: gs.IPoint[] = m.getGeom().addPoints([
+            [0, 0, 0],
+            [10, 0, 0],
+            [10, 0, 0],
+            [11, 0, 0],
+            [12, 0, 1],
+            [15, 15, 0],
+            [15, 30, -1],
+            [10, 30, 1],
+            [10, 10, -1],
+            [0, 10, 0],
+            [0, 5, 0],
+
+        ]);
+    m.getGeom().addPolymesh([points]);
+    return m;
+}
+
+/**
+ * Generates an invalid polymesh with a single polygon that self intersects.
+ */
+export function genModelInvalidPolymesh(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const points: gs.IPoint[] = m.getGeom().addPoints([
+            [0, 0, 0],
+            [10, 0, 0],
+            [10, 10, 0],
+            [5, -5, 0],
+            [0, 10, 0],
+        ]);
+    m.getGeom().addPolymesh([points]);
     return m;
 }
 
@@ -1168,7 +1211,7 @@ export function genModelTorus(): gs.IModel {
 /**
  * Write all models to disk as json files.
  */
-export function genModelsWriteFiles(): void {
+export function genThreeModelsWriteFiles(): void {
     genModelWriteToJSONFile(genModelEmpty(), "model_empty.gs");
     genModelWriteToJSONFile(genModelPoints(), "model_points.gs");
     genModelWriteToJSONFile(genModelOpenPolyline(), "model_open_polyline.gs");
@@ -1179,6 +1222,8 @@ export function genModelsWriteFiles(): void {
     genModelWriteToJSONFile(genModelBoxOpen2(), "model_box_open2.gs");
     genModelWriteToJSONFile(genModelBoxOpen2Disjoint(), "model_box_open2_disjoint.gs");
     genModelWriteToJSONFile(genModelTwoBoxesOpen(), "model_two_boxes.gs");
+    genModelWriteToJSONFile(genModelDifficultPolymesh(), "model_difficult_polymesh.gs");
+    genModelWriteToJSONFile(genModelInvalidPolymesh(), "model_invalid_polymesh.gs");
     genModelWriteToJSONFile(genModelPolyinesBoxes(), "model_polylines_boxes.gs");
     genModelWriteToJSONFile(genModelGrid(), "model_grid.gs");
     genModelWriteToJSONFile(genModelTorus(), "model_torus.gs");
@@ -1190,5 +1235,5 @@ export function genModelsWriteFiles(): void {
  * Just type "npm run build_models" in the shell.
  */
 if(require.main === module)  {
-    genModelsWriteFiles();
+    genThreeModelsWriteFiles();
 }

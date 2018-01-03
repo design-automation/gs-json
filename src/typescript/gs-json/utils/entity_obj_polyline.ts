@@ -1,7 +1,7 @@
-import {IPolyline} from "./ifaces_gs";
-import {EObjType} from "./enums";
+import {Arr} from "./arr";
+import {IPoint, IVertex, IEdge, IWire, IFace, IPolyline} from "./ifaces_gs";
+import {EGeomType, EObjType} from "./enums";
 import {Obj} from "./entity_obj";
-
 /**
  * Class Polyline.
  * A polyline consists of one wire and no faces.
@@ -25,5 +25,4 @@ export class Polyline extends Obj implements IPolyline {
     public isClosed(): boolean {
         return this.getWires()[0].isClosed();
     }
-
 }

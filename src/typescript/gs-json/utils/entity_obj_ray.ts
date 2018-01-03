@@ -15,12 +15,4 @@ export class Ray extends Obj implements IRay {
     public getObjType(): EObjType {
         return EObjType.ray;
     }
-
-    /**
-     * Returns a set of xyz values for rendering this object.
-     * @return Return a list of lists of xyz values.
-     */
-    public render(scale: number): number[][][] {
-        throw new Error("Method not implemented."); //TODO
-    }
 }
