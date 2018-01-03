@@ -47,7 +47,7 @@ export class Kernel {
         if (data && data.metadata !== undefined) {
             this._metadata = data.metadata;
         } else {
-            this._metadata = {filetype: "gs-json", version: "0.1.3"};
+            this._metadata = {filetype: "gs-json", version: "0.1.4"};
         }
         // Geom points
         if (data && data.geom !== undefined && data.geom.points !== undefined) {
