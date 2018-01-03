@@ -1,5 +1,6 @@
 src/
 coverage/
+dist2015/
 
 .nojekyll
 .travis.yml
