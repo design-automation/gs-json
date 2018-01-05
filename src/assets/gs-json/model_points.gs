@@ -1,7 +1,7 @@
 {
     "metadata": {
         "filetype": "gs-json",
-        "version": "0.1.4"
+        "version": "0.1.5"
     },
     "geom": {
         "points": [
