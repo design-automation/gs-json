@@ -34,6 +34,7 @@ export class Kernel {
      * @return
      */
     constructor(model: IModel, data?: IModelData) {
+        this._model = model;
         this._attribs = new Map();
         this._attribs.set(EGeomType.points, new Map());
         this._attribs.set(EGeomType.objs, new Map());
@@ -1236,11 +1237,11 @@ export class Kernel {
 
     /**
      * Get all the values for the attribute.
-     * @return A sparse array of values.
+     * @return An array of values.
      */
     public attribGetValues(name: string, geom_type: EGeomType): any[] {
         const values: any[] = this._attribs.get(geom_type).get(name).values;
-        return values[0].map((v,i) => values[1][v]);
+        return values[0].filter((v) => v !== undefined).map((v,i) => values[1][v]);
     }
 
     /**
@@ -1285,6 +1286,20 @@ export class Kernel {
         return old_value;
     }
 
+    /**
+     * Get all the labels for the attribute.
+     * @return A sparse array of values.
+     */
+    public entAttribGetIDs(name: string, geom_type: EGeomType): number[] {
+        switch (geom_type) {
+            case EGeomType.points:
+                return this.geomGetPointIDs();
+            case EGeomType.objs:
+                return this.geomGetObjIDs();
+        }
+        throw new Error("geom_type must be either points or objs");
+    }
+
     //  Attributes Values for Topos ----------------------------------------------------------------
 
     /**
@@ -1301,6 +1316,7 @@ export class Kernel {
             case EGeomType.vertices: case EGeomType.edges:
                 return data.values[1][data.values[0][path.id][path.ti][path.si]];
         }
+        throw new Error("geom_type must be either vertices, edges, wires, or faces");
     }
 
     /**
@@ -1327,7 +1343,25 @@ export class Kernel {
                 data.values[0][path.id][path.tt][path.ti][path.si] = index;
                 return old_value;
         }
-        throw new Error("Topo not found: " + path);
+        throw new Error("geom_type must be either vertices, edges, wires, or faces");
+    }
+
+    /**
+     * Get all the labels for the attribute.
+     * @return A sparse array of values.
+     */
+    public topoAttribGetPaths(name: string, geom_type: EGeomType): ITopoPathData[] {
+        switch (geom_type) {
+            case EGeomType.vertices:
+                return Arr.flatten(this.geomGetObjIDs().map((id) => this.objGetVertices(id)));
+            case EGeomType.vertices:
+                return Arr.flatten(this.geomGetObjIDs().map((id) => this.objGetEdges(id)));
+            case EGeomType.vertices:
+                return Arr.flatten(this.geomGetObjIDs().map((id) => this.objGetWires(id)));
+            case EGeomType.vertices:
+                return Arr.flatten(this.geomGetObjIDs().map((id) => this.objGetFaces(id)));
+        }
+        throw new Error("geom_type must be either vertices, edges, wires, or faces");
     }
 
     //  Group manipulation methods -----------------------------------------------------------------

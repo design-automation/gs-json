@@ -149,6 +149,9 @@ export interface IPlane  extends IObj {
 export interface IPolyline  extends IObj {
     getObjType(): EObjType;
     isClosed(): boolean;
+    numVertices(): number;
+    numEdges(): number;
+    calcLength(): number;
 }
 
 /**
@@ -260,16 +263,20 @@ export interface IAttrib {
     getGeomType(): EGeomType;
     getDataType(): EDataType;
     count(): number;
+    getValues(): any[];
+    getLabels(): string[];
 }
 
 export interface IEntAttrib extends IAttrib {
     getValue(id: number): any;
     setValue(id: number, value: any): any;
+    getIDs(): number[];
 }
 
 export interface ITopoAttrib extends IAttrib {
     getValue(path: ITopoPathData): any;
     setValue(path: ITopoPathData, value: any): any;
+    getPaths(): ITopoPathData[];
 }
 
 /**

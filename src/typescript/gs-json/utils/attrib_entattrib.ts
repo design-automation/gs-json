@@ -30,4 +30,25 @@ export class EntAttrib extends Attrib implements IEntAttrib {
     public setValue(id: number, value: any): any {
         return this._kernel.entAttribSetValue(this._name, this._geom_type, id, value);
     }
+
+    /**
+     * Get all IDs for this attribute. These can be either point IDs or object IDs.
+     * @return An array of IDs.
+     */
+    public getIDs(): number[] {
+        return this._kernel.entAttribGetIDs(this._name, this._geom_type);
+    }
+
+    /**
+     * Get all labels for this attribute.
+     * @return An array of labels.
+     */
+    public getLabels(): string[] {
+        switch (this._geom_type) {
+            case EGeomType.points:
+                return this.getIDs().map((v) => "p" + v);
+            case EGeomType.objs:
+                return this.getIDs().map((v) => "o" + v);
+        }
+    }
 }

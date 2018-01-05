@@ -31,4 +31,33 @@ export class TopoAttrib extends Attrib implements ITopoAttrib {
     public setValue(path: ITopoPathData, value: any): any {
         return this._kernel.topoAttribSetValue(this._name, this._geom_type, path, value);
     }
+
+    /**
+     * Get all paths for this attribute.
+     * @return An array of paths.
+     */
+    public getPaths(): any {
+        return this._kernel.topoAttribGetPaths(this._name, this._geom_type);
+    }
+
+    /**
+     * Get all labels for this attribute.
+     * @return An array of labels.
+     */
+    public getLabels(): string[] {
+        switch (this._geom_type) {
+            case EGeomType.vertices:
+                return this.getPaths().map(
+                    (path) => "o" + path.id + ":" + ["w","f"][path.tt] + path.ti + ":v" + path.si);
+            case EGeomType.edges:
+                return this.getPaths().map(
+                    (path) => "o" + path.id + ":" + ["w","f"][path.tt] + path.ti + ":e" + path.si);
+            case EGeomType.wires:
+                return this.getPaths().map(
+                    (path) => "o" + path.id + ":w" + path.ti);
+            case EGeomType.faces:
+                return this.getPaths().map(
+                    (path) => "o" + path.id + ":f" + path.ti);
+        }
+    }
 }

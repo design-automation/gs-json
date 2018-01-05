@@ -44,7 +44,7 @@ export abstract class Obj extends Ent implements IObj {
      */
     public getLabelCentroid(): number[] {
         const xyzs: number[][] = this.getPointsSet().map((v) => v.getPosition());
-        let centroid: number[] = [0,0,0];
+        const centroid: number[] = [0,0,0];
         for (const xyz of xyzs) {
             centroid[0] += xyz[0];
             centroid[1] += xyz[1];

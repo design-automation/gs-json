@@ -70,11 +70,20 @@ export abstract class Attrib implements IAttrib {
     }
 
     /**
-     * Get all the attribute values for this attribte. This will return a sparse array.
+     * Get all the attribute values for this attribte.
      * @return The array of attribute values.
      */
     public getValues(): any[] {
         return this._kernel.attribGetValues(this._name, this._geom_type);
+    }
+
+    /**
+     * Get all the attribute labels for this attribte.
+     * @return The array of attribute labels.
+     */
+    public getLabels(): string[] {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
     }
 
     /**

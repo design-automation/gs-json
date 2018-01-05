@@ -25,4 +25,28 @@ export class Polyline extends Obj implements IPolyline {
     public isClosed(): boolean {
         return this.getWires()[0].isClosed();
     }
+
+    /**
+     * Returns the number of vertices in this polyline.
+     * @return Return the number of vertices.
+     */
+    public numVertices(): number {
+        return this.getWires()[0].numVertices();
+    }
+
+    /**
+     * Returns the number of edges in this polyline.
+     * @return Return the number of edges.
+     */
+    public numEdges(): number {
+        return this.getWires()[0].numEdges();
+    }
+
+    /**
+     * Returns the length of the polyline
+     * @return Return the length.
+     */
+    public calcLength(): number {
+        throw new Error("Not implemented");
+    }
 }
