@@ -23,5 +23,4 @@ export class Polymesh extends Obj implements IPolymesh {
     public getObjType(): EObjType {
         return EObjType.polymesh;
     }
-
 }

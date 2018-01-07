@@ -41,12 +41,4 @@ export class Polyline extends Obj implements IPolyline {
     public numEdges(): number {
         return this.getWires()[0].numEdges();
     }
-
-    /**
-     * Returns the length of the polyline
-     * @return Return the length.
-     */
-    public calcLength(): number {
-        throw new Error("Not implemented");
-    }
 }

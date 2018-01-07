@@ -1,7 +1,8 @@
-import {IEnt, IGeom, IModel} from "./ifaces_gs";
+import {IEnt, IGeom, IModel, IEntAttrib, ITopoAttrib} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {EGeomType} from "./enums";
-
+import {Attrib} from "./attrib";
+import {_castToAttribTypes} from "./attrib_cast";
 /**
  * Class Ent.
  * An abstrcat class that is the superclass for all geometric entities, both Point and Obj.
@@ -66,27 +67,31 @@ export abstract class Ent implements IEnt{
      * Get the attribute names for this entity.
      * @return The array of attribute names.
      */
-    public getAttribNames(): string[] {
-        return this._kernel.attribGetNames(this.getGeomType());
+    public getAttribs(): IEntAttrib[]|ITopoAttrib[] {
+        const geom_type: EGeomType = this.getGeomType();
+        const names: string[] = this._kernel.attribGetNames(geom_type);
+        return _castToAttribTypes(this._kernel, geom_type, names);
     }
 
     /**
      * Get an attribute value for this entity.
-     * @param name The attribute name.
+     * @param attrib The attribute.
      * @return The attribute value.
      */
-    public getAttribValue(name: string): any {
-        return this._kernel.entAttribGetValue(name, this.getGeomType(), this._id);
+    public getAttribValue(attrib: IEntAttrib): any {
+        if (attrib.getGeomType() !== this.getGeomType()) {return null;}
+        return this._kernel.entAttribGetValue(attrib.getName(), attrib.getGeomType(), this._id);
     }
 
     /**
      * Set an attribute value for this entity.
-     * @param name The attribute name.
+     * @param attrib The attribute.
      * @param value The new attribute value.
      * @return The old attribute value.
      */
-    public setAttribValue(name: string, value: any): any {
-        return this._kernel.entAttribSetValue(name, this.getGeomType(), this._id, value);
+    public setAttribValue(attrib: IEntAttrib, value: any): any {
+        if (attrib.getGeomType() !== this.getGeomType()) {return null;}
+        return this._kernel.entAttribSetValue(attrib.getName(), attrib.getGeomType(), this._id, value);
     }
 
 }

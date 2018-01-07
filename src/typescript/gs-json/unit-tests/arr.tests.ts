@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as tests from "../utils/arr_tests";
+import * as tests from "../utils/_arr_tests";
 
 describe("Tests for Arr functions", () => {
     it("test_make", () => {

@@ -1,11 +1,11 @@
 import {Arr} from "./arr";
-import {IObj, IPoint, IVertex, IEdge, IWire, IFace} from "./ifaces_gs";
+import {IObj, IPoint, IVertex, IEdge, IWire, IFace, IGroup} from "./ifaces_gs";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
 import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {Ent} from "./entity";
 import {Point} from "./entity_point";
-
+import {Group} from "./groups";
 /**
  * Abstract class Obj.
  * The superclass for all geometric objects,
@@ -176,16 +176,16 @@ export abstract class Obj extends Ent implements IObj {
      * Get the group names for all the groups for which this entity is a member.
      * @return The array of group names.
      */
-    public getGroupNames(): string[] {
-        return this._kernel.objGetGroups(this._id);
+    public getGroups(): IGroup[] {
+        return this._kernel.objGetGroups(this._id).map((v) => new Group(this._kernel, v));
     }
 
     /**
-     * Add this entity to a group.
-     * @param name The group name.
-     * @return True if the entity was added, False is the entity was already in the group.
+     * Add this object to a group.
+     * @param group The group.
+     * @return True if the entity was added, False is the object was already in the group.
      */
-    public addToGroup(name: string): boolean {
-        return this._kernel.groupAddObj(name, this._id);
+    public addToGroup(group: IGroup): boolean {
+        return this._kernel.groupAddObj(group.getName(), this._id);
     }
 }

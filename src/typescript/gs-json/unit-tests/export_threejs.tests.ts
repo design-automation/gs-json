@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as tests from "../export/threejs/export_threejs_tests";
+import * as tests from "../export/threejs/_export_threejs_tests";
 
 describe("Tests for exportThreejs functions", () => {
     it("test_exportThreejsUrl", () => {

@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as geom_tests from "../utils/geom_tests";
+import * as geom_tests from "../utils/_geom_tests";
 
 describe("Tests for Geom class", () => {
     it("test_createPoint", () => {
@@ -20,9 +20,9 @@ describe("Tests for Geom class", () => {
     it("test_test_Geom_addPolymesh", () => {
         expect( geom_tests.test_Geom_addPolymesh() ).toBe(true);
     });
-    it("test_Geom_getPointIDs", () => {
-        expect( geom_tests.test_Geom_getPointIDs() ).toBe(true);
-    });
+    // it("test_Geom_getPointIDs", () => {
+    //     expect( geom_tests.test_Geom_getAllPointIDs() ).toBe(true);
+    // });
     it("test_Geom_getPoints", () => {
         expect( geom_tests.test_Geom_getPoints() ).toBe(true);
     });
@@ -35,15 +35,9 @@ describe("Tests for Geom class", () => {
     it("test_Geom_numPoints", () => {
         expect( geom_tests.test_Geom_numPoints() ).toBe(true);
     });
-    it("test_Geom_setPointPosition", () => {
-        expect( geom_tests.test_Geom_setPointPosition() ).toBe(true);
-    });
-    it("test_Geom_getPointPosition", () => {
-        expect( geom_tests.test_Geom_getPointPosition() ).toBe(true);
-    });
-    it("test_Geom_getObjIDs", () => {
-        expect( geom_tests.test_Geom_getObjIDs() ).toBe(true);
-    });
+    // it("test_Geom_getObjIDs", () => {
+    //     expect( geom_tests.test_Geom_getAllObjIDs() ).toBe(true);
+    // });
     it("test_Geom_getObjs", () => {
         expect( geom_tests.test_Geom_getObjs() ).toBe(true);
     });
@@ -62,4 +56,11 @@ describe("Tests for Geom class", () => {
     it("test_Geom_numTopos", () => {
         expect( geom_tests.test_Geom_numTopos() ).toBe(true);
     });
+    it("test_Geom_getTopo", () => {
+        expect( geom_tests.test_Geom_getTopo() ).toBe(true);
+    });
+    it("test_Geom_getTopoFromLabel", () => {
+        expect( geom_tests.test_Geom_getTopoFromLabel() ).toBe(true);
+    });
+
 });

@@ -913,6 +913,9 @@ img { max-width: 100%; }
 			<a href="_ifaces_gs_.iattrib.html" class="tsd-kind-icon">IAttrib</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+			<a href="_ifaces_gs_.iconiccurve.html" class="tsd-kind-icon">IConic<wbr>Curve</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 			<a href="_ifaces_gs_.iedge.html" class="tsd-kind-icon">IEdge</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
@@ -955,13 +958,13 @@ img { max-width: 100%; }
 					<a href="_ifaces_gs_.igroup.html#getname" class="tsd-kind-icon">get<wbr>Name</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
-					<a href="_ifaces_gs_.igroup.html#getobjids" class="tsd-kind-icon">get<wbr>ObjIDs</a>
+					<a href="_ifaces_gs_.igroup.html#getobjs" class="tsd-kind-icon">get<wbr>Objs</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
 					<a href="_ifaces_gs_.igroup.html#getparentgroup" class="tsd-kind-icon">get<wbr>Parent<wbr>Group</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
-					<a href="_ifaces_gs_.igroup.html#getpointids" class="tsd-kind-icon">get<wbr>PointIDs</a>
+					<a href="_ifaces_gs_.igroup.html#getpoints" class="tsd-kind-icon">get<wbr>Points</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
 					<a href="_ifaces_gs_.igroup.html#getprops" class="tsd-kind-icon">get<wbr>Props</a>
@@ -1014,7 +1017,13 @@ img { max-width: 100%; }
 			<a href="_ifaces_gs_.imodel.html" class="tsd-kind-icon">IModel</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+			<a href="_ifaces_gs_.inurbscurve.html" class="tsd-kind-icon">INurbs<wbr>Curve</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 			<a href="_ifaces_gs_.iobj.html" class="tsd-kind-icon">IObj</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+			<a href="_ifaces_gs_.iplane.html" class="tsd-kind-icon">IPlane</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 			<a href="_ifaces_gs_.ipoint.html" class="tsd-kind-icon">IPoint</a>
@@ -1024,6 +1033,9 @@ img { max-width: 100%; }
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 			<a href="_ifaces_gs_.ipolymesh.html" class="tsd-kind-icon">IPolymesh</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+			<a href="_ifaces_gs_.iray.html" class="tsd-kind-icon">IRay</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 			<a href="_ifaces_gs_.itopo.html" class="tsd-kind-icon">ITopo</a>
@@ -1077,9 +1089,9 @@ img { max-width: 100%; }
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#addtopos" class="tsd-kind-icon">add<wbr>Topos</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#getchildgroups" class="tsd-kind-icon">get<wbr>Child<wbr>Groups</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#getname" class="tsd-kind-icon">get<wbr>Name</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#getobjids" class="tsd-kind-icon">get<wbr>ObjIDs</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#getobjs" class="tsd-kind-icon">get<wbr>Objs</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#getparentgroup" class="tsd-kind-icon">get<wbr>Parent<wbr>Group</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#getpointids" class="tsd-kind-icon">get<wbr>PointIDs</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#getpoints" class="tsd-kind-icon">get<wbr>Points</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#getprops" class="tsd-kind-icon">get<wbr>Props</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#gettopos" class="tsd-kind-icon">get<wbr>Topos</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igroup.html#hasobj" class="tsd-kind-icon">has<wbr>Obj</a></li>
@@ -1106,19 +1118,19 @@ img { max-width: 100%; }
 				<a name="addobj" class="tsd-anchor"></a>
 				<h3>add<wbr>Obj</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Obj<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Obj<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L258">ifaces_gs.ts:258</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L307">ifaces_gs.ts:307</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>id: <span class="tsd-signature-type">number</span></h5>
+								<h5>obj: <a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1129,19 +1141,19 @@ img { max-width: 100%; }
 				<a name="addobjs" class="tsd-anchor"></a>
 				<h3>add<wbr>Objs</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Objs<span class="tsd-signature-symbol">(</span>ids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Objs<span class="tsd-signature-symbol">(</span>objs<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L259">ifaces_gs.ts:259</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L308">ifaces_gs.ts:308</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>ids: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								<h5>objs: <a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1152,19 +1164,19 @@ img { max-width: 100%; }
 				<a name="addpoint" class="tsd-anchor"></a>
 				<h3>add<wbr>Point</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Point<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Point<span class="tsd-signature-symbol">(</span>point<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L274">ifaces_gs.ts:274</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L323">ifaces_gs.ts:323</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>id: <span class="tsd-signature-type">number</span></h5>
+								<h5>point: <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1175,19 +1187,19 @@ img { max-width: 100%; }
 				<a name="addpoints" class="tsd-anchor"></a>
 				<h3>add<wbr>Points</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Points<span class="tsd-signature-symbol">(</span>ids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Points<span class="tsd-signature-symbol">(</span>points<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L275">ifaces_gs.ts:275</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L324">ifaces_gs.ts:324</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>ids: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								<h5>points: <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1204,7 +1216,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L266">ifaces_gs.ts:266</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L315">ifaces_gs.ts:315</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1227,7 +1239,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L267">ifaces_gs.ts:267</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L316">ifaces_gs.ts:316</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1244,16 +1256,16 @@ img { max-width: 100%; }
 				<a name="getchildgroups" class="tsd-anchor"></a>
 				<h3>get<wbr>Child<wbr>Groups</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Child<wbr>Groups<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Child<wbr>Groups<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a><span class="tsd-signature-symbol">[]</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L252">ifaces_gs.ts:252</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L301">ifaces_gs.ts:301</a></li>
 							</ul>
 						</aside>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a><span class="tsd-signature-symbol">[]</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -1267,7 +1279,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L247">ifaces_gs.ts:247</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L296">ifaces_gs.ts:296</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1275,16 +1287,16 @@ img { max-width: 100%; }
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-				<a name="getobjids" class="tsd-anchor"></a>
-				<h3>get<wbr>ObjIDs</h3>
+				<a name="getobjs" class="tsd-anchor"></a>
+				<h3>get<wbr>Objs</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>ObjIDs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Objs<span class="tsd-signature-symbol">(</span>obj_type<span class="tsd-signature-symbol">?: </span><a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L257">ifaces_gs.ts:257</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L306">ifaces_gs.ts:306</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1293,7 +1305,7 @@ img { max-width: 100%; }
 								<h5><span class="tsd-flag ts-flagOptional">Optional</span> obj_type: <a href="../enums/_enums_.eobjtype.html" class="tsd-signature-type">EObjType</a></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -1301,33 +1313,33 @@ img { max-width: 100%; }
 				<a name="getparentgroup" class="tsd-anchor"></a>
 				<h3>get<wbr>Parent<wbr>Group</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Parent<wbr>Group<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Parent<wbr>Group<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L251">ifaces_gs.ts:251</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L300">ifaces_gs.ts:300</a></li>
 							</ul>
 						</aside>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a></h4>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-				<a name="getpointids" class="tsd-anchor"></a>
-				<h3>get<wbr>PointIDs</h3>
+				<a name="getpoints" class="tsd-anchor"></a>
+				<h3>get<wbr>Points</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>PointIDs<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Points<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L273">ifaces_gs.ts:273</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L322">ifaces_gs.ts:322</a></li>
 							</ul>
 						</aside>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -1341,7 +1353,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L281">ifaces_gs.ts:281</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L330">ifaces_gs.ts:330</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1358,7 +1370,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L265">ifaces_gs.ts:265</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L314">ifaces_gs.ts:314</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1375,19 +1387,19 @@ img { max-width: 100%; }
 				<a name="hasobj" class="tsd-anchor"></a>
 				<h3>has<wbr>Obj</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">has<wbr>Obj<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">has<wbr>Obj<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L262">ifaces_gs.ts:262</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L311">ifaces_gs.ts:311</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>id: <span class="tsd-signature-type">number</span></h5>
+								<h5>obj: <a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1398,19 +1410,19 @@ img { max-width: 100%; }
 				<a name="haspoint" class="tsd-anchor"></a>
 				<h3>has<wbr>Point</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">has<wbr>Point<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">has<wbr>Point<span class="tsd-signature-symbol">(</span>point<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L278">ifaces_gs.ts:278</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L327">ifaces_gs.ts:327</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>id: <span class="tsd-signature-type">number</span></h5>
+								<h5>point: <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1427,7 +1439,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L270">ifaces_gs.ts:270</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L319">ifaces_gs.ts:319</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1444,19 +1456,19 @@ img { max-width: 100%; }
 				<a name="removeobj" class="tsd-anchor"></a>
 				<h3>remove<wbr>Obj</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">remove<wbr>Obj<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">remove<wbr>Obj<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L260">ifaces_gs.ts:260</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L309">ifaces_gs.ts:309</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>id: <span class="tsd-signature-type">number</span></h5>
+								<h5>obj: <a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1467,19 +1479,19 @@ img { max-width: 100%; }
 				<a name="removeobjs" class="tsd-anchor"></a>
 				<h3>remove<wbr>Objs</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">remove<wbr>Objs<span class="tsd-signature-symbol">(</span>ids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">remove<wbr>Objs<span class="tsd-signature-symbol">(</span>objs<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L261">ifaces_gs.ts:261</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L310">ifaces_gs.ts:310</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>ids: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								<h5>objs: <a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1490,16 +1502,16 @@ img { max-width: 100%; }
 				<a name="removeparentgroup" class="tsd-anchor"></a>
 				<h3>remove<wbr>Parent<wbr>Group</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">remove<wbr>Parent<wbr>Group<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					<li class="tsd-signature tsd-kind-icon">remove<wbr>Parent<wbr>Group<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L254">ifaces_gs.ts:254</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L303">ifaces_gs.ts:303</a></li>
 							</ul>
 						</aside>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -1507,19 +1519,19 @@ img { max-width: 100%; }
 				<a name="removepoint" class="tsd-anchor"></a>
 				<h3>remove<wbr>Point</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">remove<wbr>Point<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">remove<wbr>Point<span class="tsd-signature-symbol">(</span>point<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L276">ifaces_gs.ts:276</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L325">ifaces_gs.ts:325</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>id: <span class="tsd-signature-type">number</span></h5>
+								<h5>point: <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1530,19 +1542,19 @@ img { max-width: 100%; }
 				<a name="removepoints" class="tsd-anchor"></a>
 				<h3>remove<wbr>Points</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">remove<wbr>Points<span class="tsd-signature-symbol">(</span>ids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">remove<wbr>Points<span class="tsd-signature-symbol">(</span>points<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L277">ifaces_gs.ts:277</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L326">ifaces_gs.ts:326</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>ids: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								<h5>points: <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1559,7 +1571,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L268">ifaces_gs.ts:268</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L317">ifaces_gs.ts:317</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1582,7 +1594,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L269">ifaces_gs.ts:269</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L318">ifaces_gs.ts:318</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1605,7 +1617,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L248">ifaces_gs.ts:248</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L297">ifaces_gs.ts:297</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1622,22 +1634,22 @@ img { max-width: 100%; }
 				<a name="setparentgroup" class="tsd-anchor"></a>
 				<h3>set<wbr>Parent<wbr>Group</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-					<li class="tsd-signature tsd-kind-icon">set<wbr>Parent<wbr>Group<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Parent<wbr>Group<span class="tsd-signature-symbol">(</span>group<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L253">ifaces_gs.ts:253</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L302">ifaces_gs.ts:302</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>name: <span class="tsd-signature-type">string</span></h5>
+								<h5>group: <a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.igroup.html" class="tsd-signature-type">IGroup</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -1651,7 +1663,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/ca16041/src/typescript/gs-json/utils/ifaces_gs.ts#L282">ifaces_gs.ts:282</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/ifaces_gs.ts#L331">ifaces_gs.ts:331</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>

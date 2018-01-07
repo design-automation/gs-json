@@ -1,8 +1,10 @@
-import {IEntAttrib} from "./ifaces_gs";
+import {IEntAttrib, IObj, IPoint} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EDataType} from "./enums";
 import {Attrib} from "./attrib";
+import {Point} from "./entity_point";
+import {_castToObjType} from "./entity_obj_cast";
 
 /**
  * EntAttrib class for entities (points and objects).
@@ -10,26 +12,6 @@ import {Attrib} from "./attrib";
  * An instance of this class stores a list of attributes values.
  */
 export class EntAttrib extends Attrib implements IEntAttrib {
-    /**
-     * Get a single attribute value.
-     * The data type of the attribute value can be found using the getDataType() method.
-     * @param id The id of a geometric entity.
-     * @return The value.
-     */
-    public getValue(id: number): any {
-        return this._kernel.entAttribGetValue(this._name, this._geom_type, id);
-    }
-
-    /**
-     * Set a single attribute value.
-     * The data type of the attribute value can be found using the getDataType() method.
-     * @param id The id of a geometric entity.
-     * @param value The new value.
-     * @return The old value.
-     */
-    public setValue(id: number, value: any): any {
-        return this._kernel.entAttribSetValue(this._name, this._geom_type, id, value);
-    }
 
     /**
      * Get all IDs for this attribute. These can be either point IDs or object IDs.
@@ -40,15 +22,30 @@ export class EntAttrib extends Attrib implements IEntAttrib {
     }
 
     /**
+     * Get all entities for this attribute. These can be either points or objects.
+     * @return An array of IDs.
+     */
+    public getEnts(): IPoint[]|IObj[] {
+        const ids: number[] = this._kernel.entAttribGetIDs(this._name, this._geom_type);
+        switch (this._geom_type) {
+            case EGeomType.points:
+                return ids.map((id) => new Point(this._kernel, id));
+            case EGeomType.points:
+                return ids.map((id) => _castToObjType(this._kernel, id));
+        }
+    }
+
+    /**
      * Get all labels for this attribute.
      * @return An array of labels.
      */
     public getLabels(): string[] {
+        const ids: number[] = this._kernel.entAttribGetIDs(this._name, this._geom_type);
         switch (this._geom_type) {
             case EGeomType.points:
-                return this.getIDs().map((v) => "p" + v);
+                return ids.map((v) => "p" + v);
             case EGeomType.objs:
-                return this.getIDs().map((v) => "o" + v);
+                return ids.map((v) => "o" + v);
         }
     }
 }

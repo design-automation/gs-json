@@ -1,8 +1,9 @@
-import {IPoint, IVertex} from "./ifaces_gs";
+import {IPoint, IVertex, IGroup} from "./ifaces_gs";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
 import {Vertex} from "./topo_sub";
 import {Ent} from "./entity";
+import {Group} from "./groups";
 
 /**
  * Class Point.
@@ -67,8 +68,8 @@ export class Point extends Ent implements IPoint {
      * Get the group names for all the groups for which this entity is a member.
      * @return The array of group names.
      */
-    public getGroupNames(): string[] {
-        return this._kernel.pointGetGroups(this._id);
+    public getGroups(): IGroup[] {
+        return this._kernel.pointGetGroups(this._id).map((v) => new Group(this._kernel, v));
     }
 
     /**

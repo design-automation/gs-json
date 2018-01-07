@@ -1,8 +1,9 @@
-import {ITopoAttrib} from "./ifaces_gs";
+import {ITopoAttrib, IVertex, IEdge, IWire, IFace} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EDataType} from "./enums";
 import {Attrib} from "./attrib";
+import {Vertex, Edge, Wire, Face} from "./topo_sub";
 
 /**
  * TopoAttrib class for topos (vertices, edges, wires, and faces).
@@ -12,32 +13,29 @@ import {Attrib} from "./attrib";
 export class TopoAttrib extends Attrib implements ITopoAttrib {
 
     /**
-     * Get a single attribute value.
-     * The data type of the attribute value can be found using the getDataType() method.
-     * @param path The path to a topological component.
-     * @return The value.
-     */
-    public getValue(path: ITopoPathData): any {
-        return this._kernel.topoAttribGetValue(this._name, this._geom_type, path);
-    }
-
-    /**
-     * Set a single attribute value.
-     * The data type of the attribute value can be found using the getDataType() method.
-     * @param path The path to a topological component.
-     * @param value The new value.
-     * @return The old value.
-     */
-    public setValue(path: ITopoPathData, value: any): any {
-        return this._kernel.topoAttribSetValue(this._name, this._geom_type, path, value);
-    }
-
-    /**
      * Get all paths for this attribute.
      * @return An array of paths.
      */
-    public getPaths(): any {
+    public getPaths(): ITopoPathData[] {
         return this._kernel.topoAttribGetPaths(this._name, this._geom_type);
+    }
+
+    /**
+     * Get all topos for this attribute.
+     * @return An array of paths.
+     */
+    public getTopos(): IVertex[]|IEdge[]|IWire[]|IFace[] {
+        const paths: ITopoPathData[] = this._kernel.topoAttribGetPaths(this._name, this._geom_type);
+        switch (this._geom_type) {
+            case EGeomType.vertices:
+                return paths.map((path) => new Vertex(this._kernel, path));
+            case EGeomType.edges:
+                return paths.map((path) => new Edge(this._kernel, path));
+            case EGeomType.wires:
+                return paths.map((path) => new Wire(this._kernel, path));
+            case EGeomType.faces:
+                return paths.map((path) => new Face(this._kernel, path));
+        }
     }
 
     /**

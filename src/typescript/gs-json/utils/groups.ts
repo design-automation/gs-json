@@ -1,10 +1,11 @@
-import {IGroup, ITopo} from "./ifaces_gs";
+import {IGroup, ITopo, IPoint, IObj} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
 import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {mapSTPathIndexToGeomType, mapTTPathIndexToGeomType} from "./enums";
-
+import {Point} from "./entity_point";
+import {_castToObjType} from "./entity_obj_cast";
 /**
  * Group class.
  */
@@ -29,7 +30,7 @@ export class Group implements IGroup {
     //  This group ---------------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Get the group name, which is its main identifier. Kust be unque.
      * @param
      * @return
      */
@@ -38,7 +39,7 @@ export class Group implements IGroup {
     }
 
     /**
-     * to be completed
+     * Rename the group.
      * @param
      * @return
      */
@@ -50,96 +51,101 @@ export class Group implements IGroup {
     }
 
     /**
-     * to be completed
+     * Ge the parent group of this group. Each group can only have one parent.
      * @param
      * @return
      */
-    public getParentGroup(): string {
-        return this._kernel.groupGetParent(this._name);
+    public getParentGroup(): IGroup {
+        const name: string = this._kernel.groupGetParent(this._name);
+        return new Group(this._kernel, name);
     }
     /**
-     * to be completed
+     * Set teh parent groupof this group.
      * @param
      * @return
      */
-    public setParentGroup(name: string): string {
-        return this._kernel.groupSetParent(this._name, name);
+    public setParentGroup(group: IGroup): IGroup {
+        const name: string = this._kernel.groupSetParent(this._name, group.getName());
+        return new Group(this._kernel, name);
     }
     /**
-     * to be completed
+     * Remove the parent group of this group. This will result in this group having no parent.
+     * A group with no parent is a top level group
      * @param
      * @return
      */
-    public removeParentGroup(): string {
-        return this._kernel.groupSetParent(this._name, null);
+    public removeParentGroup(): IGroup {
+        const name: string = this._kernel.groupSetParent(this._name, null);
+        return new Group(this._kernel, name);
     }
     /**
-     * to be completed
+     * Get the children groups of this group.
+     * Each group can have multiple chilren groups.
      * @param
      * @return
      */
-    public getChildGroups(): string[] {
-        return this._kernel.groupGetChildren(this._name);
+    public getChildGroups(): IGroup[] {
+        return this._kernel.groupGetChildren(this._name).map((v) => new Group(this._kernel, v));
     }
 
     //  Objs ---------------------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Get the object in this group.
      * @param
      * @return
      */
-    public getObjIDs(obj_type?: EObjType): number[] {
-        return this._kernel.groupGetObjIDs(this._name, obj_type);
+    public getObjs(obj_type?: EObjType): IObj[] {
+        return this._kernel.groupGetObjIDs(this._name, obj_type).map((id) => _castToObjType(this._kernel, id));
     }
 
     /**
-     * to be completed
+     * Add an object to this group.
      * @param
      * @return
      */
-    public addObj(id: number): boolean {
-        return this._kernel.groupAddObj(this._name, id);
+    public addObj(obj: IObj): boolean {
+        return this._kernel.groupAddObj(this._name, obj.getID());
     }
 
     /**
-     * to be completed
+     * Add multiple object to this group.
      *
      * @param
      * @return Returns true if all obj IDs were added, false otherwise.
      */
-    public addObjs(ids: number[]): boolean {
-        return this._kernel.groupAddObjs(this._name, ids);
+    public addObjs(objs: IObj[]): boolean {
+        return this._kernel.groupAddObjs(this._name, objs.map((v) => v.getID()));
     }
     /**
-     * to be completed
+     * Remove an object from this group.
      * @param
      * @return
      */
-    public removeObj(id: number): boolean {
-        return this._kernel.groupRemoveObj(this._name, id);
+    public removeObj(obj: IObj): boolean {
+        return this._kernel.groupRemoveObj(this._name, obj.getID());
     }
     /**
-     * to be completed
+     * Remove multiple objects from this group.
      * @param
      * @return
      */
-    public removeObjs(ids: number[]): boolean {
-        return this._kernel.groupRemoveObjs(this._name, ids);
+    public removeObjs(objs: IObj[]): boolean {
+        return this._kernel.groupRemoveObjs(this._name, objs.map((v) => v.getID()));
     }
     /**
-     * to be completed
+     * Check if an object is in this group.
      * @param
      * @return
      */
-    public hasObj(id: number): boolean {
-        return this._kernel.groupHasObj(this._name, id);
+    public hasObj(obj: IObj): boolean {
+        return this._kernel.groupHasObj(this._name, obj.getID());
     }
 
     //  Topos --------------------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Get the topos in this group. (Vertices, edges, wires, faces.)
      * @param
      * @return
      */
@@ -172,7 +178,7 @@ export class Group implements IGroup {
     }
 
     /**
-     * to be completed
+     * Add a topo to this group. (Vertices, edges, wires, faces.)
      * @param
      * @return
      */
@@ -182,7 +188,7 @@ export class Group implements IGroup {
     }
 
     /**
-     * to be completed
+     * Add multiple topos to this group. (Vertices, edges, wires, faces.)
      * @param
      * @return
      */
@@ -192,7 +198,7 @@ export class Group implements IGroup {
     }
 
     /**
-     * to be completed
+     * Remove a topo from this group. (Vertices, edges, wires, faces.)
      * @param
      * @return
      */
@@ -202,7 +208,7 @@ export class Group implements IGroup {
     }
 
     /**
-     * to be completed
+     * Remove multiple topos from this group. (Vertices, edges, wires, faces.)
      * @param
      * @return
      */
@@ -212,7 +218,7 @@ export class Group implements IGroup {
     }
 
     /**
-     * to be completed
+     * Check if a topo is in this group. (Vertices, edges, wires, faces.)
      * @param
      * @return
      */
@@ -224,63 +230,63 @@ export class Group implements IGroup {
     //  Points in this group -----------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Get the points in this group.
      * @param
      * @return
      */
-    public getPointIDs(): number[] {
-        return this._kernel.groupGetPointIDs(this._name);
+    public getPoints(): IPoint[] {
+        return this._kernel.groupGetPointIDs(this._name).map((v) => new Point(this._kernel, v));
     }
 
     /**
-     * to be completed
+     * Add a point to this group.
      * @param
      * @return
      */
-    public addPoint(id: number): boolean {
-        return this._kernel.groupAddPoint(this._name, id);
+    public addPoint(point: IPoint): boolean {
+        return this._kernel.groupAddPoint(this._name, point.getID());
     }
 
     /**
-     * to be completed
+     * Add multiple points to this group.
      * @param
      * @return
      */
-    public addPoints(ids: number[]): boolean {
-        return this._kernel.groupAddPoints(this._name, ids);
+    public addPoints(points: IPoint[]): boolean {
+        return this._kernel.groupAddPoints(this._name, points.map((v) => v.getID()));
     }
 
     /**
-     * to be completed
+     * Remove a point from this group.
      * @param
      * @return
      */
-    public removePoint(id: number): boolean {
-        return this._kernel.groupRemovePoint(this._name, id);
+    public removePoint(point: IPoint): boolean {
+        return this._kernel.groupRemovePoint(this._name, point.getID());
     }
 
     /**
-     * to be completed
+     * Remove multiple points from this group.
      * @param
      * @return
      */
-    public removePoints(ids: number[]): boolean {
-        return this._kernel.groupRemovePoints(this._name, ids);
+    public removePoints(points: IPoint[]): boolean {
+        return this._kernel.groupRemovePoints(this._name, points.map((v) => v.getID()));
     }
 
     /**
-     * to be completed
+     * Check if a point is in this group.
      * @param
      * @return
      */
-    public hasPoint(id: number): boolean {
-        return this._kernel.groupHasPoint(this._name, id);
+    public hasPoint(point: IPoint): boolean {
+        return this._kernel.groupHasPoint(this._name, point.getID());
     }
 
     //  Properties ---------------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Get the properties of this group. This returns an array of key: value pairs.
      * @param
      * @return
      */
@@ -290,7 +296,7 @@ export class Group implements IGroup {
     }
 
     /**
-     * to be completed
+     * Set the properties of this group. The value must be an array of key: value pairs.
      * @param
      * @return
      */

@@ -21,3 +21,4 @@ export * from "./attrib_topoattrib";
 export * from "./groups";
 export * from "./gen_gs_models";
 export * from "./gen_three_models";
+export * from "./three_gen";

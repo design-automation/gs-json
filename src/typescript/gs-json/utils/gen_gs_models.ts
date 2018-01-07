@@ -123,30 +123,29 @@ export function genModelBoxWithAttribs(): gs.IModel {
             [points[3],points[7],points[4],points[0]],
             [points[7],points[6],points[5],points[4]],
         ]);
-    m.addAttrib("height", gs.EGeomType.points, gs.EDataType.type_num);
-    points.forEach((v) => v.setAttribValue("height", v.getPosition()[2]));
-    m.addAttrib("neighbours", gs.EGeomType.vertices, gs.EDataType.type_str_arr);
+    const height: gs.IEntAttrib = m.addEntAttrib("height", gs.EGeomType.points, gs.EDataType.type_num);
+    points.forEach((v) => v.setAttribValue(height, v.getPosition()[2]));
+    const neighbours: gs.ITopoAttrib = m.addTopoAttrib("neighbours", gs.EGeomType.vertices, gs.EDataType.type_str_arr);
     const verts: gs.IVertex[] = gs.Arr.flatten(box.getVertices());
     for (const vert of verts) {
         const paths: string[] = [];
         for (const vert2 of vert.verticesSharedPoint()[1]) { //getPoint().getVertices()) {
             if (vert2 !== vert) {
-                const path: gs.ITopoPathData = vert2.getTopoPath();
-                paths.push(path.id + ":" + path.tt + ":" + path.ti + ":" + path.st + ":" + path.si);
+                paths.push(vert2.getTopoPathStr());
             }
         }
-        vert.setAttribValue("neighbours", paths);
+        vert.setAttribValue(neighbours, paths);
     }
 
-    m.addAttrib("face_type", gs.EGeomType.faces, gs.EDataType.type_str);
+    const face_type: gs.ITopoAttrib = m.addTopoAttrib("face_type", gs.EGeomType.faces, gs.EDataType.type_str);
     const faces: gs.IFace[] = box.getFaces();
-    faces[0].setAttribValue("face_type", "floor");
-    faces[1].setAttribValue("face_type", "wall");
-    faces[2].setAttribValue("face_type", "wall");
-    faces[3].setAttribValue("face_type", "wall");
-    faces[4].setAttribValue("face_type", "wall");
-    faces[5].setAttribValue("face_type", "roof");
-    m.addAttrib("horizontal", gs.EGeomType.edges, gs.EDataType.type_bool);
+    faces[0].setAttribValue(face_type, "floor");
+    faces[1].setAttribValue(face_type, "wall");
+    faces[2].setAttribValue(face_type, "wall");
+    faces[3].setAttribValue(face_type, "wall");
+    faces[4].setAttribValue(face_type, "wall");
+    faces[5].setAttribValue(face_type, "roof");
+    const horizontal: gs.ITopoAttrib = m.addTopoAttrib("horizontal", gs.EGeomType.edges, gs.EDataType.type_bool);
     const horizontal_edges: gs.IEdge[] = [];
     horizontal_edges.push(...faces[0].getEdges());
     horizontal_edges.push(...faces[5].getEdges());
@@ -154,7 +153,7 @@ export function genModelBoxWithAttribs(): gs.IModel {
         const edges: gs.IEdge[] = face.getEdges();
         horizontal_edges.push(...[edges[1], edges[3]]);
     }
-    horizontal_edges.forEach((v) => v.setAttribValue("horizontal", true));
+    horizontal_edges.forEach((v) => v.setAttribValue(horizontal, true));
     return m;
 }
 

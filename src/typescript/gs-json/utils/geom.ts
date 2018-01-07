@@ -1,5 +1,5 @@
 import {IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane, IConicCurve,
-        IPolyline, IPolymesh, INurbsCurve} from "./ifaces_gs";
+        IPolyline, IPolymesh, INurbsCurve, ITopo} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
@@ -11,6 +11,7 @@ import {Polymesh} from "./entity_obj_polymesh";
 import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";
 import {Vertex, Edge, Wire, Face} from "./topo_sub";
+import {_castToObjType} from "./entity_obj_cast";
 
 /**
  * Class Geom
@@ -19,7 +20,7 @@ export class Geom implements IGeom {
     private _kernel: Kernel;
 
     /**
-     * to be completed
+     * Create a new Geom object from the Kernel.
      * @param
      * @return
      */
@@ -62,7 +63,10 @@ export class Geom implements IGeom {
 
     /**
      * Adds a new conic curve to the model.
-     * @param Origin:
+     * @param Origin The origin point.
+     * @param x_vec A vector defining the radius in the local x direction.
+     * @param y_vec A vector defining the radius in the local y direction, must be orthogonal to x.
+     * @param angles The angles, can be undefined, in which case a closed conic is generated.
      * @return Object of type Plane
      */
     public addConicCurve(origin_point: IPoint, x_vec: number[], y_vec: number[],
@@ -97,48 +101,49 @@ export class Geom implements IGeom {
     }
     /**
      * Adds a new ray to the model.
-     * @param origin_point An array of arrays of points.
+     * @param origin_point The ray origin point.
+     * @param ray_vec A vector defining the direction of the ray.
      * @return Object of type Ray
      */
-    public addRay(origin_point: IPoint, ray_point: IPoint): IRay {
-        const id: number = this._kernel.geomAddRay(origin_point.getID(), ray_point.getID());
+    public addRay(origin_point: IPoint, ray_vec: number[]): IRay {
+        const id: number = this._kernel.geomAddRay(origin_point.getID(), ray_vec);
         return new Ray(this._kernel, id);
     }
     /**
      * Adds a new plane to the model.
-     * @param Origin:
+     * @param origin_point The plane origin point.
+     * @param x_vec A vector defining the x axis.
+     * @param y_vec A vector defining the y axis, orthogonal to x.
      * @return Object of type Plane
      */
-    public addPlane(origin_point: IPoint, xaxis_point: IPoint, yaxis_point: IPoint):
-                    IPlane {
-        const id: number = this._kernel.geomAddPlane(origin_point.getID(), xaxis_point.getID(),
-            yaxis_point.getID());
+    public addPlane(origin_point: IPoint, x_vec: number[], y_vec: number[]): IPlane {
+        const id: number = this._kernel.geomAddPlane(origin_point.getID(), x_vec, y_vec);
         return new Plane(this._kernel, id);
     }
 
     //  Points -------------------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Get all the points in this model.
      * @param
      * @return
      */
-    public getPointIDs(): number[] {
-        return this._kernel.geomGetPointIDs();
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public getPoints(): IPoint[] {
+    public getAllPoints(): IPoint[] {
         const ids: number[] = this._kernel.geomGetPointIDs();
         return ids.map((id) => new Point(this._kernel, id));
     }
 
     /**
-     * to be completed
+     * Get a set of points from an array of IDs.
+     * @param
+     * @return
+     */
+    public getPoints(ids: number[]): IPoint[] {
+        return ids.map((id) => new Point(this._kernel, id));
+    }
+
+    /**
+     * Get a single point from an ID.
      * @param
      * @return
      */
@@ -147,25 +152,25 @@ export class Geom implements IGeom {
     }
 
     /**
-     * to be completed
+     * Delete a set of points.
      * @param
      * @return
      */
-    public delPoints(ids: number[]): boolean {
-        return this._kernel.geomDelPoints(ids);
+    public delPoints(points: IPoint[]): boolean {
+        return this._kernel.geomDelPoints(points.map((point) => point.getID()));
     }
 
     /**
-     * to be completed
+     * Delete a single point.
      * @param
      * @return
      */
-    public delPoint(id: number): boolean {
-        return this._kernel.geomDelPoint(id);
+    public delPoint(point: IPoint): boolean {
+        return this._kernel.geomDelPoint(point.getID());
     }
 
     /**
-     * to be completed
+     * Get the number of points in the model.
      * @param
      * @return
      */
@@ -173,104 +178,64 @@ export class Geom implements IGeom {
         return this._kernel.geomNumPoints();
     }
 
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public setPointPosition(id: number, xyz: number[]): number[] {
-        return this._kernel.pointSetPosition(id, xyz);
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public getPointPosition(id: number): number[] {
-        return this._kernel.pointGetPosition(id);
-    }
-
     //  Objects ------------------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Find certain types of objects in the model.
      * @param
      * @return
      */
-    public getObjIDs(): number[] {
-        return this._kernel.geomGetObjIDs();
+    public findObjs(obj_type?: EObjType): IObj[] {
+        throw new Error("Method not implemented");
     }
 
     /**
-     * to be completed
+     * Get all the object in the model.
      * @param
      * @return
      */
-    public getObjs(): IObj[] {
-        const ids: number[] = this._kernel.geomGetObjIDs();
-        const objs: IObj[] = [];
-        for (const id of ids) {
-            const obj_type = this._kernel.objGetType(id);
-            switch (obj_type) {
-                case EObjType.ray:
-                    objs.push(new Ray(this._kernel, id));
-                    break;
-                case EObjType.plane:
-                    objs.push(new Plane(this._kernel, id));
-                    break;
-                case EObjType.polyline:
-                    objs.push(new Polyline(this._kernel, id));
-                    break;
-                case EObjType.polymesh:
-                    objs.push(new Polymesh(this._kernel, id));
-                    break;
-                case EObjType.nurbs_curve:
-                    objs.push(new NurbsCurve(this._kernel, id));
-                    break;
-                default:
-                    throw new Error("Object type does not exist.");
-                // TODO add more here
-            }
-        }
-        return objs;
+    public getAllObjs(): IObj[] {
+        return this._kernel.geomGetObjIDs().map((id) => _castToObjType(this._kernel, id));
     }
 
     /**
-     * to be completed
+     * Get an array of objects from an array of IDs.
+     * @param
+     * @return
+     */
+    public getObjs(ids: number[]): IObj[] {
+        return ids.map((id) => _castToObjType(this._kernel, id));
+    }
+
+    /**
+     * Get a single object from an ID.
      * @param
      * @return
      */
     public getObj(id: number): IObj {
-        const obj_type = this._kernel.objGetType(id);
-        switch (obj_type) {
-            case EObjType.ray:
-                return new Ray(this._kernel, id);
-            case EObjType.plane:
-                return new Plane(this._kernel, id);
-            case EObjType.polyline:
-                return new Polyline(this._kernel, id);
-            case EObjType.polymesh:
-                return new Polymesh(this._kernel, id);
-            case EObjType.nurbs_curve:
-                return new NurbsCurve(this._kernel, id);
-            default:
-                throw new Error("Object type does not exist.");
-            // TODO add more here
-        }
+        return _castToObjType(this._kernel, id);
     }
 
     /**
-     * to be completed
+     * Delete an array of objects.
      * @param
      * @return
      */
-    public delObj(id: number, keep_points: boolean = true): boolean {
-        return this._kernel.geomDelObj(id, keep_points);
+    public delObjs(objs: IObj[], keep_points: boolean = true): boolean {
+        return this._kernel.geomDelObjs(objs.map((point) => point.getID()), keep_points);
     }
 
     /**
-     * to be completed
+     * Delete a single object.
+     * @param
+     * @return
+     */
+    public delObj(obj: IObj, keep_points: boolean = true): boolean {
+        return this._kernel.geomDelObj(obj.getID(), keep_points);
+    }
+
+    /**
+     * Get the total number of objects in the model.
      * @param
      * @return
      */
@@ -281,7 +246,7 @@ export class Geom implements IGeom {
     //  Topos --------------------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Get all the topos in the model for a specific geom type. (Vertices, Edges, Wires, Faces.)
      * @param
      * @return
      */
@@ -301,7 +266,54 @@ export class Geom implements IGeom {
     }
 
     /**
-     * to be completed
+     * Get a topo from a topo path. If the topo does not exist, then null is returned.
+     * @param
+     * @return
+     */
+    public getTopo(path: ITopoPathData): IVertex|IEdge|IWire|IFace {
+        if (!this._kernel.geomHasTopo(path)) {return null;}
+        if (path.st === undefined) {
+            if (path.tt === 0) {return new Wire(this._kernel, path);}
+            if (path.tt === 1) {return new Face(this._kernel, path);}
+        } else {
+            if (path.st === 0) {return new Vertex(this._kernel, path);}
+            if (path.st === 1) {return new Edge(this._kernel, path);}
+        }
+    }
+
+    /**
+     * Get a topo from a topo label.
+     * @param
+     * @return
+     */
+    public getTopoFromLabel(path_str: string): IVertex|IEdge|IWire|IFace {
+        // o2:f3:e1
+        const parts: Array<[string, number]> =
+            path_str.split(":").map((v) => [v.slice(0,1), Number.parseInt(v.slice(1))] as [string, number]);
+        if (parts.length !== 2 && parts.length !== 3) {return null;}
+        if (parts[0][0] !== "o") {return null;}
+        if (parts[1][0] !== "w" && parts[1][0] !== "f") {return null;}
+        if (Number.isNaN(parts[0][1])) {return null;}
+        if (Number.isNaN(parts[1][1])) {return null;}
+        const id: number = parts[0][1];
+        let tt: 0|1;
+        if (parts[1][0] === "w") {tt = 0;} else {tt = 1;}
+        const ti: number = parts[1][1];
+        const path: ITopoPathData = {id, tt, ti};
+        if (parts.length === 3) {
+            if (parts[2][0] !== "v" && parts[2][0] !== "e") {return null;}
+            if (Number.isNaN(parts[2][1])) {return null;}
+            let st: 0|1;
+            if (parts[2][0] === "v") {st = 0;} else {st = 1;}
+            const si: number = parts[2][1];
+            path.st = st;
+            path.si = si;
+        }
+        return this.getTopo(path);
+    }
+
+    /**
+     * Get the number of topos in the model for a specific geom type. (Vertices, Edges, Wires, Faces.)
      * @param
      * @return
      */

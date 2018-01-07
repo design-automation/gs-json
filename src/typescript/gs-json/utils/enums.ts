@@ -5,12 +5,12 @@
  * Attributes can be attached to all these elements.
  */
 export enum EGeomType {
-    objs,
-    faces,
-    wires,
-    edges,
-    vertices,
     points,
+    vertices,
+    edges,
+    wires,
+    faces,
+    objs,
 }
 /**
  * Enum, the different data types for attributes.

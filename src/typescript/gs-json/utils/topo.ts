@@ -1,12 +1,14 @@
-import {ITopo, IGroup} from "./ifaces_gs";
+import {IObj, ITopo, ITopoAttrib, IGroup} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
 import {Group} from "./groups";
+import {TopoAttrib} from "./attrib_topoattrib";
+import {_castToObjType} from "./entity_obj_cast";
 
 /**
  * Topo class.
- * An abstrcat class that is the superclass for all topological components:
+ * An abstrcat class that is the superclass for all topo components:
  * vertices, edges, wires, and faces.
  */
 export abstract class Topo implements ITopo {
@@ -15,8 +17,8 @@ export abstract class Topo implements ITopo {
     /**
      * Creates an instance of one of the subclasses of Topo.
      * The entity must already exists in the geometry.
-     * In general, you do not need to create topological components.
-     * Topology will be created for you when you create geometric objects.
+     * You should not create new topo components using this constructor.
+     * Topology will be created for you when you create geometric objects, such as polylines and polymeshes.
      * @param geom The Geom object to which the topo belongs.
      * @param path The path of the entity. This path must already exist in the geometry.
      * @return The Topo object.
@@ -29,7 +31,7 @@ export abstract class Topo implements ITopo {
     //  This topo ----------------------------------------------------------------------------------
 
     /**
-     * Get the ID of the object to which this topological component belongs.
+     * Get the ID of the object to which this topo component belongs.
      * @return The object ID number.
      */
     public getObjID(): number {
@@ -37,7 +39,15 @@ export abstract class Topo implements ITopo {
     }
 
     /**
-     * Get the geometry type for this topological component.
+     * Get the ID of the object to which this topo component belongs.
+     * @return The object ID number.
+     */
+    public getObj(): IObj {
+        return _castToObjType(this._kernel, this._path.id);
+    }
+
+    /**
+     * Get the geometry type for this topo component.
      * This method mst be overridden by the sub-classes.
      * @return The geometry type.
      */
@@ -47,7 +57,7 @@ export abstract class Topo implements ITopo {
     }
 
     /**
-     * Get the geometry path for this topological component.
+     * Get the geometry path for this topo component.
      * @return The geometry path.
      */
     public getTopoPath(): ITopoPathData {
@@ -55,7 +65,7 @@ export abstract class Topo implements ITopo {
     }
 
     /**
-     * Get a compact string representation of the geometry path for this topological component.
+     * Get a compact string representation of the geometry path for this topo component.
      * @return The geometry path str.
      */
     public getTopoPathStr(): string {
@@ -73,7 +83,7 @@ export abstract class Topo implements ITopo {
 
     /**
      * Get the label centroid of this topo.
-     * This is calculated as the average of the point positions.
+     * This is calculated as the average of the point positions for all points in the topo.
      * @return The xyz of the centroid.
      */
     public getLabelCentroid(): number[] {
@@ -84,40 +94,55 @@ export abstract class Topo implements ITopo {
     //  Attributes ---------------------------------------------------------------------------------
 
     /**
-     * Get the attribute names for this topological component.
+     * Get the attributes for this topo component.
      * @return The array of attribute names.
      */
-    public getAttribNames(): string[] {
-        return this._kernel.attribGetNames(this.getGeomType());
+    public getAttribs(): ITopoAttrib[] {
+        const geom_type: EGeomType = this.getGeomType();
+        const names: string[] = this._kernel.attribGetNames(this.getGeomType());
+        return names.map((name) => new TopoAttrib(this._kernel, name, geom_type));
     }
 
     /**
-     * Get an attribute value for this topological component.
-     * @param name The attribute name.
+     * Get an attribute value for this topo component.
+     * @param attrib The topo attribute.
      * @return The attribute value.
      */
-    public getAttribValue(name: string): any {
-        return this._kernel.topoAttribGetValue(name, this.getGeomType(), this._path);
+    public getAttribValue(attrib: ITopoAttrib): any {
+        if (attrib.getGeomType() !== this.getGeomType()) {return null;}
+        return this._kernel.topoAttribGetValue(attrib.getName(), attrib.getGeomType(), this._path);
     }
 
     /**
-     * Set an attribute value for this topological component.
-     * @param name The attribute name.
+     * Set an attribute value for this topo component.
+     * @param attrib The topo attribute.
      * @param value The new attribute value.
      * @return The old attribute value.
      */
-    public setAttribValue(name: string, value: any): any {
-        return this._kernel.topoAttribSetValue(name, this.getGeomType(), this._path, value);
+    public setAttribValue(attrib: ITopoAttrib, value: any): any {
+        if (attrib.getGeomType() !== this.getGeomType()) {return null;}
+        return this._kernel.topoAttribSetValue(attrib.getName(), attrib.getGeomType(), this._path, value);
     }
 
     //  Groups -------------------------------------------------------------------------------------
 
     /**
-     * Get the group names for all the groups for which this topological component is a member.
+     * Get the groups for which this topo component is a member.
      * @return The array of groups.
      */
     public getGroups(): IGroup[] {
         const names: string[] = this._kernel.topoGetGroups(this._path);
         return names.map((name) => new Group(this._kernel, name));
+    }
+
+    /**
+     * Add this topo to a group.
+     * @param group The group.
+     * @return True if the topo was added, False is the topo was already in the group.
+     */
+    public addToGroup(group: IGroup): boolean {
+        // return this._kernel.groupAddTopo(group.getName(), this._path);
+        // TODO
+        throw new Error("Method not implemented");
     }
 }

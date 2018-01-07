@@ -1,7 +1,7 @@
-import {IPoint, IConicCurve} from "./ifaces_gs";
+import {IConicCurve, IPoint} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
-//import {Vector3} from "three";
+import {Point} from "./entity_point";
 
 /**
  * Class ConicCurve.
@@ -16,11 +16,11 @@ export class ConicCurve extends Obj implements IConicCurve {
     }
 
     /**
-     * Returns the origin of this curve.
-     * @return Return the origin.
+     * Get the origin of the coniccurve.
+     * @return Plane object type.
      */
-    public getOrigin(): number[] {
-        return this._kernel.objGetParams(this._id)[1];
+    public getOrigin(): IPoint {
+        return new Point(this._kernel, this._kernel.objGetOnePoint(this._id));
     }
 
     /**
@@ -47,30 +47,5 @@ export class ConicCurve extends Obj implements IConicCurve {
      */
     public isClosed(): boolean {
         return (this._kernel.objGetParams(this._id)[4] === undefined);//TODO what about parabola, hyperbola
-    }
-
-    /**
-     * Returns the length of this curve.
-     * @return Return the x and y radii.
-     */
-    public length(): number {
-        throw new Error("Method not implemented."); //TODO
-    }
-
-    /**
-     * Evalues t.
-     * 0 = start of conic, 1 = end of conic.
-     * @return Return the xyz.
-     */
-    public evaluate(t: number): IPoint {
-        throw new Error("Method not implemented."); //TODO
-    }
-
-    /**
-     * Evalues and angle between 0 and 2PI.
-     * @return Return the xyz.
-     */
-    public evaluateAngle(angle: number): IPoint {
-        throw new Error("Method not implemented."); //TODO
     }
 }

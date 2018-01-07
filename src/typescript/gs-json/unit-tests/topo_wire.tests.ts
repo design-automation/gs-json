@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as topo_wire_tests from "../utils/topo_wire_tests";
+import * as topo_wire_tests from "../utils/_topo_wire_tests";
 
 describe("Tests for Wire class", () => {
     it("test_Wire_getGeomType", () => {

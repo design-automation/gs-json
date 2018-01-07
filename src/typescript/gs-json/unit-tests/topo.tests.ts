@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as topos_tests from "../utils/topo_tests";
+import * as topos_tests from "../utils/_topo_tests";
 
 describe("Tests for Topo class", () => {
     it("test_Topo_constructor", () => {

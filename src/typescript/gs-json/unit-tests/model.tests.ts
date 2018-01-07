@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as model_tests from "../utils/model_tests";
+import * as model_tests from "../utils/_model_tests";
 
 describe("Tests for Model class", () => {
     it("test_Model_constructor", () => {
@@ -9,7 +9,7 @@ describe("Tests for Model class", () => {
         expect( model_tests.test_Model_getGeom() ).toBe(true);
     });
     it("test_Model_getAttribs", () => {
-        expect( model_tests.test_Model_getAttribs() ).toBe(true);
+        expect( model_tests.test_Model_findAttribs() ).toBe(true);
     });
     it("test_Model_getAttrib", () => {
         expect( model_tests.test_Model_getAttrib() ).toBe(true);

@@ -1,6 +1,4 @@
 import {Arr} from "./arr";
-//import * as mathjs from "mathjs"; // TODO not being used at the moment
-//import * as three from "three"; // TODO not being used at the moment
 
 import {IModel} from "./ifaces_gs";
 
@@ -13,7 +11,7 @@ import {EGeomType, EDataType, EObjType, TDataTypeStr,
 
 import {ITopoTree} from "./ifaces_trees";
 import {TopoTree} from "./topo_trees";
-
+import * as three from "three";
 /**
  * Kernel Class
  * This class controls all acces to the data and ensures that the data remains consistent.
@@ -48,7 +46,7 @@ export class Kernel {
         if (data && data.metadata !== undefined) {
             this._metadata = data.metadata;
         } else {
-            this._metadata = {filetype: "gs-json", version: "0.1.5"};
+            this._metadata = {filetype: "gs-json", version: "0.1.6"};
         }
         // Geom points
         if (data && data.geom !== undefined && data.geom.points !== undefined) {
@@ -123,7 +121,7 @@ export class Kernel {
      * @param
      * @return
      */
-    public modelGetAttribs(geom_type?: EGeomType): IAttribData[] {
+    public modelFindAttribs(geom_type: EGeomType): IAttribData[] {
         switch (geom_type) {
             case EGeomType.points:
                 return Array.from(this._attribs.get(geom_type).values());
@@ -137,16 +135,49 @@ export class Kernel {
                 return Array.from(this._attribs.get(geom_type).values());
             case EGeomType.vertices:
                 return Array.from(this._attribs.get(geom_type).values());
-            default:
-                return [
-                    ...this.modelGetAttribs(EGeomType.points),
-                    ...this.modelGetAttribs(EGeomType.objs),
-                    ...this.modelGetAttribs(EGeomType.faces),
-                    ...this.modelGetAttribs(EGeomType.wires),
-                    ...this.modelGetAttribs(EGeomType.edges),
-                    ...this.modelGetAttribs(EGeomType.vertices),
-                ];
         }
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public modelGetAllAttribs(): IAttribData[] {
+        return [
+            ...this.modelFindAttribs(EGeomType.points),
+            ...this.modelFindAttribs(EGeomType.vertices),
+            ...this.modelFindAttribs(EGeomType.edges),
+            ...this.modelFindAttribs(EGeomType.wires),
+            ...this.modelFindAttribs(EGeomType.faces),
+            ...this.modelFindAttribs(EGeomType.objs),
+        ];
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public modelGetAllEntAttribs(): IAttribData[] {
+        return [
+            ...this.modelFindAttribs(EGeomType.points),
+            ...this.modelFindAttribs(EGeomType.objs),
+        ];
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public modelGetAllTopoAttribs(): IAttribData[] {
+        return [
+            ...this.modelFindAttribs(EGeomType.vertices),
+            ...this.modelFindAttribs(EGeomType.edges),
+            ...this.modelFindAttribs(EGeomType.wires),
+            ...this.modelFindAttribs(EGeomType.faces),
+        ];
     }
 
     /**
@@ -164,6 +195,7 @@ export class Kernel {
      * @return
      */
     public modelAddAttrib(name: string, geom_type: EGeomType, data_type: EDataType): IAttribData {
+        if (this.modelHasAttrib(name, geom_type)) {return this.modelGetAttrib(name, geom_type);}
         // name = name.replace(/\s/g, "_");
         const data: IAttribData = {
                                    data_type: mapDataTypeToString.get(data_type), // TODO string not good
@@ -171,36 +203,12 @@ export class Kernel {
                                    name,
                                    values: [[],[null]]};
 
-        // populate the attribute with indexes all pointing to the null value
-        switch (geom_type) {
-            case EGeomType.points:
-                data.values[0] = Arr.make(this.geomNumPoints(), 0);
-                break;
-            case EGeomType.vertices:
-                data.values[0] = this._objs.map((o, oi) => [
-                    o[0].map((w, wi) => Arr.make(this.topoNumVertices({id: oi, tt: 0, ti: wi}), 0)),
-                    o[1].map((f, fi) => Arr.make(this.topoNumVertices({id: oi, tt: 1, ti: fi}), 0)),
-                ]);
-                break;
-            case EGeomType.edges:
-                data.values[0] = this._objs.map((o, oi) => [
-                    o[0].map((w, wi) => Arr.make(this.topoNumEdges({id: oi, tt: 0, ti: wi}), 0)),
-                    o[1].map((f, fi) => Arr.make(this.topoNumEdges({id: oi, tt: 1, ti: fi}), 0)),
-                ]);
-                break;
-            case EGeomType.wires:
-                data.values[0] = this._objs.map((o) => Arr.make(o[0].length, 0));
-                break;
-            case EGeomType.faces:
-                data.values[0] = this._objs.map((o) => Arr.make(o[1].length, 0));
-                break;
-            case EGeomType.objs:
-                data.values[0] = Arr.make(this.geomNumObjs(), 0);
-                break;
-        }
         // save and return data
         this._attribs.get(geom_type).set(name, data);
-        return data;
+        // populate the attribute with indexes all pointing to the null value
+        this._newAttribAddObjsAndPoints(name, geom_type);
+        // return teh new attribute
+        return this._attribs.get(geom_type).get(name);
     }
 
     /**
@@ -228,7 +236,7 @@ export class Kernel {
      * @param
      * @return
      */
-    public modelGetGroups(): IGroupData[] {
+    public modelGetAllGroups(): IGroupData[] {
         return Array.from(this._groups.values());
     }
 
@@ -247,13 +255,17 @@ export class Kernel {
      * @return
      */
     public modelAddGroup(name: string, parent?: string): IGroupData {
+        if (this.modelHasGroup(name)) {return this.modelGetGroup(name);}
         const data: IGroupData = {name, parent: null, objs: [], points: []};
-        if (parent !== undefined && this._groups.has(parent)) {
-            data.parent = parent;
+        if (parent !== undefined) {
+            if (this._groups.has(parent)) {
+                data.parent = parent;
+            } else {
+                throw new Error("Parent group does not exist.");
+            }
         }
         this._groups.set(name, data);
         this._topos_trees.set(name, new TopoTree());
-
         return data;
     }
 
@@ -350,7 +362,7 @@ export class Kernel {
         this._points[0].push(0); // add a point to the points list
         this.pointSetPosition(new_id, xyz);
         // update point attributes
-        this._addPointToAttribs(new_id);
+        this._newPointAddToAttribs(new_id);
         return new_id;
     }
 
@@ -405,7 +417,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Creates a list if point IDs. The list does not include the empty slots.
      * @param
      * @return
      */
@@ -423,67 +435,40 @@ export class Kernel {
      * @param dir The ray direction, as a vector.
      * @return ID of object.
      */
-    public geomAddRay(origin_id: number, ray_point_id: number): number {
-        const origin: number[] = this.pointGetPosition(origin_id);
-        const ray_point: number[] = this.pointGetPosition(ray_point_id);
-        const ray_vec: number[] = [ray_point[0] - origin[0],
-                                   ray_point[1] - origin[1],
-                                   ray_point[2] - origin[2]];
+    public geomAddRay(origin_id: number, ray_vec: number[]): number {
         const new_id: number = this._objs.length;
         // create the ray
         this._objs.push([
-            [[origin_id, ray_point_id]],
-            [], [EObjType.ray, origin, ray_vec]]); // add the obj
+            [[origin_id]], // wires
+            [], // faces
+            [EObjType.ray, ray_vec], // parameters
+        ]); // add the obj
         // update all attributes
-        this._addObjToAttribs(new_id);
+        this._newObjAddToAttribs(new_id);
         // return the new pline
         return new_id;
     }
 
     /**
-     * Adds a new plane to the model that passes through a sequence of points.
-     * @param origin The ray origin point.
-     * @param normal The plane normal, as a vector.
+     * Adds a new plane to the model defined by an origin and two vectors.
+     * @param origin The plane origin point.
+     * @param x_vec A vector defining the x axis.
+     * @param y_vec A vector defining the y axis, orthogonal to x.
      * @return ID of object.
      */
-    public geomAddPlane(origin_id: number, xaxis_point_id: number, yaxis_point_id: number): number {
-        const origin: number[] = this.pointGetPosition(origin_id);
-        const xaxis_point: number[] = this.pointGetPosition(xaxis_point_id);
-        const yaxis_point: number[] = this.pointGetPosition(yaxis_point_id);
-        const x_vec: number[] = [xaxis_point[0] - origin[0],
-                                 xaxis_point[1] - origin[1],
-                                 xaxis_point[2] - origin[2]];
-        const y_vec: number[] = [yaxis_point[0] - origin[0],
-                                 yaxis_point[1] - origin[1],
-                                 yaxis_point[2] - origin[2]];
-        const z_vec: number[] = [ (+1) * (xaxis_point[1] * yaxis_point[2] - xaxis_point[2] * yaxis_point[1]),
-                                  (-1) * (xaxis_point[0] * yaxis_point[2] - xaxis_point[2] * yaxis_point[0]),
-                                  (+1) * (xaxis_point[0] * yaxis_point[1] - xaxis_point[1] * yaxis_point[0])];
-        if(Arr.equal(z_vec,[0,0,0])) {
-            throw new Error("Two non colinear x_vec and y_vec axis are required for defining the plan");
-        }
-
-        // normalizing
-        const x_norm: number = Math.sqrt(Math.pow(x_vec[0],2)+Math.pow(x_vec[1],2)+Math.pow(x_vec[2],2));
-        const y_norm: number = Math.sqrt(Math.pow(y_vec[0],2)+Math.pow(y_vec[1],2)+Math.pow(y_vec[2],2));
-        const z_norm: number = Math.sqrt(Math.pow(z_vec[0],2)+Math.pow(z_vec[1],2)+Math.pow(z_vec[2],2));
-
-        x_vec[0] = x_vec[0]/x_norm ;
-        x_vec[1] = x_vec[1]/x_norm ;
-        x_vec[2] = x_vec[2]/x_norm ;
-        y_vec[0] = y_vec[0]/y_norm ;
-        y_vec[1] = y_vec[1]/y_norm ;
-        y_vec[2] = y_vec[2]/y_norm ;
-        z_vec[0] = z_vec[0]/z_norm ;
-        z_vec[1] = z_vec[1]/z_norm ;
-        z_vec[2] = z_vec[2]/z_norm ;
-
+    public geomAddPlane(origin_id: number, x_vec: number[], y_vec: number[]): number {
+        const x_vector: three.Vector3 = new three.Vector3(...x_vec).normalize();
+        const y_vector: three.Vector3 = new three.Vector3(...y_vec).normalize();
+        const z_vector: three.Vector3 = new three.Vector3();
+        z_vector.crossVectors(x_vector, y_vector);
         const new_id: number = this._objs.length;
         this._objs.push([
-            [[origin_id, xaxis_point_id], [origin_id, yaxis_point_id]],
-            [], [EObjType.plane, origin, x_vec, y_vec, z_vec]]); // add the obj
+            [[origin_id]], // wires
+            [], // faces
+            [EObjType.plane, x_vector.toArray(), y_vector.toArray(), z_vector.toArray()], // parameters
+        ]); // add the obj
         // update all attributes
-        this._addObjToAttribs(new_id);
+        this._newObjAddToAttribs(new_id);
         // return the new pline
         return new_id;
     }
@@ -501,31 +486,35 @@ export class Kernel {
         if (is_closed) {point_ids.push(-1); }
         this._objs.push([[point_ids], [], [EObjType.polyline]]); // add the obj
         // update all attributes
-        this._addObjToAttribs(new_id);
+        this._newObjAddToAttribs(new_id);
         // return the new pline
         return new_id;
     }
 
     /**
-     * Adds a new conic curve to the model defined by origin and two points on x and y axes, and
+     * Adds a new conic curve to the model defined by origin and two vectors for the x and y axes, and
      * two angles.
      * @param origin_id The origin point.
-     * @param xaxis_point_id The conic curve x axis point.
-     * @param yaxis_point_id The conic curve y axis point.
-     * @param ang_a The angles, can be undefined, in which case a closed conic is generated
+     * @param x_vec A vector defining the radius in the local x direction.
+     * @param y_vec A vector defining the radius in the local y direction.
+     * @param angles The angles, can be undefined, in which case a closed conic is generated.
      * @return ID of object.
      */
     public geomAddConicCurve(origin_id: number, x_vec: number[], y_vec: number[],
-                        angles?: [number, number]): number {
+                             angles?: [number, number]): number {
+        const x_vector: three.Vector3 = new three.Vector3(...x_vec);
+        const y_vector: three.Vector3 = new three.Vector3(...y_vec);
+        const z_vector: three.Vector3 = new three.Vector3();
+        z_vector.crossVectors(x_vector, y_vector);
         const new_id: number = this._objs.length;
         // add the obj
         this._objs.push([
             [[origin_id]], // wire with just a single point
             [], // faces, none
-            [EObjType.conic_curve, ...this.pointGetPosition(origin_id), x_vec, y_vec, angles], // params
+            [EObjType.conic_curve, x_vector.toArray(), y_vector.toArray(), z_vector.toArray(), angles], // params
         ]);
         // update all attributes
-        this._addObjToAttribs(new_id);
+        this._newObjAddToAttribs(new_id);
         // return the new conic id
         return new_id;
     }
@@ -544,7 +533,7 @@ export class Kernel {
         if (is_closed) {ctrl_point_ids.push(-1); }
         this._objs.push([[ctrl_point_ids], [], [EObjType.nurbs_curve, order]]); // add the obj
         // update all attributes
-        this._addObjToAttribs(new_id);
+        this._newObjAddToAttribs(new_id);
         // return the new pline
         return new_id;
     }
@@ -564,9 +553,19 @@ export class Kernel {
         wire_points_ids.forEach((w) => w.push(-1)); // close
         this._objs.push([wire_points_ids, face_points_ids, [EObjType.polymesh]]); // add the obj
         // update all attributes
-        this._addObjToAttribs(new_id);
+        this._newObjAddToAttribs(new_id);
         // return the new pline
         return new_id;
+    }
+
+    /**
+     * Returns true if an object with the specified ID exists.
+     * @param
+     * @return
+     */
+    public geomHasObj(id: number): boolean {
+        if (this._objs[id] === undefined) {return false; }
+        return true;
     }
 
     /**
@@ -619,7 +618,7 @@ export class Kernel {
     }
 
     /**
-     * Skips empty slots in spare array.
+     * Creates a list of object IDs. Skips empty slots in spare array.
      * @param
      * @return
      */
@@ -632,12 +631,26 @@ export class Kernel {
     //  Geom Topo ----------------------------------------------------------------------------------
 
     /**
+     * Returns true if a topo with the specified path exists.
+     * @param
+     * @return
+     */
+    public geomHasTopo(path: ITopoPathData): boolean {
+        if (this._objs[path.id] === undefined) {return false; }
+        if (this._objs[path.id][path.tt][path.ti] === undefined) {return false;}
+        if (path.st !== undefined) {
+            if (this._objs[path.id][path.tt][path.ti][path.si] === undefined) {return false;}
+        }
+        return true;
+    }
+
+    /**
      * to be completed
      * @param
      * @return
      */
     public geomGetTopoPaths(geom_type: EGeomType): ITopoPathData[] {
-        const objs_data: any[] = this._objs.filter((n) => n !== undefined);
+        const objs_data: any[] = this._objsDense();
         switch (geom_type) {
             case EGeomType.vertices:
                 return this._getVEPathsFromObjsData(objs_data, 0);
@@ -801,6 +814,20 @@ export class Kernel {
      */
     public objGetType(id: number): number {
         return this._objs[id][2][0];
+    }
+
+    /**
+     * Gets one point for this object. This is udeful for entities that are deifned by a single point.
+     * @return One point ID.
+     */
+    public objGetOnePoint(id: number): number {
+        if (this._objs[id][0][0] !== undefined) {
+            return this._objs[id][0][0][0];
+        }
+        if (this._objs[id][1][0] !== undefined) {
+            return this._objs[id][1][0][0];
+        }
+        return null;
     }
 
     /**
@@ -986,7 +1013,7 @@ export class Kernel {
      * @return
      */
     public pointIsUnused(point_id: number): boolean { // TODO replace implementation with reverse map
-        for (const obj of this._objs.values()) { // sparse array
+        for (const obj of this._objsDense()) { // sparse array
             if (Arr.flatten(obj.slice(0,3)).indexOf(point_id) !== -1) {return false;} // Slow
         }
         return true;
@@ -1241,7 +1268,9 @@ export class Kernel {
      */
     public attribGetValues(name: string, geom_type: EGeomType): any[] {
         const values: any[] = this._attribs.get(geom_type).get(name).values;
-        return values[0].filter((v) => v !== undefined).map((v,i) => values[1][v]);
+        const indexes: number[] = Arr.flatten(values[0].filter((i) => i !== undefined));
+        const unique_values: any[] = values[1];
+        return indexes.map((i) => unique_values[i]);
     }
 
     /**
@@ -1354,11 +1383,11 @@ export class Kernel {
         switch (geom_type) {
             case EGeomType.vertices:
                 return Arr.flatten(this.geomGetObjIDs().map((id) => this.objGetVertices(id)));
-            case EGeomType.vertices:
+            case EGeomType.edges:
                 return Arr.flatten(this.geomGetObjIDs().map((id) => this.objGetEdges(id)));
-            case EGeomType.vertices:
+            case EGeomType.wires:
                 return Arr.flatten(this.geomGetObjIDs().map((id) => this.objGetWires(id)));
-            case EGeomType.vertices:
+            case EGeomType.faces:
                 return Arr.flatten(this.geomGetObjIDs().map((id) => this.objGetFaces(id)));
         }
         throw new Error("geom_type must be either vertices, edges, wires, or faces");
@@ -1648,7 +1677,64 @@ export class Kernel {
     //  ============================================================================================
     //  ============================================================================================
 
-    //  Creating and deleting object and points ----------------------------------------------------
+    /**
+     * Returns an array of TObjData. Removes empty slots.
+     * @param
+     * @return
+     */
+    private _objsDense(): TObjData[] {
+        return this._objs.filter((v) => (v !== undefined));
+    }
+    //  ------------------------------------------------------------------------------------------------------
+    //  CREATING ATTRIBUTES -----------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+
+    /**
+     * This method assumes that the attribute name is for a newly created attribute.
+     * For ell existing point or object in the model, it assigns null values.
+     * If the new attrib is a point attrib, then all points in teh model will get a null value for this attrib.
+     * If the new attrib is any other type of attribute (obj, vertex, edge, wire, face),
+     * then also null values will be created for all those types.
+     * Care has to be taken with sparse arrays. Points and objects are stored in sparse arrays.
+     * The index into the array is the ID of the point or object.
+     * The values[0] array for any attribute needs to have the exact same structure as the point or object arrays.
+     * This means that empty slots need to be duplicated.
+     * @param
+     * @return
+     */
+    private _newAttribAddObjsAndPoints(name: string, geom_type: EGeomType): void {
+        const values: any[] = this._attribs.get(geom_type).get(name).values;
+        switch (geom_type) {
+            case EGeomType.points:
+                values[0] = this._points[0].map((p, pi) => 0);
+                break;
+            case EGeomType.vertices:
+                values[0] = this._objs.map((o, oi) => [
+                    o[0].map((w, wi) => Arr.make(this.topoNumVertices({id: oi, tt: 0, ti: wi}), 0)),
+                    o[1].map((f, fi) => Arr.make(this.topoNumVertices({id: oi, tt: 1, ti: fi}), 0)),
+                ]);
+                break;
+            case EGeomType.edges:
+                values[0] = this._objs.map((o, oi) => [
+                    o[0].map((w, wi) => Arr.make(this.topoNumEdges({id: oi, tt: 0, ti: wi}), 0)),
+                    o[1].map((f, fi) => Arr.make(this.topoNumEdges({id: oi, tt: 1, ti: fi}), 0)),
+                ]);
+                break;
+            case EGeomType.wires:
+                values[0] = this._objs.map((o) => Arr.make(o[0].length, 0));
+                break;
+            case EGeomType.faces:
+                values[0] = this._objs.map((o) => Arr.make(o[1].length, 0));
+                break;
+            case EGeomType.objs:
+                values[0] = this._objs.map((o, oi) => 0);
+                break;
+        }
+    }
+
+    //  ------------------------------------------------------------------------------------------------------
+    //  CREATING OBJECTS AND POINTS  -------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
 
     /**
      * This method assumes that the object id is for a newly created object.
@@ -1656,7 +1742,7 @@ export class Kernel {
      * @param
      * @return
      */
-    private _addObjToAttribs(id: number): void {
+    private _newObjAddToAttribs(id: number): void {
         for (const attrib of this._attribs.get(EGeomType.objs).values()) {
             attrib.values[0][id] = 0;
         }
@@ -1685,6 +1771,23 @@ export class Kernel {
                 ];
         }
     }
+
+    /**
+     * This method assumes that the point id is for a newly created point.
+     * It creates null attribute values for all point attributes in the model.
+     * @param
+     * @return
+     */
+    private _newPointAddToAttribs(id: number): void {
+        for (const attrib of this._attribs.get(EGeomType.points).values()) {
+            attrib.values[0][id] = 0;
+        }
+    }
+
+    //  ------------------------------------------------------------------------------------------------------
+    //  DELETING OBJECTS AND POINTS  -------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+
     /**
      * This method assumes that the object id is for an object that is about to be deleted.
      * It deletes the attributs values for all attributes in the model.
@@ -1710,18 +1813,6 @@ export class Kernel {
     }
 
     /**
-     * This method assumes that the point id is for a newly created point.
-     * It creates null attribute values for all point attributes in the model.
-     * @param
-     * @return
-     */
-    private _addPointToAttribs(id: number): void {
-        for (const attrib of this._attribs.get(EGeomType.points).values()) {
-            attrib.values[0][id] = 0;
-        }
-    }
-
-    /**
      * This method assumes that the point id is for an point that is about to be deleted.
      * It deletes the attributs values for this point for all attributes in the model.
      * @param
@@ -1740,7 +1831,7 @@ export class Kernel {
      * @return
      */
     private _delPointFromObjs(id: number): void {
-        for (const [obj_id_str, obj] of this._objs.entries()) { // sparse array
+        for (const [obj_id_str, obj] of this._objsDense().entries()) { // sparse array
             switch (obj[2][0]) {
                 // Polyline
                 case 100:
@@ -1868,7 +1959,7 @@ export class Kernel {
     //  --------------------------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Find all the wires in a polymesh
      * @param
      * @return Object of type Polymesh
      */
@@ -1920,7 +2011,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Used by _findPolymeshWires
      * @param
      * @return
      */
@@ -1938,7 +2029,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Used by _findPolymeshWires
      * @param
      * @return
      */
@@ -1955,7 +2046,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Used by _findPolymeshWires
      * @param
      * @return
      */

@@ -94,4 +94,3 @@ export abstract class Attrib implements IAttrib {
         return this._kernel.attribCount(this._name, this._geom_type);
     }
 }
-

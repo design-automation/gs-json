@@ -1,6 +1,7 @@
-import {IPlane} from "./ifaces_gs";
+import {IPlane, IPoint} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
+import {Point} from "./entity_point";
 
 /**
  * Class Plane.
@@ -18,12 +19,20 @@ export class Plane extends Obj implements IPlane {
         return EObjType.plane;
     }
 
-    public getOrigin(): number[] {
-        return this._kernel.objGetParams(this._id)[1];
+    /**
+     * Get the origin of the plane.
+     * @return Plane object type.
+     */
+    public getOrigin(): IPoint {
+        return new Point(this._kernel, this._kernel.objGetOnePoint(this._id));
     }
 
+    /**
+     * Get the x and y vectors  of the plane.
+     * @return Plane object type.
+     */
     public getVectors(): number[][] {
-        return this._kernel.objGetParams(this._id).slice(2,4);
+        return this._kernel.objGetParams(this._id).slice(1,3);
     }
 
     /**
@@ -34,9 +43,10 @@ export class Plane extends Obj implements IPlane {
      * @return Array of real numbers: [a,b,c,d] (where a,b,c is a triplet set such as (a,b,c) !=== (0,0,0))
      */
     public getCartesians(): number[] {
-        const origin: number[] = this._kernel.objGetParams(this._id)[1];
-        const z_vec: number[] = this._kernel.objGetParams(this._id)[4];
-        const d: number = -(origin[0] * z_vec[0] + origin[1] * z_vec[1] + origin[2] * z_vec[2]);
+        const origin_id: number = this._kernel.objGetOnePoint(this._id);
+        const origin_xyz: number[] = this._kernel.pointGetPosition(origin_id);
+        const z_vec: number[] = this._kernel.objGetParams(this._id)[3];
+        const d: number = -(origin_xyz[0] * z_vec[0] + origin_xyz[1] * z_vec[1] + origin_xyz[2] * z_vec[2]);
         return [z_vec[0], z_vec[1], z_vec[2], d];
     }
 }

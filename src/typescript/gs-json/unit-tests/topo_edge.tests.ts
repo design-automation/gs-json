@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as topo_edge_tests from "../utils/topo_edge_tests";
+import * as topo_edge_tests from "../utils/_topo_edge_tests";
 
 describe("Tests for Edge class", () => {
     it("test_Edge_getGeomType", () => {

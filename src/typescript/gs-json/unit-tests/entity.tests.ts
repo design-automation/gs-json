@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as entity_tests from "../utils/entity_tests";
+import * as entity_tests from "../utils/_entity_tests";
 
 describe("Tests for Entity class", () => {
     it("test_ent_constructor", () => {
@@ -17,8 +17,8 @@ describe("Tests for Entity class", () => {
     // it('test_ent_getGeomType', () => {
     //     expect( entities_tests.test_ent_getGeomType() ).toBe(true);
     // });
-    it("test_ent_getAttribNames", () => {
-        expect( entity_tests.test_ent_getAttribNames() ).toBe(true);
+    it("test_ent_getAttribs", () => {
+        expect( entity_tests.test_ent_getAttribs() ).toBe(true);
     });
     it("test_ent_getAttribValue", () => {
         expect( entity_tests.test_ent_getAttribValue() ).toBe(true);
@@ -26,8 +26,8 @@ describe("Tests for Entity class", () => {
     it("test_ent_setAttribValue", () => {
         expect( entity_tests.test_ent_setAttribValue() ).toBe(true);
     });
-    it("test_ent_getGroupNames", () => {
-        expect( entity_tests.test_ent_getGroupNames() ).toBe(true);
+    it("test_ent_getGroups", () => {
+        expect( entity_tests.test_ent_getGroups() ).toBe(true);
     });
 });
-
+

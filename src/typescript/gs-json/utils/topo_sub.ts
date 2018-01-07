@@ -110,7 +110,6 @@ export class Vertex extends Topo implements IVertex {
     }
 }
 
-
 /**
  * Edge class.
  */
@@ -207,8 +206,6 @@ export class Edge extends Topo implements IEdge {
     }
 }
 
-
-
 /**
  * Wire class
  */
@@ -298,7 +295,6 @@ export class Wire extends Topo implements IWire {
         return paths.map((path) => new Wire(this._kernel, path));
     }
 }
-
 
 /**
  * Face class

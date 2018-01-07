@@ -916,17 +916,16 @@ img { max-width: 100%; }
 		<div class="tsd-panel tsd-typography">
 			<p>[<img src="https://travis-ci.org/phtj/gs-json.svg?branch=master" alt="Build Status">]</p>
 			<h1 id="gs-json">gs-json</h1>
-			<p>gs-json is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the &#39;gs&#39;). </p>
+			<p>gs-json is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the &#39;gs&#39;).</p>
 			<p>See the API docs: <a href="https://phtj.github.io/gs-json">https://phtj.github.io/gs-json</a></p>
 			<h1 id="conceptual-model">Conceptual Model</h1>
-			<p>The gs-json conceptual model uses topology as the organising framework for defining both geometry and semantics.</p>
+			<p>The gs-json conceptual model uses topology as the organising framework for defining both geometry and semantics. The semantics is not hard coded as is typically the case with product models, but is instead user defined through the use of attributes and groups.</p>
 			<p>Geometry consists of objects, and includes both polygonal and spline based geometry. Semantics consists of data linked to objects and groups of objects in the model.</p>
-			<h2 id="topology">Topology</h2>
-			<p>Each geometric object consists of a set of topological components.
-			The topological component hierarchy is follows:</p>
+			<h2 id="topos">Topos</h2>
+			<p>Each geometric object consists of a set of topological components, referred to as &quot;topos&quot;.
+			The topo hierarchy is follows:</p>
 			<ul>
 				<li>0D Components<ul>
-						<li>POINT = a point is space.</li>
 						<li>VERTEX = a location in space associated with a single POINT.</li>
 					</ul>
 				</li>
@@ -954,7 +953,7 @@ img { max-width: 100%; }
 			There is a one to many relationship between points and vertices:</p>
 			<ul>
 				<li>A point can be associated with many vertices.</li>
-				<li>A vertex is associated with a single point. </li>
+				<li>A vertex is associated with a single point.</li>
 			</ul>
 			<h3 id="polylines">Polylines</h3>
 			<p>The topology of a polyline consists of a single wire.
@@ -965,7 +964,7 @@ img { max-width: 100%; }
 			</ul>
 			<h3 id="polymeshes">Polymeshes</h3>
 			<p>The topology of a polymesh consists of wires and faces.</p>
-			<p>The wires represent the naked edges of the polymesh. Since a polymesh can have holes, there may be more than one naked edge. A polymesh can also have no naked edges, in which case it is a closed solid. </p>
+			<p>The wires represent the naked edges of the polymesh. Since a polymesh can have holes, there may be more than one naked edge. A polymesh can also have no naked edges, in which case it is a closed solid.</p>
 			<p>Wires have:</p>
 			<ul>
 				<li>a set of connected edges, and</li>
@@ -977,9 +976,9 @@ img { max-width: 100%; }
 				<li>a sequence of vertices.</li>
 			</ul>
 			<h3 id="shared-points-and-vertices">Shared Points and Vertices</h3>
-			<p>Vertices can share points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each point is therefore referenced by three vertices. </p>
+			<p>Vertices can share points. For example, a box can be created that has 8 points and 24 vertices (6 faces x 4 vertices). Each point is therefore referenced by three vertices.</p>
 			<p>Edges that belong to the same wire or face share vertices. For example, an open wire with two edges will share have three vertices. The middle vertex will be shared by two edges.</p>
-			<p>Hhigher level components cannot be shared. For example, an edge cannot be part of two faces. Thus, if two faces have edges touching, then the points can be shared, but there will still be seperate EDGES, each with its own vertices. </p>
+			<p>Hhigher level components cannot be shared. For example, an edge cannot be part of two faces. Thus, if two faces have edges touching, then the points can be shared, but there will still be seperate EDGES, each with its own vertices.</p>
 			<h2 id="geomety">Geomety</h2>
 			<p>The geometric objects together with their type identifiers are as follows:</p>
 			<ul>
@@ -1003,18 +1002,18 @@ img { max-width: 100%; }
 				</li>
 			</ul>
 			<p>More geometric objects may be added in the future.</p>
-			<p>Other higher level objects (such as solids) can be created using <em>collections</em>. See below for more details. </p>
+			<p>Other higher level objects (such as solids) can be created using <em>collections</em>. See below for more details.</p>
 			<h3 id="implicit-topology">Implicit Topology</h3>
-			<p>In order to ensure that the file format is efficient and compact, topological components are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal mesh has implicit faces, wires, edges, and vertices. </p>
+			<p>In order to ensure that the file format is efficient and compact, topological components are not explicitly represented. They nevertheless still exist implicitly. For example, a polygonal mesh has implicit faces, wires, edges, and vertices.</p>
 			<h2 id="semantics">Semantics</h2>
 			<p>Semantic information can be added to the model in two ways:</p>
 			<ol>
 				<li>by specifying <em>attributes</em> linked to the topological components inside obejcts, and/or</li>
-				<li>by specifying <em>properties</em> linked to nested groups of geometric objects.   </li>
+				<li>by specifying <em>properties</em> linked to nested groups of geometric objects.</li>
 			</ol>
 			<p>These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-json, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-json does not specify any domain-specific semantics.</p>
 			<h1 id="json-encoding-of-geometry">JSON Encoding of Geometry</h1>
-			<p>Within a gs-json file, the geometry is defined in two arrays. Points are specified in the &quot;points&quot; array. </p>
+			<p>Within a gs-json file, the geometry is defined in two arrays. Points are specified in the &quot;points&quot; array.</p>
 			<pre><code class="lang-javascript"><span class="hljs-string">"points"</span>: [
     [...], <span class="hljs-comment">//values_map</span>
     [...]  <span class="hljs-comment">//values</span>
@@ -1028,7 +1027,7 @@ img { max-width: 100%; }
 ]
 </code></pre>
 			<h2 id="geometric-objects">Geometric Objects</h2>
-			<p>Objects are represented using integer arrays, consisting of three sub-arrays as follows: </p>
+			<p>Objects are represented using integer arrays, consisting of three sub-arrays as follows:</p>
 			<ul>
 				<li>[[wires], [faces], [parameters]]</li>
 			</ul>
@@ -1043,7 +1042,7 @@ img { max-width: 100%; }
 				<li>no faces</li>
 				<li>one parameter, type = 100, i.e. polyline.</li>
 			</ol>
-			<p>Polylines can be open or closed. A closed polyline is not the same as a polygon. </p>
+			<p>Polylines can be open or closed. A closed polyline is not the same as a polygon.</p>
 			<h3 id="polygon-meshes">Polygon Meshes</h3>
 			<p>An example of a polygon mesh:</p>
 			<ul>
@@ -1055,7 +1054,7 @@ img { max-width: 100%; }
 				<li>two triangular faces 60,61,63,60 and 61,62,63,61</li>
 				<li>one parameter, type = 200, i.e. polygon mesh</li>
 			</ol>
-			<p>Polygon meshes have faces and wires, both of which are always closed. The wires represent the naked edges of the mesh. A mesh with no wires is a solid. </p>
+			<p>Polygon meshes have faces and wires, both of which are always closed. The wires represent the naked edges of the mesh. A mesh with no wires is a solid.</p>
 			<h1 id="json-encoding-of-semantics">JSON Encoding of Semantics</h1>
 			<p>Within a js-JSON file, all semantics is defined in attributes and groups.</p>
 			<h2 id="attributes">Attributes</h2>
@@ -1090,15 +1089,17 @@ img { max-width: 100%; }
     <span class="hljs-comment">//...</span>
 ]
 </code></pre>
-			<p>A group can contain geometric objects. Geometric objects may be contained in more than one group.</p>
-			<p>Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a <em>root</em> or <em>top-level</em> group. </p>
-			<p>Groups are defined as follows: </p>
+			<p>A group can contain points, topos, and objects. A point, topo, or object may be contained in more than one group.</p>
+			<p>Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a <em>root</em> or <em>top-level</em> group.</p>
+			<p>Groups are defined as follows:</p>
 			<ul>
-				<li>{&quot;name&quot;=&quot;my_coll&quot;, &quot;objs&quot;=[...], &quot;parent&quot;=[...], &quot;props&quot;={&quot;key1&quot;:value1, &quot;key2&quot;:value2, ...}}</li>
+				<li>{&quot;name&quot;=&quot;my_coll&quot;, &quot;points&quot;=[...], &quot;topos&quot;=[...], &quot;objs&quot;=[...], &quot;parent&quot;=[...], &quot;props&quot;={&quot;key1&quot;:value1, &quot;key2&quot;:value2, ...}}</li>
 			</ul>
-			<p><em>objs</em> is an integer array of objects indices. </p>
-			<p><em>parent</em> is the name of teh parent group (i.e. a striing). </p>
-			<p><em>props</em> is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type. </p>
+			<p><em>points</em> is an integer array of point indices.</p>
+			<p><em>topos</em> is a set of tree data structures representing a set of topo paths.</p>
+			<p><em>objs</em> is an integer array of objects indices.</p>
+			<p><em>parent</em> is the name of the parent group (i.e. a striing).</p>
+			<p><em>props</em> is an object containing a set of key-value pairs. The key is a string, and is the name of the property. The value can be any valid JSON type.</p>
 			<h1 id="example">Example</h1>
 			<p>There are some examples files here:</p>
 			<ul>
@@ -1112,29 +1113,61 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>External modules</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-external-module"><a href="modules/__arr_tests_.html" class="tsd-kind-icon">"_<wbr>arr_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__attrib_tests_.html" class="tsd-kind-icon">"_<wbr>attrib_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_plane_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>plane_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_polyline_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>polyline_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_polymesh_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>polymesh_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__entity_point_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>point_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__entity_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__geom_tests_.html" class="tsd-kind-icon">"_<wbr>geom_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__groups_tests_.html" class="tsd-kind-icon">"_<wbr>groups_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__model_tests_.html" class="tsd-kind-icon">"_<wbr>model_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__topo_edge_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>edge_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__topo_face_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>face_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__topo_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__topo_trees_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>trees_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__topo_vertex_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>vertex_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/__topo_wire_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>wire_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_arr_.html" class="tsd-kind-icon">"arr"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_arr_tests_.html" class="tsd-kind-icon">"arr_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_attribs_.html" class="tsd-kind-icon">"attribs"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_attribs_tests_.html" class="tsd-kind-icon">"attribs_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_entities_.html" class="tsd-kind-icon">"entities"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_entities_tests_.html" class="tsd-kind-icon">"entities_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_attrib_.html" class="tsd-kind-icon">"attrib"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_attrib_cast_.html" class="tsd-kind-icon">"attrib_<wbr>cast"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_attrib_entattrib_.html" class="tsd-kind-icon">"attrib_<wbr>entattrib"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_attrib_topoattrib_.html" class="tsd-kind-icon">"attrib_<wbr>topoattrib"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_.html" class="tsd-kind-icon">"entity"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_.html" class="tsd-kind-icon">"entity_<wbr>obj"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_cast_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>cast"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_coniccurve_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>coniccurve"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_nurbscurve_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>nurbscurve"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_plane_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>plane"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_polyline_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>polyline"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_polymesh_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>polymesh"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_ray_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>ray"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_entity_point_.html" class="tsd-kind-icon">"entity_<wbr>point"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_enums_.html" class="tsd-kind-icon">"enums"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_extras_earcut_.html" class="tsd-kind-icon">"extras/<wbr>Earcut"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_gen_gs_models_.html" class="tsd-kind-icon">"gen_<wbr>gs_<wbr>models"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_gen_three_models_.html" class="tsd-kind-icon">"gen_<wbr>three_<wbr>models"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_geom_.html" class="tsd-kind-icon">"geom"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_geom_tests_.html" class="tsd-kind-icon">"geom_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_groups_.html" class="tsd-kind-icon">"groups"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_groups_tests_.html" class="tsd-kind-icon">"groups_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_gs_json_.html" class="tsd-kind-icon">"gs-<wbr>json"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_ifaces_gs_.html" class="tsd-kind-icon">"ifaces_<wbr>gs"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_ifaces_json_.html" class="tsd-kind-icon">"ifaces_<wbr>json"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_ifaces_three_.html" class="tsd-kind-icon">"ifaces_<wbr>three"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_ifaces_trees_.html" class="tsd-kind-icon">"ifaces_<wbr>trees"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_kernel_.html" class="tsd-kind-icon">"kernel"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_math_conics_.html" class="tsd-kind-icon">"math_<wbr>conics"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_model_.html" class="tsd-kind-icon">"model"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_model_tests_.html" class="tsd-kind-icon">"model_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_test_data_.html" class="tsd-kind-icon">"test_<wbr>data"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_gen_.html" class="tsd-kind-icon">"three_<wbr>gen"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_geom_.html" class="tsd-kind-icon">"three_<wbr>geom"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_scene_.html" class="tsd-kind-icon">"three_<wbr>scene"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_triangulate_.html" class="tsd-kind-icon">"three_<wbr>triangulate"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_utils_.html" class="tsd-kind-icon">"three_<wbr>utils"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_topo_.html" class="tsd-kind-icon">"topo"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_topo_sub_.html" class="tsd-kind-icon">"topo_<wbr>sub"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_topo_trees_.html" class="tsd-kind-icon">"topo_<wbr>trees"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_topo_trees_tests_.html" class="tsd-kind-icon">"topo_<wbr>trees_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_topos_.html" class="tsd-kind-icon">"topos"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_topos_tests_.html" class="tsd-kind-icon">"topos_<wbr>tests"</a></li>
 						</ul>
 					</section>
 				</div>

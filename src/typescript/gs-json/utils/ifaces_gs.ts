@@ -11,18 +11,24 @@ export interface IModel {
     // Geometry
     getGeom(): IGeom;
     // Attribs
-    getAttribs(attrib_type?: EGeomType): Array<IEntAttrib|ITopoAttrib>;
-    getAttrib(name: string, attrib_type: EGeomType): IEntAttrib|ITopoAttrib;
-    addAttrib(name: string, attrib_type: EGeomType, data_type: EDataType): IEntAttrib|ITopoAttrib;
-    delAttrib(name: string, attrib_type: EGeomType): boolean;
-    setAttribName(old_name, new_name, geom_type: EGeomType): boolean;
+    findAttribs(attrib_type: EGeomType): IEntAttrib[]|ITopoAttrib[];
+    getAllAttribs(): [IEntAttrib[],ITopoAttrib[]];
+    getEntAttrib(name: string, attrib_type: EGeomType): IEntAttrib;
+    getAllEntAttribs(): IEntAttrib[];
+    addEntAttrib(name: string, attrib_type: EGeomType, data_type: EDataType): IEntAttrib;
+    getTopoAttrib(name: string, attrib_type: EGeomType): ITopoAttrib;
+    getAllTopoAttribs(): ITopoAttrib[];
+    addTopoAttrib(name: string, attrib_type: EGeomType, data_type: EDataType): ITopoAttrib;
+    delAttrib(attrib: IAttrib): boolean;
+    hasAttrib(attrib: IAttrib): boolean;
+    setAttribName(attrib: IAttrib, new_name: string): boolean;
     // Groups
-    getGroups(): IGroup[];
+    getAllGroups(): IGroup[];
     getGroup(name: string): IGroup;
-    addGroup(name: string): IGroup;
-    delGroup(name: string): boolean;
-    hasGroup(name: string): boolean;
-    setGroupName(old_name, new_name): boolean;
+    addGroup(name: string, parent?: IGroup): IGroup;
+    delGroup(group: IGroup): boolean;
+    hasGroup(group: IGroup): boolean;
+    setGroupName(group: IGroup, new_name: string): boolean;
     // Clean up nulls and unused points
     purge(): void;
     // Runs some check
@@ -40,28 +46,31 @@ export interface IGeom  {
     addPoints(xyz_arr: number[][]): IPoint[];
     addPolyline(wire_points: IPoint[], is_closed: boolean): IPolyline;
     addPolymesh(face_points: IPoint[][]): IPolymesh;
+    addConicCurve(origin_point: IPoint, x_vec: number[], y_vec: number[], angles: [number, number]);
     addNurbsCurve(points: IPoint[], is_closed: boolean, order: number): INurbsCurve;
-    addRay(origin_point: IPoint, ray_vector: IPoint): IRay;
-    addPlane(origin_point: IPoint, xaxis_point: IPoint, yaxis_point: IPoint): IPlane;
+    addRay(origin_point: IPoint, ray_vec: number[]): IRay;
+    addPlane(origin_point: IPoint, x_vec: number[], y_vec: number[]): IPlane;
     // Points
-    getPointIDs(): number[];
-    getPoints(obj_type?: EObjType): IPoint[];
+    getAllPoints(): IPoint[];
+    getPoints(point_ids: number[]): IPoint[];
     getPoint(point_id: number): IPoint;
-    delPoints(point_ids: number[]): boolean;
-    delPoint(point_id: number): boolean;
+    delPoints(points: IPoint[]): boolean;
+    delPoint(point: IPoint): boolean;
     numPoints(): number;
-    setPointPosition(point_id: number, xyz: number[]): number[];
-    getPointPosition(point_id: number): number[];
     // Objs
-    getObjIDs(): number[];
-    getObjs(obj_type?: EObjType): IObj[];
+    findObjs(obj_type?: EObjType): IObj[];
+    getAllObjs(): IObj[];
+    getObjs(obj_ids: number[]): IObj[];
     getObj(obj_id: number): IObj;
-    delObj(obj_id: number, keep_points: boolean): boolean;
+    delObjs(objs: IObj[], keep_points: boolean): boolean;
+    delObj(obj: IObj, keep_points: boolean): boolean;
     numObjs(): number;
     // Topos
     // getTopos(topo_type: EGeomType): ITopo[];
     getTopos(topo_type: EGeomType): (IVertex[] | IEdge[] | IWire[] | IFace[]);
     numTopos(topo_type: EGeomType): number;
+    getTopo(path: ITopoPathData): IVertex|IEdge|IWire|IFace;
+    getTopoFromLabel(path_str: string): IVertex|IEdge|IWire|IFace;
 }
 
 //  INTERFACES for Ent classes and Subclasses ======================================================
@@ -78,9 +87,9 @@ export interface IEnt  {
     getModel(): IModel;
     getGeom(): IGeom;
     // attribs
-    getAttribNames(): string[];
-    getAttribValue(name: string): any;
-    setAttribValue(name: string, value: any): any;
+    getAttribs(): IEntAttrib[]|ITopoAttrib[];
+    getAttribValue(attrib: IEntAttrib): any;
+    setAttribValue(attrib: IEntAttrib, value: any): any;
 }
 
 /**
@@ -95,7 +104,7 @@ export interface IPoint extends IEnt {
     setPosition(xyz: number[]): number[];
     getVertices(): IVertex[];
     // groups
-    getGroupNames(): string[];
+    getGroups(): IGroup[];
     addToGroup(name: string): boolean;
 }
 
@@ -122,8 +131,8 @@ export interface IObj extends IEnt {
     numWires(): number;
     numFaces(): number;
     // groups
-    getGroupNames(): string[];
-    addToGroup(name: string): boolean;
+    getGroups(): IGroup[];
+    addToGroup(group: IGroup): boolean;
 }
 
 /**
@@ -131,6 +140,8 @@ export interface IObj extends IEnt {
  */
 export interface IRay  extends IObj {
     getObjType(): EObjType;
+    getOrigin(): IPoint;
+    getVector(): number[];
 }
 
 /**
@@ -138,9 +149,20 @@ export interface IRay  extends IObj {
  */
 export interface IPlane  extends IObj {
     getObjType(): EObjType;
-    getOrigin(): number[];
+    getOrigin(): IPoint;
     getVectors(): number[][];
     getCartesians(): number[];
+}
+
+/**
+ * Interface, for a ConicCurve class.
+ */
+export interface IConicCurve  extends IObj {
+    getObjType(): EObjType;
+    isClosed(): boolean;
+    getOrigin(): IPoint;
+    getVectors(): number[][];
+    getRadii(): number[];
 }
 
 /**
@@ -151,19 +173,6 @@ export interface IPolyline  extends IObj {
     isClosed(): boolean;
     numVertices(): number;
     numEdges(): number;
-    calcLength(): number;
-}
-
-/**
- * Interface, for a ConicCurve class.
- */
-export interface IConicCurve  extends IObj {
-    getObjType(): EObjType;
-    isClosed(): boolean;
-    getOrigin(): number[];
-    getVectors(): number[][];
-    getRadii(): number[];
-    length(): number;
 }
 
 /**
@@ -189,17 +198,19 @@ export interface IPolymesh extends IObj {
  */
 export interface ITopo {
     getObjID(): number;
+    getObj(): IObj;
     getGeomType(): EGeomType;
     getTopoPath(): ITopoPathData;
     getTopoPathStr(): string;
     getLabel(): string;
     getLabelCentroid(): number[];
     // attribs
-    getAttribNames(): string[];
-    setAttribValue(name: string, value: any): any;
-    getAttribValue(name: string): any;
+    getAttribs(): ITopoAttrib[];
+    setAttribValue(attrib: ITopoAttrib, value: any): any;
+    getAttribValue(attrib: ITopoAttrib): any;
     // groups
     getGroups(): IGroup[];
+    addToGroup(group: IGroup): boolean;
 }
 
 /**
@@ -268,15 +279,13 @@ export interface IAttrib {
 }
 
 export interface IEntAttrib extends IAttrib {
-    getValue(id: number): any;
-    setValue(id: number, value: any): any;
     getIDs(): number[];
+    getEnts(): IPoint[]|IObj[];
 }
 
 export interface ITopoAttrib extends IAttrib {
-    getValue(path: ITopoPathData): any;
-    setValue(path: ITopoPathData, value: any): any;
     getPaths(): ITopoPathData[];
+    getTopos(): IVertex[]|IEdge[]|IWire[]|IFace[];
 }
 
 /**
@@ -288,18 +297,18 @@ export interface IGroup {
     setName(name: string): string;
 
     // Parent/child groups
-    getParentGroup(): string;
-    getChildGroups(): string[];
-    setParentGroup(name: string): string;
-    removeParentGroup(): string;
+    getParentGroup(): IGroup;
+    getChildGroups(): IGroup[];
+    setParentGroup(group: IGroup): IGroup;
+    removeParentGroup(): IGroup;
 
     // Objs in this group
-    getObjIDs(obj_type?: EObjType): number[];
-    addObj(id: number): boolean;
-    addObjs(ids: number[]): boolean;
-    removeObj(id: number): boolean;
-    removeObjs(ids: number[]): boolean;
-    hasObj(id: number): boolean;
+    getObjs(obj_type?: EObjType): IObj[];
+    addObj(obj: IObj): boolean;
+    addObjs(objs: IObj[]): boolean;
+    removeObj(obj: IObj): boolean;
+    removeObjs(objs: IObj[]): boolean;
+    hasObj(obj: IObj): boolean;
 
     // Topos in this group
     getTopos(geom_type?: EGeomType): ITopo[];
@@ -310,12 +319,12 @@ export interface IGroup {
     hasTopo(path: ITopo): boolean;
 
     // Points in this group
-    getPointIDs(): number[];
-    addPoint(id: number): boolean;
-    addPoints(ids: number[]): boolean;
-    removePoint(id: number): boolean;
-    removePoints(ids: number[]): boolean;
-    hasPoint(id: number): boolean;
+    getPoints(): IPoint[];
+    addPoint(point: IPoint): boolean;
+    addPoints(points: IPoint[]): boolean;
+    removePoint(point: IPoint): boolean;
+    removePoints(points: IPoint[]): boolean;
+    hasPoint(point: IPoint): boolean;
 
     // Properties for this group (key-value pairs)
     getProps(): Array<[string, any]>; // TODO

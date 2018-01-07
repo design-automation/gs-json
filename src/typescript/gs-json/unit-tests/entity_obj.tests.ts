@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as entity_obj_tests from "../utils/entity_obj_tests";
+import * as entity_obj_tests from "../utils/_entity_obj_tests";
 
 describe("Tests for Obj class", () => {
     it("test_obj_getGeomType", () => {
