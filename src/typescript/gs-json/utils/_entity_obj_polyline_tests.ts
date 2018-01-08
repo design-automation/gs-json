@@ -25,6 +25,5 @@ export function test_Polyline_insertVertex(): boolean {
     const pline1: gs.IPolyline = g.addPolyline([p1,p2,p3,p4], true);
     const edge: gs.IEdge = pline1.getEdges()[0][0][1];
     pline1.insertVertex(edge, g.addPoint([1,1,0]));
-    console.log(pline1);
     return true;
 }

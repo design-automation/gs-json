@@ -9,7 +9,7 @@ export function test_length(): boolean {
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
     const curve: gs.IConicCurve = g.addConicCurve(pt,[1,0,0],[0,1,0],[45,135]);
-    const distance: number =  cs.length(curve,0,null,null,0.5,45,135);
+    const distance: number =  cs._length(0,null,null,0.5,45,135);
     // console.log("distance is " + distance) ;
     return true;
 }
