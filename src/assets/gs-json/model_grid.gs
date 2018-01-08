@@ -1,7 +1,8 @@
 {
     "metadata": {
         "filetype": "gs-json",
-        "version": "0.1.6"
+        "version": "0.1.8",
+        "uuid": "32911585-3eb8-4d79-bdfc-b8a5b4bf92cf"
     },
     "geom": {
         "points": [

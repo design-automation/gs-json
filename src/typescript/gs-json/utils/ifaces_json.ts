@@ -22,6 +22,7 @@ export interface IModelData {
 export interface IMetadata {
     filetype: "gs-json";
     version: string;
+    uuid: string;
     crs?: any;
     location?: string;
 }

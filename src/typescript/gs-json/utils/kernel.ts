@@ -12,6 +12,8 @@ import {EGeomType, EDataType, EObjType, TDataTypeStr,
 import {ITopoTree} from "./ifaces_trees";
 import {TopoTree} from "./topo_trees";
 import * as three from "three";
+import {create_UUID} from "./uuid";
+
 /**
  * Kernel Class
  * This class controls all acces to the data and ensures that the data remains consistent.
@@ -46,7 +48,7 @@ export class Kernel {
         if (data && data.metadata !== undefined) {
             this._metadata = data.metadata;
         } else {
-            this._metadata = {filetype: "gs-json", version: "0.1.6"};
+            this._metadata = {filetype: "gs-json", version: "0.1.8", uuid: create_UUID()};
         }
         // Geom points
         if (data && data.geom !== undefined && data.geom.points !== undefined) {

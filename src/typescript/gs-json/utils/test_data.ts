@@ -39,6 +39,7 @@ export function open_box(): gs.IModelData {
         metadata: {
             crs: {epsg: 3857},
             filetype: "gs-json",
+            uuid: "xxx1",
             location: "+0-0",
             version: "0.1.1",
         },
@@ -166,6 +167,7 @@ export function box_with_attribs(): gs.IModelData {
     metadata: {
         crs: {epsg: 3857},
         filetype: "gs-json",
+        uuid: "xxx1",
         location: "+0-0",
         version: "0.1.1",
                 },
@@ -333,6 +335,7 @@ export function box_with_groups(): gs.IModelData {
     metadata: {
         crs: {epsg: 3857},
         filetype: "gs-json",
+        uuid: "xxx1",
         location: "+0-0",
         version: "0.1.1",
     },
@@ -501,6 +504,7 @@ export function Unclosed_with_groups(): gs.IModelData {
     metadata: {
         crs: {epsg: 3857},
         filetype: "gs-json",
+        uuid: "xxx1",
         location: "+0-0",
         version: "0.1.1",
     },
@@ -669,6 +673,7 @@ export function Random_Closed(): gs.IModelData {
     metadata: {
         crs: {epsg: 3857},
         filetype: "gs-json",
+        uuid: "xxx1",
         location: "+0-0",
         version: "0.1.1",
     },
@@ -682,6 +687,7 @@ export function mixed(): gs.IModelData {
         metadata: {
             filetype: "gs-json",
             version: "0.1.1",
+            uuid: "xxx1",
             crs: {epsg: 3857},
             location: "+40.6894-074.0447",
         },
