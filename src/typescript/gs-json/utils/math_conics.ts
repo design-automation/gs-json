@@ -65,14 +65,43 @@ export function length(curve: gs.IConicCurve, type: number, a?: number,
 /**
  * Calculate the xyz position at parameter t. The t parameter range is from 0 to 1.
  */
-export function evaluate(curve: gs.IConicCurve, t: number): number[] {
-    let xyz: number[] = null ;
-    // let L: number = length(curve,0,1,1,1,0,1,0,260);
-    // L = length(curve,0,1,1,1,0,t*L,0,260);
-    // xyz = [0,0,0];
-    // finding xyz for which length equals t percent of the length.
-    // Step 1, evaluate the length
-    // Sounds OK for Parabola,
-    // Hyperbola & Ellipse
-    return xyz ;
+export function evaluate(curve: gs.IConicCurve, t: number, type: number, a: number,
+                         b: number, p: number, angle_1: number , angle_2: number): number[] {
+    const l: number = length(curve, type, a, b, p, angle_1, angle_2);
+    let epsilon: number = null ;
+    let theta: number = null ;
+    const K: number = 1000 ;
+    let x: number = null;
+    let y: number = null;
+    let r: number = null;
+    let theta_t: number = null;
+    let eccentricity: number = null;
+    const param: number = b*b/a;
+
+    for(let k = 0; k < K; k++) {
+        theta = (angle_1 + k * (angle_2 - angle_1)/K);
+        epsilon = t*l - length(curve, type, a, b, p, angle_1, theta);
+        if(epsilon < 0) {theta_t = theta;}
     }
+    switch(type) {
+        case 0:
+        r = 2*p*Math.sin(theta_t*(2*Math.PI)/360) / (Math.cos(theta_t*(2*Math.PI)/360)
+         * Math.cos(theta_t*(2*Math.PI)/360));
+        x = r * Math.cos(theta_t*(2*Math.PI)/360);
+        y = 2*p*x*x;
+        return [x,y,0];
+        case 1:
+        eccentricity = Math.sqrt( 1 - (b/a) * (b/a));
+        r = param / (1 + eccentricity*Math.cos(theta));
+        x = r * Math.cos(theta);
+        y = r * Math.sin(theta);
+        return [x,y,0];
+        case -1:
+        eccentricity = Math.sqrt( 1 + (b/a) * (b/a));
+        r = param / (1 + eccentricity*Math.cos(theta));
+        x = r * Math.cos(theta);
+        y = r * Math.sin(theta);
+        y = b*b*(1 - (x/a)*(x/a));
+        return [x,y,0];
+    }
+   }
