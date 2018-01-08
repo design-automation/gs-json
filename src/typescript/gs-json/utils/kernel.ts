@@ -1164,6 +1164,20 @@ export class Kernel {
         return {id: edge_path.id, tt: edge_path.tt, ti: edge_path.ti, st: edge_path.st, si: edge_index};
     }
 
+    /**
+     * Inserts an extra point into an edge, thereby making two edges.
+     * This requires all edge attributes to be updated.
+     * @return The edge object.
+     */
+    public edgeSplit(edge_path: ITopoPathData, point_id: number): void {
+        const edges: number[] = this._objs[edge_path.id][edge_path.tt][edge_path.ti];
+        edges.splice(edge_path.si + 1, 0, point_id);
+        for (const attrib of this._attribs.get(EGeomType.edges)) {
+            const edge_attribs: number[] = attrib.values[0][edge_path.id][edge_path.tt][edge_path.ti];
+            edges.splice(edge_path.si + 1, 0, 0); // points to null
+        }
+    }
+
     //  Vertices -----------------------------------------------------------------------------------
 
     /**

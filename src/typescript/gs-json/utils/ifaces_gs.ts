@@ -173,6 +173,8 @@ export interface IPolyline  extends IObj {
     isClosed(): boolean;
     numVertices(): number;
     numEdges(): number;
+    insertVertex(edge: IEdge, point: IPoint): IVertex;
+    delVertex(vertex: IVertex): IVertex;
 }
 
 /**

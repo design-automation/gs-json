@@ -1,7 +1,10 @@
 import {Arr} from "./arr";
+import {ITopoPathData} from "./ifaces_json";
 import {IPoint, IVertex, IEdge, IWire, IFace, IPolyline} from "./ifaces_gs";
 import {EGeomType, EObjType} from "./enums";
 import {Obj} from "./entity_obj";
+import {Vertex} from "./topo_sub";
+
 /**
  * Class Polyline.
  * A polyline consists of one wire and no faces.
@@ -41,4 +44,26 @@ export class Polyline extends Obj implements IPolyline {
     public numEdges(): number {
         return this.getWires()[0].numEdges();
     }
+
+    /**
+     * Insert an extra vertex.
+     * @return The new vertex.
+     */
+    public insertVertex(edge: IEdge, point: IPoint): IVertex {
+        if (edge.getObjID() !== this._id) {throw new Error("Edge must belong to polyline.");}
+        const path: ITopoPathData = edge.getTopoPath();
+        this._kernel.edgeSplit(path, point.getID());
+        const new_path: ITopoPathData = {
+            id: path.id, tt: path.tt, ti: path.ti, st: 0, si: path.si + 1};
+        return new Vertex(this._kernel, new_path);
+    }
+
+    /**
+     * Delete a vertex.
+     * @return The next vertex that replaces it, or null if it was teh last vertex of an open polyline.
+     */
+    public delVertex(vertex: IVertex): IVertex {
+        throw new Error("Method not implemented.");
+    }
+
 }
