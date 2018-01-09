@@ -117,9 +117,54 @@ export function evaluate(curve: gs.IConicCurve, t: number): number[] {
 
 }
 
-export function _evaluate(t: number, type: number, a: number,
-                          b: number, p: number, angle_1: number , angle_2: number): number[] {
-    const l: number = _length(type, a, b, p, angle_1, angle_2);
+export function _evaluate(curve: gs.IConicCurve, t: number): number[] {
+    const vector_x: number[] = curve.getVectors()[0];
+    const vector_y: number[] = curve.getVectors()[1];
+    let a: number = null;
+    let b: number = null;
+    let p: number = null;
+    let type: string = null;
+    const angle_1: number = curve.getAngles()[0];
+    const angle_2: number = curve.getAngles()[1];
+    // Specifications proposal of Vector_x (Vx) and Vector_y (Vy):
+    // "." : dot product, "*" : cross product
+    // We assume (e1,e2,e3) an orthonormal direct basis,
+    // and the plan defined by (Vx,Vy) is the same as (e1,e2);
+
+    // Identification of a,b,p and type of the curve
+    // (by type we mean ellipse/hyperbola/parabola)
+    // Case 1:
+    //    Vx.Vy = 0 and (Vx*Vy).e3 > 0 then ellipse with a = norm(Vx), b = norm(Vy) ;
+    // Case 2:
+    //    Vx.Vy = 0 and (Vx*Vy).e3 < 0 then hyperbola with a = norm(Vx), b = norm(Vy) ;
+    // Case 3:
+    //    norm(Vx) = norm(Vy) and (Vx*Vy).e3 = 0 and Vx.Vy > 0 then parabola with p = norm(Vx) ;
+    if( vector_x[0]*vector_y[0] + vector_x[1]*vector_y[1] === 0
+       && (vector_x[0]*vector_y[1] - vector_x[1]*vector_y[0]) > 0
+       ) {
+       a = Math.sqrt(vector_x[0]*vector_x[0] + vector_x[1]*vector_x[1]);
+       b = Math.sqrt(vector_y[0]*vector_y[0] + vector_y[1]*vector_y[1]);
+       p = null;
+       type = "ellipse/circle";}
+    if( vector_x[0]*vector_y[0] + vector_x[1]*vector_y[1] === 0
+       && (vector_x[0]*vector_y[1] - vector_x[1]*vector_y[0]) < 0
+       ) {
+       a = Math.sqrt(vector_x[0]*vector_x[0] + vector_x[1]*vector_x[1]);
+       b = Math.sqrt(vector_y[0]*vector_y[0] + vector_y[1]*vector_y[1]);
+       p = null;
+       type = "hyperbola";}
+    if(   vector_x[0]*vector_x[0] + vector_x[1]*vector_x[1]
+        - vector_y[0]*vector_y[0] - vector_y[1]*vector_y[1]
+        === 0
+       && (vector_x[0]*vector_y[1] - vector_x[1]*vector_y[0]) === 0
+       && vector_x[0]*vector_y[0] + vector_x[1]*vector_y[1] > 0
+       ) {
+       a = null;
+       b = null;
+       p = null;
+       type = "parabola";}
+    if( type === null) {throw new Error ("Conic Vectors need to follow specification requirements");}
+    const l: number = _length(curve);
     let epsilon: number = null ;
     let theta: number = null ;
     const K: number = 1000 ;
@@ -129,10 +174,16 @@ export function _evaluate(t: number, type: number, a: number,
     let theta_t: number = null;
     let eccentricity: number = null;
     const param: number = b*b/a;
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    let curve_theta: gs.IConicCurve = null ;
 
     for(let k = 0; k < K; k++) {
         theta = (angle_1 + k * (angle_2 - angle_1)/K);
-        epsilon = t*l - _length(type, a, b, p, angle_1, theta);
+        curve_theta = g.addConicCurve(curve.getOrigin(),curve.getVectors()[0],
+            curve.getVectors()[1],[curve.getAngles()[0],theta]);
+        epsilon = t*l - _length(curve_theta);
         if(epsilon < 0) {theta_t = theta;}
     }
     switch(type) {
