@@ -50,6 +50,6 @@ export class ConicCurve extends Obj implements IConicCurve {
      * @return Return true if the polyline is closed.
      */
     public isClosed(): boolean {
-        return (this._kernel.objGetParams(this._id)[4] === undefined);//TODO what about parabola, hyperbola
+        return (this._kernel.objGetParams(this._id)[4] === undefined);// TODO what about parabola, hyperbola
     }
 }
