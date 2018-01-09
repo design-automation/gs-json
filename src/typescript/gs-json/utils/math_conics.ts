@@ -1,5 +1,4 @@
 import * as gs from "./gs-json";
-
 /**
  * Calculate the length of the conic curve.
  */
@@ -10,7 +9,6 @@ export function length(curve: gs.IConicCurve): number {
 
     throw new Error("Method not implemented.");
 }
-
 // this should not be exported, but I add it so that test can work
 export function _length(curve: gs.IConicCurve): number {
     const vector_x: number[] = curve.getVectors()[0];
@@ -87,7 +85,6 @@ export function _length(curve: gs.IConicCurve): number {
             }
             distance = a * distance ;
             return distance;
-
         case "hyperbola": // hyperbola
             e = Math.sqrt(1 + (b/a)*(b/a));
             const theta_min: number = Math.min(angle_1, angle_2);
@@ -105,7 +102,6 @@ export function _length(curve: gs.IConicCurve): number {
             return distance;
     }
 }
-
 /**
  * Calculate the xyz position at parameter t. The t parameter range is from 0 to 1.
  */
@@ -116,7 +112,6 @@ export function evaluate(curve: gs.IConicCurve, t: number): number[] {
     throw new Error("Method not implemented.");
 
 }
-
 export function _evaluate(curve: gs.IConicCurve, t: number): number[] {
     const vector_x: number[] = curve.getVectors()[0];
     const vector_y: number[] = curve.getVectors()[1];
