@@ -45,6 +45,7 @@ export function test_getAngles(): boolean {
     // const angle_1: number = 0;
     // const angle_2: number = 180;
     // const curve: gs.IConicCurve = g.addConicCurve(pt,vector_1,vector_2,[angle_1,angle_2]);
+    // console.log(curve.getAngles());
     // if(!Arr.equal(curve.getAngles(), [angle_1, angle_2])) {return false;}
     return true;
 }
