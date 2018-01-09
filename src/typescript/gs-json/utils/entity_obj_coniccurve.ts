@@ -14,7 +14,6 @@ export class ConicCurve extends Obj implements IConicCurve {
     public getObjType(): EObjType {
         return EObjType.conic_curve;
     }
-
     /**
      * Get the origin of the coniccurve.
      * @return Plane object type.
