@@ -385,13 +385,15 @@ export class Kernel {
     public geomDelPoint(id: number): boolean {
         // delete the point from the geometry array
         if (this._points[0][id] === undefined) {return false; }
+        // delete the point
         delete this._points[0][id];
         // delete the point from any geometrc objects
-        this._delPointFromObjs(id);
+        this._updateObjsForDelPoint(id);
         // delete the point from attribs
-        this._delPointFromAttribs(id);
+        this._updateAttribsForDelPoint(id);
         // delete the points from groups
-        this._delPointFromGroups(id);
+        this._updateGroupsForDelPoint(id);
+
         // all seem ok
         return true;
     }
@@ -582,9 +584,9 @@ export class Kernel {
         // delete the obj from the geometry array
         delete this._objs[id];
         // delete attribute values for this object
-        this._delObjFromAttribs(id);
+        this._updateAttribsForDelObj(id);
         // delete this object from all groups
-        this._delObjFromGroups(id);
+        this._updateGroupsForDelObj(id);
         // delete the points
         if (!keep_unused_points) {
             const unused_points: Set<number> = new Set();
@@ -994,13 +996,13 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Gets all the vertices that have this point id.
      * @param
      * @return
      */
     public pointGetVertices(id: number): ITopoPathData[] { // TODO replace implementation with reverse map
         const vertices: ITopoPathData[]  = [];
-        for (const [obj_id_str, obj] of this._objs.entries()) { // sparse array
+        for (const [obj_id_str, obj] of this._objsDense().entries()) { // sparse array
             obj[0].forEach((w,wi) => w.forEach((v,vi) => (v === id) && vertices.push( // Slow
                 {id: Number(obj_id_str), tt: 0, ti: wi, st: 0, si: vi})));
             obj[1].forEach((f,fi) => f.forEach((v,vi) => (v === id) && vertices.push( // Slow
@@ -1106,6 +1108,51 @@ export class Kernel {
         return group_names;
     }
 
+    /**
+     * Add a vertex to this topo, either at start or end. Works for both wires and faces.
+     * Vertex and edge attributes are also updated.
+     * @return A path to teh new vertex
+     */
+    public topoAddVertex(path: ITopoPathData, point_id: number, to_start: boolean): ITopoPathData {
+        const vertices: number[] = this._objs[path.id][path.tt][path.ti];
+        let new_vertex_index: number;
+        let new_edge_index: number;
+        if (to_start) {
+            new_vertex_index = 0;
+            new_edge_index = 0;
+        } else {
+            if (vertices[vertices.length - 1] === -1) {
+                new_vertex_index = vertices.length - 1;
+            } else {
+                vertices.push(point_id);
+                new_vertex_index = vertices.length;
+            }
+            new_edge_index = vertices.length - 1;
+        }
+        // insert the new vertex
+        vertices.splice(new_vertex_index, 0, point_id);
+        // update edge attributes
+        for (const attrib of this._attribs.get(EGeomType.edges)) {
+            const edge_attribs: number[] = attrib.values[0][path.id][path.tt][path.ti];
+            edge_attribs.splice(new_edge_index, 0, 0); // points to null
+        }
+        // update vertex attributes
+        for (const attrib of this._attribs.get(EGeomType.vertices)) {
+            const vertex_attribs: number[] = attrib.values[0][path.id][path.tt][path.ti];
+            vertex_attribs.splice(new_vertex_index, 0, 0); // points to null
+        }
+        // return a path to the new vertex
+        return {id: path.id, tt: path.tt, ti: path.ti, st: 0, si: new_vertex_index};
+    }
+
+    /**
+     * Delete a vertex to this topo. Works for both wires and faces.
+     * @return True if successful.
+     */
+    public topoDelVertex(path: ITopoPathData, vertex_path: ITopoPathData): boolean {
+        throw new Error("Method not implemented.")
+    }
+
     //  Edges --------------------------------------------------------------------------------------
 
     /**
@@ -1167,15 +1214,22 @@ export class Kernel {
     /**
      * Inserts an extra point into an edge, thereby making two edges.
      * This requires all edge attributes to be updated.
-     * @return The edge object.
+     * @return The path to the new vertex.
      */
-    public edgeSplit(edge_path: ITopoPathData, point_id: number): void {
+    public edgeSplit(edge_path: ITopoPathData, point_id: number): ITopoPathData {
         const edges: number[] = this._objs[edge_path.id][edge_path.tt][edge_path.ti];
         edges.splice(edge_path.si + 1, 0, point_id);
+        // update edge attributes
         for (const attrib of this._attribs.get(EGeomType.edges)) {
             const edge_attribs: number[] = attrib.values[0][edge_path.id][edge_path.tt][edge_path.ti];
-            edges.splice(edge_path.si + 1, 0, 0); // points to null
+            edge_attribs.splice(edge_path.si + 1, 0, 0); // points to null
         }
+        // update vertex attributes
+        for (const attrib of this._attribs.get(EGeomType.vertices)) {
+            const vertex_attribs: number[] = attrib.values[0][edge_path.id][edge_path.tt][edge_path.ti];
+            vertex_attribs.splice(edge_path.si, 0, 0); // points to null
+        }
+        return {id: edge_path.id, tt: edge_path.tt, ti: edge_path.ti, st:0, si: edge_path.si + 1};
     }
 
     //  Vertices -----------------------------------------------------------------------------------
@@ -1687,11 +1741,15 @@ export class Kernel {
         return old_map;
     }
 
-    //  ============================================================================================
-    //  ============================================================================================
-    //  PRIVATE METHODS ============================================================================
-    //  ============================================================================================
-    //  ============================================================================================
+    //  ======================================================================================================
+    //  ======================================================================================================
+    //  ======================================================================================================
+    //  ======================================================================================================
+    //  PRIVATE METHODS ======================================================================================
+    //  ======================================================================================================
+    //  ======================================================================================================
+    //  ======================================================================================================
+    //  ======================================================================================================
 
     /**
      * Returns an array of TObjData. Removes empty slots.
@@ -1701,8 +1759,11 @@ export class Kernel {
     private _objsDense(): TObjData[] {
         return this._objs.filter((v) => (v !== undefined));
     }
+
+    //  ------------------------------------------------------------------------------------------------------
     //  ------------------------------------------------------------------------------------------------------
     //  CREATING ATTRIBUTES -----------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
     //  ------------------------------------------------------------------------------------------------------
 
     /**
@@ -1749,7 +1810,9 @@ export class Kernel {
     }
 
     //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
     //  CREATING OBJECTS AND POINTS  -------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
     //  ------------------------------------------------------------------------------------------------------
 
     /**
@@ -1801,178 +1864,394 @@ export class Kernel {
     }
 
     //  ------------------------------------------------------------------------------------------------------
-    //  DELETING OBJECTS AND POINTS  -------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  CREATING TOPOS  -----------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
     //  ------------------------------------------------------------------------------------------------------
 
     /**
-     * This method assumes that the object id is for an object that is about to be deleted.
-     * It deletes the attributs values for all attributes in the model.
+     * Adds this topo to attributes, it calls methods below
      * @param
      * @return
      */
-    private _delObjFromAttribs(id: number): void {
-        for (const attrib of this._attribs.get(EGeomType.objs).values()) {
-            delete attrib.values[0][id];
-        }
-        for (const attrib of this._attribs.get(EGeomType.wires).values()) {
-            delete attrib.values[0][id];
-        }
-        for (const attrib of this._attribs.get(EGeomType.faces).values()) {
-            delete attrib.values[0][id];
-        }
-        for (const attrib of this._attribs.get(EGeomType.edges).values()) {
-            delete attrib.values[0][id];
-        }
-        for (const attrib of this._attribs.get(EGeomType.vertices).values()) {
-            delete attrib.values[0][id];
-        }
-    }
-
-    /**
-     * This method assumes that the point id is for an point that is about to be deleted.
-     * It deletes the attributs values for this point for all attributes in the model.
-     * @param
-     * @return
-     */
-    private _delPointFromAttribs(id: number): void {
-        for (const attrib of this._attribs.get(EGeomType.points).values()) {
-            delete attrib.values[0][id];
-        }
-    }
-
-    /**
-     * This method assumes that the object id is for an object that is about to be deleted.
-     * It deletes the attributs values for all attributes in the model.
-     * @param
-     * @return
-     */
-    private _delPointFromObjs(id: number): void {
-        for (const [obj_id_str, obj] of this._objsDense().entries()) { // sparse array
-            switch (obj[2][0]) {
-                // Polyline
-                case 100:
-                    for (let wi = 0; wi < obj[0].length; wi++) {
-                        const w: number[] = obj[0][wi];
-                        const point_index: number = w.indexOf(id);
-                        if (point_index !== -1) {
-                            let num_vertices = w.length;
-                            if (w[w.length - 1] === -1) {num_vertices--;}
-                            if (num_vertices > 2 ) {
-                                w.splice(point_index, 1); // delete one vertex
-                            } else {
-                                obj[0].splice(wi,1); // delete the whole wire
-                            }
-                        }
-                    }
-                    // check if no wires, delete whole oject
-                    if(obj[0].length === 0) {delete this._objs[obj_id_str];}
-                    break;
-                // Polymesh
-                case 200:
-                    let changed: boolean = false;
-                    for (let fi = 0; fi < obj[1].length; fi++) {
-                        const f: number[] = obj[1][fi];
-                        const point_index_f: number = f.indexOf(id);
-                        if (point_index_f !== -1) {
-                            changed = true;
-                            const num_vertices = f.length - 1;
-                            if (num_vertices > 2 ) {
-                                obj[1][fi].splice(point_index_f, 1); // delete one vertex
-                            } else {
-                                obj[1].splice(fi,1); // delete the whole face
-                            }
-                        }
-                    }
-                    if (changed) {
-                        if (obj[1].length === 0) {
-                            delete this._objs[obj_id_str]; // if no faces, delete whole obj
-                        } else {
-                            obj[0] = this._findPolymeshWires(obj[1]);
-                        }
-                    }
-                    break;
-                // Not found
-                default:
-                    throw new Error("Object type not found: " + obj[2][0]);
+    private _updateAttribsForNewTopo(path: ITopoPathData): void {
+        if (path.st !== undefined) { // vertex or edge
+            this._updateAttribsForNewVertexOrEdge(path);
+        } else {
+            if (path.tt === 0) { // wire
+                this._updateAttribsForNewWire(path);
+            } else { // face
+                this._updateAttribsForNewFace(path);
             }
         }
     }
 
     /**
-     * This method assumes that the object id is for an object that is about to be deleted.
-     * It deletes the attributs values for all attributes in the model.
+     * Adds this vertex or edge to vertex and edge attributes and sets the attrib value to null.
      * @param
      * @return
      */
-    private _delObjFromGroups(id: number): void {
-        for (const [name, group] of this._groups.entries()) {
-            // objects
-            const oi: number = group.objs.indexOf(id);
-            if (oi !== -1) {group.objs.splice(oi, 1);}
-            // topos
-            this._topos_trees.get(name).removeObj(id);
+    private _updateAttribsSetToNull(value_indexes: any[], path: ITopoPathData): void {
+        if (value_indexes[path.id] === undefined) {value_indexes[path.id] = [];}
+        if (path.st !== undefined) { // vertex or edge
+            if (value_indexes[path.id][path.tt] === undefined) {
+                value_indexes[path.id][path.tt] = [];
+            }
+            if (value_indexes[path.id][path.tt][path.ti] === undefined) {
+                value_indexes[path.id][path.tt][path.ti] = [];
+            }
+            value_indexes[path.id][path.tt][path.ti][path.si] = 0;
+        } else { // wire or face
+            if (value_indexes[path.id][path.ti] === undefined) {
+                value_indexes[path.id][path.ti] = [];
+            }
+            value_indexes[0][path.id][path.ti] = 0;
         }
     }
 
     /**
-     * This method assumes that the point id is for an point that is about to be deleted.
-     * It deletes the attributs values for all attributes in the model.
+     * Adds this vertex or edge to vertex and edge attributes and sets the attrib value to null.
      * @param
      * @return
      */
-    private _delPointFromGroups(id: number): void {
+    private _updateAttribsForNewVertexOrEdge(path: ITopoPathData): void {
+        for (const attrib of this._attribs.get(EGeomType.vertices)) {
+            this._updateAttribsSetToNull(attrib.values[0], path);
+        }
+        for (const attrib of this._attribs.get(EGeomType.edges)) {
+            this._updateAttribsSetToNull(attrib.values[0], path);
+        }
+    }
+
+    /**
+     * Adds this wire to all wire attributes and sets the attrib value to null.
+     * @param
+     * @return
+     */
+    private _updateAttribsForNewWire(path: ITopoPathData): void {
+        for (const attrib of this._attribs.get(EGeomType.wires)) {
+            this._updateAttribsSetToNull(attrib.values[0], path);
+        }
+    }
+
+    /**
+     * Adds this face to all face attributes and sets the attrib value to null.
+     * @param
+     * @return
+     */
+    private _updateAttribsForNewFace(path: ITopoPathData): void {
+        for (const attrib of this._attribs.get(EGeomType.faces)) {
+            this._updateAttribsSetToNull(attrib.values[0], path);
+        }
+    }
+
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  DELETING OBJECTS  ------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+
+    /**
+     * Deletes this obj from all attributes
+     * @param
+     * @return
+     */
+    private _updateAttribsForDelObj(obj_id: number): void {
+        for (const [name, attrib] of this._attribs.get(EGeomType.vertices).entries()) {
+            delete attrib.values[0][obj_id];
+        }
+        for (const [name, attrib] of this._attribs.get(EGeomType.edges).entries()) {
+            delete attrib.values[0][obj_id];
+        }
+        for (const [name, attrib] of this._attribs.get(EGeomType.wires).entries()) {
+            delete attrib.values[0][obj_id];
+        }
+        for (const [name, attrib] of this._attribs.get(EGeomType.faces).entries()) {
+            delete attrib.values[0][obj_id];
+        }
+        for (const [name, attrib] of this._attribs.get(EGeomType.objs).entries()) {
+            delete attrib.values[0][obj_id];
+        }
+    }
+
+    /**
+     * Deletes this obj from all groups
+     * @param
+     * @return
+     */
+    private _updateGroupsForDelObj(obj_id: number): void {
+        for (const [name, group] of this._groups.entries()) {
+            // objects
+            const oi: number = group.objs.indexOf(obj_id);
+            if (oi !== -1) {group.objs.splice(oi, 1);}
+            // topos
+            this._topos_trees.get(name).removeObj(obj_id);
+        }
+    }
+
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  DELETING POINTS  -------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+
+    /**
+     * Delete this point from all point attribs
+     * @param
+     * @return
+     */
+    private _updateAttribsForDelPoint(id: number): void {
+        for (const [name, attrib] of this._attribs.get(EGeomType.points).entries()) {
+            delete attrib.values[0][id];
+        }
+    }
+
+    /**
+     * Delete this point from all groups
+     * @param
+     * @return
+     */
+    private _updateGroupsForDelPoint(id: number): void {
         for (const [name, group] of this._groups.entries()) {
             const pi: number = group.points.indexOf(id);
             if (pi !== -1) {group.points.splice(pi, 1);}
         }
     }
 
-    //  --------------------------------------------------------------------------------------------
+    /**
+     * Delete this point->vertex from all objs
+     * @param
+     * @return
+     */
+    private _updateObjsForDelPoint(id: number): void {
+        for (const vertex_path of this.pointGetVertices(id)) {
+            if (!this.geomHasTopo(vertex_path)) {
+                this._delVertexFromObj(vertex_path);
+            }
+        }
+    }
+
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  DELETING TOPOS  -------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
 
     /**
-     * Add an attributes value.
-     * @param path The path to a geometric entity or topological component.
-     * @return True if the path does not exist.
+     * When the vertex is deleted, all subsequent vertices get renumbered.
+     * Deleting a vertex also result in two edges being merged,
+     * and any subsequent edges being renumbered.
+     * Deleting the vertex may result in either a wire or face being deleted,
+     * or might even result in the whole object being deleted.
+     * This method also updates the attributes in the model.
+     * @param
+     * @return
      */
-    private _addTopoAttribValue(name: string, geom_type: EGeomType, path: ITopoPathData): boolean  {
-        const data: IAttribData = this._attribs.get(geom_type).get(name);
-        switch (geom_type) {
-            case EGeomType.wires: case EGeomType.faces:
-                if (data.values[0][path.id] === undefined) {data.values[0][path.id] = []; }
-                if (data.values[0][path.id][path.ti] !== undefined) {return false; }
-                data.values[0][path.id][path.ti] = 0;
-                return true;
-            case EGeomType.vertices: case EGeomType.edges:
-                if (data.values[0][path.id] === undefined) {data.values[0][path.id] = []; }
-                if (data.values[0][path.id][path.ti] === undefined) {data.values[0][path.id][path.ti] = []; }
-                if (data.values[0][path.id][path.ti][path.si] !== undefined) {return false; }
-                data.values[0][path.id][path.ti][path.si] = 0;
-                return true;
+    private _delVertexFromObj(vertex_path: ITopoPathData): void {
+        // check if vertex_path exists
+        if (!this.geomHasTopo(vertex_path)) {return;}
+        // delete topo
+        const obj: any = this._objs[vertex_path.id];
+        switch (obj[2][0]) {
+            // Ray
+            case EObjType.ray:
+                this.geomDelObj(vertex_path.id);
+            // Plane
+            case EObjType.plane:
+                this.geomDelObj(vertex_path.id);
+            // Conic Curve
+            case EObjType.conic_curve:
+                this.geomDelObj(vertex_path.id);
+            // Polyline
+            case EObjType.polyline:
+                const w: number[] = obj[0][vertex_path.ti];
+                let num_w_vertices = w.length;
+                if (w[w.length - 1] === -1) {num_w_vertices--;}
+                if (num_w_vertices < 3 ) {
+                    this.geomDelObj(vertex_path.id);
+                    return;
+                }
+                w.splice(vertex_path.si, 1); // delete one vertex
+                this._updateAttribsAndGroupsForDelTopo(vertex_path);
+                return;
+            // Polymesh
+            case EObjType.polymesh:
+                if (vertex_path.tt === 0) {return;}
+                const f: number[] = obj[1][vertex_path.ti];
+                const num_faces = obj[1].length;
+                const num_f_vertices = f.length - 1;
+                if (num_faces === 1 && num_f_vertices < 3) {
+                    this.geomDelObj(vertex_path.id);
+                    return;
+                }
+                if (num_f_vertices > 3) {
+                    obj[1][vertex_path.ti].splice(vertex_path.si, 1); // delete one vertex
+                    this._updateAttribsAndGroupsForDelTopo(vertex_path);
+                } else {
+                    obj[1].splice(vertex_path.ti,1); // delete the whole face
+                    this._updateAttribsAndGroupsForDelTopo(
+                        {id: vertex_path.id, tt: vertex_path.tt, ti:vertex_path.ti});
+                }
+                const new_wires: number[][] = this._findPolymeshWires(obj[1]);
+                this._updateAttribsAndGroupsChangedWiresOrFaces(vertex_path.id, 0, new_wires);
+                return;
+            // Not found
+            default:
+                throw new Error("Object type not found: " + obj[2][0]);
         }
     }
 
     /**
-     * Delete an attribute value.
-     * @param path The path to a geometric entity or topological component.
-     * @return The attribute value.
+     * Deletes this topo from attributes and groups, it calls methods below
+     * @param
+     * @return
      */
-    private _delTopoAttribValue(name: string, geom_type: EGeomType, path: ITopoPathData): any  {
-        const data: IAttribData = this._attribs.get(geom_type).get(name);
-        let old_value: any;
-        switch (geom_type) {
-            case EGeomType.wires: case EGeomType.faces:
-                old_value = data.values[1][data.values[0][path.id][path.ti]];
-                delete data.values[0][path.id][path.ti];
-                return old_value;
-            case EGeomType.vertices: case EGeomType.edges:
-                old_value = data.values[1][data.values[0][path.id][path.ti][path.si]];
-                delete data.values[0][path.id][path.ti][path.si];
-                return old_value;
+    private _updateAttribsAndGroupsForDelTopo(path: ITopoPathData): void {
+        if (path.st !== undefined) { // vertex or edge
+            this._updateAttribsForDelVertexOrEdge(path);
+        } else {
+            if (path.tt === 0) { // wire
+                this._updateAttribsForDelWire(path);
+            } else { // face
+                this._updateAttribsForDelFace(path);
+            }
         }
-        return null;
+        this._updateGroupsForDelTopo(path);
     }
 
-    //  --------------------------------------------------------------------------------------------
+    /**
+     * Deletes this vertex or edge from vertex and edge attributes
+     * @param
+     * @return
+     */
+    private _updateAttribsForDelVertexOrEdge(path: ITopoPathData): void {
+        for (const attrib of this._attribs.get(EGeomType.vertices)) {
+            attrib.values[0][path.id][path.tt][path.ti].splice(path.si, 1);
+        }
+        for (const attrib of this._attribs.get(EGeomType.edges)) {
+            attrib.values[0][path.id][path.tt][path.ti].splice(path.si, 1);
+        }
+    }
+
+    /**
+     * Deletes this wire from all wire attributes
+     * @param
+     * @return
+     */
+    private _updateAttribsForDelWire(path: ITopoPathData): void {
+        for (const attrib of this._attribs.get(EGeomType.wires)) {
+            attrib.values[0][path.id].splice(path.ti, 1);
+        }
+    }
+
+    /**
+     * Deletes this face from all face attributes
+     * @param
+     * @return
+     */
+    private _updateAttribsForDelFace(path: ITopoPathData): void {
+        for (const attrib of this._attribs.get(EGeomType.faces)) {
+            attrib.values[0][path.id].splice(path.ti, 1);
+        }
+    }
+
+    /**
+     * Deletes this topo from all groups
+     * @param
+     * @return
+     */
+    private _updateGroupsForDelTopo(path: ITopoPathData): void {
+        for (const [name, group] of this._groups.entries()) {
+            this._topos_trees.get(name).removeTopo(path);
+        }
+    }
+
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  CHANGED TOPOS ----------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+
+    /**
+     * Compares the existing topo of an obj to this new topo. If there are any differences, then
+     * attribs and groups are all updated to relflect the changes.
+     * Finally, the topo for this obj is set to new topo.
+     * @param
+     * @return
+     */
+    private _updateAttribsAndGroupsChangedTopo(id: number, new_topo: number[][][]): void {
+        // update wires
+        this._updateAttribsAndGroupsChangedWiresOrFaces(id, 0, new_topo[0]);
+        // update faces
+        this._updateAttribsAndGroupsChangedWiresOrFaces(id, 1, new_topo[1]);
+    }
+
+    /**
+     * Compares the existing wires/faces of an obj to the new wires/faces.
+     * If there are any differences, then
+     * attribs and groups are all updated to relflect the new changes.
+     * Finally, the wires/faces for this obj is set to new wires/faces.
+     * @param
+     * @return
+     */
+    private _updateAttribsAndGroupsChangedWiresOrFaces(id: number, tt: 0|1, new_topo: number[][]): void {
+        const old_topo: number[][] = this._objs[id][tt];
+        // check for deleted wires / vertices / edges
+        for (let wf = 0; wf < old_topo.length; wf++) {
+            // check for deleted wires
+            if (new_topo[wf] === undefined) {
+                // a wire has been deleted, so delete from both attrbs and groups
+                this._updateAttribsAndGroupsForDelTopo({id, tt, ti:wf});
+            }
+            // check for deleted vertices
+            for (let v = 0; v < old_topo[wf].length; v++) {
+                if (v !== -1) {
+                    // deleted vertex
+                    if (new_topo[wf] === undefined || new_topo[wf][v] === undefined) {
+                        this._updateAttribsAndGroupsForDelTopo({id, tt, ti:wf, st: 0, si: v});
+                    }
+                }
+            }
+            // check for deleted edges
+            for (let v = 0; v < old_topo[wf].length; v++) {
+                // deleted edge
+                if (new_topo[wf] === undefined || new_topo[wf][v] === undefined) {
+                    this._updateAttribsAndGroupsForDelTopo({id, tt, ti:wf, st: 0, si: v});
+                }
+            }
+        }
+        // check for new wires / vertices / edges
+        for (let wf = 0; wf < new_topo.length; wf++) {
+            // check for new wires
+            if (old_topo[wf] === undefined) {
+                // a new wire has been created, add to attribs
+                this._updateAttribsForNewTopo({id, tt, ti:wf});
+            }
+            // check for new vertices
+            for (let v = 0; v < new_topo[wf].length; v++) {
+                if (v !== -1) {
+                    // new vertex
+                    if (old_topo[wf] === undefined || old_topo[wf][v] === undefined) {
+                        this._updateAttribsForNewTopo({id, tt, ti:wf, st: 0, si: v});
+                    }
+                }
+            }
+            // check for new edges
+            for (let v = 0; v < new_topo[wf].length; v++) {
+                // new edge
+                if (old_topo[wf] === undefined || old_topo[wf][v] === undefined) {
+                    this._updateAttribsForNewTopo({id, tt, ti:wf, st: 0, si: v});
+                }
+            }
+        }
+        this._objs[id][tt] = new_topo;
+    }
+
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  UPDATE POLYMESH WIRES --------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
 
     /**
      * Find all the wires in a polymesh
@@ -2026,8 +2305,48 @@ export class Kernel {
         return naked_wires;
     }
 
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  GET TOPOS FROM OBJS ----------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+
     /**
-     * Used by _findPolymeshWires
+     * Loop through all the objects, and create paths for wires or faces
+     * Used in geomGetTopoPaths() method
+     * @param
+     * @return
+     */
+    private _getWFPathsFromObjsData(objs_data: any[], wf_topos: 0|1): ITopoPathData[] {
+        const path_arr: ITopoPathData[] = [];
+        for (const obj_id_str of objs_data.keys()) { // sparse arrays
+            const wf_data: number[][] = objs_data[obj_id_str][wf_topos]; // wf_choice is 0 or 1, wires or faces
+            for (let wf_index = 0; wf_index < wf_data.length; wf_index++) {
+                path_arr.push({id: Number(obj_id_str), tt: wf_topos, ti: wf_index});
+            }
+        }
+        return path_arr;
+    }
+
+    /**
+     * Loop through all the objects, and create paths for vertices and edges
+     * Used in geomGetTopoPaths() method
+     * @param
+     * @return
+     */
+    private _getVEPathsFromObjsData(objs_data: any[], v_or_e: 0|1): ITopoPathData[] {
+        const path_arr: ITopoPathData[] = [];
+        for (const obj_id_str of objs_data.keys()) {  // sparse array
+            const w_data: number[][] = objs_data[obj_id_str][0];
+            this._getVEPathsFromWF(path_arr, Number(obj_id_str), w_data, 0, v_or_e);
+            const f_data: number[][] = objs_data[obj_id_str][1];
+            this._getVEPathsFromWF(path_arr, Number(obj_id_str), f_data, 1, v_or_e);
+        }
+        return path_arr;
+    }
+
+    /**
+     * Used by _getVEPathsFromObjsData
      * @param
      * @return
      */
@@ -2044,41 +2363,12 @@ export class Kernel {
         }
     }
 
-    /**
-     * Used by _findPolymeshWires
-     * @param
-     * @return
-     */
-    private _getVEPathsFromObjsData(objs_data: any[], v_or_e: 0|1): ITopoPathData[] {
-        const path_arr: ITopoPathData[] = [];
-        // loop through all the objects
-        for (const obj_id_str of objs_data.keys()) {  // sparse array
-            const w_data: number[][] = objs_data[obj_id_str][0];
-            this._getVEPathsFromWF(path_arr, Number(obj_id_str), w_data, 0, v_or_e);
-            const f_data: number[][] = objs_data[obj_id_str][1];
-            this._getVEPathsFromWF(path_arr, Number(obj_id_str), f_data, 1, v_or_e);
-        }
-        return path_arr;
-    }
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  OTHER STUFF  -----------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
 
-    /**
-     * Used by _findPolymeshWires
-     * @param
-     * @return
-     */
-    private _getWFPathsFromObjsData(objs_data: any[], wf_topos: 0|1): ITopoPathData[] {
-        const path_arr: ITopoPathData[] = [];
-        // loop through all the objects, and create paths for wires or faces
-        for (const obj_id_str of objs_data.keys()) { // sparse arrays
-            const wf_data: number[][] = objs_data[obj_id_str][wf_topos]; // wf_choice is 0 or 1, wires or faces
-            for (let wf_index = 0; wf_index < wf_data.length; wf_index++) {
-                path_arr.push({id: Number(obj_id_str), tt: wf_topos, ti: wf_index});
-            }
-        }
-        return path_arr;
-    }
-
-    //  --------------------------------------------------------------------------------------------
     /**
      * to be completed
      * @param
@@ -2160,5 +2450,115 @@ export class Kernel {
      */
     private _purgeDelSparseObjs(): void {
         throw new Error("Not implemented");
+    }
+
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  DEPRECEATED  -----------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+    //  ------------------------------------------------------------------------------------------------------
+
+    /**
+     * This method assumes that the id is for a point that is about to be deleted.
+     * It deletes the attributs values for all attributes in the model.
+     * @param
+     * @return
+     */
+    private _depreceated_delPointFromObjs(id: number): void {
+        for (const [obj_id_str, obj] of this._objsDense().entries()) { // sparse array
+            switch (obj[2][0]) {
+                // Polyline
+                case 100:
+                    for (let wi = 0; wi < obj[0].length; wi++) {
+                        const w: number[] = obj[0][wi];
+                        const point_index: number = w.indexOf(id);
+                        if (point_index !== -1) {
+                            let num_vertices = w.length;
+                            if (w[w.length - 1] === -1) {num_vertices--;}
+                            if (num_vertices > 2 ) {
+                                w.splice(point_index, 1); // delete one vertex
+                            } else {
+                                obj[0].splice(wi,1); // delete the whole wire
+                            }
+                        }
+                    }
+                    // check if no wires, delete whole oject
+                    if(obj[0].length === 0) {delete this._objs[obj_id_str];}
+                    break;
+                // Polymesh
+                case 200:
+                    let changed: boolean = false;
+                    for (let fi = 0; fi < obj[1].length; fi++) {
+                        const f: number[] = obj[1][fi];
+                        const point_index_f: number = f.indexOf(id);
+                        if (point_index_f !== -1) {
+                            changed = true;
+                            const num_vertices = f.length - 1;
+                            if (num_vertices > 2 ) {
+                                obj[1][fi].splice(point_index_f, 1); // delete one vertex
+                            } else {
+                                obj[1].splice(fi,1); // delete the whole face
+                            }
+                        }
+                    }
+                    if (changed) {
+                        if (obj[1].length === 0) {
+                            delete this._objs[obj_id_str]; // if no faces, delete whole obj
+                        } else {
+                            obj[0] = this._findPolymeshWires(obj[1]);
+                        }
+                    }
+                    break;
+                // Not found
+                default:
+                    throw new Error("Object type not found: " + obj[2][0]);
+            }
+        }
+    }
+
+
+    //  --------------------------------------------------------------------------------------------
+
+    /**
+     * Add an attributes value.
+     * @param path The path to a geometric entity or topological component.
+     * @return True if the path does not exist.
+     */
+    private _depreceated_addTopoAttribValue(name: string, geom_type: EGeomType, path: ITopoPathData): boolean  {
+        const data: IAttribData = this._attribs.get(geom_type).get(name);
+        switch (geom_type) {
+            case EGeomType.wires: case EGeomType.faces:
+                if (data.values[0][path.id] === undefined) {data.values[0][path.id] = []; }
+                if (data.values[0][path.id][path.ti] !== undefined) {return false; }
+                data.values[0][path.id][path.ti] = 0;
+                return true;
+            case EGeomType.vertices: case EGeomType.edges:
+                if (data.values[0][path.id] === undefined) {data.values[0][path.id] = []; }
+                if (data.values[0][path.id][path.ti] === undefined) {data.values[0][path.id][path.ti] = []; }
+                if (data.values[0][path.id][path.ti][path.si] !== undefined) {return false; }
+                data.values[0][path.id][path.ti][path.si] = 0;
+                return true;
+        }
+    }
+
+    /**
+     * Delete an attribute value.
+     * @param path The path to a geometric entity or topological component.
+     * @return The attribute value.
+     */
+    private _depreceated_delTopoAttribValue(name: string, geom_type: EGeomType, path: ITopoPathData): any  {
+        const data: IAttribData = this._attribs.get(geom_type).get(name);
+        let old_value: any;
+        switch (geom_type) {
+            case EGeomType.wires: case EGeomType.faces:
+                old_value = data.values[1][data.values[0][path.id][path.ti]];
+                delete data.values[0][path.id][path.ti];
+                return old_value;
+            case EGeomType.vertices: case EGeomType.edges:
+                old_value = data.values[1][data.values[0][path.id][path.ti][path.si]];
+                delete data.values[0][path.id][path.ti][path.si];
+                return old_value;
+        }
+        return null;
     }
 }

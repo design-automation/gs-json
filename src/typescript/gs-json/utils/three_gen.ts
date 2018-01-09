@@ -91,6 +91,7 @@ function addPolymesh(scene: gs.IThreeScene, polymesh: gs.IPolymesh, materials: g
  * Generate the model.
  */
 export function genThreeModel(model: gs.IModel): gs.IThreeScene {
+    if (model.constructor.name !== "Model") {throw new Error("Invalid model.");}
     const scene: gs.IThreeScene = threes.genScene();
     const mats: gs.IThreeMaterial[] = threes.genDefaultMaterials();
     threes.addMatsToScene(scene, mats);

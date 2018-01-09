@@ -255,21 +255,25 @@ export function test_Geom_delObj(): boolean {
     const pline1: gs.IPolyline = g.addPolyline([p1,p2,p3,p4,p5,p6], true);
     const pline2: gs.IPolyline = g.addPolyline([p1,p2,p3], false);
     const pline3: gs.IPolyline = g.addPolyline([p1,p3,p4], false);
+    // delete some stuff
     if (g.numObjs() !== 4) {return false;}
     g.delObj(box, false);
     if (g.numObjs() !== 3) {return false;}
     g.delObjs([pline1, pline3], false);
     if (g.numObjs() !== 1) {return false;}
-    const patt: gs.IEntAttrib = m.addEntAttrib("test", gs.EGeomType.points, gs.EDataType.type_str);
-    const att: gs.IEntAttrib = m.addEntAttrib("test1", gs.EGeomType.objs, gs.EDataType.type_num);
-    const edges: gs.ITopoAttrib = m.addTopoAttrib("test2", gs.EGeomType.edges, gs.EDataType.type_num);
-    const wires: gs.ITopoAttrib = m.addTopoAttrib("test3", gs.EGeomType.wires, gs.EDataType.type_num);
-    //pline2.setAttribValue(att, 12234456);
-
-    console.log(m);
-
-    //g.delObj(pline2, true);
-    //if (g.numObjs() !== 0) {return false;}
+    // create some attribs
+    const p_att: gs.IEntAttrib = m.addEntAttrib("test0", gs.EGeomType.points, gs.EDataType.type_str);
+    const o_att: gs.IEntAttrib = m.addEntAttrib("test1", gs.EGeomType.objs, gs.EDataType.type_num);
+    const e_att: gs.ITopoAttrib = m.addTopoAttrib("test2", gs.EGeomType.edges, gs.EDataType.type_num);
+    const w_att: gs.ITopoAttrib = m.addTopoAttrib("test3", gs.EGeomType.wires, gs.EDataType.type_num);
+    // set attribs
+    p1.setAttribValue(p_att, "jshjdhjh");
+    pline2.setAttribValue(o_att, 12234456);
+    // now delete some more stuff
+    g.delObj(pline2, true);
+    if (g.numObjs() !== 0) {return false;}
+    // now check if attributes are updated
+    //console.log(m);
     return true;
 }
 

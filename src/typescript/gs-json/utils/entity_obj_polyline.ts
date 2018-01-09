@@ -53,9 +53,19 @@ export class Polyline extends Obj implements IPolyline {
         if (edge.getObjID() !== this._id) {throw new Error("Edge must belong to polyline.");}
         const path: ITopoPathData = edge.getTopoPath();
         this._kernel.edgeSplit(path, point.getID());
-        const new_path: ITopoPathData = {
-            id: path.id, tt: path.tt, ti: path.ti, st: 0, si: path.si + 1};
-        return new Vertex(this._kernel, new_path);
+        const new_edge_path: ITopoPathData = this._kernel.edgeSplit(path, point.getID());
+        return new Vertex(this._kernel, new_edge_path);
+    }
+
+    /**
+     * Add n extra vertex to the start or end.
+     * @return The new vertex.
+     */
+    public addVertex(point: IPoint, to_start: boolean): IVertex {
+        const path: ITopoPathData = this.getWires()[0].getTopoPath();
+        this._kernel.topoAddVertex(path, point.getID(), to_start);
+        const new_vertex_path: ITopoPathData = this._kernel.edgeSplit(path, point.getID());
+        return new Vertex(this._kernel, new_vertex_path);
     }
 
     /**
