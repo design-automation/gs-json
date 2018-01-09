@@ -11,30 +11,63 @@ export function length(curve: gs.IConicCurve): number {
     throw new Error("Method not implemented.");
 }
 
-//this should not be exported, but I add it so that test can work
-export function _length(type: number,
-                 a?: number, b?: number, p?: number, angle_1?: number , angle_2?: number): number {
+// this should not be exported, but I add it so that test can work
+export function _length(curve: gs.IConicCurve): number {
+    const vector_x: number[] = curve.getVectors()[0];
+    const vector_y: number[] = curve.getVectors()[1];
+    let a: number = null;
+    let b: number = null;
+    let p: number = null;
+    let type: string = null;
+    let angle_1: number = curve.getAngles()[0];
+    let angle_2: number = curve.getAngles()[1];
+    // Specifications proposal of Vector_x (Vx) and Vector_y (Vy):
+    // "." : dot product, "*" : cross product
+    // We assume (e1,e2,e3) an orthonormal direct basis,
+    // and the plan defined by (Vx,Vy) is the same as (e1,e2);
 
-    // [a,b,p,type] are necessary informations for assessing the length
-    //    a = curve.getRadii()[0], for instance
-    //    b = curve.getRadii()[1], for instance
-    //    p = curve.getRadii()[2], for instance
-    // type = curve.getConicType(), for instance ( 1-> ellipse,  -1 -> hyperbola, 0 -> parabola )
-    // Interacts with getLinesFromConicCurve in three.geom ;
-    // const angle_1: number = theta_1; // or angle_1 = curve.getAngles()[0] since this information is stored in Curve
-    // const angle_2: number = theta_2; // angle_2 = curve.getAngles()[1]
-
+    // Identification of a,b,p and type of the curve
+    // (by type we mean ellipse/hyperbola/parabola)
+    // Case 1:
+    //    Vx.Vy = 0 and (Vx*Vy).e3 > 0 then ellipse with a = norm(Vx), b = norm(Vy) ;
+    // Case 2:
+    //    Vx.Vy = 0 and (Vx*Vy).e3 < 0 then hyperbola with a = norm(Vx), b = norm(Vy) ;
+    // Case 3:
+    //    norm(Vx) = norm(Vy) and (Vx*Vy).e3 = 0 and Vx.Vy > 0 then parabola with p = norm(Vx) ;
+    if( vector_x[0]*vector_y[0] + vector_x[1]*vector_y[1] === 0
+       && (vector_x[0]*vector_y[1] - vector_x[1]*vector_y[0]) > 0
+       ) {
+       a = Math.sqrt(vector_x[0]*vector_x[0] + vector_x[1]*vector_x[1]);
+       b = Math.sqrt(vector_y[0]*vector_y[0] + vector_y[1]*vector_y[1]);
+       p = null;
+       type = "ellipse/circle";}
+    if( vector_x[0]*vector_y[0] + vector_x[1]*vector_y[1] === 0
+       && (vector_x[0]*vector_y[1] - vector_x[1]*vector_y[0]) < 0
+       ) {
+       a = Math.sqrt(vector_x[0]*vector_x[0] + vector_x[1]*vector_x[1]);
+       b = Math.sqrt(vector_y[0]*vector_y[0] + vector_y[1]*vector_y[1]);
+       p = null;
+       type = "hyperbola";}
+    if(   vector_x[0]*vector_x[0] + vector_x[1]*vector_x[1]
+        - vector_y[0]*vector_y[0] - vector_y[1]*vector_y[1]
+        === 0
+       && (vector_x[0]*vector_y[1] - vector_x[1]*vector_y[0]) === 0
+       && vector_x[0]*vector_y[0] + vector_x[1]*vector_y[1] > 0
+       ) {
+       a = null;
+       b = null;
+       p = null;
+       type = "parabola";}
+    if( type === null) {throw new Error ("Conic Vectors need to follow specification requirements");}
     let distance: number = 0;
     let e: number = 0;
     const K: number = 1000;
     let theta: number = null;
     let d_th: number = null;
-
     angle_1 = angle_1 *(2*Math.PI)/360 ;
     angle_2 = angle_2 *(2*Math.PI)/360 ;
-
     switch(type) {
-        case 0: // parabola
+        case "parabola": // parabola
             const r1: number = 2*p*Math.sin(angle_1) / (Math.cos(angle_1) * Math.cos(angle_1));
             const r2: number = 2*p*Math.sin(angle_2) / (Math.cos(angle_2) * Math.cos(angle_2));
             const x1: number = r1 * Math.cos(angle_1);
@@ -43,9 +76,10 @@ export function _length(type: number,
                 - (1/2) * p * ( x1*Math.sqrt(1 + x1*x1) + Math.log( x1 + Math.sqrt(1 + x1*x1) ) );
             return Math.abs(distance);
 
-            case 1: // ellipse
+            case "ellipse/circle": // ellipse
             if(a>b) { e = Math.sqrt( 1 - (b/a)*(b/a) ) ;}
             if(b>a) { e = Math.sqrt( 1 - (a/b)*(a/b) ) ;}
+            if( a === b) { return Math.abs(a*(angle_2 - angle_1));}
             d_th  = (angle_2 - angle_1)/K ;
             for(let k = 0; k < K ; k++ ) {
                 theta = angle_1 + k*(angle_2 - angle_1)/K ;
@@ -54,7 +88,7 @@ export function _length(type: number,
             distance = a * distance ;
             return distance;
 
-        case 2: // hyperbola
+        case "hyperbola": // hyperbola
             e = Math.sqrt(1 + (b/a)*(b/a));
             const theta_min: number = Math.min(angle_1, angle_2);
             const theta_max: number = Math.max(angle_1, angle_2);

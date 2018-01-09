@@ -163,6 +163,7 @@ export interface IConicCurve  extends IObj {
     getOrigin(): IPoint;
     getVectors(): number[][];
     getRadii(): number[];
+    getAngles(): number[];
 }
 
 /**
