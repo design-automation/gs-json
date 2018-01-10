@@ -29,9 +29,10 @@ export class Circle extends Obj implements ICircle {
      */
     public getVectors(): number[][] {
         // param are [type, x_vec, y_vec, z_vec, angles]
-        return this._kernel.objGetParams(this._id).slice(2,4);
+        // return this._kernel.objGetParams(this._id).slice(2,4);
+        // Slight modification in getVectors(), used [] instead of .slice();
+        return [this._kernel.objGetParams(this._id)[1],this._kernel.objGetParams(this._id)[2]];
     }
-
     /**
      * Sets the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
      * @return The x and y vectors.

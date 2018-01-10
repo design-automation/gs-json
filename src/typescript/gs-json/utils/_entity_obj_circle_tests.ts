@@ -23,8 +23,11 @@ export function test_getVectors(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
+    const vector_x: number[] = [1,0,0];
+    const vector_y: number[] = [0,1,0];
     const curve: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
-    curve.getVectors();
+    if(!Arr.equal(curve.getVectors()[0], vector_x)) {return false;}
+    if(!Arr.equal(curve.getVectors()[1], vector_y)) {return false;}
     return true;
 }
 export function test_setVectors(): boolean {
