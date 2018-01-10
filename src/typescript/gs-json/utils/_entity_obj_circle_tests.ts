@@ -34,8 +34,14 @@ export function test_setVectors(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
-    curve.setVectors([0,1,0],[-1,0,0]);
+    const vector_x: number[] = [1,0,0];
+    const vector_y: number[] = [0,1,0];
+    const vector_x_new: number[] = [0,1,0];
+    const vector_y_new: number[] = [-1,0,0];
+    const curve: gs.ICircle = g.addCircle(pt,vector_x,vector_y,[45,135]);
+    curve.setVectors(vector_x_new,vector_y_new);
+    if(!Arr.equal(curve.getVectors()[0], vector_x_new)) {return false;}
+    if(!Arr.equal(curve.getVectors()[1], vector_y_new)) {return false;}
     return true;
 }
 export function test_getAngles(): boolean {

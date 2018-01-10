@@ -71,6 +71,10 @@ export class Geom implements IGeom {
      * @return Object of type Circle
      */
     public addCircle(origin_point: IPoint, x_vec: number[], y_vec: number[], angles?: [number, number]): ICircle {
+        // Proposal of direct sense for angles:
+        if(angles[1] - angles[0] < 0) {
+            throw new Error("Increasing order for angles required: [0,180] as opposed to [180,0]");}
+        ////
         const id: number = this._kernel.geomAddEllipse(origin_point.getID(), x_vec, y_vec, angles);
         return new Circle(this._kernel, id);
     }
