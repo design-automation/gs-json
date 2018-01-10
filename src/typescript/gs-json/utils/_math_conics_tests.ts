@@ -8,10 +8,16 @@ export function test_circleLength(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([1,1,1]);
+    const angle_1: number = 45;
+    const angle_2: number = 145;
     const radius: number = 400;
-    const circle: gs.ICircle = g.addCircle(pt, [radius,0,0],[0,radius,0],[0,360]);
     const threshold: number = 1e-6;
-    if(Math.abs(cs.circleLength(circle) - 2*Math.PI*radius) > threshold) {return false ;}
+    let circle: gs.Circle = null;
+    for(let k=1; k<100;k++) {
+    circle = g.addCircle(pt, [radius,0,0],[0,radius,0],[Math.min(angle_1,angle_2/k),Math.max(angle_1,angle_2/k)]);
+    if(Math.abs(cs.circleLength(circle)
+        - radius*Math.abs(angle_2/k - angle_1)*2*Math.PI/360) > threshold) {return false ;}
+    }
     return true;
 }
 export function test_circleEvaluate(): boolean {
