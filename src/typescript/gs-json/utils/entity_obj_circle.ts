@@ -43,7 +43,6 @@ export class Circle extends Obj implements ICircle {
         this._kernel.objGetParams(this._id)[2] = y_vec;
         this._kernel.objGetParams(this._id)[3] = threex.crossXYZs(x_vec, y_vec, true);
     }
-
     /**
      * Returns the Alpha and Beta angles of this curve.
      * @return The Alpha and Beta angles.
@@ -52,7 +51,6 @@ export class Circle extends Obj implements ICircle {
         // param are [type, x_vec, y_vec, z_vec, angles]
         return this._kernel.objGetParams(this._id)[4];
     }
-
     /**
      * Returns the Alpha and Beta angles of this curve.
      * @return The Alpha and Beta angles.
@@ -61,7 +59,6 @@ export class Circle extends Obj implements ICircle {
         // param are [type, x_vec, y_vec, z_vec, angles]
         this._kernel.objGetParams(this._id)[4] = angles;
     }
-
     /**
      * Returns the radius of this curve (the length of the x vector).
      * @return Tthe radius.
@@ -69,12 +66,14 @@ export class Circle extends Obj implements ICircle {
     public getRadius(): number  {
         return threex.lengthXYZ(this._kernel.objGetParams(this._id)[1]);
     }
-
     /**
      * Checks if the circle is closed.
      * @return True if the polyline is closed.
      */
     public isClosed(): boolean {
-        return (this._kernel.objGetParams(this._id)[4] === undefined);
+        // Alternatively:
+        if(this._kernel.objGetParams(this._id)[4][1]-this._kernel.objGetParams(this._id)[4][0] === 360) {return true;}
+        return false;
+        // return (this._kernel.objGetParams(this._id)[4] === undefined);
     }
 }

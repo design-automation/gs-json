@@ -48,33 +48,43 @@ export function test_getAngles(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
-    curve.getAngles();
+    const angle_1: number = 140;
+    const angle_2: number = 145;
+    const curve: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[angle_1,angle_2]);
+    if(!Arr.equal(curve.getAngles(), [angle_1,angle_2])) {return false;}
     return true;
 }
 export function test_setAngles(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
-    curve.setAngles([0,180]);
+    const angle_1: number = 140;
+    const angle_2: number = 145;
+    const angle_1_new: number = 135;
+    const angle_2_new: number = 150;
+    const curve: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[angle_1,angle_2]);
+    curve.setAngles([angle_1_new,angle_2_new]);
+    if(!Arr.equal(curve.getAngles(), [angle_1_new,angle_2_new])) {return false;}
     return true;
 }
 export function test_getRadius(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
+    const radius: number = Math.sqrt(2);
     const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
-    curve.getRadius();
+    const curve: gs.ICircle = g.addCircle(pt,[radius,0,0],[0,radius,0],[45,135]);
+    if(!Arr.equal([curve.getRadius()], [radius])) {return false;}
     return true;
 }
 export function test_isClosed(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve1: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
-    if(curve1.isClosed()) {return false;}
-    const curve2: gs.ICircle = g.addCircle(pt,[10,0,0],[0,1,0]);
-    if(!curve2.isClosed()) {return false;}
-    return true;
+    const angle_1: number = 0;
+    const angle_2: number = 180;
+    const angle_3: number = 360;
+    const curve1: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[angle_1,angle_2]);
+    const curve2: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[angle_1,angle_3]);
+    if(curve1.isClosed() === true) {return false;}
+    return curve2.isClosed();
 }
