@@ -25,6 +25,22 @@ export abstract class Ent implements IEnt{
         this._id = id;
     }
 
+    /**
+     * Get the Model object that this entity belongs to.
+     * @return A Model object.
+     */
+    public getModel(): IModel {
+        return this._kernel.getModel();
+    }
+
+    /**
+     * Get the Geom object
+     * @return The Model object
+     */
+    public getGeom(): IGeom {
+        return this._kernel.getGeom();
+    }
+
     //  This Entity --------------------------------------------------------------------------------
 
     /**
@@ -35,21 +51,7 @@ export abstract class Ent implements IEnt{
         return this._id;
     }
 
-    /**
-     * Get the Geom object that this entity belongs to.
-     * @return A Geom object.
-     */
-    public getGeom(): IGeom {
-        return this._kernel.getModel().getGeom();
-    }
 
-    /**
-     * Get the Model object that this entity belongs to.
-     * @return A Model object.
-     */
-    public getModel(): IModel {
-        return this._kernel.getModel();
-    }
 
     /**
      * Get the geometry type for this entity.

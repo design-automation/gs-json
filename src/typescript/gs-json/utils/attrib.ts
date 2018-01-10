@@ -1,4 +1,4 @@
-import {IAttrib} from "./ifaces_gs";
+import {IModel, IGeom, IAttrib} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EDataType} from "./enums";
@@ -29,6 +29,22 @@ export abstract class Attrib implements IAttrib {
         this._kernel = kernel;
         this._name = name;
         this._geom_type = geom_type;
+    }
+
+    /**
+     * Get the model to which this group belongs.
+     * @return The model
+     */
+    public getModel(): IModel {
+        return this._kernel.getModel();
+    }
+
+    /**
+     * Get the Geom object
+     * @return The Model object
+     */
+    public getGeom(): IGeom {
+        return this._kernel.getGeom();
     }
 
     //  This attribute -----------------------------------------------------------------------------

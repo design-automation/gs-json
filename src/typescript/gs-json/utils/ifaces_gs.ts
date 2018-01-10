@@ -83,10 +83,11 @@ export interface IGeom  {
  * The Ent class cannot be instantiated.
  */
 export interface IEnt  {
+    getModel(): IModel;
+    getGeom(): IGeom;
     // constructor(geom: ifs.IGeom, id: number)
     getID(): number;
     getGeomType(): EGeomType;
-    getModel(): IModel;
     getGeom(): IGeom;
     // attribs
     getAttribs(): IEntAttrib[]|ITopoAttrib[];
@@ -223,6 +224,9 @@ export interface IPolymesh extends IObj {
  * Interface, for Topo abstract class, that represents any topological component.
  */
 export interface ITopo {
+    getModel(): IModel;
+    getGeom(): IGeom;
+    //
     getObjID(): number;
     getObj(): IObj;
     getGeomType(): EGeomType;
@@ -294,6 +298,8 @@ export interface IFace extends ITopo {
  * Interface, for Attrib class.
  */
 export interface IAttrib {
+    getModel(): IModel;
+    getGeom(): IGeom;
     // constructor(model: ifs.IModel, data: IAttribData)
     getName(): string;
     setName(name: string): string;
@@ -318,6 +324,8 @@ export interface ITopoAttrib extends IAttrib {
  * Interface, for Group class.
  */
 export interface IGroup {
+    getModel(): IModel;
+    getGeom(): IGeom;
     // constructor(model: ifs.IModel, name: string)
     getName(): string;
     setName(name: string): string;

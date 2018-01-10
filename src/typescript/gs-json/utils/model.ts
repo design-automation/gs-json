@@ -25,11 +25,10 @@ export class Model implements IModel {
 
     /**
      * Get the geom objct from the model.
-     * @param
      * @return
      */
     public getGeom(): IGeom {
-        return new Geom(this._kernel);
+        return this._kernel.getGeom();
     }
 
     //  Attributes ---------------------------------------------------------------------------------

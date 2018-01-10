@@ -1,6 +1,6 @@
 import {Arr} from "./arr";
 
-import {IModel} from "./ifaces_gs";
+import {IModel, IGeom} from "./ifaces_gs";
 
 import {IMetadata, IModelData,  IAttribData,
     IGroupData, TObjData, TPointsData, ITopoPathData} from "./ifaces_json";
@@ -10,6 +10,7 @@ import {EGeomType, EDataType, EObjType, TDataTypeStr,
     mapStringToDataType} from "./enums";
 
 import {ITopoTree} from "./ifaces_trees";
+import {Geom} from "./geom";
 import {TopoTree} from "./topo_trees";
 import * as three from "three";
 import {create_UUID} from "./uuid";
@@ -23,6 +24,7 @@ import * as threex from "./three_utils";
  */
 export class Kernel {
     private _model: IModel;
+    private _geom: IGeom;
     private _metadata: IMetadata;
     private _points: TPointsData;
     private _objs: TObjData[];
@@ -37,6 +39,7 @@ export class Kernel {
      */
     constructor(model: IModel, data?: IModelData) {
         this._model = model;
+        this._geom = new Geom(this);
         this._attribs = new Map();
         this._attribs.set(EGeomType.points, new Map());
         this._attribs.set(EGeomType.objs, new Map());
@@ -116,6 +119,14 @@ export class Kernel {
      */
     public getModel(): IModel {
         return this._model;
+    }
+
+    /**
+     * Get the Geom object
+     * @return The Model object
+     */
+    public getGeom(): IGeom {
+        return this._geom;
     }
 
     //  Model attributes ---------------------------------------------------------------------------

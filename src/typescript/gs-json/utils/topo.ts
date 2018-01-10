@@ -1,4 +1,4 @@
-import {IObj, ITopo, ITopoAttrib, IGroup} from "./ifaces_gs";
+import {IModel, IGeom, IObj, ITopo, ITopoAttrib, IGroup} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
@@ -26,6 +26,22 @@ export abstract class Topo implements ITopo {
     constructor(kernel: Kernel, path: ITopoPathData) {
         this._kernel = kernel;
         this._path = path;
+    }
+
+    /**
+     * Get the model to which this group belongs.
+     * @return The model
+     */
+    public getModel(): IModel {
+        return this._kernel.getModel();
+    }
+
+    /**
+     * Get the Geom object
+     * @return The Model object
+     */
+    public getGeom(): IGeom {
+        return this._kernel.getGeom();
     }
 
     //  This topo ----------------------------------------------------------------------------------
