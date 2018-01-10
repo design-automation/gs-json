@@ -13,7 +13,8 @@ function addRay(scene: gs.IThreeScene, ray: gs.IRay, materials: gs.IThreeMateria
     const geom: gs.IThreeBufferedGeom = threes.genGeom(threeg.getLinesFromRay(ray)[0]);
     threes.addGeomToScene(scene, geom);
     threes.addObjToGroup(group, threes.genObj("Line", "Ray", geom, materials[0]));
-    threes.addSpriteToScene(scene, group, "Origin", threeg.getSpritesFromVertices(ray));
+    threes.addSpriteToScene(scene, group, "Vertices", threeg.getSpritesFromVertices(ray));
+    threes.addSpriteToScene(scene, group, "Objs", [threeg.getSpriteFromObj(ray)]);
 }
 
 /**
@@ -25,7 +26,8 @@ function addPlane(scene: gs.IThreeScene, plane: gs.IPlane, materials: gs.IThreeM
     const geom: gs.IThreeBufferedGeom = threes.genGeom(threeg.getLinesFromPlane(plane)[0]);
     threes.addGeomToScene(scene, geom);
     threes.addObjToGroup(group, threes.genObj("Line", "Plane", geom, materials[0]));
-    threes.addSpriteToScene(scene, group, "Origin", threeg.getSpritesFromVertices(plane));
+    threes.addSpriteToScene(scene, group, "Vertices", threeg.getSpritesFromVertices(plane));
+    threes.addSpriteToScene(scene, group, "Objs", [threeg.getSpriteFromObj(plane)]);
 }
 
 /**
@@ -41,7 +43,8 @@ function addCircle(scene: gs.IThreeScene, circle: gs.ICircle, materials: gs.IThr
     } else {
         threes.addObjToGroup(group, threes.genObj("Line", "Arc", geom, materials[0]));
     }
-    threes.addSpriteToScene(scene, group, "Origin", threeg.getSpritesFromVertices(circle));
+    threes.addSpriteToScene(scene, group, "Vertices", threeg.getSpritesFromVertices(circle));
+    threes.addSpriteToScene(scene, group, "Objs", [threeg.getSpriteFromObj(circle)]);
 }
 
 /**
@@ -57,7 +60,8 @@ function addEllipse(scene: gs.IThreeScene, ellipse: gs.IEllipse, materials: gs.I
     } else {
         threes.addObjToGroup(group, threes.genObj("Line", "EllipticArc", geom, materials[0]));
     }
-    threes.addSpriteToScene(scene, group, "Origin", threeg.getSpritesFromVertices(ellipse));
+    threes.addSpriteToScene(scene, group, "Vertices", threeg.getSpritesFromVertices(ellipse));
+    threes.addSpriteToScene(scene, group, "Objs", [threeg.getSpriteFromObj(ellipse)]);
 }
 
 /**
@@ -75,7 +79,7 @@ function addPolyline(scene: gs.IThreeScene, polyline: gs.IPolyline, materials: g
     }
     threes.addSpriteToScene(scene, group, "Vertices", threeg.getSpritesFromVertices(polyline));
     threes.addSpriteToScene(scene, group, "Edges", threeg.getSpritesFromEdges(polyline));
-    threes.addSpriteToScene(scene, group, "Edges", [threeg.getSpriteFromObj(polyline)]);
+    threes.addSpriteToScene(scene, group, "Objs", [threeg.getSpriteFromObj(polyline)]);
 }
 
 /**
@@ -100,7 +104,7 @@ function addPolymesh(scene: gs.IThreeScene, polymesh: gs.IPolymesh, materials: g
     threes.addSpriteToScene(scene, group, "Edges", threeg.getSpritesFromEdges(polymesh));
     threes.addSpriteToScene(scene, group, "Wires", threeg.getSpritesFromWires(polymesh));
     threes.addSpriteToScene(scene, group, "Faces", threeg.getSpritesFromFaces(polymesh));
-    threes.addSpriteToScene(scene, group, "Edges", [threeg.getSpriteFromObj(polymesh)]);
+    threes.addSpriteToScene(scene, group, "Objs", [threeg.getSpriteFromObj(polymesh)]);
 }
 
 /**

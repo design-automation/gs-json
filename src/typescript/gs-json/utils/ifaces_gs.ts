@@ -1,3 +1,4 @@
+import * as three from "three";
 import {EGeomType, EDataType, EObjType} from "./enums";
 import {ITopoPathData} from "./ifaces_json";
 
@@ -107,6 +108,8 @@ export interface IPoint extends IEnt {
     // groups
     getGroups(): IGroup[];
     addToGroup(name: string): boolean;
+    // xform
+    xform(matrix: three.Matrix4): void;
 }
 
 /**
@@ -134,6 +137,8 @@ export interface IObj extends IEnt {
     // groups
     getGroups(): IGroup[];
     addToGroup(group: IGroup): boolean;
+    // xform
+    xform(matrix: three.Matrix4): void;
 }
 
 /**

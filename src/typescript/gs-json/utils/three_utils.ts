@@ -14,6 +14,12 @@ export function multVectorMatrix(v: three.Vector3, m: three.Matrix4): three.Vect
     return v2;
 }
 
+export function multXYZMatrix(xyz: number[], m: three.Matrix4): number[] {
+    const v2: three.Vector3 = new three.Vector3(...xyz);
+    v2.applyMatrix4(m);
+    return v2.toArray().slice(0,3);
+}
+
 export function xformMatrix(o: three.Vector3, x: three.Vector3, y: three.Vector3, z: three.Vector3): three.Matrix4 {
     const m1: three.Matrix4 = new three.Matrix4();
     const o_neg: three.Vector3 = o.clone().negate();
@@ -74,19 +80,19 @@ export function vectorFromVerticesAtoB(a: gs.IVertex, b: gs.IVertex, norm: boole
 //  XYZ ===========================================================================================================
 
 export function subXYZs(xyz1: number[], xyz2: number[], norm: boolean = false): number[] {
-    return subVectors(new three.Vector3(...xyz1), new three.Vector3(...xyz2), norm).toArray();
+    return subVectors(new three.Vector3(...xyz1), new three.Vector3(...xyz2), norm).toArray().slice(0,3);;
 }
 
 export function addXYZs(xyz1: number[], xyz2: number[], norm: boolean = false): number[] {
-    return addVectors(new three.Vector3(...xyz1), new three.Vector3(...xyz2), norm).toArray();
+    return addVectors(new three.Vector3(...xyz1), new three.Vector3(...xyz2), norm).toArray().slice(0,3);;
 }
 
 export function crossXYZs(xyz1: number[], xyz2: number[], norm: boolean = false): number[] {
-    return crossVectors(new three.Vector3(...xyz1), new three.Vector3(...xyz2), norm).toArray();
+    return crossVectors(new three.Vector3(...xyz1), new three.Vector3(...xyz2), norm).toArray().slice(0,3);;
 }
 
 export function normalizeXYZ(xyz: number[]): number[] {
-    return new three.Vector3(...xyz).normalize().toArray();
+    return new three.Vector3(...xyz).normalize().toArray().slice(0,3);;
 }
 
 export function lengthXYZ(xyz: number[]): number {
@@ -97,24 +103,24 @@ export function lengthXYZ(xyz: number[]): number {
 
 export function subPoints(p1: gs.IPoint, p2: gs.IPoint, norm: boolean = false): number[]  {
     return subVectors(new three.Vector3(...p1.getPosition()),
-        new three.Vector3(...p2.getPosition()), norm).toArray();
+        new three.Vector3(...p2.getPosition()), norm).toArray().slice(0,3);;
 }
 
 export function addPoints(p1: gs.IPoint, p2: gs.IPoint, norm: boolean = false): number[]  {
     return addVectors(new three.Vector3(...p1.getPosition()),
-        new three.Vector3(...p2.getPosition()), norm).toArray();
+        new three.Vector3(...p2.getPosition()), norm).toArray().slice(0,3);;
 }
 
 //  Vertices ======================================================================================================
 
 export function subVertices(v1: gs.IVertex, v2: gs.IVertex, norm: boolean = false): number[]  {
     return subVectors(new three.Vector3(...v1.getPoint().getPosition()),
-        new three.Vector3(...v2.getPoint().getPosition()), norm).toArray();
+        new three.Vector3(...v2.getPoint().getPosition()), norm).toArray().slice(0,3);;
 }
 
 export function addVertices(v1: gs.IVertex, v2: gs.IVertex, norm: boolean = false): number[]  {
     return addVectors(new three.Vector3(...v1.getPoint().getPosition()),
-        new three.Vector3(...v2.getPoint().getPosition()), norm).toArray();
+        new three.Vector3(...v2.getPoint().getPosition()), norm).toArray().slice(0,3);;
 }
 
 //  3D to 2D ======================================================================================================

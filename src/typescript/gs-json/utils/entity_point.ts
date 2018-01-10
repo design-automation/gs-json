@@ -1,3 +1,4 @@
+import * as three from "three";
 import {IPoint, IVertex, IGroup} from "./ifaces_gs";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
@@ -79,5 +80,15 @@ export class Point extends Ent implements IPoint {
      */
     public addToGroup(name: string): boolean {
         return this._kernel.groupAddPoint(name, this._id);
+    }
+
+    //  Transfrom -------------------------------------------------------------------------------------
+
+    /**
+     * Transform the points for this object.
+     * @param matrix The xform matrix.
+     */
+    public xform(matrix: three.Matrix4): void {
+        return this._kernel.pointXform(this._id, matrix);
     }
 }

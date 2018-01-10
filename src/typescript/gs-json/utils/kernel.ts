@@ -433,7 +433,7 @@ export class Kernel {
         return point_ids;
     }
 
-    //  Geom Objects -------------------------------------------------------------------------------
+    //  Geom Object Constructors------------------------------------------------------------------------------
 
     /**
      * Adds a new ray to the model that passes through a sequence of points.
@@ -559,6 +559,8 @@ export class Kernel {
         // return the new pline
         return new_id;
     }
+
+    //  Geom Object Functions------------------------------------------------------------------------------
 
     /**
      * Returns true if an object with the specified ID exists.
@@ -835,7 +837,7 @@ export class Kernel {
     /**
      * Get the points for this object. If the point_type is not specified, then
      * points for both wires and faces are returned.
-     * @return The array of points.
+     * @return A nested array of point ids.
      */
     public objGetPointIDs(id: number, point_type?: EGeomType.wires|EGeomType.faces): number[][][] {
         let w_points: number[][] = [];
@@ -847,6 +849,17 @@ export class Kernel {
             f_points = this._objs[id][1].map((f) => f.filter((v) => (v !== -1)));
         }
         return [w_points, f_points];
+    }
+
+    /**
+     * Get the points for this object as a flat list of unique points.
+     * @return A flat array of point ids.
+     */
+    public objGetAllPointIDs(id: number): number[] {
+        const point_set: Set<number> = new Set();
+        this._objs[id][0].forEach((w) => w.forEach((v) => (v !== -1) && point_set.add(v)));
+        this._objs[id][1].forEach((f) => f.forEach((v) => (v !== -1) && point_set.add(v)));
+        return Array.from(point_set);
     }
 
     /**
@@ -965,6 +978,39 @@ export class Kernel {
         return names;
     }
 
+    /**
+     * Transform all the points for this object.
+     */
+    public objXform(id: number, matrix: three.Matrix4): void {
+        this.pointsXform(this.objGetAllPointIDs(id), matrix);
+        switch (this.objGetType(id)) {
+            case EObjType.ray: case EObjType.plane:  case EObjType.circle:  // cannot be streched
+                // set position of matrix to 0 so no translation
+                const matrix2 = matrix.clone();
+                matrix2.setPosition(new three.Vector3());
+                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][1], matrix2); //TODO check this
+                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][2], matrix2);
+                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][3], matrix2);
+                break;
+            case EObjType.ellipse: // can be streched
+                // multiply by transpose of the inverse of that matrix
+                const matrix3 = matrix.clone();
+                matrix3.setPosition(new three.Vector3());
+                matrix3.getInverse(matrix).transpose();
+                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][1], matrix3); //TODO check this
+                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][2], matrix3);
+                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][3], matrix3);
+                break;
+            case EObjType.polyline: case EObjType.polymesh:
+                //no need to do anything
+                break;
+            default:
+                throw new Error("Object type not found: " + this.objGetType(id));
+        }
+        // TODO what about attributes that are vectors, they should be transformed as well
+        // matrix2.getInverse(matrix).transpose();
+    }
+
     //  Points -------------------------------------------------------------------------------------
 
     /**
@@ -974,7 +1020,6 @@ export class Kernel {
      */
     public pointSetPosition(id: number, xyz: number[]): number[] {
         const old_xyz: number[] = this._points[1][this._points[0][id]];
-        if (Arr.equal(xyz, old_xyz)) {return old_xyz; }
         let value_index: number = Arr.indexOf(xyz, this._points[1]);
         if (value_index === -1) {
             value_index = this._points[1].length;
@@ -1029,6 +1074,26 @@ export class Kernel {
         const names: string[] = [];
         this._groups.forEach((v,k) => (v.points.indexOf(id) !== -1) && names.push(v.name));
         return names;
+    }
+
+    /**
+     * Transform the position of a point.
+     * @param
+     * @param
+     */
+    public pointXform(id: number, matrix: three.Matrix4): void {
+        this.pointSetPosition(id, threex.multXYZMatrix(this.pointGetPosition(id), matrix));
+    }
+
+    /**
+     * Transform the position of this point.
+     * @param
+     * @param
+     */
+    public pointsXform(ids: number[], matrix: three.Matrix4): void {
+        for (const id of ids) {
+            this.pointSetPosition(id, threex.multXYZMatrix(this.pointGetPosition(id), matrix));
+        }
     }
 
     //  Topo ---------------------------------------------------------------------------------

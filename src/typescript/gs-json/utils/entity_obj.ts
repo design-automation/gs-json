@@ -1,3 +1,4 @@
+import * as three from "three";
 import {Arr} from "./arr";
 import {IObj, IPoint, IVertex, IEdge, IWire, IFace, IGroup} from "./ifaces_gs";
 import {ITopoPathData} from "./ifaces_json";
@@ -188,4 +189,15 @@ export abstract class Obj extends Ent implements IObj {
     public addToGroup(group: IGroup): boolean {
         return this._kernel.groupAddObj(group.getName(), this._id);
     }
+
+    //  Transfrom -------------------------------------------------------------------------------------
+
+    /**
+     * Transform the points for this object.
+     * @param matrix The xform matrix.
+     */
+    public xform(matrix: three.Matrix4): void {
+        return this._kernel.objXform(this._id, matrix);
+    }
+
 }

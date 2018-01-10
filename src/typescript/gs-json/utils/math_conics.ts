@@ -14,19 +14,20 @@ export function circleLength(curve: gs.ICircle): number {
  */
 export function circleEvaluate(curve: gs.ICircle, t: number): number[] {
     // Convention: angles stated by increasing order ; [0,360] as opposed to [360,0];
-    const L: number = circleLength(curve);
+    // Get the parameters
+    const origin: number[] = curve.getOrigin().getPosition();
     const r: number = curve.getRadius();
-    const alpha: number = (curve.getAngles()[0] + t*(curve.getAngles()[1]-curve.getAngles()[0]))*(2*Math.PI)/360;
+    const vecs: number[][] = curve.getVectors();
+    const angles: number[] = curve.getAngles();
+    const U1: three.Vector3 = new three.Vector3(...vecs[0]).normalize();
+    const V1: three.Vector3 = new three.Vector3(...vecs[1]).normalize();
+    const O1O2: three.Vector3 = new three.Vector3(...origin);
+    // Calculate the length
+    const L: number = circleLength(curve);
+    // Evaluate t
+    const alpha: number = (angles[0] + t*(angles[1]-angles[0]))*(2*Math.PI)/360;
     const x: number = r * Math.cos(alpha); // expressed in the plan inferred by (u,v)
     const y: number = r * Math.sin(alpha); // expressed in the plan inferred by (u,v)
-    const U1: three.Vector3 = new three.Vector3(
-        curve.getVectors()[0][0], curve.getVectors()[0][1], curve.getVectors()[0][2]);
-    const V1: three.Vector3 = new three.Vector3(
-        curve.getVectors()[1][0], curve.getVectors()[1][1], curve.getVectors()[1][2]);
-    U1.normalize();
-    V1.normalize();
-    const O1O2: three.Vector3 = new three.Vector3(
-        curve.getOrigin().getPosition()[0], curve.getOrigin().getPosition()[1], curve.getOrigin().getPosition()[2]);
     const O2P: three.Vector3 = threex.addVectors(U1.multiplyScalar(x),V1.multiplyScalar(y));
     const O1P: three.Vector3 = threex.addVectors(O1O2,O2P);
     // console.log("[x,y] " + [x,y]);
@@ -47,17 +48,29 @@ export function circleEvaluate(curve: gs.ICircle, t: number): number[] {
  * With resolution from 0.0001 to 0.5, 0.0001 being a higher resolution than 0.5
  */
 export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): number[][] {
-    // 2 possible versions, one which calls circleEvaluate,
-    // a second one which use circleEvaluate by using let instead of const
-    const renderXYZs: number[][] = [];
-    // Version 1
+    // Get the parameters
+    const origin: number[] = curve.getOrigin().getPosition();
+    const r: number = curve.getRadius();
+    const vecs: number[][] = curve.getVectors();
+    const angles: number[] = curve.getAngles();
+    const U1: three.Vector3 = new three.Vector3(...vecs[0]).normalize();
+    const V1: three.Vector3 = new three.Vector3(...vecs[1]).normalize();
+    const O1O2: three.Vector3 = new three.Vector3(...origin);
+    // Calc number of points
     const L: number = circleLength(curve);
     const N: number = Math.ceil(L/resolution);
+    // Calculate points
+    const renderXYZs: number[][] = [];
     for(let k=0;k<N;k++) {
-        renderXYZs.push(circleEvaluate(curve,k*resolution));
+        const t: number = k/(N - 1);
+        const alpha: number = (angles[0] + t*(angles[1]-angles[0]))*(2*Math.PI)/360;
+        const x: number = r * Math.cos(alpha); // expressed in the plan inferred by (u,v)
+        const y: number = r * Math.sin(alpha); // expressed in the plan inferred by (u,v)
+        const O2P: three.Vector3 = threex.addVectors(U1.multiplyScalar(x),V1.multiplyScalar(y));
+        const O1P: three.Vector3 = threex.addVectors(O1O2,O2P);
+        renderXYZs.push([O1P.x,O1P.y,O1P.z]);
     }
     return renderXYZs;
-//    throw new Error("Not implemented"); // Do this first
 }
 
 /**

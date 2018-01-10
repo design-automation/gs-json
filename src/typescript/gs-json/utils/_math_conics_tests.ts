@@ -45,9 +45,9 @@ export function test_circleEvaluate(): boolean {
         if(Math.abs(xyz[0] - x) > threshold) {return false ;}
         if(Math.abs(xyz[1] - y) > threshold) {return false ;}
         if(Math.abs(xyz[2] - z) > threshold) {return false ;}
-}
-// To Do: add an extra rotation for considering a circle
-// with which plan is tilted as opposed to parallel to the original plan
+    }
+    // To Do: add an extra rotation for considering a circle
+    // with which plan is tilted as opposed to parallel to the original plan
     return true;
 }
 export function test_circleGetRenderXYZs(): boolean {
