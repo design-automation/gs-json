@@ -913,7 +913,10 @@ img { max-width: 100%; }
 			<a href="_three_geom_.html#getlinesegmentsfromedges" class="tsd-kind-icon">get<wbr>Line<wbr>Segments<wbr>From<wbr>Edges</a>
 		</li>
 		<li class=" tsd-kind-function tsd-parent-kind-external-module">
-			<a href="_three_geom_.html#getlinesfromconiccurve" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Conic<wbr>Curve</a>
+			<a href="_three_geom_.html#getlinesfromcircle" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Circle</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-external-module">
+			<a href="_three_geom_.html#getlinesfromellipse" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Ellipse</a>
 		</li>
 		<li class=" tsd-kind-function tsd-parent-kind-external-module">
 			<a href="_three_geom_.html#getlinesfromplane" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Plane</a>
@@ -954,7 +957,8 @@ img { max-width: 100%; }
 						<h3>Functions</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_three_geom_.html#getlinesegmentsfromedges" class="tsd-kind-icon">get<wbr>Line<wbr>Segments<wbr>From<wbr>Edges</a></li>
-							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_three_geom_.html#getlinesfromconiccurve" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Conic<wbr>Curve</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_three_geom_.html#getlinesfromcircle" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Circle</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_three_geom_.html#getlinesfromellipse" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Ellipse</a></li>
 							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_three_geom_.html#getlinesfromplane" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Plane</a></li>
 							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_three_geom_.html#getlinesfromray" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Ray</a></li>
 							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_three_geom_.html#getlinesfromwires" class="tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Wires</a></li>
@@ -981,7 +985,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:40</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L39">three_geom.ts:39</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1000,27 +1004,58 @@ img { max-width: 100%; }
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-				<a name="getlinesfromconiccurve" class="tsd-anchor"></a>
-				<h3>get<wbr>Lines<wbr>From<wbr>Conic<wbr>Curve</h3>
+				<a name="getlinesfromcircle" class="tsd-anchor"></a>
+				<h3>get<wbr>Lines<wbr>From<wbr>Circle</h3>
 				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-					<li class="tsd-signature tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Conic<wbr>Curve<span class="tsd-signature-symbol">(</span>curve<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.iconiccurve.html" class="tsd-signature-type">IConicCurve</a>, resolution<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Circle<span class="tsd-signature-symbol">(</span>curve<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a>, resolution<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:80</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L79">three_geom.ts:79</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Get lines data from conics.</p>
+								<p>Get lines data from circles.</p>
 							</div>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>curve: <a href="../interfaces/_ifaces_gs_.iconiccurve.html" class="tsd-signature-type">IConicCurve</a></h5>
+								<h5>curve: <a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a></h5>
+							</li>
+							<li>
+								<h5>resolution: <span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+				<a name="getlinesfromellipse" class="tsd-anchor"></a>
+				<h3>get<wbr>Lines<wbr>From<wbr>Ellipse</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Lines<wbr>From<wbr>Ellipse<span class="tsd-signature-symbol">(</span>curve<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.iellipse.html" class="tsd-signature-type">IEllipse</a>, resolution<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L86">three_geom.ts:86</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Get lines data from ellipses.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>curve: <a href="../interfaces/_ifaces_gs_.iellipse.html" class="tsd-signature-type">IEllipse</a></h5>
 							</li>
 							<li>
 								<h5>resolution: <span class="tsd-signature-type">number</span></h5>
@@ -1040,7 +1075,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:94</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L93">three_geom.ts:93</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1068,7 +1103,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:108</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L107">three_geom.ts:107</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1096,7 +1131,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:68</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L67">three_geom.ts:67</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1124,7 +1159,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:12</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L11">three_geom.ts:11</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1160,7 +1195,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:168</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L167">three_geom.ts:167</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1196,7 +1231,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:132</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L131">three_geom.ts:131</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1224,7 +1259,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:156</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L155">three_geom.ts:155</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1252,7 +1287,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:120</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L119">three_geom.ts:119</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1280,7 +1315,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in three_geom.ts:144</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/three_geom.ts#L143">three_geom.ts:143</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">

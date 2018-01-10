@@ -29,19 +29,35 @@ function addPlane(scene: gs.IThreeScene, plane: gs.IPlane, materials: gs.IThreeM
 }
 
 /**
- * Add ConicCurve
+ * Add Circle
  */
-function addConicCurve(scene: gs.IThreeScene, curve: gs.IConicCurve, materials: gs.IThreeMaterial[]): void {
-    const group: gs.IThreeObj = threes.genGroup(curve.getID() + "_ConicCurve");
+function addCircle(scene: gs.IThreeScene, circle: gs.ICircle, materials: gs.IThreeMaterial[]): void {
+    const group: gs.IThreeObj = threes.genGroup(circle.getID() + "_Circle");
     threes.addGroupToScene(scene, group);
-    const geom: gs.IThreeBufferedGeom = threes.genGeom(threeg.getLinesFromConicCurve(curve, 0.1)[0]);
+    const geom: gs.IThreeBufferedGeom = threes.genGeom(threeg.getLinesFromCircle(circle, 0.1)[0]);
     threes.addGeomToScene(scene, geom);
-    if (curve.isClosed()) {
-        threes.addObjToGroup(group, threes.genObj("LineLoop", "ConicCurve", geom, materials[0]));
+    if (circle.isClosed()) {
+        threes.addObjToGroup(group, threes.genObj("LineLoop", "Circle", geom, materials[0]));
     } else {
-        threes.addObjToGroup(group, threes.genObj("Line", "ConicCurve", geom, materials[0]));
+        threes.addObjToGroup(group, threes.genObj("Line", "Arc", geom, materials[0]));
     }
-    threes.addSpriteToScene(scene, group, "Vertices", threeg.getSpritesFromVertices(curve));
+    threes.addSpriteToScene(scene, group, "Vertices", threeg.getSpritesFromVertices(circle));
+}
+
+/**
+ * Add Ellipse
+ */
+function addEllipse(scene: gs.IThreeScene, ellipse: gs.IEllipse, materials: gs.IThreeMaterial[]): void {
+    const group: gs.IThreeObj = threes.genGroup(ellipse.getID() + "_Ellipse");
+    threes.addGroupToScene(scene, group);
+    const geom: gs.IThreeBufferedGeom = threes.genGeom(threeg.getLinesFromEllipse(ellipse, 0.1)[0]);
+    threes.addGeomToScene(scene, geom);
+    if (ellipse.isClosed()) {
+        threes.addObjToGroup(group, threes.genObj("LineLoop", "Ellipse", geom, materials[0]));
+    } else {
+        threes.addObjToGroup(group, threes.genObj("Line", "EllipticArc", geom, materials[0]));
+    }
+    threes.addSpriteToScene(scene, group, "Vertices", threeg.getSpritesFromVertices(ellipse));
 }
 
 /**
@@ -103,8 +119,11 @@ export function genThreeModel(model: gs.IModel): gs.IThreeScene {
             case gs.EObjType.plane:
                 addPlane(scene, obj as gs.IPlane, mats);
                 break;
-            case gs.EObjType.conic_curve:
-                addConicCurve(scene, obj as gs.IConicCurve, mats);
+            case gs.EObjType.circle:
+                addCircle(scene, obj as gs.ICircle, mats);
+                break;
+            case gs.EObjType.ellipse:
+                addEllipse(scene, obj as gs.IEllipse, mats);
                 break;
             case gs.EObjType.polyline:
                 addPolyline(scene, obj as gs.IPolyline, mats);

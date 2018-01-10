@@ -1,7 +1,6 @@
 import * as gs from "./gs-json";
 import * as three from "three";
 import * as threex from "./three_utils";
-import * as tri from "./three_triangulate";
 import * as math_conics from "./math_conics";
 
 //  MESHES ===================================================================================================
@@ -24,7 +23,7 @@ export function getMeshFromFaces(obj: gs.IObj): {xyzs: number[], indexes: number
         if (verts.length === 3) {
             traingles.push(verts_indexes);
         } else if (verts.length > 3) {
-            traingles.push(tri.triangulate2D(verts, verts_indexes));
+            traingles.push(threex.triangulate2D(verts, verts_indexes));
             // traingles.push([verts_indexes[0], verts_indexes[1], verts_indexes[2]]);
             // traingles.push([verts_indexes[0], verts_indexes[2], verts_indexes[3]]); //TODO this is a temporary fix
         }
@@ -75,17 +74,17 @@ export function getLinesFromWires(obj: gs.IObj): number[][] {
 }
 
 /**
- * Get lines data from conics.
+ * Get lines data from circles.
  */
-export function getLinesFromConicCurve(curve: gs.IConicCurve, resolution: number): number[][] {
-    const len = math_conics.length(curve);
-    const xyzs: number[] = [];
-    let num_segments: number = len / resolution;
-    if (num_segments < 3) {num_segments = 3;}
-    for (let i = 0; i<num_segments + 1; i++) {
-        xyzs.push(...math_conics.evaluate(curve, i/num_segments));
-    }
-    return [xyzs];
+export function getLinesFromCircle(curve: gs.ICircle, resolution: number): number[][] {
+    return math_conics.circleGetRenderXYZs(curve, resolution);
+}
+
+/**
+ * Get lines data from ellipses.
+ */
+export function getLinesFromEllipse(curve: gs.IEllipse, resolution: number): number[][] {
+    return math_conics.ellipseGetRenderXYZs(curve, resolution);
 }
 
 /**

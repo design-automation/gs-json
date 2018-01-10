@@ -1,11 +1,12 @@
-import {IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane, IConicCurve,
+import {IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane, ICircle, IEllipse,
         IPolyline, IPolymesh, INurbsCurve, ITopo} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
 import {Point} from "./entity_point";
 import {Polyline} from "./entity_obj_polyline";
-import {ConicCurve} from "./entity_obj_coniccurve";
+import {Circle} from "./entity_obj_circle";
+import {Ellipse} from "./entity_obj_ellipse";
 import {NurbsCurve} from "./entity_obj_nurbscurve";
 import {Polymesh} from "./entity_obj_polymesh";
 import {Plane} from "./entity_obj_plane";
@@ -62,19 +63,29 @@ export class Geom implements IGeom {
     }
 
     /**
-     * Adds a new conic curve to the model.
+     * Adds a new circle to the model.
+     * @param Origin The origin point.
+     * @param x_vec A vector in the local x direction, also defines the raidus.
+     * @param y_vec A vector in the local y direction, must be orthogonal to x.
+     * @param angles The angles, can be undefined, in which case a closed conic is generated.
+     * @return Object of type Circle
+     */
+    public addCircle(origin_point: IPoint, x_vec: number[], y_vec: number[], angles?: [number, number]): ICircle {
+        const id: number = this._kernel.geomAddEllipse(origin_point.getID(), x_vec, y_vec, angles);
+        return new Circle(this._kernel, id);
+    }
+
+    /**
+     * Adds a new ellipse to the model.
      * @param Origin The origin point.
      * @param x_vec A vector defining the radius in the local x direction.
      * @param y_vec A vector defining the radius in the local y direction, must be orthogonal to x.
      * @param angles The angles, can be undefined, in which case a closed conic is generated.
-     * @return Object of type Plane
+     * @return Object of type Ellipse
      */
-    public addConicCurve(origin_point: IPoint, x_vec: number[], y_vec: number[],
-                         angles: [number, number]):
-                    IConicCurve {
-        const id: number = this._kernel.geomAddConicCurve(origin_point.getID(),
-            x_vec, y_vec, angles);
-        return new ConicCurve(this._kernel, id);
+    public addEllipse(origin_point: IPoint, x_vec: number[], y_vec: number[], angles?: [number, number]): IEllipse {
+        const id: number = this._kernel.geomAddEllipse(origin_point.getID(), x_vec, y_vec, angles);
+        return new Ellipse(this._kernel, id);
     }
 
     /**

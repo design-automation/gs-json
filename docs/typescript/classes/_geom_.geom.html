@@ -919,7 +919,10 @@ img { max-width: 100%; }
 					<a href="_geom_.geom.html#_kernel" class="tsd-kind-icon">_kernel</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="_geom_.geom.html#addconiccurve" class="tsd-kind-icon">add<wbr>Conic<wbr>Curve</a>
+					<a href="_geom_.geom.html#addcircle" class="tsd-kind-icon">add<wbr>Circle</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="_geom_.geom.html#addellipse" class="tsd-kind-icon">add<wbr>Ellipse</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="_geom_.geom.html#addnurbscurve" class="tsd-kind-icon">add<wbr>Nurbs<wbr>Curve</a>
@@ -1039,7 +1042,8 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#addconiccurve" class="tsd-kind-icon">add<wbr>Conic<wbr>Curve</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#addcircle" class="tsd-kind-icon">add<wbr>Circle</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#addellipse" class="tsd-kind-icon">add<wbr>Ellipse</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#addnurbscurve" class="tsd-kind-icon">add<wbr>Nurbs<wbr>Curve</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#addplane" class="tsd-kind-icon">add<wbr>Plane</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="_geom_.geom.html#addpoint" class="tsd-kind-icon">add<wbr>Point</a></li>
@@ -1081,7 +1085,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L20">geom.ts:20</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L21">geom.ts:21</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1108,7 +1112,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">_kernel<span class="tsd-signature-symbol">:</span> <a href="_kernel_.kernel.html" class="tsd-signature-type">Kernel</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L20">geom.ts:20</a></li>
+						<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L21">geom.ts:21</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1116,22 +1120,70 @@ img { max-width: 100%; }
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="addconiccurve" class="tsd-anchor"></a>
-				<h3>add<wbr>Conic<wbr>Curve</h3>
+				<a name="addcircle" class="tsd-anchor"></a>
+				<h3>add<wbr>Circle</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Conic<wbr>Curve<span class="tsd-signature-symbol">(</span>origin_point<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a>, x_vec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, y_vec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, angles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.iconiccurve.html" class="tsd-signature-type">IConicCurve</a></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Circle<span class="tsd-signature-symbol">(</span>origin_point<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a>, x_vec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, y_vec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, angles<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addconiccurve">addConicCurve</a></p>
+							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addcircle">addCircle</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L72">geom.ts:72</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L73">geom.ts:73</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Adds a new conic curve to the model.</p>
+								<p>Adds a new circle to the model.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>origin_point: <a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></h5>
+							</li>
+							<li>
+								<h5>x_vec: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>A vector in the local x direction, also defines the raidus.</p>
+								</div>
+							</li>
+							<li>
+								<h5>y_vec: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>A vector in the local y direction, must be orthogonal to x.</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> angles: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>The angles, can be undefined, in which case a closed conic is generated.</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a></h4>
+						<p>Object of type Circle</p>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="addellipse" class="tsd-anchor"></a>
+				<h3>add<wbr>Ellipse</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Ellipse<span class="tsd-signature-symbol">(</span>origin_point<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a>, x_vec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, y_vec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, angles<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.iellipse.html" class="tsd-signature-type">IEllipse</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addellipse">addEllipse</a></p>
+							<ul>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L86">geom.ts:86</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Adds a new ellipse to the model.</p>
 							</div>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1152,14 +1204,14 @@ img { max-width: 100%; }
 								</div>
 							</li>
 							<li>
-								<h5>angles: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> angles: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>The angles, can be undefined, in which case a closed conic is generated.</p>
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.iconiccurve.html" class="tsd-signature-type">IConicCurve</a></h4>
-						<p>Object of type Plane</p>
+						<h4 class="tsd-returns-title">Returns <a href="../interfaces/_ifaces_gs_.iellipse.html" class="tsd-signature-type">IEllipse</a></h4>
+						<p>Object of type Ellipse</p>
 					</li>
 				</ul>
 			</section>
@@ -1174,7 +1226,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addnurbscurve">addNurbsCurve</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L86">geom.ts:86</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L97">geom.ts:97</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1216,7 +1268,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addplane">addPlane</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L119">geom.ts:119</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L130">geom.ts:130</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1261,7 +1313,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addpoint">addPoint</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L38">geom.ts:38</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L39">geom.ts:39</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1294,7 +1346,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addpoints">addPoints</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L48">geom.ts:48</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L49">geom.ts:49</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1324,7 +1376,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addpolyline">addPolyline</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L58">geom.ts:58</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L59">geom.ts:59</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1363,7 +1415,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addpolymesh">addPolymesh</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L97">geom.ts:97</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L108">geom.ts:108</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1396,7 +1448,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#addray">addRay</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L108">geom.ts:108</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L119">geom.ts:119</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1435,7 +1487,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#delobj">delObj</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L233">geom.ts:233</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L244">geom.ts:244</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1467,7 +1519,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#delobjs">delObjs</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L224">geom.ts:224</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L235">geom.ts:235</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1499,7 +1551,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#delpoint">delPoint</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L168">geom.ts:168</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L179">geom.ts:179</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1528,7 +1580,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#delpoints">delPoints</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L159">geom.ts:159</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L170">geom.ts:170</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1557,7 +1609,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#findobjs">findObjs</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L188">geom.ts:188</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L199">geom.ts:199</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1586,7 +1638,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getallobjs">getAllObjs</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L197">geom.ts:197</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L208">geom.ts:208</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1609,7 +1661,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getallpoints">getAllPoints</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L131">geom.ts:131</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L142">geom.ts:142</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1632,7 +1684,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getobj">getObj</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L215">geom.ts:215</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L226">geom.ts:226</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1661,7 +1713,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getobjs">getObjs</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L206">geom.ts:206</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L217">geom.ts:217</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1690,7 +1742,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getpoint">getPoint</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L150">geom.ts:150</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L161">geom.ts:161</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1719,7 +1771,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#getpoints">getPoints</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L141">geom.ts:141</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L152">geom.ts:152</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1748,7 +1800,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#gettopo">getTopo</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L273">geom.ts:273</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L284">geom.ts:284</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1784,7 +1836,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#gettopofromlabel">getTopoFromLabel</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L289">geom.ts:289</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L300">geom.ts:300</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1820,7 +1872,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#gettopos">getTopos</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L254">geom.ts:254</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L265">geom.ts:265</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1856,7 +1908,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#numobjs">numObjs</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L242">geom.ts:242</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L253">geom.ts:253</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1879,7 +1931,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#numpoints">numPoints</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L177">geom.ts:177</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L188">geom.ts:188</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1902,7 +1954,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Implementation of <a href="../interfaces/_ifaces_gs_.igeom.html">IGeom</a>.<a href="../interfaces/_ifaces_gs_.igeom.html#numtopos">numTopos</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/fdda4da/src/typescript/gs-json/utils/geom.ts#L320">geom.ts:320</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/ef90db3/src/typescript/gs-json/utils/geom.ts#L331">geom.ts:331</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">

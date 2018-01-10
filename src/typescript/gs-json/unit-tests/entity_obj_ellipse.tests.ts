@@ -1,7 +1,7 @@
 import {} from "jasmine";
-import * as tests from "../utils/_entity_obj_coniccurve_tests";
+import * as tests from "../utils/_entity_obj_ellipse_tests";
 
-describe("Tests for Entity Object Conic Curves", () => {
+describe("Tests for Entity Object Ellipse", () => {
     it("test_getObjType", () => {
         expect( tests.test_getObjType() ).toBe(true);
     });

@@ -14,6 +14,8 @@ import {TopoTree} from "./topo_trees";
 import * as three from "three";
 import {create_UUID} from "./uuid";
 
+import * as threex from "./three_utils";
+
 /**
  * Kernel Class
  * This class controls all acces to the data and ensures that the data remains consistent.
@@ -496,26 +498,22 @@ export class Kernel {
     }
 
     /**
-     * Adds a new conic curve to the model defined by origin and two vectors for the x and y axes, and
+     * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
      * two angles.
      * @param origin_id The origin point.
      * @param x_vec A vector defining the radius in the local x direction.
      * @param y_vec A vector defining the radius in the local y direction.
-     * @param angles The angles, can be undefined, in which case a closed conic is generated.
+     * @param angles The angles, can be undefined, in which case a ellipse is generated.
      * @return ID of object.
      */
-    public geomAddConicCurve(origin_id: number, x_vec: number[], y_vec: number[],
-                             angles?: [number, number]): number {
-        const x_vector: three.Vector3 = new three.Vector3(...x_vec);
-        const y_vector: three.Vector3 = new three.Vector3(...y_vec);
-        const z_vector: three.Vector3 = new three.Vector3();
-        z_vector.crossVectors(x_vector, y_vector);
+    public geomAddEllipse(origin_id: number, x_vec: number[], y_vec: number[],
+                          angles?: [number, number]): number {
         const new_id: number = this._objs.length;
         // add the obj
         this._objs.push([
             [[origin_id]], // wire with just a single point
             [], // faces, none
-            [EObjType.conic_curve, x_vector.toArray(), y_vector.toArray(), z_vector.toArray(), angles], // params
+            [EObjType.ellipse, x_vec, y_vec, threex.crossXYZs(x_vec, y_vec), angles], // params
         ]);
         // update all attributes
         this._newObjAddToAttribs(new_id);
@@ -2059,8 +2057,8 @@ export class Kernel {
             // Plane
             case EObjType.plane:
                 this.geomDelObj(vertex_path.id);
-            // Conic Curve
-            case EObjType.conic_curve:
+            // Ellipse
+            case EObjType.ellipse:
                 this.geomDelObj(vertex_path.id);
             // Polyline
             case EObjType.polyline:
@@ -2515,7 +2513,6 @@ export class Kernel {
             }
         }
     }
-
 
     //  --------------------------------------------------------------------------------------------
 

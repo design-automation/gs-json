@@ -8,8 +8,8 @@ export function test_length(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.IConicCurve = g.addConicCurve(pt,[1,0,0],[0,1,0],[45,135]);
-    const distance: number =  cs._length(curve);
+    const curve: gs.IEllipse = g.addEllipse(pt,[1,0,0],[0,1,0],[45,135]);
+    const distance: number =  cs.ellipseLength(curve);
     // console.log("distance is " + distance) ;
     return true;
 }

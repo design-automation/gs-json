@@ -44,12 +44,13 @@ export interface IGeom  {
     // Creation
     addPoint(xyz: number[]): IPoint;
     addPoints(xyz_arr: number[][]): IPoint[];
-    addPolyline(wire_points: IPoint[], is_closed: boolean): IPolyline;
-    addPolymesh(face_points: IPoint[][]): IPolymesh;
-    addConicCurve(origin_point: IPoint, x_vec: number[], y_vec: number[], angles: [number, number]);
-    addNurbsCurve(points: IPoint[], is_closed: boolean, order: number): INurbsCurve;
     addRay(origin_point: IPoint, ray_vec: number[]): IRay;
     addPlane(origin_point: IPoint, x_vec: number[], y_vec: number[]): IPlane;
+    addCircle(origin_point: IPoint, x_vec: number[], y_vec: number[], angles?: [number, number]);
+    addEllipse(origin_point: IPoint, x_vec: number[], y_vec: number[], angles?: [number, number]);
+    addPolyline(wire_points: IPoint[], is_closed: boolean): IPolyline;
+    addPolymesh(face_points: IPoint[][]): IPolymesh;
+    addNurbsCurve(points: IPoint[], is_closed: boolean, order: number): INurbsCurve;
     // Points
     getAllPoints(): IPoint[];
     getPoints(point_ids: number[]): IPoint[];
@@ -155,15 +156,31 @@ export interface IPlane  extends IObj {
 }
 
 /**
- * Interface, for a ConicCurve class.
+ * Interface, for a Circle class.
  */
-export interface IConicCurve  extends IObj {
+export interface ICircle  extends IObj {
     getObjType(): EObjType;
     isClosed(): boolean;
     getOrigin(): IPoint;
     getVectors(): number[][];
-    getRadii(): number[];
-    getAngles(): number[];
+    setVectors(x_vec: number[], y_vec: number[]): void;
+    getRadius(): number;
+    getAngles(): [number, number];
+    setAngles(angles: [number, number]): void;
+}
+
+/**
+ * Interface, for a Ellipse class.
+ */
+export interface IEllipse  extends IObj {
+    getObjType(): EObjType;
+    isClosed(): boolean;
+    getOrigin(): IPoint;
+    getVectors(): number[][];
+    setVectors(x_vec: number[], y_vec: number[]): void;
+    getRadii(): [number, number];
+    getAngles(): [number, number];
+    setAngles(angles: [number, number]): void;
 }
 
 /**
