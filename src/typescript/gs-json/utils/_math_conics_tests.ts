@@ -7,7 +7,7 @@ import * as gs from "./gs-json";
 export function test_circleLength(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    const pt: gs.IPoint = g.addPoint([1,1,1]);
+    const pt: gs.IPoint = g.addPoint([1,2,9]);
     const angle_1: number = 45;
     const angle_2: number = 145;
     const radius: number = 400;
@@ -23,7 +23,7 @@ export function test_circleLength(): boolean {
 export function test_circleEvaluate(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    const pt: gs.IPoint = g.addPoint([5,2,4]);
     const angle_1: number = 0;
     const angle_2: number = 360;
     const vector_x: number[] = [1,0,0];
@@ -42,12 +42,12 @@ export function test_circleEvaluate(): boolean {
         x = circle.getRadius()*Math.cos(theta) + circle.getOrigin().getPosition()[0];
         y = circle.getRadius()*Math.sin(theta) + circle.getOrigin().getPosition()[1];
         z = circle.getOrigin().getPosition()[2];
-        // console.log("Origin " + circle.getOrigin().getPosition());
         if(Math.abs(xyz[0] - x) > threshold) {return false ;}
         if(Math.abs(xyz[1] - y) > threshold) {return false ;}
         if(Math.abs(xyz[2] - z) > threshold) {return false ;}
 }
-// further unit testing to be done
+// To Do: add an extra rotation for considering a circle
+// with which plan is tilted as opposed to parallel to the original plan
     return true;
 }
 export function test_circleGetRenderXYZs(): boolean {
