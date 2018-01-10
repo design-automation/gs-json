@@ -14,6 +14,15 @@ export function test_circleLength(): boolean {
     return true;
 }
 export function test_circleEvaluate(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    const circle: gs.ICircle = g.addCircle(pt, [1,0,0],[0,1,0],[0,360]);
+    const threshold: number = 1e-6;
+    const t: number = 0;
+    const xyz: number[] = cs.circleEvaluate(circle, t);
+    console.log("xyz is " + xyz);
+    // if(Math.abs(cs.circleLength(circle) - 2*Math.PI*1) > threshold) {return false ;}
     return true;
 }
 export function test_circleGetRenderXYZs(): boolean {
