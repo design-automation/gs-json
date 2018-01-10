@@ -6,7 +6,7 @@ import * as three from "three";
  * Calculate the length of the circle or arc.
  */
 export function circleLength(curve: gs.ICircle): number {
-    return curve.getRadius()*Math.abs(curve.getAngles()[1]-curve.getAngles()[0]);
+    return curve.getRadius()*Math.abs(curve.getAngles()[1]-curve.getAngles()[0])*2*Math.PI/360;
 }
 
 /**
