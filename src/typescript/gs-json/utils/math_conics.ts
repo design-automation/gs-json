@@ -15,8 +15,8 @@ export function circleLength(curve: gs.ICircle): number {
 export function circleEvaluate(curve: gs.ICircle, t: number): number[] {
     // Convention: angles stated by increasing order ; [0,360] as opposed to [360,0];
     const L: number = circleLength(curve);
-    const alpha: number = curve.getAngles()[0]*2*Math.PI/360 + t*L/(2*Math.PI);
     const r: number = curve.getRadius();
+    const alpha: number = curve.getAngles()[0]*(2*Math.PI)/360 + t*L/r;
     const x: number = r * Math.cos(alpha); // expressed in the plan inferred by (u,v)
     const y: number = r * Math.sin(alpha); // expressed in the plan inferred by (u,v)
     const U1: three.Vector3 = new three.Vector3(
@@ -25,12 +25,15 @@ export function circleEvaluate(curve: gs.ICircle, t: number): number[] {
         curve.getVectors()[1][0], curve.getVectors()[1][1], curve.getVectors()[1][2]);
     U1.normalize();
     V1.normalize();
+    // console.log("[x,y] " + [x,y]);
+    // console.log("Alpha is " + alpha );
+    // console.log("@Evaluate U1 is + " + [U1.x,U1.y,U1.z] );
+    // console.log("@Evaluate V1 is + " + [V1.x,V1.y,V1.z] );
     const O1O2: three.Vector3 = new three.Vector3(
         curve.getOrigin()[0], curve.getOrigin()[1], curve.getOrigin()[2]);
     const O2P: three.Vector3 = threex.addVectors(U1.multiplyScalar(x),V1.multiplyScalar(y));
     const O1P: three.Vector3 = threex.addVectors(O1O2,O2P);
-
-    console.log("curve get Vector " + curve.getVectors()); // getVectors() to check,
+    // console.log("curve get Vector " + curve.getVectors()); // getVectors() to check,
     // console.log("@Evaluate U1 is + " + [U1.x,U1.y,U1.z] );
     // console.log("@Evaluate V1 is + " + [V1.x,V1.y,V1.z] );
     // console.log("@Evaluate O1O2 is + " + [O1O2.x,O1O2.y,O1O2.z] );
