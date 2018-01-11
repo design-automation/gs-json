@@ -367,6 +367,15 @@ export class Kernel {
     //  Geom Points --------------------------------------------------------------------------------
 
     /**
+     * Check if the geometry has this point
+     * @param
+     * @return
+     */
+    public geomHasPoint(id: number): boolean {
+        return this._points[0][id] === undefined;
+    }
+
+    /**
      * Adds a new point to the model at position xyz.
      * @param cartesian xyz coordinates are required to create a point
      * @return a instance of type Point is returned
@@ -1677,8 +1686,8 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupAddTopo(name: string, topo: ITopoPathData): void {
-        this._topos_trees.get(name).addTopo(topo);
+    public groupAddTopo(name: string, topo: ITopoPathData): boolean {
+        return this._topos_trees.get(name).addTopo(topo);
     }
 
     /**
@@ -1686,8 +1695,12 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupAddTopos(name: string, topos: ITopoPathData[]): void {
-        topos.forEach((v, i) => this._topos_trees.get(name).addTopo(v));
+    public groupAddTopos(name: string, topos: ITopoPathData[]): boolean {
+        let ok: boolean = true;
+        for (const topo of topos) {
+            if (!this._topos_trees.get(name).addTopo(topo)) {ok = false; }
+        }
+        return ok;
     }
 
     /**

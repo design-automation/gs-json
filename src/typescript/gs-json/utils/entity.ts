@@ -44,14 +44,21 @@ export abstract class Ent implements IEnt{
     //  This Entity --------------------------------------------------------------------------------
 
     /**
+     * Check if this entity exists in the model. (i.e has it been deleted?)
+     * @return The entity ID number.
+     */
+    public exists(): boolean {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
+    /**
      * Get the ID number of this entity.
      * @return The entity ID number.
      */
     public getID(): number {
         return this._id;
     }
-
-
 
     /**
      * Get the geometry type for this entity.

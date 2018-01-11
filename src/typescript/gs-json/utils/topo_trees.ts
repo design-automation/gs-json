@@ -52,23 +52,23 @@ export class TopoTree {
         }
     }
 
-    public addTopo(path: ITopoPathData): void {
+    public addTopo(path: ITopoPathData): boolean {
         const path_tt: EGeomType = mapTTPathIndexToGeomType.get(path.tt);
         const path_st: EGeomType = mapSTPathIndexToGeomType.get(path.st);
         switch (path_tt) {
             case EGeomType.wires:
                 if (path_st === EGeomType.vertices) {
-                    this._wire_vertices.add(path.id, path.ti, path.si);
+                    return this._wire_vertices.add(path.id, path.ti, path.si);
                 } else if (path_st === EGeomType.edges) {
-                    this._wire_edges.add(path.id, path.ti, path.si);
+                    return this._wire_edges.add(path.id, path.ti, path.si);
                 } else {
                     return this._wires.add(path.id, path.ti);
                 }
             case EGeomType.faces:
                 if (path_st === EGeomType.vertices) {
-                    this._face_vertices.add(path.id, path.ti, path.si);
+                    return this._face_vertices.add(path.id, path.ti, path.si);
                 } else if (path_st === EGeomType.edges) {
-                    this._face_edges.add(path.id, path.ti, path.si);
+                    return this._face_edges.add(path.id, path.ti, path.si);
                 } else {
                     return this._faces.add(path.id, path.ti);
                 }
@@ -187,9 +187,11 @@ class TreeBranch2 implements ITreeBranch2 {
         return true;
     }
 
-    public add(a: number, b: number): void {
+    public add(a: number, b: number): boolean {
+        if (this.has(a, b)) {return false; }
         if (!this._tree.has(a)) {this._tree.set(a, new Set()); }
         this._tree.get(a).add(b);
+        return true;
     }
 
     public remove(a: number, b?: number): boolean {
@@ -238,9 +240,11 @@ class TreeBranch3 implements ITreeBranch3 {
         return this._tree.get(a).has(b, c);
     }
 
-    public add(a: number, b: number, c: number): void {
+    public add(a: number, b: number, c: number): boolean {
+        if (this.has(a, b, c)) {return false; }
         if (!this._tree.has(a)) {this._tree.set(a, new TreeBranch2()); }
         this._tree.get(a).add(b, c);
+        return true;
     }
 
     public remove(a: number, b?: number, c?: number): boolean {

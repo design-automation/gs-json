@@ -29,6 +29,14 @@ export abstract class Topo implements ITopo {
     }
 
     /**
+     * Check if this entity exists in the model. (i.e has it been deleted?)
+     * @return The entity ID number.
+     */
+    public exists(): boolean {
+        return this._kernel.geomHasTopo(this._path);
+    }
+
+    /**
      * Get the model to which this group belongs.
      * @return The model
      */

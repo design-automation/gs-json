@@ -13,6 +13,15 @@ import {Group} from "./groups";
  * including Polyline and Polymesh.
  */
 export abstract class Obj extends Ent implements IObj {
+
+    /**
+     * Check if this entity exists in the model. (i.e has it been deleted?)
+     * @return The entity ID number.
+     */
+    public exists(): boolean {
+        return this._kernel.geomHasObj(this._id);
+    }
+
     /**
      * Get the geometry type.
      * This method overrides the method in the Ent class.

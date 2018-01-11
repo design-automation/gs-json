@@ -101,6 +101,7 @@ export interface IEnt  {
 export interface IPoint extends IEnt {
     // constructor cannot be used to create a new point
     // use the "add" method in Geom class
+    exists(): boolean;
     getLabel(): string;
     getLabelCentroid(): number[];
     getPosition(): number[];
@@ -120,6 +121,7 @@ export interface IPoint extends IEnt {
 export interface IObj extends IEnt {
     // constructor cannot be used to create a new point
     // use the "add" method in Geom class
+    exists(): boolean;
     getObjType(): EObjType;
     getLabel(): string;
     getLabelCentroid(): number[];
@@ -224,6 +226,7 @@ export interface IPolymesh extends IObj {
  * Interface, for Topo abstract class, that represents any topological component.
  */
 export interface ITopo {
+    exists(): boolean;
     getModel(): IModel;
     getGeom(): IGeom;
     //
@@ -298,6 +301,7 @@ export interface IFace extends ITopo {
  * Interface, for Attrib class.
  */
 export interface IAttrib {
+    exists(): boolean;
     getModel(): IModel;
     getGeom(): IGeom;
     // constructor(model: ifs.IModel, data: IAttribData)
@@ -324,12 +328,12 @@ export interface ITopoAttrib extends IAttrib {
  * Interface, for Group class.
  */
 export interface IGroup {
+    exists(): boolean;
     getModel(): IModel;
     getGeom(): IGeom;
     // constructor(model: ifs.IModel, name: string)
     getName(): string;
     setName(name: string): string;
-
     // Parent/child groups
     getParentGroup(): IGroup;
     getChildGroups(): IGroup[];
@@ -346,8 +350,8 @@ export interface IGroup {
 
     // Topos in this group
     getTopos(geom_type?: EGeomType): ITopo[];
-    addTopo(path: ITopo): void;
-    addTopos(paths: ITopo[]): void;
+    addTopo(path: ITopo): boolean;
+    addTopos(paths: ITopo[]): boolean;
     removeTopo(path: ITopo): boolean;
     removeTopos(paths: ITopo[]): boolean;
     hasTopo(path: ITopo): boolean;

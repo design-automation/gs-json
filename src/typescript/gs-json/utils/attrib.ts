@@ -32,6 +32,14 @@ export abstract class Attrib implements IAttrib {
     }
 
     /**
+     * Check if this group exists
+     * @return The model
+     */
+    public exists(): boolean {
+        return this._kernel.modelGetAttrib(this._name, this._geom_type) === undefined;
+    }
+
+    /**
      * Get the model to which this group belongs.
      * @return The model
      */

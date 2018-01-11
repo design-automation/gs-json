@@ -9,7 +9,7 @@ import {TTreeData, TTree2Data, TTree3Data, ITopoPathData} from "./ifaces_json";
 
 export interface ITopoTree {
     hasTopo(topo: ITopoPathData): boolean ;
-    addTopo(topo: ITopoPathData): void ;
+    addTopo(topo: ITopoPathData): boolean ;
     removeTopo(topo: ITopoPathData): boolean ;
     removeObj(id: number): boolean;
     getTopos(geom_type?: EGeomType): ITopoPathData[] ;
@@ -22,7 +22,7 @@ export interface ITopoTree {
  */
 export interface ITreeBranch2 {
     has(a: number, b: number): boolean;
-    add(a: number, b: number): void;
+    add(a: number, b: number): boolean;
     remove(a: number, b?: number): boolean;
     flatten(): number[][];
     toArray(): TTree2Data;
@@ -34,7 +34,7 @@ export interface ITreeBranch2 {
  */
 export interface ITreeBranch3 {
     has(a: number, b: number, c: number): boolean;
-    add(a: number, b: number, c: number): void;
+    add(a: number, b: number, c: number): boolean;
     remove(a: number, b?: number, c?: number): boolean;
     flatten(): number[][];
     toArray(): TTree3Data;

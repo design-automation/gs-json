@@ -12,6 +12,15 @@ import {Group} from "./groups";
  * A point may be part of a group and may have attributes.
  */
 export class Point extends Ent implements IPoint {
+
+    /**
+     * Check if this entity exists in the model. (i.e has it been deleted?)
+     * @return The entity ID number.
+     */
+    public exists(): boolean {
+        return this._kernel.geomHasPoint(this._id);
+    }
+
    /**
     * Get the geometry type for this entity.
     * This method overrides the method in the Ent class.

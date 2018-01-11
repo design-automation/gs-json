@@ -28,6 +28,14 @@ export class Group implements IGroup {
     }
 
     /**
+     * Check if this group exists
+     * @return The model
+     */
+    public exists(): boolean {
+        return this._kernel.modelGetGroup(this._name) === undefined;
+    }
+
+    /**
      * Get the model to which this group belongs.
      * @return The model
      */
@@ -198,7 +206,7 @@ export class Group implements IGroup {
      * @param
      * @return
      */
-    public addTopo(topo: ITopo): void {
+    public addTopo(topo: ITopo): boolean {
         const path: ITopoPathData = topo.getTopoPath(); // TODO
         return this._kernel.groupAddTopo(this._name, path);
     }
@@ -208,7 +216,7 @@ export class Group implements IGroup {
      * @param
      * @return
      */
-    public addTopos(topos: ITopo[]): void {
+    public addTopos(topos: ITopo[]): boolean {
         const paths: ITopoPathData[] = topos.map((p) => p.getTopoPath()); // TODO
         return this._kernel.groupAddTopos(this._name, paths);
     }
