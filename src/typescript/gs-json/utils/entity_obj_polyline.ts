@@ -1,6 +1,6 @@
 import {Arr} from "./arr";
 import {ITopoPathData} from "./ifaces_json";
-import {IPoint, IVertex, IEdge, IWire, IFace, IPolyline} from "./ifaces_gs";
+import {XYZ, IPoint, IVertex, IEdge, IWire, IFace, IPolyline} from "./ifaces_gs";
 import {EGeomType, EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Vertex} from "./topo_sub";

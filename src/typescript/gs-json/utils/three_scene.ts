@@ -1,3 +1,4 @@
+import {XYZ} from "./gs-json";
 import * as threei from "./ifaces_three";
 import {create_UUID} from "./uuid";
 
@@ -188,7 +189,7 @@ export function addGeomToScene(scene: threei.IThreeScene, geom: threei.IThreeBuf
  * Add a sprite to the scene.
  */
 export function addSpriteToScene(scene: threei.IThreeScene, group: threei.IThreeObj, name: string,
-                                 labels_xyzs: { label: string, xyz: number[] }[]): threei.IThreeObj {
+                                 labels_xyzs: { label: string, xyz: XYZ }[]): threei.IThreeObj {
     const sprite = genSprites(name, labels_xyzs);
     sprite.uuid = create_UUID();
     group.children.push(sprite);
@@ -198,11 +199,11 @@ export function addSpriteToScene(scene: threei.IThreeScene, group: threei.IThree
 /**
  * Generate a bunch of sprites, from labels and label centroids.
  */
-export function genSprites(name: string, labels_xyzs: { label: string, xyz: number[] }[]): threei.IThreeObj {
+export function genSprites(name: string, labels_xyzs: { label: string, xyz: XYZ }[]): threei.IThreeObj {
     const group = genGroup(name);
     for (const label_xyz of labels_xyzs) {
         const label: string = label_xyz.label;
-        const xyz: number[] = label_xyz.xyz;
+        const xyz: XYZ = label_xyz.xyz;
         const sprite: threei.IThreeObj = {
             type: "Sprite",
             name: label,

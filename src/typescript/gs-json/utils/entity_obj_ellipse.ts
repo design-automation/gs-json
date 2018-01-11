@@ -1,4 +1,4 @@
-import {IEllipse, IPoint} from "./ifaces_gs";
+import {XYZ, IEllipse, IPoint} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
@@ -28,7 +28,7 @@ export class Ellipse extends Obj implements IEllipse {
      * radii for the ellipse.
      * @return The x and y vectors.
      */
-    public getVectors(): number[][] {
+    public getVectors(): XYZ[] {
         // param are [type, x_vec, y_vec, z_vec, angles]
         return this._kernel.objGetParams(this._id).slice(2,4);
     }
@@ -38,7 +38,7 @@ export class Ellipse extends Obj implements IEllipse {
      * radii for the ellipse.
      * @return The x and y vectors.
      */
-    public setVectors(x_vec: number[], y_vec: number[]): void {
+    public setVectors(x_vec: XYZ, y_vec: XYZ): void {
         // param are [type, x_vec, y_vec, z_vec, angles]
         this._kernel.objGetParams(this._id)[1] = x_vec;
         this._kernel.objGetParams(this._id)[2] = y_vec;

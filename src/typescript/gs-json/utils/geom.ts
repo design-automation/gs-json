@@ -1,4 +1,4 @@
-import {IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane, ICircle, IEllipse,
+import {XYZ, IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane, ICircle, IEllipse,
         IPolyline, IPolymesh, INurbsCurve, ITopo} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
@@ -36,7 +36,7 @@ export class Geom implements IGeom {
      * @param xyz xyz coordinates are required to create a point
      * @return A point instance.
      */
-    public addPoint(xyz: number[]): IPoint {
+    public addPoint(xyz: XYZ): IPoint {
         const id: number = this._kernel.geomAddPoint(xyz);
         return new Point(this._kernel, id);
     }
@@ -46,7 +46,7 @@ export class Geom implements IGeom {
      * @param xyz An array of xyz coordinates.
      * @return An array Point instances.
      */
-    public addPoints(xyz_arr: number[][]): IPoint[] {
+    public addPoints(xyz_arr: XYZ[]): IPoint[] {
         return xyz_arr.map((xyz) => this.addPoint(xyz));
     }
 
@@ -70,7 +70,7 @@ export class Geom implements IGeom {
      * @param angles The angles, can be undefined, in which case a closed conic is generated.
      * @return Object of type Circle
      */
-    public addCircle(origin_point: IPoint, x_vec: number[], y_vec: number[], angles?: [number, number]): ICircle {
+    public addCircle(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]): ICircle {
         // Proposal of direct sense for angles:
         if(angles[1] - angles[0] < 0) {
             throw new Error("Increasing order for angles required: ["
@@ -88,7 +88,7 @@ export class Geom implements IGeom {
      * @param angles The angles, can be undefined, in which case a closed conic is generated.
      * @return Object of type Ellipse
      */
-    public addEllipse(origin_point: IPoint, x_vec: number[], y_vec: number[], angles?: [number, number]): IEllipse {
+    public addEllipse(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]): IEllipse {
         const id: number = this._kernel.geomAddEllipse(origin_point.getID(), x_vec, y_vec, angles);
         return new Ellipse(this._kernel, id);
     }
@@ -121,7 +121,7 @@ export class Geom implements IGeom {
      * @param ray_vec A vector defining the direction of the ray.
      * @return Object of type Ray
      */
-    public addRay(origin_point: IPoint, ray_vec: number[]): IRay {
+    public addRay(origin_point: IPoint, ray_vec: XYZ): IRay {
         const id: number = this._kernel.geomAddRay(origin_point.getID(), ray_vec);
         return new Ray(this._kernel, id);
     }
@@ -132,7 +132,7 @@ export class Geom implements IGeom {
      * @param y_vec A vector defining the y axis, orthogonal to x.
      * @return Object of type Plane
      */
-    public addPlane(origin_point: IPoint, x_vec: number[], y_vec: number[]): IPlane {
+    public addPlane(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ): IPlane {
         const id: number = this._kernel.geomAddPlane(origin_point.getID(), x_vec, y_vec);
         return new Plane(this._kernel, id);
     }

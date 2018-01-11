@@ -1,4 +1,4 @@
-import {IModel, IGeom, IObj, ITopo, ITopoAttrib, IGroup} from "./ifaces_gs";
+import {XYZ, IModel, IGeom, IObj, ITopo, ITopoAttrib, IGroup} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
@@ -110,7 +110,7 @@ export abstract class Topo implements ITopo {
      * This is calculated as the average of the point positions for all points in the topo.
      * @return The xyz of the centroid.
      */
-    public getLabelCentroid(): number[] {
+    public getLabelCentroid(): XYZ {
         // Do not implement this method.
         throw new Error ("Method to be overridden by subclass.");
     }

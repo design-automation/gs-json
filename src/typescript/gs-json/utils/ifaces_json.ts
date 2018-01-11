@@ -3,7 +3,7 @@ import {TGeomTypeStr, TDataTypeStr} from "./enums";
 /**
  * Types, for parsing gs-json data.
  */
-export type TPointsData = [number[], number[][]]; // can be xy or xyz
+export type TPointsData = [number[], [number, number, number][]]; // can be xy or xyz
 export type TObjData = [number[][], number[][], any[]];
 export type TTree2Data = Array<[number, number[]]>; // obj_id, [ti]
 export type TTree3Data = Array<[number, TTree2Data]>; // obj_id, [ti, [si]]

@@ -28,7 +28,7 @@ export function test_point_getPosition(): boolean {
     const model: gs.IModel = new gs.Model();
     const point: gs.IPoint = model.getGeom().addPoint([11, 22, 33]);
     point.setPosition([4, 5, 6]);
-    const pos: number[] = point.getPosition();
+    const pos: gs.XYZ = point.getPosition();
     return Arr.equal([4, 5, 6], pos);
 }
 

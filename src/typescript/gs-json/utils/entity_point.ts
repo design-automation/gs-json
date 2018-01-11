@@ -1,5 +1,5 @@
 import * as three from "three";
-import {IPoint, IVertex, IGroup} from "./ifaces_gs";
+import {XYZ, IPoint, IVertex, IGroup} from "./ifaces_gs";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
 import {Vertex} from "./topo_sub";
@@ -35,7 +35,7 @@ export class Point extends Ent implements IPoint {
     * @param xyz Cartesian coordinates
     * @return Arrays of pre-defined coordinates
     */
-    public setPosition(xyz: number[]): number[] {
+    public setPosition(xyz: XYZ): XYZ {
         return this._kernel.pointSetPosition(this._id, xyz);
     }
 
@@ -43,7 +43,7 @@ export class Point extends Ent implements IPoint {
      * Get the cartesian x, y, z coordinates of a point.
      * @return Returns an array that contains the x, y, z coordinates
      */
-    public getPosition(): number[] {
+    public getPosition(): XYZ {
         return this._kernel.pointGetPosition(this._id);
     }
 
@@ -68,7 +68,7 @@ export class Point extends Ent implements IPoint {
      * Get the label centroid of this points.
      * @return The xyz of the label.
      */
-    public getLabelCentroid(): number[] {
+    public getLabelCentroid(): XYZ {
         return this.getPosition();
     }
 

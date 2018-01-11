@@ -1,4 +1,4 @@
-import {IRay, IPoint} from "./ifaces_gs";
+import {XYZ, IRay, IPoint} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
@@ -29,7 +29,7 @@ export class Ray extends Obj implements IRay {
      * Gets the direction vector for this ray.
      * @return Return the xyz.
      */
-    public getVector(): number[] {
+    public getVector(): XYZ {
         return this._kernel.objGetParams(this._id)[1];
     }
 }

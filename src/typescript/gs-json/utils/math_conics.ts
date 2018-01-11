@@ -12,12 +12,12 @@ export function circleLength(curve: gs.ICircle): number {
 /**
  * Calculate the xyz position at parameter t on the circle or arc. The t parameter range is from 0 to 1.
  */
-export function circleEvaluate(curve: gs.ICircle, t: number): number[] {
+export function circleEvaluate(curve: gs.ICircle, t: number): gs.XYZ {
     // Convention: angles stated by increasing order ; [0,360] as opposed to [360,0];
     // Get the parameters
-    const origin: number[] = curve.getOrigin().getPosition();
+    const origin: gs.XYZ = curve.getOrigin().getPosition();
     const r: number = curve.getRadius();
-    const vecs: number[][] = curve.getVectors();
+    const vecs: gs.XYZ[] = curve.getVectors();
     const angles: number[] = curve.getAngles();
     // const U1: three.Vector3 = new three.Vector3(...vecs[0]).normalize();
     // const V1: three.Vector3 = new three.Vector3(...vecs[1]).normalize();
@@ -92,11 +92,11 @@ export function circleEvaluate(curve: gs.ICircle, t: number): number[] {
  * Calculate a set of xyz position on the circle or arc. The number of points = length / resolution.
  * With resolution from 0.0001 to 0.5, 0.0001 being a higher resolution than 0.5
  */
-export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): number[][] {
+export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.XYZ[] {
     // Get the parameters
-    const origin: number[] = curve.getOrigin().getPosition();
+    const origin: gs.XYZ = curve.getOrigin().getPosition();
     const r: number = curve.getRadius();
-    const vecs: number[][] = curve.getVectors();
+    const vecs: gs.XYZ[] = curve.getVectors();
     const angles: number[] = curve.getAngles();
     const U1: three.Vector3 = new three.Vector3(...vecs[0]).normalize();
     const V1: three.Vector3 = new three.Vector3(...vecs[1]).normalize();
@@ -105,7 +105,7 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): numb
     const L: number = circleLength(curve);
     const N: number = Math.ceil(L/resolution);
     // Calculate points
-    const renderXYZs: number[][] = [];
+    const renderXYZs: gs.XYZ[] = [];
     for(let k=0;k<N;k++) {
         const t: number = k/(N - 1);
         const alpha: number = (angles[0] + t*(angles[1]-angles[0]))*(2*Math.PI)/360;
@@ -160,10 +160,10 @@ export function ellipseLength(curve: gs.IEllipse): number {
 /**
  * Calculate the xyz position at parameter t. The t parameter range is from 0 to 1.
  */
-export function ellipseEvaluate(curve: gs.IEllipse, t: number): number[] {
+export function ellipseEvaluate(curve: gs.IEllipse, t: number): gs.XYZ {
     // ConicCurve assumed to be an ellipse or circle;
-    const vector_x: number[] = curve.getVectors()[0];
-    const vector_y: number[] = curve.getVectors()[1];
+    const vector_x: gs.XYZ = curve.getVectors()[0];
+    const vector_y: gs.XYZ = curve.getVectors()[1];
     // Initial vector_x and vector_y require to be (almost) orthogonal
     const threshold: number = 1e-6;
     if(Math.abs(vector_x[0]*vector_y[0] + vector_x[1]*vector_y[1] + vector_x[2]*vector_y[2])
@@ -219,6 +219,6 @@ export function ellipseEvaluate(curve: gs.IEllipse, t: number): number[] {
 /**
  * Calculate a set of xyz position on the ellipse. The number of points = length / resolution.
  */
-export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): number[][] {
+export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs.XYZ[] {
     throw new Error("Not implemented");
 }

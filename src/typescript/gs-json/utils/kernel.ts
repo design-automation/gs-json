@@ -1,6 +1,6 @@
 import {Arr} from "./arr";
 
-import {IModel, IGeom} from "./ifaces_gs";
+import {XYZ, IModel, IGeom} from "./ifaces_gs";
 
 import {IMetadata, IModelData,  IAttribData,
     IGroupData, TObjData, TPointsData, ITopoPathData} from "./ifaces_json";
@@ -380,7 +380,7 @@ export class Kernel {
      * @param cartesian xyz coordinates are required to create a point
      * @return a instance of type Point is returned
      */
-    public geomAddPoint(xyz: number[]): number {
+    public geomAddPoint(xyz: XYZ): number {
         const new_id: number = this._points[0].length; // next in sparse array
         // create the point
         this._points[0].push(0); // add a point to the points list
@@ -395,7 +395,7 @@ export class Kernel {
      * @param
      * @return
      */
-    public geomAddPoints(xyzs: number[][]): number[] {
+    public geomAddPoints(xyzs: XYZ[]): number[] {
         return xyzs.map((xyz) => this.geomAddPoint(xyz));
     }
 
@@ -461,7 +461,7 @@ export class Kernel {
      * @param dir The ray direction, as a vector.
      * @return ID of object.
      */
-    public geomAddRay(origin_id: number, ray_vec: number[]): number {
+    public geomAddRay(origin_id: number, ray_vec: XYZ): number {
         const new_id: number = this._objs.length;
         // create the ray
         this._objs.push([
@@ -482,7 +482,7 @@ export class Kernel {
      * @param y_vec A vector defining the y axis, orthogonal to x.
      * @return ID of object.
      */
-    public geomAddPlane(origin_id: number, x_vec: number[], y_vec: number[]): number {
+    public geomAddPlane(origin_id: number, x_vec: XYZ, y_vec: XYZ): number {
         const x_vector: three.Vector3 = new three.Vector3(...x_vec).normalize();
         const y_vector: three.Vector3 = new three.Vector3(...y_vec).normalize();
         const z_vector: three.Vector3 = new three.Vector3();
@@ -526,7 +526,7 @@ export class Kernel {
      * @param angles The angles, can be undefined, in which case a ellipse is generated.
      * @return ID of object.
      */
-    public geomAddEllipse(origin_id: number, x_vec: number[], y_vec: number[],
+    public geomAddEllipse(origin_id: number, x_vec: XYZ, y_vec: XYZ,
                           angles?: [number, number]): number {
         const new_id: number = this._objs.length;
         // add the obj
@@ -1038,8 +1038,8 @@ export class Kernel {
      * @param
      * @return
      */
-    public pointSetPosition(id: number, xyz: number[]): number[] {
-        const old_xyz: number[] = this._points[1][this._points[0][id]];
+    public pointSetPosition(id: number, xyz: XYZ): XYZ {
+        const old_xyz: XYZ = this._points[1][this._points[0][id]];
         let value_index: number = Arr.indexOf(xyz, this._points[1]);
         if (value_index === -1) {
             value_index = this._points[1].length;
@@ -1054,7 +1054,7 @@ export class Kernel {
      * @param
      * @return
      */
-    public pointGetPosition(point_id: number): number[] {
+    public pointGetPosition(point_id: number): XYZ {
         return this._points[1][this._points[0][point_id]];
     }
 

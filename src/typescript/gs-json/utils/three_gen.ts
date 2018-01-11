@@ -88,8 +88,8 @@ function addPolyline(scene: gs.IThreeScene, polyline: gs.IPolyline, materials: g
 function addPolymesh(scene: gs.IThreeScene, polymesh: gs.IPolymesh, materials: gs.IThreeMaterial[]): void {
     const group: gs.IThreeObj = threes.genGroup(polymesh.getID() + "_Polymesh");
     threes.addGroupToScene(scene, group);
-    const data:{ xyzs: number[], indexes: number[]} = threeg.getMeshFromFaces(polymesh);
-    const mesh_geom: gs.IThreeBufferedGeom = threes.genGeom(data.xyzs, data.indexes);
+    const data:{ xyzs_flat: number[], indexes: number[]} = threeg.getMeshFromFaces(polymesh);
+    const mesh_geom: gs.IThreeBufferedGeom = threes.genGeom(data.xyzs_flat, data.indexes);
     threes.addGeomToScene(scene, mesh_geom);
     threes.addObjToGroup(group, threes.genObj("Mesh", "Polymesh Faces", mesh_geom, materials[2]));
     for (const line of threeg.getLinesFromWires(polymesh)) {

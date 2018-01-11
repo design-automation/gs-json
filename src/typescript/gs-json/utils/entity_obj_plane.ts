@@ -1,4 +1,4 @@
-import {IPlane, IPoint} from "./ifaces_gs";
+import {XYZ, IPlane, IPoint} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
@@ -31,7 +31,7 @@ export class Plane extends Obj implements IPlane {
      * Get the x and y vectors  of the plane.
      * @return Plane object type.
      */
-    public getVectors(): number[][] {
+    public getVectors(): XYZ[] {
         return this._kernel.objGetParams(this._id).slice(1,3);
     }
 
@@ -44,8 +44,8 @@ export class Plane extends Obj implements IPlane {
      */
     public getCartesians(): number[] {
         const origin_id: number = this._kernel.objGetOnePoint(this._id);
-        const origin_xyz: number[] = this._kernel.pointGetPosition(origin_id);
-        const z_vec: number[] = this._kernel.objGetParams(this._id)[3];
+        const origin_xyz: XYZ = this._kernel.pointGetPosition(origin_id);
+        const z_vec: XYZ = this._kernel.objGetParams(this._id)[3];
         const d: number = -(origin_xyz[0] * z_vec[0] + origin_xyz[1] * z_vec[1] + origin_xyz[2] * z_vec[2]);
         return [z_vec[0], z_vec[1], z_vec[2], d];
     }

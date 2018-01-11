@@ -26,11 +26,11 @@ export function test_circleEvaluate(): boolean {
     const pt: gs.IPoint = g.addPoint([1,2,9]);
     const angle_1: number = 0;
     const angle_2: number = 360;
-    const vector_x: number[] = [0,4,0];
-    const vector_y: number[] = [-4,0,0];
+    const vector_x: gs.XYZ = [0,4,0];
+    const vector_y: gs.XYZ = [-4,0,0];
     const circle: gs.ICircle = g.addCircle(pt, vector_x,vector_y,[angle_1,angle_2]);
     const threshold: number = 1e-6;
-    let xyz: number[] = null;
+    let xyz: gs.XYZ = null;
     let theta: number = null;
     let x: number = null;
     let y: number = null;

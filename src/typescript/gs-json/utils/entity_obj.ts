@@ -1,6 +1,6 @@
 import * as three from "three";
 import {Arr} from "./arr";
-import {IObj, IPoint, IVertex, IEdge, IWire, IFace, IGroup} from "./ifaces_gs";
+import {XYZ, IObj, IPoint, IVertex, IEdge, IWire, IFace, IGroup} from "./ifaces_gs";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
 import {Vertex, Edge, Wire, Face} from "./topo_sub";
@@ -52,9 +52,9 @@ export abstract class Obj extends Ent implements IObj {
      * Get the label centroid for this object.
      * @return The xyz of the label.
      */
-    public getLabelCentroid(): number[] {
-        const xyzs: number[][] = this.getPointsSet().map((v) => v.getPosition());
-        const centroid: number[] = [0,0,0];
+    public getLabelCentroid(): XYZ {
+        const xyzs: XYZ[] = this.getPointsSet().map((v) => v.getPosition());
+        const centroid: XYZ = [0,0,0];
         for (const xyz of xyzs) {
             centroid[0] += xyz[0];
             centroid[1] += xyz[1];

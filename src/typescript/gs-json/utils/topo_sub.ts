@@ -1,4 +1,4 @@
-import {IPoint, IVertex, IEdge, IWire, IFace} from "./ifaces_gs";
+import {XYZ, IPoint, IVertex, IEdge, IWire, IFace} from "./ifaces_gs";
 import {Topo} from "./topo";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
@@ -31,7 +31,7 @@ export class Vertex extends Topo implements IVertex {
      * Get the centroid of this topo. This is used for attaching labels.
      * @return The xyz of the centroid.
      */
-    public getLabelCentroid(): number[] {
+    public getLabelCentroid(): XYZ {
         return this.getPoint().getPosition();
     }
 
@@ -137,9 +137,9 @@ export class Edge extends Topo implements IEdge {
      * Get the centroid of this topo. This is used for attaching labels.
      * @return The xyz of the centroid.
      */
-    public getLabelCentroid(): number[] {
-        const xyzs: number[][] = this.getVertices().map((v) => v.getPoint().getPosition());
-        let centroid: number[] = [0,0,0];
+    public getLabelCentroid(): XYZ {
+        const xyzs: XYZ[] = this.getVertices().map((v) => v.getPoint().getPosition());
+        let centroid: XYZ = [0,0,0];
         for (const xyz of xyzs) {
             centroid[0] += xyz[0];
             centroid[1] += xyz[1];
@@ -232,9 +232,9 @@ export class Wire extends Topo implements IWire {
      * Get the centroid of this topo. This is used for attaching labels.
      * @return The xyz of the centroid.
      */
-    public getLabelCentroid(): number[] {
-        const xyzs: number[][] = this.getVertices().map((v) => v.getPoint().getPosition());
-        let centroid: number[] = [0,0,0];
+    public getLabelCentroid(): XYZ {
+        const xyzs: XYZ[] = this.getVertices().map((v) => v.getPoint().getPosition());
+        let centroid: XYZ = [0,0,0];
         for (const xyz of xyzs) {
             centroid[0] += xyz[0];
             centroid[1] += xyz[1];
@@ -322,9 +322,9 @@ export class Face extends Topo implements IFace {
      * Get the centroid of this topo. This is used for attaching labels.
      * @return The xyz of the centroid.
      */
-    public getLabelCentroid(): number[] {
-        const xyzs: number[][] = this.getVertices().map((v) => v.getPoint().getPosition());
-        let centroid: number[] = [0,0,0];
+    public getLabelCentroid(): XYZ {
+        const xyzs: XYZ[] = this.getVertices().map((v) => v.getPoint().getPosition());
+        let centroid: XYZ = [0,0,0];
         for (const xyz of xyzs) {
             centroid[0] += xyz[0];
             centroid[1] += xyz[1];

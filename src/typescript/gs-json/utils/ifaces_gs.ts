@@ -2,6 +2,8 @@ import * as three from "three";
 import {EGeomType, EDataType, EObjType} from "./enums";
 import {ITopoPathData} from "./ifaces_json";
 
+export type XYZ = [number, number, number];
+
 //  INTERFACES for Model and Geom classes ==========================================================
 //  IModel, IGeom
 
@@ -43,12 +45,12 @@ export interface IModel {
  */
 export interface IGeom  {
     // Creation
-    addPoint(xyz: number[]): IPoint;
-    addPoints(xyz_arr: number[][]): IPoint[];
-    addRay(origin_point: IPoint, ray_vec: number[]): IRay;
-    addPlane(origin_point: IPoint, x_vec: number[], y_vec: number[]): IPlane;
-    addCircle(origin_point: IPoint, x_vec: number[], y_vec: number[], angles?: [number, number]);
-    addEllipse(origin_point: IPoint, x_vec: number[], y_vec: number[], angles?: [number, number]);
+    addPoint(xyz: XYZ): IPoint;
+    addPoints(xyz_arr: XYZ[]): IPoint[];
+    addRay(origin_point: IPoint, ray_vec: XYZ): IRay;
+    addPlane(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ): IPlane;
+    addCircle(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]);
+    addEllipse(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]);
     addPolyline(wire_points: IPoint[], is_closed: boolean): IPolyline;
     addPolymesh(face_points: IPoint[][]): IPolymesh;
     addNurbsCurve(points: IPoint[], is_closed: boolean, order: number): INurbsCurve;
@@ -103,9 +105,9 @@ export interface IPoint extends IEnt {
     // use the "add" method in Geom class
     exists(): boolean;
     getLabel(): string;
-    getLabelCentroid(): number[];
-    getPosition(): number[];
-    setPosition(xyz: number[]): number[];
+    getLabelCentroid(): XYZ;
+    getPosition(): XYZ;
+    setPosition(xyz: XYZ): XYZ;
     getVertices(): IVertex[];
     // groups
     getGroups(): IGroup[];
@@ -124,7 +126,7 @@ export interface IObj extends IEnt {
     exists(): boolean;
     getObjType(): EObjType;
     getLabel(): string;
-    getLabelCentroid(): number[];
+    getLabelCentroid(): XYZ;
     // points
     getPoints(point_type?: EGeomType.wires|EGeomType.faces): IPoint[][][];
     getPointsArr(): IPoint[];
@@ -150,7 +152,7 @@ export interface IObj extends IEnt {
 export interface IRay  extends IObj {
     getObjType(): EObjType;
     getOrigin(): IPoint;
-    getVector(): number[];
+    getVector(): XYZ;
 }
 
 /**
@@ -159,7 +161,7 @@ export interface IRay  extends IObj {
 export interface IPlane  extends IObj {
     getObjType(): EObjType;
     getOrigin(): IPoint;
-    getVectors(): number[][];
+    getVectors(): XYZ[];
     getCartesians(): number[];
 }
 
@@ -170,8 +172,8 @@ export interface ICircle  extends IObj {
     getObjType(): EObjType;
     isClosed(): boolean;
     getOrigin(): IPoint;
-    getVectors(): number[][];
-    setVectors(x_vec: number[], y_vec: number[]): void;
+    getVectors(): XYZ[];
+    setVectors(x_vec: XYZ, y_vec: XYZ): void;
     getRadius(): number;
     getAngles(): [number, number];
     setAngles(angles: [number, number]): void;
@@ -184,8 +186,8 @@ export interface IEllipse  extends IObj {
     getObjType(): EObjType;
     isClosed(): boolean;
     getOrigin(): IPoint;
-    getVectors(): number[][];
-    setVectors(x_vec: number[], y_vec: number[]): void;
+    getVectors(): XYZ[];
+    setVectors(x_vec: XYZ, y_vec: XYZ): void;
     getRadii(): [number, number];
     getAngles(): [number, number];
     setAngles(angles: [number, number]): void;
@@ -236,7 +238,7 @@ export interface ITopo {
     getTopoPath(): ITopoPathData;
     getTopoPathStr(): string;
     getLabel(): string;
-    getLabelCentroid(): number[];
+    getLabelCentroid(): XYZ;
     // attribs
     getAttribs(): ITopoAttrib[];
     setAttribValue(attrib: ITopoAttrib, value: any): any;

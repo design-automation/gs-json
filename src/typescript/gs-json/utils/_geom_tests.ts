@@ -16,7 +16,7 @@ export function test_createPoint(): boolean {
 // Geom constructor and its 19 public methods are tested
 export function test_Geom_constructor(): boolean {
     const m1: gs.IModel = new gs.Model();
-    const a: number[] = [1,2,3];
+    const a: gs.XYZ = [1,2,3];
     m1.getGeom().addPoint(a);
     // TODO
     // if(!(Arr.equal(m1.getGeom().getPointData(0)[1],a))) {return false;}
@@ -25,7 +25,7 @@ export function test_Geom_constructor(): boolean {
 
 export function test_Geom_addPoint(): boolean {
     const model: gs.IModel = new gs.Model();
-    const p1: number[] = [4,8,6];
+    const p1: gs.XYZ = [4,8,6];
     let num_Point: number = 1;
     // for (let k:number = 0 ; 10 ; k++){a[k] = Math.floor(Math.random() * 10);} (this line crashes Karma)
     model.getGeom().addPoint(p1);
@@ -39,7 +39,7 @@ export function test_Geom_addPoint(): boolean {
         }
     }
     //
-    const p2: number[] = [4, 2, 8];
+    const p2: gs.XYZ = [4, 2, 8];
     num_Point = num_Point + 1;
     model.getGeom().addPoint(p2);
 
@@ -51,7 +51,7 @@ export function test_Geom_addPoint(): boolean {
         // if(model.getGeom().getPointData(1)[1][k] !== p2[k] ) {return false;}
     }
     ////
-    const p3: number[] = [6,1,7];
+    const p3: gs.XYZ = [6,1,7];
     num_Point = num_Point + 1;
     model.getGeom().addPoint(p3);
     // test 3.1
@@ -138,24 +138,24 @@ export function test_Geom_getPoints(): boolean {
     const m: gs.Model = new gs.Model();
     const g1: gs.IGeom = m.getGeom();
 
-    const p1: number[] = [1,3,9] ;
+    const p1: gs.XYZ = [1,3,9] ;
     g1.addPoint(p1);
-    const p2: number[] = [2,1,6] ;
+    const p2: gs.XYZ = [2,1,6] ;
     g1.addPoint(p2);
-    const p3: number[] = [4,9,2] ;
+    const p3: gs.XYZ = [4,9,2] ;
     g1.addPoint(p3);
-    const p4: number[] = [2,3,4] ;
+    const p4: gs.XYZ = [2,3,4] ;
     g1.addPoint(p4);
-    const p5: number[] = [8,4,3] ;
+    const p5: gs.XYZ = [8,4,3] ;
     g1.addPoint(p5);
-    const p6: number[] = [6,1,7] ;
+    const p6: gs.XYZ = [6,1,7] ;
     g1.addPoint(p6);
-    const p7: number[] = [9,0,4] ;
+    const p7: gs.XYZ = [9,0,4] ;
     g1.addPoint(p7);
-    const p8: number[] = [4,0,8] ;
+    const p8: gs.XYZ = [4,0,8] ;
     g1.addPoint(p8);
 
-    const test8: number[] = g1.getAllPoints()[7].getPosition();
+    const test8: gs.XYZ = g1.getAllPoints()[7].getPosition();
     if (!Arr.equal( test8, p8)) {return false; }
 
     return true;

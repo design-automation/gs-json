@@ -81,13 +81,13 @@ export function test_Attrib_getLabels(): boolean {
 
 export function test_Attrib_count(): boolean {
     const m: gs.IModel = new gs.Model();
-    const a1: number[] = [Math.floor(Math.random() * 10),
+    const a1: gs.XYZ = [Math.floor(Math.random() * 10),
         Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
-    const a2: number[] = [Math.floor(Math.random() * 10),
+    const a2: gs.XYZ = [Math.floor(Math.random() * 10),
         Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
-    const a3: number[] = [Math.floor(Math.random() * 10),
+    const a3: gs.XYZ = [Math.floor(Math.random() * 10),
         Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
-    const a4: number[] = [Math.floor(Math.random() * 10),
+    const a4: gs.XYZ = [Math.floor(Math.random() * 10),
         Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
     // add 4 points
     m.getGeom().addPoint(a1);
