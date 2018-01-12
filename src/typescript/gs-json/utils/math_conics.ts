@@ -13,25 +13,12 @@ export function circleLength(curve: gs.ICircle): number {
  * Calculate the xyz position at parameter t on the circle or arc. The t parameter range is from 0 to 1.
  */
 export function circleEvaluate(curve: gs.ICircle, t: number): gs.XYZ {
-    // Convention: angles stated by increasing order ; [0,360] as opposed to [360,0];
-    // Get the parameters
-    const origin: gs.XYZ = curve.getOrigin().getPosition();
-    const r: number = curve.getRadius();
-    const vecs: gs.XYZ[] = curve.getVectors();
-    const angles: number[] = curve.getAngles();
-    // const U1: three.Vector3 = new three.Vector3(...vecs[0]).normalize();
-    // const V1: three.Vector3 = new three.Vector3(...vecs[1]).normalize();
-    // const O1O2: three.Vector3 = new three.Vector3(...origin);
-    // Calculate the length
-    const L: number = circleLength(curve);
-    // Evaluate t
-    const alpha: number = (angles[0] + t*(angles[1]-angles[0]))*(2*Math.PI)/360;
-    const x: number = r * Math.cos(alpha); // expressed in the plan inferred by (u,v)
-    const y: number = r * Math.sin(alpha); // expressed in the plan inferred by (u,v)
-
+    // const origin: gs.XYZ = curve.getOrigin().getPosition();
+    const alpha: number = (curve.getAngles()[0] + t*(curve.getAngles()[1]-curve.getAngles()[0]))*(2*Math.PI)/360;
+    const x: number = curve.getRadius() * Math.cos(alpha);
+    const y: number = curve.getRadius() * Math.sin(alpha);
     const U111: three.Vector3 = new three.Vector3(1,0,0);
     const V111: three.Vector3 = new three.Vector3(0,1,0);
-
     const U1: three.Vector3 = new three.Vector3(
         curve.getVectors()[0][0], curve.getVectors()[0][1], curve.getVectors()[0][2]);
     const V1: three.Vector3 = new three.Vector3(
@@ -41,21 +28,6 @@ export function circleEvaluate(curve: gs.ICircle, t: number): gs.XYZ {
     const U11: three.Vector3 = new three.Vector3(x,0,0);
     const V11: three.Vector3 = new three.Vector3(0,y,0);
     const O2P: three.Vector3 = threex.addVectors(U11,V11);
-    ///////////////
-    // const U1: three.Vector3 = new three.Vector3(
-    //     curve.getVectors()[0][0], curve.getVectors()[0][1], curve.getVectors()[0][2]);
-    // const V1: three.Vector3 = new three.Vector3(
-    //     curve.getVectors()[1][0], curve.getVectors()[1][1], curve.getVectors()[1][2]);
-    // const O1O2: three.Vector3 = new three.Vector3(
-    //     curve.getOrigin().getPosition()[0], curve.getOrigin().getPosition()[1], curve.getOrigin().getPosition()[2]);
-    // const U11: three.Vector3 = new three.Vector3(
-    // U1.x*x/U1.length(),U1.y*x/U1.length(),U1.z*x/U1.length());
-    // const V11: three.Vector3 = new three.Vector3(
-    // V1.x*y/V1.length(),V1.y*y/V1.length(),V1.z*y/V1.length());
-    // const O2P: three.Vector3 = threex.addVectors(U11,V11);
-    //////////
-    // 2 rotations & 1 translation;
-    // rotation 1
     const u1_projection: three.Vector3 = new three.Vector3(U1.x,U1.y,0);
     const alpha_1_cos: number = U1.normalize().dot(u1_projection.normalize());
     const alpha_1_sin: number = U1.normalize().z;
@@ -63,28 +35,13 @@ export function circleEvaluate(curve: gs.ICircle, t: number): gs.XYZ {
         O2P.x*alpha_1_cos - O2P.z*alpha_1_sin,
         O2P.y,
         O2P.z*alpha_1_cos + O2P.x*alpha_1_sin);
-    // rotation 2
     const alpha_2_cos: number = u1_projection.normalize().x;
     const alpha_2_sin: number = u1_projection.normalize().y;
     const o2P_second: three.Vector3 = new three.Vector3(
         o2P_prime.x*alpha_2_cos - o2P_prime.y*alpha_2_sin,
         o2P_prime.y*alpha_2_cos + o2P_prime.x*alpha_2_sin,
         o2P_prime.z);
-
-    // console.log("Alpha is " + alpha);
-    // console.log("r is " + r);
-    //         // console.log("U11 is " +  [U11.x,U11.y,U11.z]);
-    //         // console.log("V11 is " +  [V11.x,V11.y,V11.z]);
-    // console.log("O2P is " +  [O2P.x,O2P.y,O2P.z]);
-    // console.log("Alpha_1 is " + alpha_1_cos + " and " + alpha_1_sin);
-    // console.log("o2P_prime is " +  [o2P_prime.x,o2P_prime.y,o2P_prime.z]);
-    // console.log("Alpha_2 is " + alpha_2_cos + " and " + alpha_2_sin);
-    // console.log("o2P_second is " +  [o2P_second.x,o2P_second.y,o2P_second.z]);
-    // translation
     const O1P: three.Vector3 = threex.addVectors(O1O2,o2P_second);
-    // const O1P: three.Vector3 = threex.addVectors(O1O2,O2P);
-    // console.log("@Evaluate O1P is + " + [O1P.x,O1P.y,O1P.z]  );
-
     return [O1P.x,O1P.y,O1P.z];
 }
 

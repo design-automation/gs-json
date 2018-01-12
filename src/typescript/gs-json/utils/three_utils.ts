@@ -19,7 +19,6 @@ export function multXYZMatrix(xyz: gs.XYZ, m: three.Matrix4): gs.XYZ {
     v2.applyMatrix4(m);
     return v2.toArray().slice(0,3) as gs.XYZ;
 }
-
 export function xformMatrix(o: three.Vector3, x: three.Vector3, y: three.Vector3, z: three.Vector3): three.Matrix4 {
     const m1: three.Matrix4 = new three.Matrix4();
     const o_neg: three.Vector3 = o.clone().negate();
