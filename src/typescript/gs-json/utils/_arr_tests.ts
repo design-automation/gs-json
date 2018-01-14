@@ -43,25 +43,23 @@ export function test_equal(): boolean {
 }
 
 export function test_indexOf(): boolean {
-    if (Arr.indexOf(2, [0, 1, 2, 3]) !== 2) {return false; }
-    if (Arr.indexOf(null, [0, 1, null, 3]) !== 2) {return false; }
-    if (Arr.indexOf([1, 2], [null]) !== -1) {return false; }
-    if (Arr.indexOf([1, 2], [[], [2], [1, 2], [3, 4]]) !== 2) {return false; }
-    if (Arr.indexOf([1, null], [[], [1, null], [2], [1, null], [3, 4]]) !== 1) {return false; }
-    if (Arr.indexOf([1, 3], [[], [1, null], [2], [1, null], [3, 4]]) !== -1) {return false; }
-    if (Arr.indexOf(null, [1,2,3]) !== -1) {return false;}
-    if (Arr.indexOf(null, [null,2,3]) !== 0) {return false;}
+    if (Arr.indexOf([0, 1, 2, 3], 2) !== 2) {return false; }
+    if (Arr.indexOf([0, 1, null, 3], null) !== 2) {return false; }
+    if (Arr.indexOf([null], [1, 2]) !== -1) {return false; }
+    if (Arr.indexOf([[], [2], [1, 2], [3, 4]], [1, 2]) !== 2) {return false; }
+    if (Arr.indexOf([[], [1, null], [2], [1, null], [3, 4]], [1, null]) !== 1) {return false; }
+    if (Arr.indexOf([[], [1, null], [2], [1, null], [3, 4]], [1, 3]) !== -1) {return false; }
+    if (Arr.indexOf([1,2,3], null) !== -1) {return false;}
+    if (Arr.indexOf([null,2,3], null) !== 0) {return false;}
 
     // sparse arrays
     const x: number[][] = [];
     x[2] = [1, 2];
-    // console.log(Arr.indexOf([1, 2], x));
-    if (Arr.indexOf([1, 2], x) !== 2) {return false; }
+    if (Arr.indexOf(x, [1, 2]) !== 2) {return false; }
     return true;
 }
 
 export function test_flatten(): boolean {
-    // console.log(Arr.indexOf([1, 2], [[], [2], [1, 2], [3, 4]]); );
     if (!Arr.equal(Arr.flatten([[], [2], [1, 2], [3, 4]]), [2, 1, 2, 3, 4])) {return false; }
     // sparse arrays
     const x: number[][] = [];

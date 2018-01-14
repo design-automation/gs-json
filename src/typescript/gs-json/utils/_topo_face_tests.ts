@@ -1,4 +1,4 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as td from "./test_data";
 
 export function test_Face_getGeomType(): boolean {

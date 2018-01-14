@@ -1,5 +1,6 @@
 /**
- * A set of static methods for working with arrays.
+ * A set of static methods for working with arrays of simple types.
+ * The arrays can be nested, but they do not contain any objects.
  */
 
 export class Arr {
@@ -23,18 +24,18 @@ export class Arr {
         return Array.apply(0, new Array(length)).map((v, i) => i);
     }
     /**
-     * Check if two 1D arrays are equal (i.e. that all elements in the array are equal, ==.).
+     * Check if two nD arrays are equal (i.e. that all elements in the array are equal, ===.).
      * If the arrays are unequal in length, false is returned.
      * Elements in the array can have any value.
-     * @param arr1 The first array.
-     * @param arr2 The second array.
+     * @param arr1 The first value.
+     * @param arr2 The second values.
      * @returns True or false.
      */
-    public static equal(arr1: any[], arr2: any[]): boolean {
+    public static equal(arr1: any, arr2: any): boolean {
         if (!Array.isArray(arr1) || !Array.isArray(arr2)) {return arr1 === arr2; }
         if (arr1.length !== arr2.length) {return false; }
         for (let i = 0; i < arr1.length; i++) {
-            if (arr1[i] !== arr2[i]) {return false;}
+            if (!this.equal(arr1[i],arr2[i])) {return false;}
         }
         return true;
     }
@@ -46,8 +47,8 @@ export class Arr {
      * @param value The value, can be a value or a 1D array of values.
      * @returns The index in the array of the first occurance of the value.
      */
-    public static indexOf(value: any, arr: any[]): number {
-        if (!Array.isArray(arr)) {throw new Error("Second argument must be a array."); }
+    public static indexOf(arr: any[], value: any): number {
+        if (!Array.isArray(arr)) {throw new Error("First argument must be a array."); }
         if (!Array.isArray(value)) {return arr.indexOf(value); }
         for (let i = 0; i < arr.length; i++) {
             if (Array.isArray(arr[i]) && this.equal(value, arr[i])) {
@@ -56,6 +57,24 @@ export class Arr {
         }
         return -1;
     }
+    /**
+     * Replace all occurrences of a specified value in an array.
+     * The input array is changed.
+     * The value can be an array.
+     * If the value is not found or is undefined, return -1.
+     * @param old_value The old value to replace.
+     * @param new_value The new value.
+     * @param arr The array.
+     */
+    public static replace(arr: any[], old_value: any, new_value:any): void {
+        if (!Array.isArray(arr)) {throw new Error("First argument must be a array."); }
+        for (let i = 0; i < arr.length; i++) {
+            if (this.equal(arr[i], old_value)) {
+                arr[i] = new_value;
+            }
+        }
+    }
+
     /**
      * Take an nD array and flattens it.
      * A new array is returned. The input array remains unchanged.
@@ -77,6 +96,7 @@ export class Arr {
     }
     /**
      * Make a copy of an nD array.
+     * If the input is not an array, then just return the same thing.
      * A new array is returned. The input array remains unchanged.
      * If the input array is undefined, an empty array is returned.
      * If the input is s sparse array, then the output will alos be a sparse array.
@@ -85,6 +105,7 @@ export class Arr {
      */
     public static deepCopy(arr: any[]): any[] {
         if (arr === undefined) {return []; }
+        if (!Array.isArray(arr)) {return arr; }
         const arr2: any[] = [];
         for (let i = 0; i < arr.length; i++) {
             if (Array.isArray(arr[i])) {
@@ -99,7 +120,7 @@ export class Arr {
     }
     /**
      * Fills an nD array with new values (all the same value).
-     * The input is changed.
+     * The input array is changed.
      * If the input array is undefined, an empty array is returned.
      * The input can be a sparse array.
      * @param arr The nD array to fill.

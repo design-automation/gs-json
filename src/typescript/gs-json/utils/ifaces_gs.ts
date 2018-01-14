@@ -61,6 +61,8 @@ export interface IGeom  {
     delPoints(points: IPoint[]): boolean;
     delPoint(point: IPoint): boolean;
     numPoints(): number;
+    mergePoints(points: IPoint[], tolerance: number): IPoint[];
+    mergeAllPoints(tolerance: number): IPoint[];
     // Objs
     findObjs(obj_type?: EObjType): IObj[];
     getAllObjs(): IObj[];
@@ -78,7 +80,7 @@ export interface IGeom  {
 }
 
 //  INTERFACES for Ent classes and Subclasses ======================================================
-//  IEnt, IPoint, IObj, IPolyline, IPolymesh,
+//  IEnt, IPoint, IObj, etc
 
 /**
  * Interface, for the abstract Ent class, that represents any geometric entity.
@@ -89,12 +91,19 @@ export interface IEnt  {
     getGeom(): IGeom;
     // constructor(geom: ifs.IGeom, id: number)
     getID(): number;
-    getGeomType(): EGeomType;
-    getGeom(): IGeom;
+    exists(): boolean; // must be overridden
+    getGeomType(): EGeomType; // must be overridden
+    getLabel(): string; // must be overridden
+    getLabelCentroid(): XYZ; // must be overridden
+    copy(copy_attribs?: boolean): IEnt; // must be overridden
+    xform(matrix: three.Matrix4): void;
     // attribs
     getAttribs(): IEntAttrib[]|ITopoAttrib[];
     getAttribValue(attrib: IEntAttrib): any;
     setAttribValue(attrib: IEntAttrib, value: any): any;
+    // groups
+    getGroups(): IGroup[];
+    addToGroup(group: IGroup): boolean;
 }
 
 /**
@@ -103,17 +112,9 @@ export interface IEnt  {
 export interface IPoint extends IEnt {
     // constructor cannot be used to create a new point
     // use the "add" method in Geom class
-    exists(): boolean;
-    getLabel(): string;
-    getLabelCentroid(): XYZ;
     getPosition(): XYZ;
     setPosition(xyz: XYZ): XYZ;
     getVertices(): IVertex[];
-    // groups
-    getGroups(): IGroup[];
-    addToGroup(name: string): boolean;
-    // xform
-    xform(matrix: three.Matrix4): void;
 }
 
 /**
@@ -123,10 +124,7 @@ export interface IPoint extends IEnt {
 export interface IObj extends IEnt {
     // constructor cannot be used to create a new point
     // use the "add" method in Geom class
-    exists(): boolean;
     getObjType(): EObjType;
-    getLabel(): string;
-    getLabelCentroid(): XYZ;
     // points
     getPoints(point_type?: EGeomType.wires|EGeomType.faces): IPoint[][][];
     getPointsArr(): IPoint[];
@@ -139,11 +137,6 @@ export interface IObj extends IEnt {
     // nums
     numWires(): number;
     numFaces(): number;
-    // groups
-    getGroups(): IGroup[];
-    addToGroup(group: IGroup): boolean;
-    // xform
-    xform(matrix: three.Matrix4): void;
 }
 
 /**

@@ -1,4 +1,4 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as test_data from "./test_data";
 
 // Object tests, extends Entities by 6 complementary methods

@@ -1,4 +1,4 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import {Arr} from "./arr";
 /**
  * Series of tests to verify Entity Object Ellipse implemented methods

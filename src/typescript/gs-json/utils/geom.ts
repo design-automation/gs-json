@@ -194,6 +194,25 @@ export class Geom implements IGeom {
         return this._kernel.geomNumPoints();
     }
 
+    /**
+     * Merge points.
+     * @param
+     * @return
+     */
+    public mergePoints(points: IPoint[], tolerance: number): IPoint[] {
+        return this._kernel.geomMergePoints(points.map((point) => point.getID()), tolerance)
+            .map((id) => new Point(this._kernel, id));
+    }
+
+    /**
+     * Merge all points.
+     * @param
+     * @return
+     */
+    public mergeAllPoints(tolerance: number): IPoint[] {
+        return this._kernel.geomMergeAllPoints(tolerance).map((id) => new Point(this._kernel, id));
+    }
+
     //  Objects ------------------------------------------------------------------------------------
 
     /**

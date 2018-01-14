@@ -1,4 +1,4 @@
-import * as gs from "../../utils/gs-json";
+import * as gs from "../../utils/_export";
 
 /**
  * To be completed

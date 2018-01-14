@@ -7,21 +7,14 @@ import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {Ent} from "./entity";
 import {Point} from "./entity_point";
 import {Group} from "./groups";
+import {_castToObjType} from "./entity_obj_cast";
+
 /**
  * Abstract class Obj.
  * The superclass for all geometric objects,
  * including Polyline and Polymesh.
  */
 export abstract class Obj extends Ent implements IObj {
-
-    /**
-     * Check if this entity exists in the model. (i.e has it been deleted?)
-     * @return The entity ID number.
-     */
-    public exists(): boolean {
-        return this._kernel.geomHasObj(this._id);
-    }
-
     /**
      * Get the geometry type.
      * This method overrides the method in the Ent class.
@@ -38,6 +31,14 @@ export abstract class Obj extends Ent implements IObj {
      */
     public getObjType(): EObjType {
         throw new Error ("Method to be overridden by subclass.");
+    }
+
+    /**
+     * Check if this entity exists in the model. (i.e has it been deleted?)
+     * @return The entity ID number.
+     */
+    public exists(): boolean {
+        return this._kernel.geomHasObj(this._id);
     }
 
     /**
@@ -62,6 +63,23 @@ export abstract class Obj extends Ent implements IObj {
         }
         const num_vertices = xyzs.length;
         return [centroid[0]/num_vertices, centroid[1]/num_vertices, centroid[2]/num_vertices];
+    }
+
+    /**
+     * Make a copy of this entity.
+     * This method must be overridden by the sub-classes.
+     * @return The geometry type.
+     */
+    public copy(copy_attribs?: boolean): IObj {
+        return _castToObjType(this._kernel, this._kernel.geomCopyObj(this._id, copy_attribs));
+    }
+
+    /**
+     * Transform the points for this object.
+     * @param matrix The xform matrix.
+     */
+    public xform(matrix: three.Matrix4): void {
+        return this._kernel.objXform(this._id, matrix);
     }
 
     //  Points -------------------------------------------------------------------------------------
@@ -198,15 +216,4 @@ export abstract class Obj extends Ent implements IObj {
     public addToGroup(group: IGroup): boolean {
         return this._kernel.groupAddObj(group.getName(), this._id);
     }
-
-    //  Transfrom -------------------------------------------------------------------------------------
-
-    /**
-     * Transform the points for this object.
-     * @param matrix The xform matrix.
-     */
-    public xform(matrix: three.Matrix4): void {
-        return this._kernel.objXform(this._id, matrix);
-    }
-
 }

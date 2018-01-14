@@ -1,4 +1,4 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as fs from "fs";
 
 /**
@@ -30,11 +30,14 @@ export function genGsModelsWriteFiles(): void {
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxOpen2()), "model_box_open2.json");
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxOpen2Disjoint()), "model_box_open2_disjoint.json");
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelTwoBoxesOpen()), "model_two_boxes.json");
+    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxFarAway()), "model_box_far_away.gs");
+    //genModelWriteToJSONFile(gs.genThreeModel(gs.genModelManyBoxes()), "model_many_boxes.gs");
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelDifficultPolymesh()), "model_difficult_polymesh.json");
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelInvalidPolymesh()), "model_invalid_polymesh.json");
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelPolyinesBoxes()), "model_polylines_boxes.json");
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelGrid()), "model_grid.json");
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelTorus()), "model_torus.json");
+    //genModelWriteToJSONFile(gs.genThreeModel(gs.genModelManyTorus()), "model_many_torus.gs");
 }
 
 /**

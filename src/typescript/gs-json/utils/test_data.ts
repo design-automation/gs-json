@@ -1,4 +1,4 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 
 /**
  * A box with one side open.

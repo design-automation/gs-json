@@ -1,4 +1,4 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as td from "./gen_gs_models";
 
 // Polymesh test, extend Obj by 1 method
@@ -42,6 +42,27 @@ export function test_Polymesh_getObjType(): boolean {
     if (!(pmesh1.getObjType() === 200)) {return false;}
     if (!(pmesh2.getObjType() === 200)) {return false;}
     if (!(pmesh3.getObjType() === 200)) {return false;}
+
+    const m2: gs.IModel = gs.genModelBox();
+    const box2: gs.Polymesh = m2.getGeom().getObj(0) as gs.Polymesh;
+    if (box2.numWires() !== 0) {return false;}
+
+    const m3: gs.IModel = gs.genModelBoxOpen1();
+    const box3: gs.Polymesh = m3.getGeom().getObj(0) as gs.Polymesh;
+    if (box3.numWires() !== 1) {return false;}
+
+    const m4: gs.IModel = gs.genModelBoxOpen2();
+    const box4: gs.Polymesh = m4.getGeom().getObj(0) as gs.Polymesh;
+    if (box4.numWires() !== 1) {return false;}
+
+    const m5: gs.IModel = gs.genModelBoxOpen2Disjoint();
+    const box5: gs.Polymesh = m5.getGeom().getObj(0) as gs.Polymesh;
+    if (box5.numWires() !== 2) {return false;}
+
+    const m6: gs.IModel = gs.genModelTwoBoxesOpen();
+    const box6: gs.Polymesh = m6.getGeom().getObj(0) as gs.Polymesh;
+    if (m6.getGeom().getObj(0).numWires() !== 1) {return false;}
+    if (m6.getGeom().getObj(1).numWires() !== 2) {return false;}
 
     return true;
 }

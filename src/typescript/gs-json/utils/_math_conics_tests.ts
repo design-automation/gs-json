@@ -1,5 +1,5 @@
 import * as cs from "./math_conics";
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 
 /**
  * Series of tests to verify Mathematic Conics implemented methods

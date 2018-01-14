@@ -1,5 +1,5 @@
 import {Arr} from "./arr";
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as td from "./test_data";
 
 export function test_createPoint(): boolean {
@@ -212,6 +212,22 @@ export function test_Geom_numPoints(): boolean {
     geom.addPoint([1,5,2]);
     if(!(geom.numPoints() === 5)) {return false;}
 
+    return true;
+}
+
+export function test_Geom_mergePoints(): boolean {
+    const m: gs.Model = new gs.Model();
+    const geom: gs.IGeom = m.getGeom();
+    for (let i = 0; i < 1000; i++) {
+        geom.addPoint([Math.random(), Math.random(), Math.random()]);
+    }
+    for (let i = 0; i < 1000; i++) {
+        if (Math.random() > 0.5) {
+            geom.delPoint(geom.getPoint(i));
+        }
+    }
+    geom.mergeAllPoints(0.2);
+    if (geom.numPoints() === 1000) {return false;}
     return true;
 }
 

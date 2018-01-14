@@ -1,4 +1,4 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as three from "three";
 import * as earcut from "./extras/Earcut";
 

@@ -1,5 +1,5 @@
 import {Arr} from "./arr";
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as test_data from "./test_data";
 
 // Entities tests, 1 constructor and 8 methods

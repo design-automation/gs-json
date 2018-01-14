@@ -33,7 +33,7 @@ export class Kernel {
     private _topos_trees: Map<string, ITopoTree>;
 
     /**
-     * to be completed
+     * Construct a new model. If data is provided, the model will be populated with this data.
      * @param
      * @return
      */
@@ -174,6 +174,21 @@ export class Kernel {
      * @param
      * @return
      */
+    public modelGetAllAttribsExcPoints(): IAttribData[] {
+        return [
+            ...this.modelFindAttribs(EGeomType.vertices),
+            ...this.modelFindAttribs(EGeomType.edges),
+            ...this.modelFindAttribs(EGeomType.wires),
+            ...this.modelFindAttribs(EGeomType.faces),
+            ...this.modelFindAttribs(EGeomType.objs),
+        ];
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
     public modelGetAllEntAttribs(): IAttribData[] {
         return [
             ...this.modelFindAttribs(EGeomType.points),
@@ -222,7 +237,7 @@ export class Kernel {
         this._attribs.get(geom_type).set(name, data);
         // populate the attribute with indexes all pointing to the null value
         this._newAttribAddObjsAndPoints(name, geom_type);
-        // return teh new attribute
+        // return the new attribute
         return this._attribs.get(geom_type).get(name);
     }
 
@@ -314,8 +329,6 @@ export class Kernel {
     public modelPurge(): void {
         this._purgeDelUnusedPoints();
         this._purgeDelUnusedPointValues();
-        this._purgeDelSparsePoints();
-        this._purgeDelSparseObjs();
     }
 
     /**
@@ -391,12 +404,40 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Add a set of points to the model based on an array of xyz positions.
      * @param
      * @return
      */
     public geomAddPoints(xyzs: XYZ[]): number[] {
         return xyzs.map((xyz) => this.geomAddPoint(xyz));
+    }
+
+    /**
+     * Copy a point. The new point will have the same position as the original point.
+     * If copy_attribs is true, then the copied point will have the same attributes as the original point.
+     * @param id
+     * @param copy_attribs
+     * @return
+     */
+    public geomCopyPoint(id: number, copy_attribs: boolean = true): number {
+        const new_id: number = this._points[0].length;
+        // create the ray
+        this._points[0].push(this._points[0][id]); // add the point, set same position
+        // update all attributes
+        this._copiedPointAddToAttribs(new_id, id, copy_attribs);
+        // return the new id
+        return new_id;
+    }
+
+    /**
+     * Copy a set of points. The new points will have the same positions as the original points.
+     * If copy_attribs is true, then the copied points will have the same attribute values as the original points.
+     * @param ids
+     * @param copy_attribs
+     * @return
+     */
+    public geomCopyPoints(ids: number[], copy_attribs: boolean = true): number[] {
+        return ids.map((id) => this.geomCopyPoint(id, copy_attribs));
     }
 
     /**
@@ -451,6 +492,134 @@ export class Kernel {
         const point_ids: number[] = [];
         this._points[0].forEach((v,i) => (v !== undefined) && point_ids.push(i)); // ignores empty slots in spare array
         return point_ids;
+    }
+
+    /**
+     * Calculates the centroid of a set of points, as the average of all point positions.
+     * @param
+     * @return
+     */
+    public geomCalcPointsCentroid(ids: number[]): XYZ {
+        if (ids.length === 1) {
+            return [
+                this._points[1][this._points[0][ids[0]]][0],
+                this._points[1][this._points[0][ids[0]]][1],
+                this._points[1][this._points[0][ids[0]]][2]];
+        }
+        const centroid: XYZ = [0,0,0];
+        for (const id of ids) {
+            centroid[0] += this._points[1][this._points[0][id]][0];
+            centroid[1] += this._points[1][this._points[0][id]][1];
+            centroid[2] += this._points[1][this._points[0][id]][2];
+        }
+        centroid[0] = centroid[0] / ids.length;
+        centroid[1] = centroid[1] / ids.length;
+        centroid[2] = centroid[2] / ids.length;
+        return centroid;
+    }
+
+    /**
+     * Merge points.
+     * @param
+     * @return
+     */
+    public geomMergePoints(ids: number[], tolerance: number): number[] {
+        if (ids === undefined) {ids = this.geomGetPointIDs(); }
+        // get all the points that are closer than tolerance, store the data in some maps
+        const dist_map: Map<number, Map<number, XYZ>> = new Map();
+        const cluster_map: Map<number, number[]> = new Map();
+        for (let i =0; i < ids.length - 1; i++) {
+            for (let j = i+1; j < ids.length; j++) {
+                const id_i: number = ids[i];
+                const id_j: number = ids[j];
+                const pos_i: XYZ = this._points[1][this._points[0][id_i]];
+                const pos_j: XYZ = this._points[1][this._points[0][id_j]];
+                const dist_sq: XYZ = this._distanceSquared(pos_i, pos_j, tolerance);
+                if (dist_sq !== null) {
+                    const id_pair: [number, number] = [id_i, id_j].sort() as [number, number];
+                    // populate dist map
+                    if (!dist_map.has(id_pair[0])) {dist_map.set(id_pair[0], new Map()); }
+                    dist_map.get(id_pair[0]).set(id_pair[1], dist_sq);
+                    // populate cluster map
+                    if (!cluster_map.has(id_i)) {cluster_map.set(id_i, []); }
+                    cluster_map.get(id_i).push(id_j);
+                    if (!cluster_map.has(id_j)) {cluster_map.set(id_j, []); }
+                    cluster_map.get(id_j).push(id_i);
+                }
+            }
+        }
+        // create array, reverse sort, so that points with most neighbours end up at the top
+        const cluster_arr: Array<{id: number, n: number[]}> = [];
+        for (const [id, n] of cluster_map.entries()) {
+            cluster_arr.push({id, n});
+        }
+        cluster_arr.sort((a, b) => b.n.length - a.n.length);
+        // create a cluster map, filter the clusters so that the center points do not overlap
+        const consumed_ids: Set<number> = new Set();
+        const cluster_no_overlap_map: Map<number, number[]> = new Map();
+        for (const cluster of cluster_arr) {
+            if (!consumed_ids.has(cluster.id)) {
+                cluster_no_overlap_map.set(cluster.id, []);
+                cluster.n.forEach((id) => consumed_ids.add(id));
+            }
+        }
+        // put each point into the closest cluster
+        for (const [id, n] of cluster_map.entries()) {
+            if (cluster_no_overlap_map.has(id)) {
+                cluster_no_overlap_map.get(id).push(id);
+            } else {
+                // create a list of options, where to put this id
+                const options: number[] = [];
+                for (const option of n) {
+                    if (cluster_no_overlap_map.has(option)) {options.push(option); }
+                }
+                // choose an option
+                if (options.length === 0) {
+                    console.log("This looks like an error!!!");
+                } else if (options.length === 1) {
+                    cluster_no_overlap_map.get(options[0]).push(id);
+                } else {
+                    let closest: number = options[0];
+                    let min_dist: number = tolerance;
+                    for (const option of options) {
+                        const id_pair: [number, number] = [id, option].sort() as [number, number];
+                        const vec: XYZ = dist_map.get(id_pair[0]).get(id_pair[1]);
+                        const dist: number = vec[0] + vec[1] + vec[2];
+                        if (dist < min_dist) {
+                            closest = option;
+                            min_dist = dist;
+                        }
+                    }
+                    cluster_no_overlap_map.get(closest).push(id);
+                }
+            }
+        }
+        // now process the clusters
+        const new_point_ids: number[] = [];
+        const old_point_ids: number[] = [];
+        for (const [cluster_id, cluster] of cluster_no_overlap_map.entries()) {
+            // calc the center point
+            const centre: XYZ = this.geomCalcPointsCentroid(cluster);
+            // replace old with new
+            const new_point_id = this.geomAddPoint(centre);
+            for (const old_point_id of cluster) {
+                this._swapAllObjsPoint(old_point_id, new_point_id);
+                old_point_ids.push(old_point_id);
+            }
+            new_point_ids.push(new_point_id);
+        }
+        this.geomDelPoints(old_point_ids);
+        // return the new points, the centre of each cluster
+        return new_point_ids;
+    }
+
+    /**
+     * Merge all points in the model.
+     * @param
+     * @return
+     */
+    public geomMergeAllPoints(tolerance: number): number[] {
+        return this.geomMergePoints(this.geomGetPointIDs(), tolerance);
     }
 
     //  Geom Object Constructors------------------------------------------------------------------------------
@@ -593,9 +762,41 @@ export class Kernel {
     }
 
     /**
+     * Copy and object.
+     * If copy_attribs is true, then the copied object will have the same attributes as the original object.
+     * @param ids
+     * @param copy_attribs
+     * @return
+     */
+    public geomCopyObj(id: number, copy_attribs: boolean = true): number {
+        const new_id: number = this._objs.length;
+        // create the copy
+        this._objs.push(Arr.deepCopy(this._objs[id]) as TObjData); // add the obj
+        // copy points
+        const old_points: number[] = this.objGetAllPointIDs(new_id);
+        const new_points: number[] = this.geomCopyPoints(old_points, copy_attribs);
+        this._swapObjPoints(new_id, old_points, new_points);
+        // update all attributes?
+        this._copiedObjAddToAttribs(id, new_id, copy_attribs);
+        // return the new pline
+        return new_id;
+    }
+
+    /**
+     * Copy a list of objects.
+     * If copy_attribs is true, then the copied objects will have the same attributes as the original objects.
+     * @param ids
+     * @param copy_attribs
+     * @return Array of new ids
+     */
+    public geomCopyObjs(ids: number[], copy_attribs: boolean = true): number[] {
+        return ids.map((id) => this.geomCopyObj(id, copy_attribs));
+    }
+
+    /**
      * to be completed
      * @param
-     * @return
+     * @return Array of new ids
      */
     public geomDelObj(id: number, keep_unused_points: boolean = true): boolean {
         if (this._objs[id] === undefined) {return false; }
@@ -1040,7 +1241,7 @@ export class Kernel {
      */
     public pointSetPosition(id: number, xyz: XYZ): XYZ {
         const old_xyz: XYZ = this._points[1][this._points[0][id]];
-        let value_index: number = Arr.indexOf(xyz, this._points[1]);
+        let value_index: number = Arr.indexOf(this._points[1], xyz);
         if (value_index === -1) {
             value_index = this._points[1].length;
             this._points[1].push(xyz);
@@ -1194,7 +1395,7 @@ export class Kernel {
     /**
      * Add a vertex to this topo, either at start or end. Works for both wires and faces.
      * Vertex and edge attributes are also updated.
-     * @return A path to teh new vertex
+     * @return A path to the new vertex
      */
     public topoAddVertex(path: ITopoPathData, point_id: number, to_start: boolean): ITopoPathData {
         const vertices: number[] = this._objs[path.id][path.tt][path.ti];
@@ -1458,7 +1659,7 @@ export class Kernel {
      */
     public entAttribSetValue(name: string, geom_type: EGeomType, id: number, value: any): any {
         const data: IAttribData = this._attribs.get(geom_type).get(name);
-        let index: number = Arr.indexOf(value, data.values[1]);
+        let index: number = Arr.indexOf(data.values[1], value);
         if (index === -1) {
             index = data.values[1].push(value) - 1;
         }
@@ -1510,7 +1711,7 @@ export class Kernel {
      */
     public topoAttribSetValue(name: string, geom_type: EGeomType, path: ITopoPathData, value: any): any {
         const data: IAttribData = this._attribs.get(geom_type).get(name);
-        let index: number = Arr.indexOf(value, data.values[1]);
+        let index: number = Arr.indexOf(data.values[1], value);
         if (index === -1) {
             index = data.values[1].push(value) - 1;
         }
@@ -1856,7 +2057,7 @@ export class Kernel {
     /**
      * This method assumes that the attribute name is for a newly created attribute.
      * For ell existing point or object in the model, it assigns null values.
-     * If the new attrib is a point attrib, then all points in teh model will get a null value for this attrib.
+     * If the new attrib is a point attrib, then all points in the model will get a null value for this attrib.
      * If the new attrib is any other type of attribute (obj, vertex, edge, wire, face),
      * then also null values will be created for all those types.
      * Care has to be taken with sparse arrays. Points and objects are stored in sparse arrays.
@@ -1908,33 +2109,49 @@ export class Kernel {
      * @param
      * @return
      */
-    private _newObjAddToAttribs(id: number): void {
+    private _newObjAddToAttribs(new_id: number): void {
         for (const attrib of this._attribs.get(EGeomType.objs).values()) {
-            attrib.values[0][id] = 0;
+            attrib.values[0][new_id] = 0;
         }
         for (const attrib of this._attribs.get(EGeomType.wires).values()) {
-            attrib.values[0][id] = Arr.make(this._objs[id][0].length, 0);
+            attrib.values[0][new_id] = Arr.make(this._objs[new_id][0].length, 0);
         }
         for (const attrib of this._attribs.get(EGeomType.faces).values()) {
-            attrib.values[0][id] = Arr.make(this._objs[id][1].length, 0);
+            attrib.values[0][new_id] = Arr.make(this._objs[new_id][1].length, 0);
         }
         for (const attrib of this._attribs.get(EGeomType.edges).values()) {
-            attrib.values[0][id] =
+            attrib.values[0][new_id] =
                 [
-                    this._objs[id][0].map((w, wi) =>
+                    this._objs[new_id][0].map((w, wi) =>
                         Arr.make(w.filter((v) => v !== -1).length, 0)),
-                    this._objs[id][1].map((f, fi) =>
+                    this._objs[new_id][1].map((f, fi) =>
                         Arr.make(f.filter((v) => v !== -1).length, 0)),
                 ];
         }
         for (const attrib of this._attribs.get(EGeomType.vertices).values()) {
-            attrib.values[0][id] =
+            attrib.values[0][new_id] =
                 [
-                    this._objs[id][0].map((w, wi) =>
+                    this._objs[new_id][0].map((w, wi) =>
                         Arr.make(w.filter((v) => v !== -1).length, 0)),
-                    this._objs[id][1].map((f, fi) =>
+                    this._objs[new_id][1].map((f, fi) =>
                         Arr.make(f.filter((v) => v !== -1).length, 0)),
                 ];
+        }
+    }
+
+    /**
+     * This method assumes that the object id is for a copied object.
+     * It populates attribute values for all attributes in the model.
+     * @param
+     * @return
+     */
+    private _copiedObjAddToAttribs(old_id: number, new_id: number, copy_attribs: boolean): void {
+        for (const attrib of this.modelGetAllAttribsExcPoints()) {
+            if (copy_attribs) {
+                attrib.values[0][new_id] = Arr.deepCopy(attrib.values[0][old_id]);
+            } else {
+                attrib.values[0][new_id] = Arr.deepFill(Arr.deepCopy(attrib.values[0][old_id]), 0);
+            }
         }
     }
 
@@ -1947,6 +2164,57 @@ export class Kernel {
     private _newPointAddToAttribs(id: number): void {
         for (const attrib of this._attribs.get(EGeomType.points).values()) {
             attrib.values[0][id] = 0;
+        }
+    }
+
+    /**
+     * This method assumes that the point id is for a copied point.
+     * It populates attribute values for all point attributes in the model.
+     * @param
+     * @return
+     */
+    private _copiedPointAddToAttribs(new_id: number, old_id: number, copy_attribs: boolean): void {
+        for (const attrib of this._attribs.get(EGeomType.points).values()) {
+            if (copy_attribs) {
+                attrib.values[0][new_id] = Arr.deepCopy(attrib.values[0][old_id]);
+            } else {
+                attrib.values[0][new_id] = Arr.deepFill(Arr.deepCopy(attrib.values[0][old_id]), 0);
+            }
+        }
+    }
+
+    /**
+     * Swaps one point in obj.
+     * @param
+     * @return
+     */
+    private _swapObjPoint(obj_id: number, old_id: number, new_id: number): void {
+        this._objs[obj_id][0].forEach((w) => Arr.replace(w, old_id, new_id));
+        this._objs[obj_id][1].forEach((f) => Arr.replace(f, old_id, new_id));
+    }
+
+    /**
+     * Swaps points in obj.
+     * @param
+     * @return
+     */
+    private _swapObjPoints(obj_id: number, old_ids: number[], new_ids: number[]): void {
+        if (old_ids.length !== new_ids.length) {throw new Error("ID arrays must be of same length.");}
+        for (let i = 0; i < old_ids.length; i++) {
+            this._objs[obj_id][0].forEach((w) => Arr.replace(w, old_ids[i], new_ids[i]));
+            this._objs[obj_id][1].forEach((f) => Arr.replace(f, old_ids[i], new_ids[i]));
+        }
+    }
+
+    /**
+     * Swaps a point in all objs in the model.
+     * @param
+     * @return
+     */
+    private _swapAllObjsPoint(old_id: number, new_id: number): void {
+        for (const obj of this._objsDense()) {
+            obj[0].forEach((w) => Arr.replace(w, old_id, new_id));
+            obj[1].forEach((f) => Arr.replace(f, old_id, new_id));
         }
     }
 
@@ -2359,7 +2627,7 @@ export class Kernel {
         }
         const naked_edges: number[][] = [];
         for (const e of edges) {
-            if (Arr.indexOf([e[1], e[0]], edges) === -1) {naked_edges.push(e); }
+            if (Arr.indexOf(edges, [e[1], e[0]]) === -1) {naked_edges.push(e); }
         }
         if (naked_edges.length === 0) {
             return [];
@@ -2372,7 +2640,7 @@ export class Kernel {
             const end: number = current_wire_edges[current_wire_edges.length - 1][1];
             if (start === end) {
                 for (const e of naked_edges) {
-                    if (Arr.indexOf(e, already_used) === -1) {
+                    if (Arr.indexOf(already_used, e) === -1) {
                         sorted_naked_edges.push([e]);
                         already_used.push(e);
                         break;
@@ -2461,6 +2729,22 @@ export class Kernel {
      * @param
      * @return
      */
+
+    private _distanceSquared(i_pos: XYZ, j_pos: XYZ, tolerance: number): XYZ {
+        const bbx: number = Math.abs(i_pos[0] - j_pos[0]);
+        if (bbx < tolerance) {return null;}
+        const bby: number = Math.abs(i_pos[1] - j_pos[1]);
+        if (bby < tolerance - bbx) {return null;}
+        const bbz: number = Math.abs(i_pos[2] - j_pos[2]);
+        if (bbz < tolerance - bbx - bby) {return null;}
+        return [bbx, bby, bbz];
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
     private _purgeDelUnusedPoints(): void {
         // delete all unused points
         for (const point_id_str of this._points[0]) {
@@ -2527,15 +2811,6 @@ export class Kernel {
             }
         }
 
-        throw new Error("Not implemented");
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    private _purgeDelSparseObjs(): void {
         throw new Error("Not implemented");
     }
 

@@ -1,4 +1,4 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as fs from "fs";
 import * as three from "three";
 import * as threeg from "./three_geom";

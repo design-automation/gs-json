@@ -1,6 +1,6 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as fs from "fs";
-
+import * as three from "three";
 /**
  * Write a file.
  */
@@ -271,6 +271,62 @@ export function genModelTwoBoxesOpen(): gs.IModel {
     return m;
 }
 
+/**
+ * Generates a 10 x 10 x 10 box at [200, 500, 100]. The box is a single polymesh.
+ */
+export function genModelBoxFarAway(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const points: gs.IPoint[] = m.getGeom().addPoints([
+            [200,500,100],    // 0
+            [210,500,100],   // 1
+            [210,510,100],  // 2
+            [200,510,100],   // 3
+            [200,500,120],   // 4
+            [210,500,120],  // 5
+            [210,5010,120], // 6
+            [200,510,120],  // 7
+        ]);
+    m.getGeom().addPolymesh([
+            [points[0],points[1],points[2],points[3]],
+            [points[0],points[4],points[5],points[1]],
+            [points[1],points[5],points[6],points[2]],
+            [points[2],points[6],points[7],points[3]],
+            [points[3],points[7],points[4],points[0]],
+            [points[7],points[6],points[5],points[4]],
+        ]);
+    return m;
+}
+
+/**
+ * Generates many boxes
+ */
+export function genModelManyBoxes(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    for (let i = 0;i < 1000; i++) {
+        const p0: gs.XYZ = [1 + Math.random(), 1 + Math.random(), 0];
+        p0.map((v) => v * 100);
+        const size: gs.XYZ = [Math.random(), Math.random(), Math.random()];
+        size.map((v) => v * 80);
+        const p1: gs.XYZ = [p0[0] + size[0], p0[1],           p0[2]];
+        const p2: gs.XYZ = [p0[0] + size[0], p0[1] + size[1], p0[2]];
+        const p3: gs.XYZ = [p0[0],           p0[1] + size[1], p0[2]];
+        const p4: gs.XYZ = [p0[0],           p0[1],           p0[2] + size[2]];
+        const p5: gs.XYZ = [p0[0] + size[0], p0[1],           p0[2] + size[2]];
+        const p6: gs.XYZ = [p0[0] + size[0], p0[1] + size[1], p0[2] + size[2]];
+        const p7: gs.XYZ = [p0[0],           p0[1] + size[1], p0[2] + size[2]];
+        const points: gs.IPoint[] = [p0, p1, p2, p3, p4, p5, p6, p7].map((v) => g.addPoint(v));
+        g.addPolymesh([
+            [points[0],points[1],points[2],points[3]],
+            [points[0],points[4],points[5],points[1]],
+            [points[1],points[5],points[6],points[2]],
+            [points[2],points[6],points[7],points[3]],
+            [points[3],points[7],points[4],points[0]],
+            [points[7],points[6],points[5],points[4]],
+        ]);
+    }
+    return m;
+}
 
 /**
  * Generates a polymesh with a single polygon with difficult geometry.
@@ -1208,6 +1264,21 @@ export function genModelTorus(): gs.IModel {
 }
 
 /**
+ * Generates a model of 100 x torus.
+ */
+export function genModelManyTorus(): gs.IModel {
+    const m: gs.IModel = genModelTorus();
+    const g: gs.IGeom = m.getGeom();
+    const o: gs.IPolymesh = g.getObj(0);
+    for (let i = 0;i < 100; i++) {
+        const matrix: three.Matrix4 = new three.Matrix4();
+        matrix.setPosition(new three.Vector3(Math.random() * 10, Math.random() * 10, 0));
+        o.copy().xform(matrix);
+    }
+    return m;
+}
+
+/**
  * Write all models to disk as json files.
  */
 export function genThreeModelsWriteFiles(): void {
@@ -1221,11 +1292,14 @@ export function genThreeModelsWriteFiles(): void {
     genModelWriteToJSONFile(genModelBoxOpen2(), "model_box_open2.gs");
     genModelWriteToJSONFile(genModelBoxOpen2Disjoint(), "model_box_open2_disjoint.gs");
     genModelWriteToJSONFile(genModelTwoBoxesOpen(), "model_two_boxes.gs");
+    genModelWriteToJSONFile(genModelBoxFarAway(), "model_box_far_away.gs");
+    genModelWriteToJSONFile(genModelManyBoxes(), "model_many_boxes.gs");
     genModelWriteToJSONFile(genModelDifficultPolymesh(), "model_difficult_polymesh.gs");
     genModelWriteToJSONFile(genModelInvalidPolymesh(), "model_invalid_polymesh.gs");
     genModelWriteToJSONFile(genModelPolyinesBoxes(), "model_polylines_boxes.gs");
     genModelWriteToJSONFile(genModelGrid(), "model_grid.gs");
     genModelWriteToJSONFile(genModelTorus(), "model_torus.gs");
+    //genModelWriteToJSONFile(genModelManyTorus(), "model_many_torus.gs");
 }
 /**
  * If this module is being run directly, then files will be written to disk.

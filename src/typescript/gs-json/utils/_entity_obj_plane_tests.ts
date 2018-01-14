@@ -1,4 +1,4 @@
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 
 export function test_Plane_getCartesians(): boolean {
     const m: gs.IModel = new gs.Model();

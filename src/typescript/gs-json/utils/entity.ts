@@ -1,8 +1,9 @@
-import {IEnt, IGeom, IModel, IEntAttrib, ITopoAttrib} from "./ifaces_gs";
+import {IEnt, IGeom, IModel, IEntAttrib, ITopoAttrib, IGroup, XYZ} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {EGeomType} from "./enums";
 import {Attrib} from "./attrib";
 import {_castToAttribTypes} from "./attrib_cast";
+import * as three from "three";
 /**
  * Class Ent.
  * An abstrcat class that is the superclass for all geometric entities, both Point and Obj.
@@ -44,6 +45,14 @@ export abstract class Ent implements IEnt{
     //  This Entity --------------------------------------------------------------------------------
 
     /**
+     * Get the ID number of this entity.
+     * @return The entity ID number.
+     */
+    public getID(): number {
+        return this._id;
+    }
+
+    /**
      * Check if this entity exists in the model. (i.e has it been deleted?)
      * @return The entity ID number.
      */
@@ -53,19 +62,51 @@ export abstract class Ent implements IEnt{
     }
 
     /**
-     * Get the ID number of this entity.
-     * @return The entity ID number.
-     */
-    public getID(): number {
-        return this._id;
-    }
-
-    /**
      * Get the geometry type for this entity.
-     * This method mst be overridden by the sub-classes.
+     * This method must be overridden by the sub-classes.
      * @return The geometry type.
      */
     public getGeomType(): EGeomType {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
+    /**
+     * Get the label for this entity.
+     * This method must be overridden by the sub-classes.
+     * @return The geometry type.
+     */
+    public getLabel(): string {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
+    /**
+     * Get the label centroid for this entity.
+     * This method must be overridden by the sub-classes.
+     * @return The geometry type.
+     */
+    public getLabelCentroid(): XYZ {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
+    /**
+     * Make a copy of this entity.
+     * This method must be overridden by the sub-classes.
+     * @return The geometry type.
+     */
+    public copy(copy_attribs: boolean): IEnt {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
+    /**
+     * Transform points.
+     * This method must be overridden by the sub-classes.
+     * @param matrix The xform matrix.
+     */
+    public xform(matrix: three.Matrix4): void {
         // Do not implement this method.
         throw new Error ("Method to be overridden by subclass.");
     }
@@ -103,4 +144,26 @@ export abstract class Ent implements IEnt{
         return this._kernel.entAttribSetValue(attrib.getName(), attrib.getGeomType(), this._id, value);
     }
 
+    //  Groups -------------------------------------------------------------------------------------
+
+    /**
+     * Get the groups for all the groups for which this entity is a member.
+     * This method must be overridden by the sub-classes.
+     * @return The array of group names.
+     */
+    public getGroups(): IGroup[] {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
+    /**
+     * Add this object to a group.
+     * This method must be overridden by the sub-classes.
+     * @param group The group.
+     * @return True if the entity was added, False is the object was already in the group.
+     */
+    public addToGroup(group: IGroup): boolean {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
 }

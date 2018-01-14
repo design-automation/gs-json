@@ -1,4 +1,4 @@
-import {XYZ} from "./gs-json";
+import {XYZ} from "./_export";
 import * as threei from "./ifaces_three";
 import {create_UUID} from "./uuid";
 

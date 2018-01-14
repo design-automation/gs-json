@@ -72,6 +72,23 @@ export class Point extends Ent implements IPoint {
         return this.getPosition();
     }
 
+    /**
+     * Make a copy of this entity.
+     * This method must be overridden by the sub-classes.
+     * @return The geometry type.
+     */
+    public copy(copy_attribs?: boolean): IPoint {
+        return new Point(this._kernel, this._kernel.geomCopyPoint(this._id, copy_attribs));
+    }
+
+    /**
+     * Transform the points for this object.
+     * @param matrix The xform matrix.
+     */
+    public xform(matrix: three.Matrix4): void {
+        return this._kernel.pointXform(this._id, matrix);
+    }
+
     //  Groups -------------------------------------------------------------------------------------
 
     /**
@@ -87,17 +104,7 @@ export class Point extends Ent implements IPoint {
      * @param name The group name.
      * @return True if the entity was added, False is the entity was already in the group.
      */
-    public addToGroup(name: string): boolean {
-        return this._kernel.groupAddPoint(name, this._id);
-    }
-
-    //  Transfrom -------------------------------------------------------------------------------------
-
-    /**
-     * Transform the points for this object.
-     * @param matrix The xform matrix.
-     */
-    public xform(matrix: three.Matrix4): void {
-        return this._kernel.pointXform(this._id, matrix);
+    public addToGroup(group: IGroup): boolean {
+        return this._kernel.groupAddPoint(group.getName(), this._id);
     }
 }

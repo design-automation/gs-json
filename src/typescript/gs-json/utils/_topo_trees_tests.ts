@@ -1,5 +1,5 @@
 import {Arr} from "./arr";
-import * as gs from "./gs-json";
+import * as gs from "./_export";
 import * as td from "./test_data";
 import * as tree from "./ifaces_trees";
 import {TopoTree} from "./topo_trees";
