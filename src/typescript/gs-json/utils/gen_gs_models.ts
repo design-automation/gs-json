@@ -304,10 +304,10 @@ export function genModelManyBoxes(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     for (let i = 0;i < 1000; i++) {
-        const p0: gs.XYZ = [1 + Math.random(), 1 + Math.random(), 0];
-        p0.map((v) => v * 100);
+        const p0: gs.XYZ = [Math.random(), Math.random(), 0];
+        p0.map((v) => v * 1000);
         const size: gs.XYZ = [Math.random(), Math.random(), Math.random()];
-        size.map((v) => v * 80);
+        size.map((v) => v * 10);
         const p1: gs.XYZ = [p0[0] + size[0], p0[1],           p0[2]];
         const p2: gs.XYZ = [p0[0] + size[0], p0[1] + size[1], p0[2]];
         const p3: gs.XYZ = [p0[0],           p0[1] + size[1], p0[2]];
@@ -1270,9 +1270,9 @@ export function genModelManyTorus(): gs.IModel {
     const m: gs.IModel = genModelTorus();
     const g: gs.IGeom = m.getGeom();
     const o: gs.IPolymesh = g.getObj(0);
-    for (let i = 0;i < 100; i++) {
+    for (let i = 0;i < 50; i++) {
         const matrix: three.Matrix4 = new three.Matrix4();
-        matrix.setPosition(new three.Vector3(Math.random() * 10, Math.random() * 10, 0));
+        matrix.setPosition(new three.Vector3(Math.random() * 50, Math.random() * 50, 0));
         o.copy().xform(matrix);
     }
     return m;

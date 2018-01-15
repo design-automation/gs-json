@@ -163,6 +163,13 @@ export function addObjToGroup(group: threei.IThreeObj, obj: threei.IThreeObj): v
 }
 
 /**
+ * Add an obj entity to the scene.
+ */
+export function addObjToScene(scene: threei.IThreeScene, obj: threei.IThreeObj): void {
+    scene.object.children.push(obj);
+}
+
+/**
  * Add a group entity to the scene.
  */
 export function addGroupToScene(scene: threei.IThreeScene, group: threei.IThreeObj): void {

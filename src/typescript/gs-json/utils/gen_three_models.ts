@@ -38,6 +38,26 @@ export function genGsModelsWriteFiles(): void {
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelGrid()), "model_grid.json");
     genModelWriteToJSONFile(gs.genThreeModel(gs.genModelTorus()), "model_torus.json");
     //genModelWriteToJSONFile(gs.genThreeModel(gs.genModelManyTorus()), "model_many_torus.gs");
+
+    //OPTIMISED
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelEmpty()), "model_empty_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelPoints()), "model_points_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelOpenPolyline()), "model_open_polyline_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelClosedPolyline()), "model_closed_polyline_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelBox()), "model_box_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelBoxWithAttribs()), "model_box_with_attribs_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelBoxOpen1()), "model_box_open1_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelBoxOpen2()), "model_box_open2_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelBoxOpen2Disjoint()), "model_box_open2_disjoint_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelTwoBoxesOpen()), "model_two_boxes_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelBoxFarAway()), "model_box_far_away_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelManyBoxes()), "model_many_boxes_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelDifficultPolymesh()), "model_difficult_polymesh_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelInvalidPolymesh()), "model_invalid_polymesh_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelPolyinesBoxes()), "model_polylines_boxes_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelGrid()), "model_grid_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelTorus()), "model_torus_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelManyTorus()), "model_many_torus_opt.json");
 }
 
 /**

@@ -74,8 +74,6 @@ export interface IThreeMeshPhysicalMaterial extends IThreeMeshMaterial {
     clearCoatRoughness: number;
 }
 
-
-
 //  GEOMETRY =================================================================================================
 
 export interface IThreeBufferedGeom {
@@ -94,13 +92,13 @@ export interface IThreeBufferedGeom {
                 type: "Float32Array";
                 array: number[];
                 normalized: boolean;
-            }
+            },
         }
         index?: {
             type: "Uint16Array";
             array: number[];
-        }
-    }
+        },
+    };
 }
 
 export interface IThreeObj {
@@ -129,6 +127,5 @@ export interface IThreeScene {
     object?: IThreeObj;
     materials: IThreeMaterial[];
 }
-
 
 //  ==========================================================================================================

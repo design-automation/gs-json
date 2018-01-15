@@ -18,7 +18,7 @@
             "name": "TS Documentation"
         },
         {
-            "path": "src/assets/gs-json",
+            "path": "src/assets",
             "name": "GS Models",
             "folder_exclude_patterns": ["backup"]
         },
