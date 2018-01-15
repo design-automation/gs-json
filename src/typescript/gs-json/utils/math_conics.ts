@@ -177,5 +177,8 @@ export function ellipseEvaluate(curve: gs.IEllipse, t: number): gs.XYZ {
  * Calculate a set of xyz position on the ellipse. The number of points = length / resolution.
  */
 export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs.XYZ[] {
+    // projection of polar coordinates
+    // adaptation of the angle d_th
+
     throw new Error("Not implemented");
 }
