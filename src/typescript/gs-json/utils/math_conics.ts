@@ -177,8 +177,156 @@ export function ellipseEvaluate(curve: gs.IEllipse, t: number): gs.XYZ {
  * Calculate a set of xyz position on the ellipse. The number of points = length / resolution.
  */
 export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs.XYZ[] {
-    // projection of polar coordinates
-    // adaptation of the angle d_th
+    const O: number[] = curve.getOrigin().getPosition();
+    const a: number = curve.getVectors()[0].length;
+    const b: number = curve.getVectors()[1].length;
 
-    throw new Error("Not implemented");
+    if(a>=b) {
+    const c: number = Math.sqrt(a*a - b*b);
+    const a_vec: number[] = curve.getVectors()[0];
+    const b_vec: number[] = curve.getVectors()[1];
+    const param: number = b*b/a;
+    const e: number = Math.sqrt(1 - b*b/(a*a));
+    // Direct Orthonormal Basis of reference
+    const O1: three.Vector3 = new three.Vector3(0,0,0);
+    const e1: three.Vector3 = new three.Vector3(1,0,0);
+    const e2: three.Vector3 = new three.Vector3(0,1,0);
+    const e3: three.Vector3 = new three.Vector3(0,0,1);
+    // Ellispe Direct Orthonormal Basis
+    const C1: three.Vector3 = new three.Vector3(curve.getOrigin().getPosition()[0]);
+    const U1: three.Vector3 = new three.Vector3(a_vec[0],a_vec[1],a_vec[2]).normalize();
+    const V1: three.Vector3 = new three.Vector3(b_vec[0],b_vec[1],b_vec[2]).normalize();
+    const W1: three.Vector3 = threex.crossVectors(U1,V1,true);
+    // Rotation Matrix expressed in the reference direct orthonormal basis
+        // Ellipse 1
+    const O1C1: three.Vector3 = threex.subVectors(C1,O1,false);
+    const vec_O_1: three.Vector3 = new three.Vector3(
+        O1C1.dot(e1),
+        O1C1.dot(e2),
+        O1C1.dot(e3),
+        );
+    const x1: three.Vector3 = new three.Vector3(
+        U1.dot(e1),
+        U1.dot(e2),
+        U1.dot(e3),
+        );
+    const y1: three.Vector3 = new three.Vector3(
+        V1.dot(e1),
+        V1.dot(e2),
+        V1.dot(e3),
+        );
+//  const rotation1: three.Matrix4 = threex.xformMatrix(vec_O_1,x1,y1);
+    const m1: three.Matrix4 = new three.Matrix4();
+    const o_neg: three.Vector3 = vec_O_1.clone().negate();
+    m1.setPosition(o_neg);
+    const m2: three.Matrix4 = new three.Matrix4();
+    m2.makeBasis(x1.normalize(), y1.normalize(), x1.normalize().crossVectors(x1.normalize(),y1.normalize()));
+    m2.getInverse(m2);
+    const rotation1: three.Matrix4 = new three.Matrix4();
+    rotation1.multiplyMatrices(m2, m1);
+
+    const XYZ: gs.XYZ[] = [];
+    let r: number = null;
+    const L: number = ellipseLength(curve);
+    const l: number = L * resolution;
+    let theta: number = 0;
+    let d_theta: number = 0;
+
+    for (let k = 0; k<Math.ceil(1/resolution);k++) {
+        theta = theta + k*d_theta;
+        r = param / (1 + e*Math.cos(theta));
+        d_theta = l/r;
+        XYZ.push([r * Math.cos(theta)+c,r * Math.sin(theta),0]);
+    }
+
+    // Retransforming into original coordinates system
+    const results: three.Vector3[] = [];
+    for (const point of XYZ) {
+        results.push(new three.Vector3(point[0],point[1],point[2]));
+    }
+    const results_e1: three.Vector3[] = [];
+    for (const point of results) {
+        results_e1.push(threex.multVectorMatrix(point,rotation1));
+    }
+    const points: gs.XYZ[] = [];
+    for(const point of results_e1) {
+        points.push([point[0],point[1],point[2]]);
+    }
+    return points;
+    }
+
+    if(b>a) {
+    const c: number = Math.sqrt(b*b - a*a);
+    const a_vec: number[] = curve.getVectors()[0];
+    const b_vec: number[] = curve.getVectors()[1];
+    const param: number = b*b/a;
+    const e: number = Math.sqrt(1 - a*a/(b*b));
+    // Direct Orthonormal Basis of reference
+    const O1: three.Vector3 = new three.Vector3(0,0,0);
+    const e1: three.Vector3 = new three.Vector3(1,0,0);
+    const e2: three.Vector3 = new three.Vector3(0,1,0);
+    const e3: three.Vector3 = new three.Vector3(0,0,1);
+    // Ellispe Direct Orthonormal Basis
+    const C1: three.Vector3 = new three.Vector3(curve.getOrigin().getPosition()[0]);
+    const U1: three.Vector3 = new three.Vector3(a_vec[0],a_vec[1],a_vec[2]).normalize();
+    const V1: three.Vector3 = new three.Vector3(b_vec[0],b_vec[1],b_vec[2]).normalize();
+    const W1: three.Vector3 = threex.crossVectors(U1,V1,true);
+    // Rotation Matrix expressed in the reference direct orthonormal basis
+        // Ellipse 1
+    const O1C1: three.Vector3 = threex.subVectors(C1,O1,false);
+    const vec_O_1: three.Vector3 = new three.Vector3(
+        O1C1.dot(e1),
+        O1C1.dot(e2),
+        O1C1.dot(e3),
+        );
+    const x1: three.Vector3 = new three.Vector3(
+        U1.dot(e1),
+        U1.dot(e2),
+        U1.dot(e3),
+        );
+    const y1: three.Vector3 = new three.Vector3(
+        V1.dot(e1),
+        V1.dot(e2),
+        V1.dot(e3),
+        );
+//  const rotation1: three.Matrix4 = threex.xformMatrix(vec_O_1,x1,y1);
+    const m1: three.Matrix4 = new three.Matrix4();
+    const o_neg: three.Vector3 = vec_O_1.clone().negate();
+    m1.setPosition(o_neg);
+    const m2: three.Matrix4 = new three.Matrix4();
+    m2.makeBasis(x1.normalize(), y1.normalize(), x1.normalize().crossVectors(x1.normalize(),y1.normalize()));
+    m2.getInverse(m2);
+    const rotation1: three.Matrix4 = new three.Matrix4();
+    rotation1.multiplyMatrices(m2, m1);
+
+    const XYZ: gs.XYZ[] = [];
+    let r: number = null;
+    const L: number = ellipseLength(curve);
+    const l: number = L * resolution;
+    let theta: number = 0;
+    let d_theta: number = 0;
+
+    for (let k = 0; k<Math.ceil(1/resolution);k++) {
+        theta = theta + k*d_theta;
+        r = param / (1 + e*Math.cos(theta));
+        d_theta = l/r;
+        XYZ.push([r * Math.cos(theta - (Math.PI/2) ),r * Math.sin(theta - (Math.PI/2) ) + c,0]);
+    }
+
+    // Retransforming into original coordinates system
+    const results: three.Vector3[] = [];
+    for (const point of XYZ) {
+        results.push(new three.Vector3(point[0],point[1],point[2]));
+    }
+    const results_e1: three.Vector3[] = [];
+    for (const point of results) {
+        results_e1.push(threex.multVectorMatrix(point,rotation1));
+    }
+    const points: gs.XYZ[] = [];
+    for(const point of results_e1) {
+        points.push([point[0],point[1],point[2]]);
+    }
+    return points;
+    }
+
 }
