@@ -87,11 +87,8 @@ export function genThreeOptModel(model: gs.IModel): gs.IThreeScene {
     //console.log(faces_map);
     //console.log(edges_map);
     //console.log(wires_map);
-
-    //model.getGeom().getTopo(edges_map.get(0)).getLabelCentroid()
     return scene;
 }
-
 
 /**
  * Generate the model.
@@ -112,12 +109,5 @@ export function genThreeOptModelAndMaps(model: gs.IModel):
     const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, pmeshes, mats[0]);
     const wires_map: Map<number, gs.ITopoPathData> = createWires(scene, model.getGeom().getAllObjs(), mats[1]);
     createPoints(scene, model.getGeom().getAllPoints(), mats[4]);
-    // return the final scene
-    //console.log(faces_map);
-    //console.log(edges_map);
-    //console.log(wires_map);
-
-    //model.getGeom().getTopo(edges_map.get(0)).getLabelCentroid()
-
     return {scene, faces_map, wires_map, edges_map};
 }

@@ -33,20 +33,20 @@ export function getDataFromAllFaces(objs: gs.IObj[]): IThreeData {
     const faces: gs.IFace[] = gs.Arr.flatten(objs.map((obj) => obj.getFaces()));
     //  create triangles data
     const traingles: number[][] = [];
-    let i = 0;
+    let tri_count: number = 0;
     for (const face of faces) {
         const verts: gs.IVertex[] = face.getVertices();
         const verts_indexes: number[] = verts.map((v) => id_to_i_map.get(v.getPoint().getID()));
         if (verts.length === 3) {
             traingles.push(verts_indexes);
-            reverse_map.set(i, face.getTopoPath());
-            i++;
+            reverse_map.set(tri_count, face.getTopoPath());
+            tri_count++;
         } else if (verts.length > 3) {
             const verts_tri: number[] = threex.triangulate2D(verts, verts_indexes);
             traingles.push(verts_tri);
             for (let i = 0;i < verts_tri.length - 3; i = i + 3) {
-                reverse_map.set(i, face.getTopoPath());
-                i++;
+                reverse_map.set(tri_count, face.getTopoPath());
+                tri_count++;
             }
         }
     }
