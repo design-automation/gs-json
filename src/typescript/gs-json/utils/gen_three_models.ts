@@ -60,6 +60,10 @@ export function genGsModelsWriteFiles(): void {
     genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelManyTorus()), "model_many_torus_opt.json");
 }
 
+export function debug(): void {
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelBox()), "model_box_opt.json");
+}
+
 /**
  * If this module is being run directly, then files will be written to disk.
  * This will require the TS code to be transpiled to 2015 JS code, first with TSC and then with babel.

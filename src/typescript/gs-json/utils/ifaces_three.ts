@@ -12,6 +12,12 @@ export interface IThreeMaterial {
     type: string;
 }
 
+export interface IThreePointsMaterial extends IThreeMaterial {
+    color: number;
+    size: number;
+    sizeAttenuation: boolean;
+}
+
 export interface IThreeLineMaterial extends IThreeMaterial {
     color: number;
     vertexColors: number;

@@ -3,74 +3,101 @@ import * as three from "three";
 import * as threex from "./three_utils";
 import * as math_conics from "./math_conics";
 
+export interface IThreeData {
+    xyzs_flat: number[];
+    indexes: number[];
+    reverse_map: Map<string|number, gs.ITopoPathData>;
+}
+
 //  OPT ===================================================================================================
 
 /**
  * Get mesh data from multiple objs.
  */
-export function getMeshFromAllMeshes(objs: gs.IObj[]): {xyzs_flat: number[], indexes: number[]} {
-    const points: gs.IPoint[] = gs.Arr.flatten(objs.map((obj) => obj.getPointsSet()));
-    const faces: gs.IFace[] = gs.Arr.flatten(objs.map((obj) => obj.getFaces()));
+export function getDataFromAllFaces(objs: gs.IObj[]): IThreeData {
+    const points_set: Set<gs.IPoint> = new Set();
+    for (const obj of objs) {
+        for (const point of obj.getPointsSet()) {
+            points_set.add(point);
+        }
+    }
+    const points: gs.IPoint[] = Array.from(points_set);
     //  create xyzs gs.Array
     const xyzs: gs.XYZ[] = points.map((v) => v.getPosition());
+    //  create map from point IDs to index number
+    const id_to_i_map: Map<number, number> = new Map();
+    points.forEach((v,i) => id_to_i_map.set(v.getID(), i));
+    // create a map from index to face path
+    const reverse_map: Map<string, gs.ITopoPathData> = new Map();
+    // get the faces
+    const faces: gs.IFace[] = gs.Arr.flatten(objs.map((obj) => obj.getFaces()));
     //  create triangles data
-    const id_to_i: Map<number, number> = new Map();
-    points.forEach((v,i) => id_to_i.set(v.getID(), i));
     const traingles: number[][] = [];
     for (const face of faces) {
         const verts: gs.IVertex[] = face.getVertices();
-        const verts_indexes: number[] = verts.map((v) => id_to_i.get(v.getPoint().getID()));
+        const verts_indexes: number[] = verts.map((v) => id_to_i_map.get(v.getPoint().getID()));
         if (verts.length === 3) {
             traingles.push(verts_indexes);
+            reverse_map.set(triID(verts_indexes as gs.XYZ), face.getTopoPath());
         } else if (verts.length > 3) {
-            traingles.push(threex.triangulate2D(verts, verts_indexes));
-            // traingles.push([verts_indexes[0], verts_indexes[1], verts_indexes[2]]);
-            // traingles.push([verts_indexes[0], verts_indexes[2], verts_indexes[3]]); //TODO this is a temporary fix
+            const verts_tri: number[] = threex.triangulate2D(verts, verts_indexes);
+            traingles.push(verts_tri);
+            for (let i = 0;i < verts_tri.length - 3; i = i + 3) {
+                reverse_map.set(triID(verts_indexes.slice(i, i + 3) as gs.XYZ), face.getTopoPath());
+            }
         }
     }
-    return {xyzs_flat: gs.Arr.flatten(xyzs), indexes: gs.Arr.flatten(traingles)};
+    return {xyzs_flat: gs.Arr.flatten(xyzs), indexes: gs.Arr.flatten(traingles), reverse_map: reverse_map};
+}
+
+function triID(i: gs.XYZ): string {
+    return [i, [i[1], i[2], [i[0]]], [i[2], i[0], [i[1]]]].sort()[0].join("_");
 }
 
 /**
  * Get line segment data from objs  unique edges.
  */
-export function getLineSegmentsFromAllEdges(objs: gs.IObj[]): number[] {
-    const face_edges: gs.IEdge[] = gs.Arr.flatten(objs.map((obj) => obj.getEdges()[1]));
-    const wire_edges: gs.IEdge[] = gs.Arr.flatten(objs.map((obj) => obj.getEdges()[0]));
-    // create an array of wire paths, so they can be excluded, i.e. "123_456", is the edge from 123 to 456
-    const edge_paths: string[] = [];
-    for (const edge of wire_edges) {
-        const points: gs.IPoint[] = edge.getVertices().map((v) => v.getPoint());
-        const ids = points.map((v) => v.getID()).sort();
-        edge_paths.push(ids[0] + "_" + ids[1]);
-    }
-    // get all unique face edges
-    const edge_xyzs: gs.XYZ[] = [];
-    for (const edge of face_edges) {
-        const points: gs.IPoint[] = edge.getVertices().map((v) => v.getPoint());
-        const ids = points.map((v) => v.getID()).sort();
-        const path: string = ids[0] + "_" + ids[1];
-        if (edge_paths.indexOf(path) === -1) {
-            edge_paths.push(path);
-            edge_xyzs.push(points[0].getPosition());
-            edge_xyzs.push(points[1].getPosition());
-        }
-    }
-    return gs.Arr.flatten(edge_xyzs);
+export function getDataSegmentsFromAllEdges(objs: gs.IObj[]): IThreeData {
+    const edges: gs.IEdge[] = gs.Arr.flatten(objs.map((obj) => obj.getEdges()));
+    return getDataSegmentsFromTopos(objs, edges);
 }
 
 /**
  * Get line segments data from wires.
  */
-export function getLineSegmentsFromAllWires(objs: gs.IObj[]): number[] {
-    const wire_edges: gs.IEdge[] = gs.Arr.flatten(objs.map((obj) => obj.getEdges()[0]));
-    const edge_xyzs: gs.XYZ[] = [];
-    for (const edge of wire_edges) {
-        const points: gs.IPoint[] = edge.getVertices().map((v) => v.getPoint());
-        edge_xyzs.push(points[0].getPosition());
-        edge_xyzs.push(points[1].getPosition());
+export function getDataSegmentsFromAllWires(objs: gs.IObj[]): IThreeData {
+    const wires: gs.IWire[] = gs.Arr.flatten(objs.map((obj) => obj.getWires()));
+    return getDataSegmentsFromTopos(objs, wires);
+}
+
+/**
+ * Get the data for the topos
+ */
+export function getDataSegmentsFromTopos(objs: gs.IObj[], topos: gs.IWire[]|gs.IEdge[]): IThreeData {
+    if (topos.length === 0) {return null;}
+    const points_set: Set<gs.IPoint> = new Set();
+    for (const obj of objs) {
+        for (const point of obj.getPointsSet()) {
+            points_set.add(point);
+        }
     }
-    return gs.Arr.flatten(edge_xyzs);
+    const points: gs.IPoint[] = Array.from(points_set);
+    //  create xyzs gs.Array
+    const xyzs: gs.XYZ[] = points.map((v) => v.getPosition());
+    //  create map from point IDs to index number
+    const id_to_i_map: Map<number, number> = new Map();
+    points.forEach((point,i) => id_to_i_map.set(point.getID(), i));
+    // create a map from index to face path
+    const reverse_map: Map<number|string, gs.ITopoPathData> = new Map();
+    // create line segments
+    const line_segs: number[][] = [];
+    for (const [i, topo] of topos.entries()) {
+        const verts: gs.IVertex[] = topo.getVertices();
+        const verts_indexes: number[] = verts.map((v) => id_to_i_map.get(v.getPoint().getID()));
+        line_segs.push(verts_indexes);
+        reverse_map.set(i, topo.getTopoPath());
+    }
+    return {xyzs_flat: gs.Arr.flatten(xyzs), indexes: gs.Arr.flatten(line_segs),  reverse_map: reverse_map};
 }
 
 //  MESHES ===================================================================================================

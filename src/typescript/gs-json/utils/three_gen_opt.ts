@@ -5,31 +5,65 @@ import * as threeg from "./three_geom";
 import * as threes from "./three_scene";
 
 /**
- * Add all polymeshes to the scene and generate one big threejs mesh out of it.
+ * Add mesh to scene.
  */
-function createMesh(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material: gs.IThreeMaterial): void {
-    const data:{ xyzs_flat: number[], indexes: number[]} = threeg.getMeshFromAllMeshes(polymeshes);
+function add(scene: gs.IThreeScene,
+        three_type: string, description: string, data: threeg.IThreeData, material: gs.IThreeMaterial): void {
     const mesh_geom: gs.IThreeBufferedGeom = threes.genGeom(data.xyzs_flat, data.indexes);
     threes.addGeomToScene(scene, mesh_geom);
-    threes.addObjToScene(scene, threes.genObj("Mesh", "All Faces", mesh_geom, material));
+    threes.addObjToScene(scene, threes.genObj(three_type, description, mesh_geom, material));
 }
 
 /**
- * Add all polymeshes edges to the scene and create one pig edge soup out of it.
+ * Add all polymeshes to the scene and generate one big threejs mesh out of it.
  */
-function createEdges(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material: gs.IThreeMaterial): void {
-    const edge_geom: gs.IThreeBufferedGeom = threes.genGeom(threeg.getLineSegmentsFromAllEdges(polymeshes));
-    threes.addGeomToScene(scene, edge_geom);
-    threes.addObjToScene(scene, threes.genObj("LineSegments", "All Edges", edge_geom, material));
+function createFaces(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material: gs.IThreeMaterial):
+        Map<string, gs.ITopoPathData> {
+    const data: threeg.IThreeData = threeg.getDataFromAllFaces(polymeshes);
+    if (data !== null) {
+        add(scene, "Mesh", "All faces", data, material);
+        return data.reverse_map as Map<string, gs.ITopoPathData>;
+    }
+    return null;
 }
 
 /**
- * Add all polymeshes edges to the scene and create one pig edge soup out of it.
+ * Add all polymeshes edges to the scene and create one big edge soup out of it.
  */
-function createWires(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.IThreeMaterial): void {
-    const edge_geom: gs.IThreeBufferedGeom = threes.genGeom(threeg.getLineSegmentsFromAllWires(objects));
-    threes.addGeomToScene(scene, edge_geom);
-    threes.addObjToScene(scene, threes.genObj("LineSegments", "All Wires", edge_geom, material));
+function createEdges(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material: gs.IThreeMaterial):
+        Map<number, gs.ITopoPathData> {
+    const data: threeg.IThreeData = threeg.getDataSegmentsFromAllEdges(polymeshes);
+    if (data !== null) {
+        add(scene, "LineSegments", "All edges", data, material);
+        return data.reverse_map as Map<number, gs.ITopoPathData>;
+    }
+    return null;
+}
+
+/**
+ * Add all polymeshes edges to the scene and create one big wire soup out of it.
+ */
+function createWires(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.IThreeMaterial):
+        Map<number, gs.ITopoPathData> {
+    const data: threeg.IThreeData = threeg.getDataSegmentsFromAllWires(objects);
+    if (data !== null) {
+        add(scene, "LineSegments", "All wires", data, material);
+        return data.reverse_map as Map<number, gs.ITopoPathData>;
+    }
+    return null;
+}
+
+/**
+ * Add all points to the scene and create one big point soup out of it.
+ */
+function createPoints(scene: gs.IThreeScene, points: gs.IPoint[], material: gs.IThreeMaterial): void {
+    //  create xyzs gs.Array
+    const xyzs: gs.XYZ[] = points.map((point) => point.getPosition());
+    const xyzs_flat: number[] = gs.Arr.flatten(xyzs);
+    const points_geom: gs.IThreeBufferedGeom = threes.genGeom(xyzs_flat);
+    //add(scene, "Points", "All points", data, material);
+    threes.addGeomToScene(scene, points_geom);
+    threes.addObjToScene(scene, threes.genObj("Points", "All points", points_geom, material));
 }
 
 /**
@@ -40,10 +74,20 @@ export function genThreeOptModel(model: gs.IModel): gs.IThreeScene {
     const scene: gs.IThreeScene = threes.genScene();
     const mats: gs.IThreeMaterial[] = threes.genDefaultMaterials();
     threes.addMatsToScene(scene, mats);
+    // TODO add the points only once using threejs interleaved buffer
+
+    // add the objects
     const pmeshes: gs.IPolymesh[] = model.getGeom().getAllObjs()
         .filter((o) => o.getObjType() === gs.EObjType.polymesh);
-    createMesh(scene, pmeshes, mats[2]);
-    createEdges(scene, pmeshes, mats[0]);
-    createWires(scene, model.getGeom().getAllObjs(), mats[1]);
+    const faces_map: Map<string, gs.ITopoPathData> = createFaces(scene, pmeshes, mats[2]);
+    const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, pmeshes, mats[0]);
+    const wires_map: Map<number, gs.ITopoPathData> = createWires(scene, model.getGeom().getAllObjs(), mats[1]);
+    createPoints(scene, model.getGeom().getAllPoints(), mats[4]);
+    // return the final scene
+    //console.log(faces_map);
+    //console.log(edges_map);
+    //console.log(wires_map);
+
+    //model.getGeom().getTopo(edges_map.get(0)).getLabelCentroid()
     return scene;
 }

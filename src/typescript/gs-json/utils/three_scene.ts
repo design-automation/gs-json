@@ -63,7 +63,14 @@ export function genDefaultMaterials(): threei.IThreeMaterial[] {
         wireframe: false,
         flatShading: true,
     };
-    return [black_line, blue_line, meshes_mat, meshes_glass_mat];
+    const points_mat: threei.IThreePointsMaterial = {
+        uuid: create_UUID(),
+        type: "PointsMaterial",
+        color: 16777215,
+        size: 2,
+        sizeAttenuation: false,
+    };
+    return [black_line, blue_line, meshes_mat, meshes_glass_mat, points_mat];
 }
 
 /**
@@ -89,7 +96,7 @@ export function genScene(): threei.IThreeScene {
 /**
  * Generate geometry entity from data.
  */
-export function genGeom(xyzs: number[], triangles?: number[], normals?: number[]): threei.IThreeBufferedGeom {
+export function genGeom(xyzs: number[], indexes?: number[], normals?: number[]): threei.IThreeBufferedGeom {
     const geom: threei.IThreeBufferedGeom = {
         uuid: create_UUID(),
         type: "BufferGeometry",
@@ -104,10 +111,10 @@ export function genGeom(xyzs: number[], triangles?: number[], normals?: number[]
             },
         },
     };
-    if (triangles !== undefined) {
+    if (indexes !== undefined) {
         geom.data.index = {
             type: "Uint16Array",
-            array: triangles,
+            array: indexes,
         };
     }
     if (normals !== undefined) {
