@@ -91,3 +91,33 @@ export function genThreeOptModel(model: gs.IModel): gs.IThreeScene {
     //model.getGeom().getTopo(edges_map.get(0)).getLabelCentroid()
     return scene;
 }
+
+
+/**
+ * Generate the model.
+ */
+export function genThreeOptModelAndMaps(model: gs.IModel):
+        {scene: gs.IThreeScene, faces_map: Map<string, gs.ITopoPathData>,
+            wires_map: Map<number, gs.ITopoPathData>, edges_map: Map<number, gs.ITopoPathData>} {
+    if (model.constructor.name !== "Model") {throw new Error("Invalid model.");}
+    const scene: gs.IThreeScene = threes.genScene();
+    const mats: gs.IThreeMaterial[] = threes.genDefaultMaterials();
+    threes.addMatsToScene(scene, mats);
+    // TODO add the points only once using threejs interleaved buffer
+
+    // add the objects
+    const pmeshes: gs.IPolymesh[] = model.getGeom().getAllObjs()
+        .filter((o) => o.getObjType() === gs.EObjType.polymesh);
+    const faces_map: Map<string, gs.ITopoPathData> = createFaces(scene, pmeshes, mats[2]);
+    const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, pmeshes, mats[0]);
+    const wires_map: Map<number, gs.ITopoPathData> = createWires(scene, model.getGeom().getAllObjs(), mats[1]);
+    createPoints(scene, model.getGeom().getAllPoints(), mats[4]);
+    // return the final scene
+    //console.log(faces_map);
+    //console.log(edges_map);
+    //console.log(wires_map);
+
+    //model.getGeom().getTopo(edges_map.get(0)).getLabelCentroid()
+
+    return {scene, faces_map, wires_map, edges_map};
+}
