@@ -6,7 +6,7 @@
     },
     "geometries": [
         {
-            "uuid": "ce241e5d-2d4d-42a2-9945-bf5c5969343b",
+            "uuid": "1ef047da-1e77-4ab4-a655-5af577144ebd",
             "type": "BufferGeometry",
             "data": {
                 "attributes": {
@@ -24,7 +24,7 @@
             }
         },
         {
-            "uuid": "e997e255-c080-410c-af56-c7c920f3c866",
+            "uuid": "12762f29-b17f-4491-9053-88996914edd4",
             "type": "BufferGeometry",
             "data": {
                 "attributes": {
@@ -72,7 +72,7 @@
             }
         },
         {
-            "uuid": "1769af20-8de4-4e1a-bb38-2eb1d5485079",
+            "uuid": "bbc428a4-82ec-48d5-85d5-9924cb5dda64",
             "type": "BufferGeometry",
             "data": {
                 "attributes": {
@@ -110,7 +110,7 @@
     ],
     "materials": [
         {
-            "uuid": "2fe1aed4-716a-453e-9bfd-2003e3648275",
+            "uuid": "64712e0a-a86a-4e77-9963-b985c0e8461e",
             "type": "LineBasicMaterial",
             "color": 0,
             "vertexColors": 0,
@@ -121,7 +121,7 @@
             "depthWrite": true
         },
         {
-            "uuid": "27701f48-0118-4d5d-9874-880af610644d",
+            "uuid": "6591bb36-2683-4b95-9a1d-3aabba196474",
             "type": "LineBasicMaterial",
             "color": 255,
             "vertexColors": 0,
@@ -132,7 +132,7 @@
             "depthWrite": true
         },
         {
-            "uuid": "2513b221-6d2e-4de8-a3d4-63624d703ffe",
+            "uuid": "ffaad381-5a44-4bc0-9bb2-dccccf474486",
             "type": "MeshPhongMaterial",
             "color": 16777215,
             "emissive": 0,
@@ -149,7 +149,7 @@
             "flatShading": true
         },
         {
-            "uuid": "3b29f0fc-1f12-4fed-bb39-5bf51725920b",
+            "uuid": "3061fcf0-6413-4216-90ee-d989b7994bda",
             "type": "MeshPhongMaterial",
             "color": 0,
             "emissive": 0,
@@ -167,7 +167,7 @@
             "flatShading": true
         },
         {
-            "uuid": "3b007e91-d306-43cc-9d19-7230d25f76c3",
+            "uuid": "1ea42ee1-15df-48fc-83b0-b0e88f39e0ba",
             "type": "PointsMaterial",
             "color": 16777215,
             "size": 2,
@@ -179,29 +179,29 @@
         "name": "Scene",
         "children": [
             {
-                "uuid": "cde3f28d-b59d-4c5b-bec1-d25de8a460c8",
+                "uuid": "169ef380-deaf-483e-9024-3c6abbf6cfa2",
                 "type": "Mesh",
                 "name": "All faces",
-                "geometry": "ce241e5d-2d4d-42a2-9945-bf5c5969343b",
-                "material": "2513b221-6d2e-4de8-a3d4-63624d703ffe",
+                "geometry": "1ef047da-1e77-4ab4-a655-5af577144ebd",
+                "material": "ffaad381-5a44-4bc0-9bb2-dccccf474486",
                 "castShadow": true,
                 "receiveShadow": true
             },
             {
-                "uuid": "b5bf8928-ee87-482f-8fa0-c8717a65b5af",
+                "uuid": "84b9436d-c2e2-4ede-a55d-615e5cc766e4",
                 "type": "LineSegments",
                 "name": "All wires",
-                "geometry": "e997e255-c080-410c-af56-c7c920f3c866",
-                "material": "27701f48-0118-4d5d-9874-880af610644d",
+                "geometry": "12762f29-b17f-4491-9053-88996914edd4",
+                "material": "6591bb36-2683-4b95-9a1d-3aabba196474",
                 "castShadow": false,
                 "receiveShadow": false
             },
             {
-                "uuid": "666f1aa5-4f28-49e3-80e0-9836d31c57ab",
+                "uuid": "684fcc24-f586-4dc9-a816-e09b6ed3125e",
                 "type": "Points",
                 "name": "All points",
-                "geometry": "1769af20-8de4-4e1a-bb38-2eb1d5485079",
-                "material": "3b007e91-d306-43cc-9d19-7230d25f76c3",
+                "geometry": "bbc428a4-82ec-48d5-85d5-9924cb5dda64",
+                "material": "1ea42ee1-15df-48fc-83b0-b0e88f39e0ba",
                 "castShadow": false,
                 "receiveShadow": false
             }

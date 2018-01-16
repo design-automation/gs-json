@@ -28,22 +28,22 @@ export function getDataFromAllFaces(objs: gs.IObj[]): IThreeData {
     const id_to_i_map: Map<number, number> = new Map();
     points.forEach((v,i) => id_to_i_map.set(v.getID(), i));
     // create a map from index to face path
-    const reverse_map: Map<string, gs.ITopoPathData> = new Map();
+    const reverse_map: Map<number, gs.ITopoPathData> = new Map();
     // get the faces
     const faces: gs.IFace[] = gs.Arr.flatten(objs.map((obj) => obj.getFaces()));
     //  create triangles data
     const traingles: number[][] = [];
-    for (const face of faces) {
+    for (const [i, face] of faces.entries()) {
         const verts: gs.IVertex[] = face.getVertices();
         const verts_indexes: number[] = verts.map((v) => id_to_i_map.get(v.getPoint().getID()));
         if (verts.length === 3) {
             traingles.push(verts_indexes);
-            reverse_map.set(triID(verts_indexes as gs.XYZ), face.getTopoPath());
+            reverse_map.set(i, face.getTopoPath());
         } else if (verts.length > 3) {
             const verts_tri: number[] = threex.triangulate2D(verts, verts_indexes);
             traingles.push(verts_tri);
             for (let i = 0;i < verts_tri.length - 3; i = i + 3) {
-                reverse_map.set(triID(verts_indexes.slice(i, i + 3) as gs.XYZ), face.getTopoPath());
+                reverse_map.set(i, face.getTopoPath());
             }
         }
     }

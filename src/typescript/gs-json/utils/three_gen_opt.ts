@@ -18,11 +18,11 @@ function add(scene: gs.IThreeScene,
  * Add all polymeshes to the scene and generate one big threejs mesh out of it.
  */
 function createFaces(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material: gs.IThreeMaterial):
-        Map<string, gs.ITopoPathData> {
+        Map<number, gs.ITopoPathData> {
     const data: threeg.IThreeData = threeg.getDataFromAllFaces(polymeshes);
     if (data !== null) {
         add(scene, "Mesh", "All faces", data, material);
-        return data.reverse_map as Map<string, gs.ITopoPathData>;
+        return data.reverse_map as Map<number, gs.ITopoPathData>;
     }
     return null;
 }
@@ -79,7 +79,7 @@ export function genThreeOptModel(model: gs.IModel): gs.IThreeScene {
     // add the objects
     const pmeshes: gs.IPolymesh[] = model.getGeom().getAllObjs()
         .filter((o) => o.getObjType() === gs.EObjType.polymesh);
-    const faces_map: Map<string, gs.ITopoPathData> = createFaces(scene, pmeshes, mats[2]);
+    const faces_map: Map<number, gs.ITopoPathData> = createFaces(scene, pmeshes, mats[2]);
     const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, pmeshes, mats[0]);
     const wires_map: Map<number, gs.ITopoPathData> = createWires(scene, model.getGeom().getAllObjs(), mats[1]);
     createPoints(scene, model.getGeom().getAllPoints(), mats[4]);
@@ -97,7 +97,7 @@ export function genThreeOptModel(model: gs.IModel): gs.IThreeScene {
  * Generate the model.
  */
 export function genThreeOptModelAndMaps(model: gs.IModel):
-        {scene: gs.IThreeScene, faces_map: Map<string, gs.ITopoPathData>,
+        {scene: gs.IThreeScene, faces_map: Map<number, gs.ITopoPathData>,
             wires_map: Map<number, gs.ITopoPathData>, edges_map: Map<number, gs.ITopoPathData>} {
     if (model.constructor.name !== "Model") {throw new Error("Invalid model.");}
     const scene: gs.IThreeScene = threes.genScene();
@@ -108,7 +108,7 @@ export function genThreeOptModelAndMaps(model: gs.IModel):
     // add the objects
     const pmeshes: gs.IPolymesh[] = model.getGeom().getAllObjs()
         .filter((o) => o.getObjType() === gs.EObjType.polymesh);
-    const faces_map: Map<string, gs.ITopoPathData> = createFaces(scene, pmeshes, mats[2]);
+    const faces_map: Map<number, gs.ITopoPathData> = createFaces(scene, pmeshes, mats[2]);
     const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, pmeshes, mats[0]);
     const wires_map: Map<number, gs.ITopoPathData> = createWires(scene, model.getGeom().getAllObjs(), mats[1]);
     createPoints(scene, model.getGeom().getAllPoints(), mats[4]);
