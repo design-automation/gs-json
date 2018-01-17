@@ -50,7 +50,6 @@ export function circleEvaluate(curve: gs.ICircle, t: number): gs.XYZ {
  * With resolution from 0.0001 to 0.5, 0.0001 being a higher resolution than 0.5
  */
 export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.XYZ[] {
-    // Get the parameters
     const origin: gs.XYZ = curve.getOrigin().getPosition();
     const r: number = curve.getRadius();
     const vecs: gs.XYZ[] = curve.getVectors();
@@ -58,10 +57,8 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     const U1: three.Vector3 = new three.Vector3(...vecs[0]).normalize();
     const V1: three.Vector3 = new three.Vector3(...vecs[1]).normalize();
     const O1O2: three.Vector3 = new three.Vector3(...origin);
-    // Calc number of points
     const L: number = 2*Math.PI*r;
-    const N: number = Math.ceil(L/resolution);
-    // Calculate points
+    const N: number = Math.floor(L/resolution);
     const renderXYZs: gs.XYZ[] = [];
     for(let k=0;k<N;k++) {
         const t: number = k/(N - 1);
@@ -234,7 +231,7 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     let theta: number = 0;
     let d_theta: number = 0;
 
-    for (let k = 0; k<Math.ceil(1/resolution);k++) {
+    for (let k = 0; k<Math.floor(1/resolution);k++) {
         theta = theta + k*d_theta;
         r = param / (1 + e*Math.cos(theta));
         d_theta = l/r;
@@ -308,7 +305,7 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     let theta: number = 0;
     let d_theta: number = 0;
 
-    for (let k = 0; k<Math.ceil(1/resolution);k++) {
+    for (let k = 0; k<Math.floor(1/resolution);k++) {
         theta = theta + k*d_theta;
         r = param / (1 + e*Math.cos(theta));
         d_theta = l/r;
