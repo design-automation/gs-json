@@ -59,7 +59,7 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     const V1: three.Vector3 = new three.Vector3(...vecs[1]).normalize();
     const O1O2: three.Vector3 = new three.Vector3(...origin);
     // Calc number of points
-    const L: number = circleLength(curve);
+    const L: number = 2*Math.PI*r;
     const N: number = Math.ceil(L/resolution);
     // Calculate points
     const renderXYZs: gs.XYZ[] = [];
@@ -180,6 +180,7 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     const O: number[] = curve.getOrigin().getPosition();
     const a: number = curve.getVectors()[0].length;
     const b: number = curve.getVectors()[1].length;
+    const L: number = Math.PI * Math.sqrt(2*(a*a + b*b) - (a-b)*(a-b)/2);
 
     if(a>=b) {
     const c: number = Math.sqrt(a*a - b*b);
@@ -227,7 +228,8 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
 
     const XYZ: gs.XYZ[] = [];
     let r: number = null;
-    const L: number = ellipseLength(curve);
+    // const L: number = ellipseLength(curve);
+
     const l: number = L * resolution;
     let theta: number = 0;
     let d_theta: number = 0;
@@ -301,7 +303,7 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
 
     const XYZ: gs.XYZ[] = [];
     let r: number = null;
-    const L: number = ellipseLength(curve);
+    // const L: number = ellipseLength(curve);
     const l: number = L * resolution;
     let theta: number = 0;
     let d_theta: number = 0;
