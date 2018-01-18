@@ -90,7 +90,7 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     const init_y1: three.Vector3 = new three.Vector3(
     V1.dot(e1), V1.dot(e2), V1.dot(e3));
     let init_z1: three.Vector3 = new three.Vector3();
-    init_z1 = z1.crossVectors(x1,y1);
+    init_z1 = z1.crossVectors(init_x1,init_y1);
     const init_m1: three.Matrix4 = new three.Matrix4();
     const init_o_neg: three.Vector3 = init_vec_O_1.clone().negate();
     init_m1.setPosition(init_o_neg);
