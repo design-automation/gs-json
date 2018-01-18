@@ -1,7 +1,7 @@
 {
     "name": "gs-json",
     "license": "GPL-3.0",
-    "version": "0.1.23",
+    "version": "0.1.24",
     "author": "Patrick Janssen",
     "description": "gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs').",
     "homepage": "https://github.com/phtj/gs-json#readme",
