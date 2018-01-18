@@ -32,7 +32,7 @@ function createFaces(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material
  */
 function createEdges(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material: gs.IThreeMaterial):
         Map<number, gs.ITopoPathData> {
-    const data: threeg.IThreeData = threeg.getDataSegmentsFromAllEdges(polymeshes);
+    const data: threeg.IThreeData = threeg.getDataFromAllEdges(polymeshes);
     if (data !== null) {
         add(scene, "LineSegments", "All edges", data, material);
         return data.reverse_map as Map<number, gs.ITopoPathData>;
@@ -45,7 +45,7 @@ function createEdges(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material
  */
 function createWires(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.IThreeMaterial):
         Map<number, gs.ITopoPathData> {
-    const data: threeg.IThreeData = threeg.getDataSegmentsFromAllWires(objects);
+    const data: threeg.IThreeData = threeg.getDataFromAllWires(objects);
     if (data !== null) {
         add(scene, "LineSegments", "All wires", data, material);
         return data.reverse_map as Map<number, gs.ITopoPathData>;
