@@ -44,7 +44,6 @@ export function circleEvaluate(curve: gs.ICircle, t: number): gs.XYZ {
     const O1P: three.Vector3 = threex.addVectors(O1O2,o2P_second);
     return [O1P.x,O1P.y,O1P.z];
 }
-
 /**
  * Calculate a set of xyz position on the circle or arc. The number of points = length / resolution.
  * With resolution from 0.0001 to 0.5, 0.0001 being a higher resolution than 0.5

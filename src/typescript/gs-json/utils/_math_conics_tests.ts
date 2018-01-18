@@ -67,6 +67,11 @@ export function test_circleEvaluate(): boolean {
     return true;
 }
 export function test_circleGetRenderXYZs(): boolean {
+    const m: gs.IModel = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const center: gs.IPoint = g.addPoint([0,0,0]);
+    const circle: gs.ICircle = g.addCircle(center,[1,0,0],[0,1,0],[0,360]);
+    console.log(cs.circleGetRenderXYZs(circle,0.2));
     return true;
 }
 export function test_ellipseLength(): boolean {
