@@ -72,12 +72,14 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     e1.dot(U1),e1.dot(V1),e1.dot(W1));
     const y1: three.Vector3 = new three.Vector3(
     e2.dot(U1),e2.dot(V1),e2.dot(W1));
+    let z1: three.Vector3 = new three.Vector3();
+    z1 = z1.crossVectors(x1,y1);
     const m1: three.Matrix4 = new three.Matrix4();
     const o_neg: three.Vector3 = vec_O_1.clone().negate();
     m1.setPosition(o_neg);
-    const m2: three.Matrix4 = new three.Matrix4();
-    m2.makeBasis(x1.normalize(), y1.normalize(), x1.crossVectors(x1,y1).normalize());
-    m2.getInverse(m2);
+    let m2: three.Matrix4 = new three.Matrix4();
+    m2 = m2.makeBasis(x1.normalize(), y1.normalize(), z1.normalize());
+    m2 = m2.getInverse(m2);
     const m3: three.Matrix4 = new three.Matrix4();
     const rotation1: three.Matrix4 = m3.multiplyMatrices(m2, m1);
     const O1C1: three.Vector3 = threex.subVectors(C1,O1,false);
@@ -87,12 +89,15 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     U1.dot(e1),U1.dot(e2),U1.dot(e3));
     const init_y1: three.Vector3 = new three.Vector3(
     V1.dot(e1), V1.dot(e2), V1.dot(e3));
+    let init_z1: three.Vector3 = new three.Vector3();
+    init_z1 = z1.crossVectors(init_x1,init_y1);
     const init_m1: three.Matrix4 = new three.Matrix4();
     const init_o_neg: three.Vector3 = init_vec_O_1.clone().negate();
     init_m1.setPosition(init_o_neg);
-    const init_m2: three.Matrix4 = new three.Matrix4();
-    init_m2.makeBasis(init_x1.normalize(), init_y1.normalize(), init_x1.crossVectors(init_x1,init_y1).normalize());
-    init_m2.getInverse(init_m2);
+    let init_m2: three.Matrix4 = new three.Matrix4();
+    init_m2 = init_m2.makeBasis(init_x1.normalize(),
+    init_y1.normalize(), init_z1.normalize());
+    init_m2 = init_m2.getInverse(init_m2);
     const init_m3: three.Matrix4 = new three.Matrix4();
     const init_rotation1: three.Matrix4 = init_m3.multiplyMatrices(init_m2, init_m1);
     const a: three.Vector3 = threex.multVectorMatrix(C1,init_rotation1);
