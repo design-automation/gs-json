@@ -82,7 +82,7 @@ export function test_circleGetRenderXYZs(): boolean {
     const center3: gs.IPoint = g.addPoint([0,1,2]);
     const circle3: gs.ICircle = g.addCircle(center3,[0,1,0],[0,0,1],[0,90]);
     console.log(cs.circleGetRenderXYZs(circle3,0.4));
-    
+    // Valid
 
     // In [0,x,(y+z).normalize()] Plan
     const center4: gs.IPoint = g.addPoint([0,Math.sqrt(2)/2,Math.sqrt(2)/2]);
