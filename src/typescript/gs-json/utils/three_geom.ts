@@ -80,7 +80,7 @@ export function getDataFromAllWires(objs: gs.IObj[]): IThreeData {
             const verts: gs.IVertex[] = edge.getVertices();
             const verts_indexes: number[] = verts.map((v) => points.id_map.get(v.getPoint().getID()));
             indexes.push(verts_indexes);
-            reverse_map.set(seg_count, edge.getTopoPath());
+            reverse_map.set(seg_count, path);
             seg_count++;
         }
     }
