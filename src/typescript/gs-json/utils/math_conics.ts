@@ -281,4 +281,6 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     for (const point of results) {results_c1.push(threex.multVectorMatrix(point,rotation1));}
     for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
     return renderXYZs;
+
+    
 }
