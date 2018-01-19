@@ -216,7 +216,7 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     while (eps>0) {
     theta = theta + d_theta ;
     eps = Math.PI*2 - theta;
-    N = N+1;
+    N++;
     r = param / (1 + e*Math.cos(theta));
     d_theta = l/r;
     }
