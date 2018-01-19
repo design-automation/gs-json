@@ -232,13 +232,23 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     }
     if(b>a) {
     const e: number = Math.sqrt(1 - a*a/(b*b));
+    let N: number = 0;
+    let eps: number = 1;
+    while (eps>0) {
+    theta = theta + d_theta ;
+    eps = Math.PI*2 - theta;
+    N++;
+    r = param / (1 + e*Math.cos(theta));
+    d_theta = l/r;
+    }
+    N--;
     theta = 0;
     d_theta = 0;
-    for (let k = 0; k<Math.floor(L/resolution);k++) {
-        theta = theta + k*d_theta;
-        r = param / (1 + e*Math.cos(theta));
-        d_theta = l/r;
-        renderingXYZs.push([r * Math.cos(theta - (Math.PI/2) ),r * Math.sin(theta - (Math.PI/2) ) + c,0]);
+    for (let k = 0; k<N;k++) {
+    theta = theta + d_theta;
+    r = param / (1 + e*Math.cos(theta));
+    d_theta = l/r;
+    renderingXYZs.push([r*Math.cos(theta),(r*Math.sin(theta))+c,0]);
     }
     }
     const results: three.Vector3[] = [];
@@ -270,6 +280,5 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     const results_c1: three.Vector3[] = [];
     for (const point of results) {results_c1.push(threex.multVectorMatrix(point,rotation1));}
     for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
-
     return renderXYZs;
 }
