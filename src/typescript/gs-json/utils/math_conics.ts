@@ -53,7 +53,7 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     const r: number = curve.getRadius();
     const angles: number[] = curve.getAngles();
     const L: number = 2*Math.PI*r;
-    const N: number = Math.floor(L/resolution);
+    const N: number = Math.floor(1/resolution);
     const renderingXYZs: gs.XYZ[] = [];
     const renderXYZs: gs.XYZ[] = [];
     for(let k=0;k<N;k++) {
@@ -198,14 +198,57 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     const O: number[] = curve.getOrigin().getPosition();
     const renderingXYZs: gs.XYZ[] = [];
     const renderXYZs: gs.XYZ[] = [];
+    let r: number = null;
+    let theta: number = 0;
+    let d_theta: number = 0;
+    const U1: three.Vector3 = new three.Vector3(...curve.getVectors()[0]).normalize();
+    const V1: three.Vector3 = new three.Vector3(...curve.getVectors()[1]).normalize();
+    const a: number = U1.length();
+    const b: number = V1.length();
+    const L: number = Math.PI * Math.sqrt(2*(a*a + b*b) - (a-b)*(a-b)/2);
+    const l: number = L * resolution;
+    const param: number = b*b/a;
+    const c: number = Math.sqrt(Math.abs(a*a - b*b));
+    if(a>=b) {
+    const e: number = Math.sqrt(1 - b*b/(a*a));
+    let N: number = 0;
+    let eps: number = 1;
+    while (eps>0) {
+    theta = theta + d_theta ;
+    eps = Math.PI*2 - theta;
+    N = N+1;
+    r = param / (1 + e*Math.cos(theta));
+    d_theta = l/r;
+    }
+    N--;
+    theta = 0;
+    d_theta = 0;
+    for (let k = 0; k<N;k++) {
+    theta = theta + d_theta ;
+    r = param / (1 + e*Math.cos(theta));
+    d_theta = l/r;
+    renderingXYZs.push([(r*Math.cos(theta)) + c,r * Math.sin(theta),0]);
+    }
+    }
+    if(b>a) {
+    const e: number = Math.sqrt(1 - a*a/(b*b));
+    theta = 0;
+    d_theta = 0;
+    for (let k = 0; k<Math.floor(L/resolution);k++) {
+        theta = theta + k*d_theta;
+        r = param / (1 + e*Math.cos(theta));
+        d_theta = l/r;
+        renderingXYZs.push([r * Math.cos(theta - (Math.PI/2) ),r * Math.sin(theta - (Math.PI/2) ) + c,0]);
+    }
+    }
+    const results: three.Vector3[] = [];
+    for (const point of renderingXYZs) {results.push(new three.Vector3(point[0],point[1],point[2]));}
     const O1: three.Vector3 = new three.Vector3(0,0,0);
     const e1: three.Vector3 = new three.Vector3(1,0,0);
     const e2: three.Vector3 = new three.Vector3(0,1,0);
     const e3: three.Vector3 = new three.Vector3(0,0,1);
     const C1: three.Vector3 = new three.Vector3(
     curve.getOrigin().getPosition()[0],curve.getOrigin().getPosition()[1],curve.getOrigin().getPosition()[2]);
-    const U1: three.Vector3 = new three.Vector3(...curve.getVectors()[0]).normalize();
-    const V1: three.Vector3 = new three.Vector3(...curve.getVectors()[1]).normalize();
     const W1: three.Vector3 = threex.crossVectors(U1,V1,true);
     const C1O1: three.Vector3 = threex.subVectors(O1,C1,false);
     const vec_O_1: three.Vector3 = new three.Vector3(
@@ -224,59 +267,9 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     m2 = m2.getInverse(m2);
     const m3: three.Matrix4 = new three.Matrix4();
     const rotation1: three.Matrix4 = m3.multiplyMatrices(m2, m1);
-    const O1C1: three.Vector3 = threex.subVectors(C1,O1,false);
-    const init_vec_O_1: three.Vector3 = new three.Vector3(
-    O1C1.dot(e1),O1C1.dot(e2),O1C1.dot(e3));
-    const init_x1: three.Vector3 = new three.Vector3(
-    U1.dot(e1),U1.dot(e2),U1.dot(e3));
-    const init_y1: three.Vector3 = new three.Vector3(
-    V1.dot(e1), V1.dot(e2), V1.dot(e3));
-    let init_z1: three.Vector3 = new three.Vector3();
-    init_z1 = z1.crossVectors(init_x1,init_y1);
-    const init_m1: three.Matrix4 = new three.Matrix4();
-    const init_o_neg: three.Vector3 = init_vec_O_1.clone().negate();
-    init_m1.setPosition(init_o_neg);
-    let init_m2: three.Matrix4 = new three.Matrix4();
-    init_m2 = init_m2.makeBasis(init_x1.normalize(),
-    init_y1.normalize(), init_z1.normalize());
-    init_m2 = init_m2.getInverse(init_m2);
-    const init_m3: three.Matrix4 = new three.Matrix4();
-    const init_rotation1: three.Matrix4 = init_m3.multiplyMatrices(init_m2, init_m1);
-    const a1: three.Vector3 = threex.multVectorMatrix(C1,init_rotation1);
-    let r: number = null;
-    let theta: number = 0;
-    let d_theta: number = 0;
-    const a: number = U1.length();
-    const b: number = V1.length();
-    const L: number = Math.PI * Math.sqrt(2*(a*a + b*b) - (a-b)*(a-b)/2);
-    const l: number = L * resolution;
-    const param: number = b*b/a;
-    const c: number = Math.sqrt(Math.abs(a*a - b*b));
-    if(a>=b) {
-    const e: number = Math.sqrt(1 - b*b/(a*a));
-    for (let k = 0; k<Math.floor(L/resolution);k++) {
-    theta = theta + k*d_theta ;
-    r = param / (1 + e*Math.cos(theta));
-    d_theta = l/r;
-    renderingXYZs.push([r * Math.cos(theta* 360/(Math.PI*2))+c,r * Math.sin(theta* 360/(Math.PI*2)),0]);
-    }
-    }
-    if(b>a) {
-    const e: number = Math.sqrt(1 - a*a/(b*b));
-    for (let k = 0; k<Math.floor(L/resolution);k++) {
-        theta = theta + k*d_theta;
-        r = param / (1 + e*Math.cos(theta));
-        d_theta = l/r;
-        renderingXYZs.push([r * Math.cos(theta - (Math.PI/2) ),r * Math.sin(theta - (Math.PI/2) ) + c,0]);
-    }
-    }
-    const results: three.Vector3[] = [];
-    for (const point of renderingXYZs) {results.push(new three.Vector3(point[0],point[1],point[2]));}
     const results_c1: three.Vector3[] = [];
     for (const point of results) {results_c1.push(threex.multVectorMatrix(point,rotation1));}
     for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
-
-        console.log()
 
     return renderXYZs;
 }
