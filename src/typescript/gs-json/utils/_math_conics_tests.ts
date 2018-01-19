@@ -114,8 +114,13 @@ export function test_ellipseGetRenderXYZs(): boolean {
     // [0,x,y]
     const center1: gs.IPoint = g.addPoint([0,0,0]);
     const ellipse1: gs.IEllipse = g.addCircle(center1,[1,0,0],[0,1,0],[0,360]);
-    console.log(cs.ellipseGetRenderXYZs(ellipse1,0.01));
-//cs.ellipseGetRenderXYZs(ellipse1,0.8)
+    // console.log(cs.ellipseGetRenderXYZs(ellipse1,0.01));
     // Valid
+
+    // [0,x,z]
+    const center2: gs.IPoint = g.addPoint([1,2,3]);
+    const ellipse2: gs.IEllipse = g.addEllipse(center2,[1,0,0],[0,0,1],[0,90]);
+   console.log(cs.ellipseGetRenderXYZs(ellipse2,0.1));
+
     return true;
 }
