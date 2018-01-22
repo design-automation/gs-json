@@ -65,39 +65,41 @@ export function test_circleEvaluate(): boolean {
 export function test_circleGetRenderXYZs(): boolean {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-
-    // In [0,x,y] Plan
+    // [0,x,y]
     const center1: gs.IPoint = g.addPoint([1,1,0]);
     const circle1: gs.ICircle = g.addCircle(center1,[1,0,0],[0,1,0],[0,90]);
-    // console.log(cs.circleGetRenderXYZs(circle1,0.4));
+//    console.log(cs.circleGetRenderXYZs(circle1,0.1));
     // Valid
 
-    // In [0,x,z] Plan
+    // [0,x,z]
     const center2: gs.IPoint = g.addPoint([1,2,3]);
     const circle2: gs.ICircle = g.addCircle(center2,[1,0,0],[0,0,1],[0,90]);
-    // console.log(cs.circleGetRenderXYZs(circle2,0.4));
+//    console.log(cs.circleGetRenderXYZs(circle2,0.1));
     // Valid
 
-    // In [0,y,z] Plan
+    // [0,y,z]
     const center3: gs.IPoint = g.addPoint([0,1,2]);
     const circle3: gs.ICircle = g.addCircle(center3,[0,1,0],[0,0,1],[0,90]);
-    console.log(cs.circleGetRenderXYZs(circle3,0.4));
+//    console.log(cs.circleGetRenderXYZs(circle3,0.1));
     // Valid
 
-    // In [0,x,(y+z).normalize()] Plan
+    // [0,x,(y+z).normalize()]
     const center4: gs.IPoint = g.addPoint([0,Math.sqrt(2)/2,Math.sqrt(2)/2]);
     const circle4: gs.ICircle = g.addCircle(center4,[1,0,0],[0,Math.sqrt(2)/2,Math.sqrt(2)/2],[0,90]);
-    // console.log(cs.circleGetRenderXYZs(circle4,0.4));
+//    console.log(cs.circleGetRenderXYZs(circle4,0.1));
+    // Valid
 
-    // In [0,(x+z).normalize()),y] Plan
+    // [0,(x+z).normalize()),y]
     const center5: gs.IPoint = g.addPoint([Math.sqrt(2)/2,0,Math.sqrt(2)/2]);
     const circle5: gs.ICircle = g.addCircle(center5,[Math.sqrt(2)/2,0,Math.sqrt(2)/2],[0,1,0],[0,90]);
-    // console.log(cs.circleGetRenderXYZs(circle5,0.4));
+//    console.log(cs.circleGetRenderXYZs(circle5,0.1));
+    // Valid
 
     // In [0,-y,x] Plan
     const center6: gs.IPoint = g.addPoint([0,-1,0]);
     const circle6: gs.ICircle = g.addCircle(center6,[0,-1,0],[1,0,0],[0,90]);
-    // console.log(cs.circleGetRenderXYZs(circle6,0.4));
+   // console.log(cs.circleGetRenderXYZs(circle6,0.1));
+    // Valid
     return true;
 }
 export function test_ellipseLength(): boolean {
@@ -107,5 +109,28 @@ export function test_ellipseEvaluate(): boolean {
     return true;
 }
 export function test_ellipseGetRenderXYZs(): boolean {
+    const m: gs.IModel = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    // [0,x,y]
+    const center1: gs.IPoint = g.addPoint([0,0,0]);
+    const ellipse1: gs.IEllipse = g.addCircle(center1,[1,0,0],[0,1,0],[0,360]);
+    // console.log(cs.ellipseGetRenderXYZs(ellipse1,0.01));
+    // Valid
+
+    // [0,x,y]
+    const center2: gs.IPoint = g.addPoint([0,0,0]);
+    const ellipse2: gs.IEllipse = g.addCircle(center2,[4,0,0],[0,6,0],[0,360]);
+    // console.log(cs.ellipseGetRenderXYZs(ellipse2,0.05));
+
+    // // [0,x,z]
+    // const center2: gs.IPoint = g.addPoint([0,0,0]);
+    // const ellipse2: gs.IEllipse = g.addEllipse(center2,[0,4,0],[0,0,1],[0,90]);
+    // console.log(cs.ellipseGetRenderXYZs(ellipse2,0.05));
+
+    // // [0,y,z]
+    // const center3: gs.IPoint = g.addPoint([0,0,0]);
+    // const ellipse3: gs.IEllipse = g.addEllipse(center3,[0,1,0],[0,0,1],[0,90]);
+    // // console.log(cs.ellipseGetRenderXYZs(ellipse3,0.05));
+
     return true;
 }
