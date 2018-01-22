@@ -122,5 +122,10 @@ export function test_ellipseGetRenderXYZs(): boolean {
     const ellipse2: gs.IEllipse = g.addEllipse(center2,[1,0,0],[0,0,1],[0,90]);
    console.log(cs.ellipseGetRenderXYZs(ellipse2,0.1));
 
+    // [0,y,z]
+    const center3: gs.IPoint = g.addPoint([0,1,2]);
+    const ellipse3: gs.IEllipse = g.addEllipse(center3,[0,1,0],[0,0,1],[0,90]);
+    console.log(cs.ellipseGetRenderXYZs(ellipse3,0.1));
+
     return true;
 }
