@@ -691,6 +691,30 @@ export class Kernel {
      * two angles.
      * @param origin_id The origin point.
      * @param x_vec A vector defining the radius in the local x direction.
+     * @param y_vec A vector defining the local y direction.
+     * @param angles The angles, can be undefined, in which case a closed circle is generated.
+     * @return ID of object.
+     */
+    public geomAddCircle(origin_id: number, x_vec: XYZ, y_vec: XYZ,
+                         angles?: [number, number]): number {
+        const new_id: number = this._objs.length;
+        // add the obj
+        this._objs.push([
+            [[origin_id]], // wire with just a single point
+            [], // faces, none
+            [EObjType.circle, x_vec, y_vec, threex.crossXYZs(x_vec, y_vec), angles], // params
+        ]);
+        // update all attributes
+        this._newObjAddToAttribs(new_id);
+        // return the new conic id
+        return new_id;
+    }
+
+    /**
+     * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
+     * two angles.
+     * @param origin_id The origin point.
+     * @param x_vec A vector defining the radius in the local x direction.
      * @param y_vec A vector defining the radius in the local y direction.
      * @param angles The angles, can be undefined, in which case a ellipse is generated.
      * @return ID of object.
@@ -700,7 +724,7 @@ export class Kernel {
         const new_id: number = this._objs.length;
         // add the obj
         this._objs.push([
-            [[origin_id]], // wire with just a single point
+            [[origin_id, -2]], // wire with just a single point
             [], // faces, none
             [EObjType.ellipse, x_vec, y_vec, threex.crossXYZs(x_vec, y_vec), angles], // params
         ]);
@@ -1444,9 +1468,9 @@ export class Kernel {
      * @return An array of two edges.
      */
     public edgeGetVertices(edge_path: ITopoPathData): ITopoPathData[] {
-        let vertex_index: number = edge_path.si + 1;
         const wf_path: ITopoPathData = this.edgeGetTopo(edge_path);
-        if (vertex_index > this.topoNumEdges(wf_path) - 1) {
+        let vertex_index: number = edge_path.si + 1;
+        if (vertex_index > this.topoNumVertices(wf_path) - 1) {
             vertex_index = 0;
         }
         return [

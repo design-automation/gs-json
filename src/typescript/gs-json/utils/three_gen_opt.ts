@@ -1,25 +1,25 @@
 import * as gs from "./_export";
 import * as fs from "fs";
 import * as three from "three";
-import * as threeg from "./three_geom";
+import * as threeg from "./three_geom_opt";
 import * as threes from "./three_scene";
 
 /**
- * Add mesh to scene.
+ * Add stuff to scene.
  */
 function add(scene: gs.IThreeScene,
         three_type: string, description: string, data: threeg.IThreeData, material: gs.IThreeMaterial): void {
-    const mesh_geom: gs.IThreeBufferedGeom = threes.genGeom(data.xyzs_flat, data.indexes);
-    threes.addGeomToScene(scene, mesh_geom);
-    threes.addObjToScene(scene, threes.genObj(three_type, description, mesh_geom, material));
+    const buff_geom: gs.IThreeBufferedGeom = threes.genGeom(data.xyzs_flat, data.indexes);
+    threes.addGeomToScene(scene, buff_geom);
+    threes.addObjToScene(scene, threes.genObj(three_type, description, buff_geom, material));
 }
 
 /**
- * Add all polymeshes to the scene and generate one big threejs mesh out of it.
+ * Add all objects faces to the scene and generate one big threejs mesh out of it.
  */
-function createFaces(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material: gs.IThreeMaterial):
+function createFaces(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.IThreeMaterial):
         Map<number, gs.ITopoPathData> {
-    const data: threeg.IThreeData = threeg.getDataFromAllFaces(polymeshes);
+    const data: threeg.IThreeData = threeg.getDataFromAllFaces(objects);
     if (data !== null) {
         add(scene, "Mesh", "All faces", data, material);
         return data.reverse_map as Map<number, gs.ITopoPathData>;
@@ -28,20 +28,7 @@ function createFaces(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material
 }
 
 /**
- * Add all polymeshes edges to the scene and create one big edge soup out of it.
- */
-function createEdges(scene: gs.IThreeScene, polymeshes: gs.IPolymesh[], material: gs.IThreeMaterial):
-        Map<number, gs.ITopoPathData> {
-    const data: threeg.IThreeData = threeg.getDataFromAllEdges(polymeshes);
-    if (data !== null) {
-        add(scene, "LineSegments", "All edges", data, material);
-        return data.reverse_map as Map<number, gs.ITopoPathData>;
-    }
-    return null;
-}
-
-/**
- * Add all polymeshes edges to the scene and create one big wire soup out of it.
+ * Add all objects edges to the scene and create one big line segment soup out of it.
  */
 function createWires(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.IThreeMaterial):
         Map<number, gs.ITopoPathData> {
@@ -51,6 +38,42 @@ function createWires(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.ITh
         return data.reverse_map as Map<number, gs.ITopoPathData>;
     }
     return null;
+}
+
+/**
+ * Add all objects edges to the scene and create one big line segment soup out of it.
+ */
+function createEdges(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.IThreeMaterial):
+        Map<number, gs.ITopoPathData> {
+    const data: threeg.IThreeData = threeg.getDataFromAllEdges(objects);
+    if (data !== null) {
+        add(scene, "LineSegments", "All edges", data, material);
+        return data.reverse_map as Map<number, gs.ITopoPathData>;
+    }
+    return null;
+}
+
+/**
+ * Add all objects vertices to the scene and create one big vertex soup out of it.
+ */
+function createVertices(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.IThreeMaterial):
+        Map<number, gs.ITopoPathData> {
+    const data: threeg.IThreeData = threeg.getDataFromAllEdges(objects);
+    if (data !== null) {
+        add(scene, "Points", "All vertices", data, material);
+        return data.reverse_map as Map<number, gs.ITopoPathData>;
+    }
+    return null;
+}
+
+/**
+ * Add all other lines to the scene and create one big line segment soup out of it.
+ */
+function createOtherLines(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.IThreeMaterial): void {
+    const data: threeg.IThreeData = threeg.getDataAllOtherLines(objects);
+    if (data !== null) {
+        add(scene, "LineSegments", "Other lines", data, material);
+    }
 }
 
 /**
@@ -70,44 +93,60 @@ function createPoints(scene: gs.IThreeScene, points: gs.IPoint[], material: gs.I
  * Generate the model.
  */
 export function genThreeOptModel(model: gs.IModel): gs.IThreeScene {
+
     if (model.constructor.name !== "Model") {throw new Error("Invalid model.");}
     const scene: gs.IThreeScene = threes.genScene();
     const mats: gs.IThreeMaterial[] = threes.genDefaultMaterials();
     threes.addMatsToScene(scene, mats);
+
     // TODO add the points only once using threejs interleaved buffer
 
     // add the objects
-    const pmeshes: gs.IPolymesh[] = model.getGeom().getAllObjs()
-        .filter((o) => o.getObjType() === gs.EObjType.polymesh);
-    const faces_map: Map<number, gs.ITopoPathData> = createFaces(scene, pmeshes, mats[2]);
-    const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, pmeshes, mats[0]);
-    const wires_map: Map<number, gs.ITopoPathData> = createWires(scene, model.getGeom().getAllObjs(), mats[1]);
+    const objs: gs.IObj[] = model.getGeom().getAllObjs();
+    const faces_map: Map<number, gs.ITopoPathData> = createFaces(scene, objs, mats[2]);
+    const wires_map: Map<number, gs.ITopoPathData> = createWires(scene, objs, mats[1]);
+    const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, objs, mats[0]);
+    const vertices_map: Map<number, gs.ITopoPathData> = createVertices(scene, objs, mats[4]);
+
+    // other
+    createOtherLines(scene, objs, mats[0]);
+
+    // add the points
     createPoints(scene, model.getGeom().getAllPoints(), mats[4]);
-    // return the final scene
-    //console.log(faces_map);
-    //console.log(edges_map);
-    //console.log(wires_map);
+
+    // return the scene with object and points
     return scene;
 }
 
 /**
- * Generate the model.
+ * Generate the model together with some maps.
  */
-export function genThreeOptModelAndMaps(model: gs.IModel):
-        {scene: gs.IThreeScene, faces_map: Map<number, gs.ITopoPathData>,
-            wires_map: Map<number, gs.ITopoPathData>, edges_map: Map<number, gs.ITopoPathData>} {
+export function genThreeOptModelAndMaps(model: gs.IModel): {scene: gs.IThreeScene,
+                                                            faces_map: Map<number, gs.ITopoPathData>,
+                                                            wires_map: Map<number, gs.ITopoPathData>,
+                                                            edges_map: Map<number, gs.ITopoPathData>
+                                                            vertices_map: Map<number, gs.ITopoPathData>} {
+
     if (model.constructor.name !== "Model") {throw new Error("Invalid model.");}
     const scene: gs.IThreeScene = threes.genScene();
     const mats: gs.IThreeMaterial[] = threes.genDefaultMaterials();
     threes.addMatsToScene(scene, mats);
+
     // TODO add the points only once using threejs interleaved buffer
 
     // add the objects
-    const pmeshes: gs.IPolymesh[] = model.getGeom().getAllObjs()
-        .filter((o) => o.getObjType() === gs.EObjType.polymesh);
-    const faces_map: Map<number, gs.ITopoPathData> = createFaces(scene, pmeshes, mats[2]);
-    const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, pmeshes, mats[0]);
-    const wires_map: Map<number, gs.ITopoPathData> = createWires(scene, model.getGeom().getAllObjs(), mats[1]);
+    const objs: gs.IObj[] = model.getGeom().getAllObjs();
+    const faces_map: Map<number, gs.ITopoPathData> = createFaces(scene, objs, mats[2]);
+    const wires_map: Map<number, gs.ITopoPathData> = createWires(scene, objs, mats[1]);
+    const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, objs, mats[0]);
+    const vertices_map: Map<number, gs.ITopoPathData> = createVertices(scene, objs, mats[4]);
+
+    // other
+    createOtherLines(scene, objs, mats[0]);
+
+    // add the points
     createPoints(scene, model.getGeom().getAllPoints(), mats[4]);
-    return {scene, faces_map, wires_map, edges_map};
+
+    // return the scene with object and points
+    return {scene, faces_map, wires_map, edges_map, vertices_map};
 }

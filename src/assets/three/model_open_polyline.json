@@ -6,7 +6,7 @@
     },
     "geometries": [
         {
-            "uuid": "b5e51bfc-1d99-4fc8-82ee-20cf4dd38f64",
+            "uuid": "80beb5fe-ac99-4eed-a736-457035ca0830",
             "type": "BufferGeometry",
             "data": {
                 "attributes": {
@@ -32,7 +32,7 @@
     ],
     "materials": [
         {
-            "uuid": "ada72030-1554-4a35-9055-f1af53a1b279",
+            "uuid": "d4649d97-9783-4e06-bb62-0b4d575165b8",
             "type": "LineBasicMaterial",
             "color": 0,
             "vertexColors": 0,
@@ -43,7 +43,7 @@
             "depthWrite": true
         },
         {
-            "uuid": "a5271424-9213-46c9-a37a-fde4ae6c314e",
+            "uuid": "c102cd8b-6e5b-4313-bcf6-f78920fb2ed8",
             "type": "LineBasicMaterial",
             "color": 255,
             "vertexColors": 0,
@@ -54,7 +54,7 @@
             "depthWrite": true
         },
         {
-            "uuid": "43c36198-cf38-4344-8c62-485fef5fa677",
+            "uuid": "221600f5-5034-456e-a798-0b083c2cf8d6",
             "type": "MeshPhongMaterial",
             "color": 16777215,
             "emissive": 0,
@@ -71,7 +71,7 @@
             "flatShading": true
         },
         {
-            "uuid": "c241c259-565c-4bdf-9ef1-7cc1bdc8b25a",
+            "uuid": "ad41d146-d208-4db2-9de5-ef163d4506a5",
             "type": "MeshPhongMaterial",
             "color": 0,
             "emissive": 0,
@@ -89,7 +89,7 @@
             "flatShading": true
         },
         {
-            "uuid": "e3a36ca7-1237-428a-8c38-e99a3e0a5d1f",
+            "uuid": "b706a7db-0106-4295-b914-d1f4879ef3cd",
             "type": "PointsMaterial",
             "color": 16777215,
             "size": 2,
@@ -101,21 +101,21 @@
         "name": "Scene",
         "children": [
             {
-                "uuid": "1390cc03-b3f3-413f-b30a-e338b5dbbada",
+                "uuid": "70bb68c9-2f46-4a42-a3d9-444b26c7c046",
                 "type": "Group",
                 "name": "0_Polyline",
                 "children": [
                     {
-                        "uuid": "b360c35f-944e-4193-a91c-3e8240a83730",
+                        "uuid": "462c0f91-1d42-4cda-b72f-e0710705ae37",
                         "type": "Line",
                         "name": "Polyline",
-                        "geometry": "b5e51bfc-1d99-4fc8-82ee-20cf4dd38f64",
-                        "material": "ada72030-1554-4a35-9055-f1af53a1b279",
+                        "geometry": "80beb5fe-ac99-4eed-a736-457035ca0830",
+                        "material": "d4649d97-9783-4e06-bb62-0b4d575165b8",
                         "castShadow": false,
                         "receiveShadow": false
                     },
                     {
-                        "uuid": "da5a42d8-b57e-4e53-be8a-cc136765917f",
+                        "uuid": "83e198d6-c2eb-410a-8f8b-2a359b704bf9",
                         "type": "Group",
                         "name": "Vertices",
                         "children": [
@@ -191,7 +191,7 @@
                         ]
                     },
                     {
-                        "uuid": "27bc6ca3-18a5-43ac-be9a-b17c4198a628",
+                        "uuid": "b0808792-829c-4627-a0c9-3dc4afb93e0b",
                         "type": "Group",
                         "name": "Edges",
                         "children": [
@@ -234,8 +234,8 @@
                                     0,
                                     1,
                                     0,
+                                    10,
                                     5,
-                                    0,
                                     0,
                                     1
                                 ],
@@ -244,7 +244,7 @@
                         ]
                     },
                     {
-                        "uuid": "3f2b2b62-711e-42ba-9b56-100e8a2dcb07",
+                        "uuid": "605afaf9-340e-4583-b033-549e80ad76fa",
                         "type": "Group",
                         "name": "Objs",
                         "children": [

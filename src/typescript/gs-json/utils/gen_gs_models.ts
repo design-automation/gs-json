@@ -1264,7 +1264,7 @@ export function genModelTorus(): gs.IModel {
 }
 
 /**
- * Generates a model of 100 x torus.
+ * Generates a model of 50 x torus.
  */
 export function genModelManyTorus(): gs.IModel {
     const m: gs.IModel = genModelTorus();
@@ -1275,6 +1275,22 @@ export function genModelManyTorus(): gs.IModel {
         matrix.setPosition(new three.Vector3(Math.random() * 50, Math.random() * 50, 0));
         o.copy().xform(matrix);
     }
+    return m;
+}
+
+/**
+ * Generates a model with some circles.
+ */
+export function genModelCircles(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const points: gs.IPoint[] = m.getGeom().addPoints([
+            [7,  33, 2],
+            [10, 12, 23],
+            [10, 10, -10],
+        ]);
+    m.getGeom().addCircle(points[0], [7,0,0],  [0,1,0], [10,20]);
+    m.getGeom().addCircle(points[1], [0,23,0], [1,0,0], [30, 300]);
+    m.getGeom().addCircle(points[2], [0,0,16], [0,1,0], [20, 100]);
     return m;
 }
 
@@ -1300,6 +1316,7 @@ export function genThreeModelsWriteFiles(): void {
     genModelWriteToJSONFile(genModelGrid(), "model_grid.gs");
     genModelWriteToJSONFile(genModelTorus(), "model_torus.gs");
     //genModelWriteToJSONFile(genModelManyTorus(), "model_many_torus.gs");
+    genModelWriteToJSONFile(genModelCircles(), "model_circles.gs");
 }
 /**
  * If this module is being run directly, then files will be written to disk.

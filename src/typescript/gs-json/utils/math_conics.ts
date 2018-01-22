@@ -3,6 +3,21 @@ import * as threex from "./three_utils";
 import * as three from "three";
 
 /**
+ * Calculate a set of xyz position on the circle/arc ir ellipse/arc. The number of points = length / resolution.
+ * With resolution from 0.0001 to 0.5, 0.0001 being a higher resolution than 0.5
+ */
+export function getRenderXYZs(obj: gs.IObj, resolution: number): gs.XYZ[] {
+    switch (obj.getObjType()) {
+        case gs.EObjType.circle:
+            return circleGetRenderXYZs(obj as gs.ICircle, resolution);
+        case gs.EObjType.ellipse:
+            return ellipseGetRenderXYZs(obj as gs.IEllipse, resolution);
+        default:
+            throw new Error("Invalid object type.");
+    }
+}
+
+/**
  * Calculate the length of the circle or arc.
  */
 export function circleLength(curve: gs.ICircle): number {
@@ -60,8 +75,7 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     const e1: three.Vector3 = new three.Vector3(1,0,0);
     const e2: three.Vector3 = new three.Vector3(0,1,0);
     const e3: three.Vector3 = new three.Vector3(0,0,1);
-    const C1: three.Vector3 = new three.Vector3(
-    curve.getOrigin().getPosition()[0],curve.getOrigin().getPosition()[1],curve.getOrigin().getPosition()[2]);
+    const C1: three.Vector3 = new three.Vector3(...origin);
     const U1: three.Vector3 = new three.Vector3(...curve.getVectors()[0]).normalize();
     const V1: three.Vector3 = new three.Vector3(...curve.getVectors()[1]).normalize();
     const W1: three.Vector3 = threex.crossVectors(U1,V1,true);
@@ -112,6 +126,7 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
     return renderXYZs;
 }
+
 /**
  * Calculate the length of the conic curve.
  */
