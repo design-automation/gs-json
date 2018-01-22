@@ -7,7 +7,7 @@
     "geometries": [],
     "materials": [
         {
-            "uuid": "9967942d-90bc-4b06-906a-d56fa3bd54e0",
+            "uuid": "f5c581fc-4e15-4c54-b52b-65e64ad181da",
             "type": "LineBasicMaterial",
             "color": 0,
             "vertexColors": 0,
@@ -18,7 +18,7 @@
             "depthWrite": true
         },
         {
-            "uuid": "62f8c7e0-434a-4618-a797-7be2eda814c1",
+            "uuid": "fe5badc8-2bc0-4f4d-b3a3-5502d9dd7b5a",
             "type": "LineBasicMaterial",
             "color": 255,
             "vertexColors": 0,
@@ -29,7 +29,7 @@
             "depthWrite": true
         },
         {
-            "uuid": "89ab931b-1726-428e-96c8-10f32f2d5cda",
+            "uuid": "9cbeeed3-0a45-4cc7-a946-4bd3c429d351",
             "type": "MeshPhongMaterial",
             "color": 16777215,
             "emissive": 0,
@@ -46,7 +46,7 @@
             "flatShading": true
         },
         {
-            "uuid": "3a53f366-2213-4fb6-a51b-30851b901e4f",
+            "uuid": "9e4d820f-0668-4faf-b7df-7d752a194f32",
             "type": "MeshPhongMaterial",
             "color": 0,
             "emissive": 0,
@@ -64,7 +64,7 @@
             "flatShading": true
         },
         {
-            "uuid": "e433625d-4b58-41a2-a314-64ca60bad4d5",
+            "uuid": "c435a442-dc64-4bed-acf5-4ce45b3334ca",
             "type": "PointsMaterial",
             "color": 16777215,
             "size": 2,
