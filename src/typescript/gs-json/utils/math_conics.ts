@@ -280,7 +280,8 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     const results_c1: three.Vector3[] = [];
     for (const point of results) {results_c1.push(threex.multVectorMatrix(point,rotation1));}
     for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
-    console.log("rendering is ")
-    console.log(renderingXYZs)
-    return renderXYZs;
+    // console.log("rendering is ");
+    // console.log(renderingXYZs);
+    throw new Error("Method not implemented");
+    // return renderXYZs;
 }

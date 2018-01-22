@@ -120,7 +120,7 @@ export function test_ellipseGetRenderXYZs(): boolean {
     // [0,x,y]
     const center2: gs.IPoint = g.addPoint([0,0,0]);
     const ellipse2: gs.IEllipse = g.addCircle(center2,[4,0,0],[0,6,0],[0,360]);
-    console.log(cs.ellipseGetRenderXYZs(ellipse2,0.05));
+    // console.log(cs.ellipseGetRenderXYZs(ellipse2,0.05));
 
     // // [0,x,z]
     // const center2: gs.IPoint = g.addPoint([0,0,0]);
