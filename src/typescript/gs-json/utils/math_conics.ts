@@ -203,8 +203,8 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     let d_theta: number = 0;
     const U1: three.Vector3 = new three.Vector3(...curve.getVectors()[0]).normalize();
     const V1: three.Vector3 = new three.Vector3(...curve.getVectors()[1]).normalize();
-    const a: number = U1.length();
-    const b: number = V1.length();
+    const a: number = new three.Vector3(...curve.getVectors()[0]).length();
+    const b: number = new three.Vector3(...curve.getVectors()[1]).length();
     const L: number = Math.PI * Math.sqrt(2*(a*a + b*b) - (a-b)*(a-b)/2);
     const l: number = L * resolution;
     const param: number = b*b/a;
@@ -280,7 +280,7 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     const results_c1: three.Vector3[] = [];
     for (const point of results) {results_c1.push(threex.multVectorMatrix(point,rotation1));}
     for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
+    console.log("rendering is ")
+    console.log(renderingXYZs)
     return renderXYZs;
-
-    
 }

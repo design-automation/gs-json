@@ -117,15 +117,21 @@ export function test_ellipseGetRenderXYZs(): boolean {
     // console.log(cs.ellipseGetRenderXYZs(ellipse1,0.01));
     // Valid
 
-    // [0,x,z]
-    const center2: gs.IPoint = g.addPoint([1,2,3]);
-    const ellipse2: gs.IEllipse = g.addEllipse(center2,[1,0,0],[0,0,1],[0,90]);
-   console.log(cs.ellipseGetRenderXYZs(ellipse2,0.1));
+    // [0,x,y]
+    const center2: gs.IPoint = g.addPoint([0,0,0]);
+    const ellipse2: gs.IEllipse = g.addCircle(center2,[4,0,0],[0,6,0],[0,360]);
+    console.log(cs.ellipseGetRenderXYZs(ellipse2,0.01));
 
-    // [0,y,z]
-    const center3: gs.IPoint = g.addPoint([0,1,2]);
-    const ellipse3: gs.IEllipse = g.addEllipse(center3,[0,1,0],[0,0,1],[0,90]);
-    console.log(cs.ellipseGetRenderXYZs(ellipse3,0.1));
+
+    // // [0,x,z]
+    // const center2: gs.IPoint = g.addPoint([0,0,0]);
+    // const ellipse2: gs.IEllipse = g.addEllipse(center2,[0,4,0],[0,0,1],[0,90]);
+    // console.log(cs.ellipseGetRenderXYZs(ellipse2,0.05));
+
+    // // [0,y,z]
+    // const center3: gs.IPoint = g.addPoint([0,0,0]);
+    // const ellipse3: gs.IEllipse = g.addEllipse(center3,[0,1,0],[0,0,1],[0,90]);
+    // // console.log(cs.ellipseGetRenderXYZs(ellipse3,0.05));
 
     return true;
 }
