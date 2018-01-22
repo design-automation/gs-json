@@ -68,7 +68,7 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     const r: number = curve.getRadius();
     const angles: number[] = curve.getAngles();
     const L: number = 2*Math.PI*r;
-    let N: number = Math.floor(circleLength(curve)/resolution);
+    let N: number = Math.floor(L/resolution);
     if (N < 3) {N = 3;}
     const renderingXYZs: gs.XYZ[] = [];
     for(let k = 0; k < N; k++) {
@@ -82,7 +82,9 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
         renderingXYZs.push([r * Math.cos(alpha), r * Math.sin(alpha),0]);
     }
     const results: three.Vector3[] = [];
-    for (const point of renderingXYZs) {results.push(new three.Vector3(point[0],point[1],point[2]));}
+    for (const point of renderingXYZs) {
+        results.push(new three.Vector3(point[0],point[1],point[2]));
+    }
     const O1: three.Vector3 = new three.Vector3(0,0,0);
     const e1: three.Vector3 = new three.Vector3(1,0,0);
     const e2: three.Vector3 = new three.Vector3(0,1,0);
@@ -109,9 +111,18 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     const m3: three.Matrix4 = new three.Matrix4();
     const rotation1: three.Matrix4 = m3.multiplyMatrices(m2, m1);
     const results_c1: three.Vector3[] = [];
+<<<<<<< HEAD
     for (const point of results) {results_c1.push(threex.multVectorMatrix(point,rotation1));}
     const renderXYZs: gs.XYZ[] = [];
     for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
+=======
+    for (const point of results) {
+        results_c1.push(threex.multVectorMatrix(point,rotation1));
+    }
+    for(const point of results_c1) {
+        renderXYZs.push([point.x,point.y,point.z]);
+    }
+>>>>>>> 55535b3496cb2cabe9048d7d6255afcf265639ad
     return renderXYZs;
 }
 
