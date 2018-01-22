@@ -58,7 +58,7 @@ function createEdges(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.ITh
  */
 function createVertices(scene: gs.IThreeScene, objects: gs.IObj[], material: gs.IThreeMaterial):
         Map<number, gs.ITopoPathData> {
-    const data: threeg.IThreeData = threeg.getDataFromAllEdges(objects);
+    const data: threeg.IThreeData = threeg.getDataFromAllVertices(objects);
     if (data !== null) {
         add(scene, "Points", "All vertices", data, material);
         return data.reverse_map as Map<number, gs.ITopoPathData>;
