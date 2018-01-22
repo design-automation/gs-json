@@ -111,19 +111,10 @@ export function circleGetRenderXYZs(curve: gs.ICircle, resolution: number): gs.X
     const m3: three.Matrix4 = new three.Matrix4();
     const rotation1: three.Matrix4 = m3.multiplyMatrices(m2, m1);
     const results_c1: three.Vector3[] = [];
-<<<<<<< HEAD
-    for (const point of results) {results_c1.push(threex.multVectorMatrix(point,rotation1));}
-    const renderXYZs: gs.XYZ[] = [];
-    for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
-=======
     for (const point of results) {
         results_c1.push(threex.multVectorMatrix(point,rotation1));
     }
-    for(const point of results_c1) {
-        renderXYZs.push([point.x,point.y,point.z]);
-    }
->>>>>>> 55535b3496cb2cabe9048d7d6255afcf265639ad
-    return renderXYZs;
+    return results_c1.map((point) => [point.x,point.y,point.z] as gs.XYZ);
 }
 
 /**
