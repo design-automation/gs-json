@@ -169,6 +169,9 @@ export interface ICircle  extends IObj {
     getRadius(): number;
     getAngles(): [number, number];
     setAngles(angles: [number, number]): void;
+    length(): number;
+    evalParam(t: number): IPoint;
+    equiPoints(num_points: number): IPoint[];
 }
 
 /**

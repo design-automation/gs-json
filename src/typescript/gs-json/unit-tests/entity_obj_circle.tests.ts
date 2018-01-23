@@ -26,4 +26,13 @@ describe("Tests for Entity Object Circle", () => {
     it("test_isClosed", () => {
         expect( tests.test_isClosed() ).toBe(true);
     });
+    it("test_length", () => {
+        expect( tests.test_length() ).toBe(true);
+    });
+    it("test_eval", () => {
+        expect( tests.test_eval() ).toBe(true);
+    });
+    it("test_equiPoints", () => {
+        expect( tests.test_equiPoints() ).toBe(true);
+    });
 });

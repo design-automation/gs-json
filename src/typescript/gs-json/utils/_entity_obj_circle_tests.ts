@@ -88,3 +88,40 @@ export function test_isClosed(): boolean {
     if(curve1.isClosed() === true) {return false;}
     return curve2.isClosed();
 }
+
+export function test_length(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    const angle_1: number = 0;
+    const angle_2: number = 180;
+    const angle_3: number = 360;
+    const curve1: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[10,200]);
+    if(curve1.length() < 0) {return false;}
+    return true;
+}
+
+export function test_eval(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    const angle_1: number = 0;
+    const angle_2: number = 180;
+    const angle_3: number = 360;
+    const curve1: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[10,200]);
+    const point = curve1.evalParam(0.3);
+    return true;
+}
+
+export function test_equiPoints(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    const angle_1: number = 0;
+    const angle_2: number = 180;
+    const angle_3: number = 360;
+    const curve1: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[10,200]);
+    const points = curve1.equiPoints(20);
+    if (points.length !== 20) {return false;}
+    return true;
+}
