@@ -14,4 +14,7 @@ describe("Tests for Point class", () => {
     it("test_point_getVertices", () => {
     expect( entity_point_tests.test_point_getVertices() ).toBe(true);
     });
+    it("test_point_exists", () => {
+    expect( entity_point_tests.test_point_exists() ).toBe(true);
+    });
 });

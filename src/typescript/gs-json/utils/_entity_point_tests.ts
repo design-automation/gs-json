@@ -59,3 +59,10 @@ export function test_point_getVertices(): boolean {
     if(!(p7.getVertices().length === 3)) {return false;}
     return true;
 }
+
+export function test_point_exists(): boolean {
+    const model: gs.IModel = new gs.Model();
+    const point: gs.IPoint = model.getGeom().addPoint([11, 22, 33]);
+    if (!point.exists()) {return false;}
+    return true;
+}

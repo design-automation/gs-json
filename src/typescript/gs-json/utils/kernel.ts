@@ -385,7 +385,7 @@ export class Kernel {
      * @return
      */
     public geomHasPoint(id: number): boolean {
-        return this._points[0][id] === undefined;
+        return this._points[0][id] !== undefined;
     }
 
     /**
@@ -781,8 +781,7 @@ export class Kernel {
      * @return
      */
     public geomHasObj(id: number): boolean {
-        if (this._objs[id] === undefined) {return false; }
-        return true;
+        return this._objs[id] !== undefined;
     }
 
     /**
