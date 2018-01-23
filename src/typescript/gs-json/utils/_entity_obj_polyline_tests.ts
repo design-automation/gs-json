@@ -16,6 +16,24 @@ export function test_Polyline_getObjType(): boolean {
     return true;
 }
 
+export function test_Polyline_setIsClosed(): boolean {
+    const m: gs.IModel = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const p1 = g.addPoint([0,0,0]);
+    const p2 = g.addPoint([2,0,0]);
+    const p3 = g.addPoint([3,6,0]);
+    const p4 = g.addPoint([7,4,9]);
+    const pline1: gs.IPolyline = g.addPolyline([p1,p2,p3,p4], false);
+    if (pline1.numEdges() !== 3) {return false;}
+    pline1.setIsClosed(true);
+    if (!pline1.isClosed()) {return false;}
+    if (pline1.numEdges() !== 4) {return false;}
+    pline1.setIsClosed(false);
+    if (pline1.isClosed()) {return false;}
+    if (pline1.numEdges() !== 3) {return false;}
+    return true;
+}
+
 export function test_Polyline_insertVertex(): boolean {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();

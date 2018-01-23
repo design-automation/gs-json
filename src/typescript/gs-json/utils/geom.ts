@@ -1,5 +1,5 @@
 import {XYZ, IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane, ICircle, IEllipse,
-        IPolyline, IPolymesh, INurbsCurve, ITopo} from "./ifaces_gs";
+        IPolyline, IPolymesh, ITopo} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
@@ -7,7 +7,6 @@ import {Point} from "./entity_point";
 import {Polyline} from "./entity_obj_polyline";
 import {Circle} from "./entity_obj_circle";
 import {Ellipse} from "./entity_obj_ellipse";
-import {NurbsCurve} from "./entity_obj_nurbscurve";
 import {Polymesh} from "./entity_obj_polymesh";
 import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";
@@ -91,18 +90,6 @@ export class Geom implements IGeom {
     public addEllipse(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]): IEllipse {
         const id: number = this._kernel.geomAddEllipse(origin_point.getID(), x_vec, y_vec, angles);
         return new Ellipse(this._kernel, id);
-    }
-
-    /**
-     * Adds a new nurbs curve to the model.
-     * @param points A collection of Points, which are the curve control points
-     * @param is_closed True if the polyline is closed.
-     * @return Object of type Polyline
-     */
-    public addNurbsCurve(points: IPoint[], is_closed: boolean, order: number): INurbsCurve {
-        const point_ids: number[] = points.map((p) => p.getID());
-        const id: number = this._kernel.geomAddNurbsCurve(point_ids, is_closed, order);
-        return new NurbsCurve(this._kernel, id);
     }
 
     /**

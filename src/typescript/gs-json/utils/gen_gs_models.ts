@@ -1,6 +1,7 @@
 import * as gs from "./_export";
 import * as fs from "fs";
 import * as three from "three";
+
 /**
  * Write a file.
  */
@@ -1318,6 +1319,7 @@ export function genThreeModelsWriteFiles(): void {
     //genModelWriteToJSONFile(genModelManyTorus(), "model_many_torus.gs");
     genModelWriteToJSONFile(genModelCircles(), "model_circles.gs");
 }
+
 /**
  * If this module is being run directly, then files will be written to disk.
  * This will require the TS code to be transpiled to 2015 JS code, first with TSC and then with babel.

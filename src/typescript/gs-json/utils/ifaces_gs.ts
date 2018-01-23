@@ -53,7 +53,6 @@ export interface IGeom  {
     addEllipse(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]);
     addPolyline(wire_points: IPoint[], is_closed: boolean): IPolyline;
     addPolymesh(face_points: IPoint[][]): IPolymesh;
-    addNurbsCurve(points: IPoint[], is_closed: boolean, order: number): INurbsCurve;
     // Points
     getAllPoints(): IPoint[];
     getPoints(point_ids: number[]): IPoint[];
@@ -192,19 +191,12 @@ export interface IEllipse  extends IObj {
 export interface IPolyline  extends IObj {
     getObjType(): EObjType;
     isClosed(): boolean;
+    setIsClosed(is_closed: boolean): boolean;
     numVertices(): number;
     numEdges(): number;
     insertVertex(edge: IEdge, point: IPoint): IVertex;
     addVertex(point: IPoint, to_start: boolean): IVertex;
     delVertex(vertex: IVertex): IVertex;
-}
-
-/**
- * Interface, for a Polyline class.
- */
-export interface INurbsCurve  extends IObj {
-    getObjType(): EObjType;
-    isClosed(): boolean;
 }
 
 /**

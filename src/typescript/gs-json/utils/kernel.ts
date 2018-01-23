@@ -1397,6 +1397,24 @@ export class Kernel {
     }
 
     /**
+     * Set if this wire is closed. For faces, the result is always true.
+     * @return boolean
+     */
+    public topoSetIsClosed(topo_path: ITopoPathData, is_closed: boolean): boolean {
+        if (topo_path.tt === 1) {return true;}
+        const wf_topo: number[] = this._objs[topo_path.id][topo_path.tt][topo_path.ti];
+        const was_closed: boolean = (wf_topo[wf_topo.length - 1] === -1);
+        if (is_closed !== was_closed) {
+            if (is_closed) {
+                wf_topo.push(-1);
+            } else {
+                wf_topo.pop(); // removes -1 from end of list
+            }
+        }
+        return was_closed;
+    }
+
+    /**
      * Within the parent object, find all faces or wires that share at least n points.
      * @return An array of faces.
      */

@@ -1,11 +1,10 @@
-import {IObj, IRay, IPlane, ICircle, IEllipse, IPolyline, IPolymesh, INurbsCurve} from "./ifaces_gs";
+import {IObj, IRay, IPlane, ICircle, IEllipse, IPolyline, IPolymesh} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {EObjType} from "./enums";
 import {Point} from "./entity_point";
 import {Polyline} from "./entity_obj_polyline";
 import {Circle} from "./entity_obj_circle";
 import {Ellipse} from "./entity_obj_ellipse";
-import {NurbsCurve} from "./entity_obj_nurbscurve";
 import {Polymesh} from "./entity_obj_polymesh";
 import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";

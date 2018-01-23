@@ -30,6 +30,16 @@ export class Polyline extends Obj implements IPolyline {
     }
 
     /**
+     * Sets if the polyline is closed.
+     * @param is_closed Ture if closed, false if open.
+     * @return Return the old value for is_closed.
+     */
+    public setIsClosed(is_closed: boolean): boolean {
+        const path: ITopoPathData = this.getWires()[0].getTopoPath();
+        return this._kernel.topoSetIsClosed(path, is_closed);
+    }
+
+    /**
      * Returns the number of vertices in this polyline.
      * @return Return the number of vertices.
      */
