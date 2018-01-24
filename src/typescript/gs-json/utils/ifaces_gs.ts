@@ -172,10 +172,6 @@ export interface ICircle  extends IObj {
     length(): number;
     evalParam(t: number): IPoint;
     equiPoints(num_points: number): IPoint[];
-    // get_U1(): three.Vector3;
-    // get_V1(): three.Vector3;
-    get_U1(): XYZ;
-    get_V1(): XYZ;
 }
 
 /**
@@ -190,10 +186,6 @@ export interface IEllipse  extends IObj {
     getRadii(): [number, number];
     getAngles(): [number, number];
     setAngles(angles: [number, number]): void;
-    // get_U1(): three.Vector3;
-    // get_V1(): three.Vector3;
-    get_U1(): XYZ;
-    get_V1(): XYZ;
 }
 
 /**
