@@ -83,3 +83,4 @@ export class Ellipse extends Obj implements IEllipse {
     public isClosed(): boolean {
         return (this._kernel.objGetParams(this._id)[4] === undefined);
     }
+}
