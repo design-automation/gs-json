@@ -4,6 +4,7 @@ import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
 import * as threex from "./three_utils";
 import * as math_conics from "./math_conics";
+import * as three from "three";
 
 /**
  * Class ConicCurve.
@@ -73,7 +74,24 @@ export class Circle extends Obj implements ICircle {
     public getRadius(): number  {
         return threex.lengthXYZ(this._kernel.objGetParams(this._id)[1]);
     }
-
+    /**
+     *
+     * @return U1_Vector of the Circle.
+     */
+    public get_U1(): three.Vector3  {
+        return new three.Vector3(this._kernel.objGetParams(this._id)[1][0],
+            this._kernel.objGetParams(this._id)[1][1],
+            this._kernel.objGetParams(this._id)[1][2]);
+    }
+    /**
+     *
+     * @return V1_Vector of the Circle.
+     */
+    public get_V1(): three.Vector3  {
+        return new three.Vector3(this._kernel.objGetParams(this._id)[2][0],
+            this._kernel.objGetParams(this._id)[2][1],
+            this._kernel.objGetParams(this._id)[2][2]);
+    }
     /**
      * Checks if the circle is closed.
      * @return True if the polyline is closed.
@@ -114,5 +132,6 @@ export class Circle extends Obj implements ICircle {
         }
         return this._kernel.getGeom().addPoints(xyzs);
     }
+
 
 }

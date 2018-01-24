@@ -172,6 +172,8 @@ export interface ICircle  extends IObj {
     length(): number;
     evalParam(t: number): IPoint;
     equiPoints(num_points: number): IPoint[];
+    get_U1(): three.Vector3;
+    get_V1(): three.Vector3;    
 }
 
 /**

@@ -76,6 +76,24 @@ export function test_getRadius(): boolean {
     if(!Arr.equal([curve.getRadius()], [radius])) {return false;}
     return true;
 }
+export function test_get_U1(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const radius: number = Math.sqrt(2);
+    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    const curve: gs.ICircle = g.addCircle(pt,[radius,0,0],[0,radius,0],[45,135]);
+    console.log(curve.get_U1());
+    return true;
+}
+export function test_get_V1(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const radius: number = Math.sqrt(2);
+    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    const curve: gs.ICircle = g.addCircle(pt,[radius,0,0],[0,radius,0],[45,135]);
+    console.log(curve.get_V1());
+    return true;
+}
 export function test_isClosed(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
