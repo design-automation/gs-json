@@ -32,7 +32,7 @@ export class Ellipse extends Obj implements IEllipse {
     public getVectors(): XYZ[] {
         // param are [type, x_vec, y_vec, z_vec, angles]
         // return this._kernel.objGetParams(this._id).slice(2,4);
-        return [this._kernel.objGetParams(this._id)[0],this._kernel.objGetParams(this._id)[1]];
+        return [this._kernel.objGetParams(this._id)[3],this._kernel.objGetParams(this._id)[0]];
     }
 
     /**
