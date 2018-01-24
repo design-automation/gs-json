@@ -20,4 +20,10 @@ describe("Tests for Entity Object Ellipse", () => {
     it("test_getAngles", () => {
         expect( tests.test_getAngles() ).toBe(true);
     });
+    it("test_get_U1", () => {
+        expect( tests.test_get_U1() ).toBe(true);
+    });
+    it("test_get_V1", () => {
+        expect( tests.test_get_V1() ).toBe(true);
+    });
 });
