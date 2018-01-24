@@ -75,30 +75,6 @@ export class Circle extends Obj implements ICircle {
         return threex.lengthXYZ(this._kernel.objGetParams(this._id)[1]);
     }
     /**
-     *
-     * @return U1_Vector of the Circle.
-     */
-    public get_U1(): XYZ  {
-        // return new three.Vector3(this._kernel.objGetParams(this._id)[1][0],
-        //     this._kernel.objGetParams(this._id)[1][1],
-        //     this._kernel.objGetParams(this._id)[1][2]);
-        return [this._kernel.objGetParams(this._id)[1][0],
-            this._kernel.objGetParams(this._id)[1][1],
-            this._kernel.objGetParams(this._id)[1][2]];
-    }
-    /**
-     *
-     * @return V1_Vector of the Circle.
-     */
-    public get_V1(): XYZ  {
-        // return new three.Vector3(this._kernel.objGetParams(this._id)[2][0],
-        //     this._kernel.objGetParams(this._id)[2][1],
-        //     this._kernel.objGetParams(this._id)[2][2]);
-        return [this._kernel.objGetParams(this._id)[2][0],
-            this._kernel.objGetParams(this._id)[2][1],
-            this._kernel.objGetParams(this._id)[2][2]];
-    }
-    /**
      * Checks if the circle is closed.
      * @return True if the polyline is closed.
      */

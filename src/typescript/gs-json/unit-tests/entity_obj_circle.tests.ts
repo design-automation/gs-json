@@ -23,12 +23,6 @@ describe("Tests for Entity Object Circle", () => {
     it("test_getRadius", () => {
         expect( tests.test_getRadius() ).toBe(true);
     });
-    it("test_get_U1", () => {
-        expect( tests.test_get_U1() ).toBe(true);
-    });
-    it("test_get_V1", () => {
-        expect( tests.test_get_V1() ).toBe(true);
-    });
     it("test_isClosed", () => {
         expect( tests.test_isClosed() ).toBe(true);
     });

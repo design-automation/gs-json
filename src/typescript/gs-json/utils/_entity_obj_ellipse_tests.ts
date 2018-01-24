@@ -33,7 +33,7 @@ export function test_getVectors(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.IEllipse = g.addEllipse(pt,[1,0,0],[0,1,0],[45,135]);
+    const curve: gs.IEllipse = g.addEllipse(pt,[1.123,4,6],[3,1.456,9],[45,135]);
     console.log(curve.getVectors());
     return true;
 }
@@ -51,21 +51,5 @@ export function test_getAngles(): boolean {
     const pt: gs.IPoint = g.addPoint([0,0,0]);
     const curve: gs.IEllipse = g.addEllipse(pt,[1,0,0],[0,1,0],[45,135]);
     curve.getAngles();
-    return true;
-}
-export function test_get_U1(): boolean {
-    const m: gs.Model = new gs.Model();
-    const g: gs.IGeom = m.getGeom();
-    const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.IEllipse = g.addEllipse(pt,[1.123,4,6],[3,1.456,9],[45,135]);
-    console.log(curve.get_U1());
-    return true;
-}
-export function test_get_V1(): boolean {
-    const m: gs.Model = new gs.Model();
-    const g: gs.IGeom = m.getGeom();
-    const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.IEllipse = g.addEllipse(pt,[1.123,4,6],[3,1.456,9],[45,135]);
-    console.log(curve.get_V1());
     return true;
 }
