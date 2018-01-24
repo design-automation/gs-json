@@ -20,23 +20,23 @@ function genModelWriteToJSONFile(model: gs.IThreeScene, filename: string): boole
  * Write all models to disk as json files.
  */
 export function genGsModelsWriteFiles(): void {
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelEmpty()), "model_empty.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelPoints()), "model_points.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelOpenPolyline()), "model_open_polyline.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelClosedPolyline()), "model_closed_polyline.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBox()), "model_box.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxWithAttribs()), "model_box_with_attribs.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxOpen1()), "model_box_open1.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxOpen2()), "model_box_open2.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxOpen2Disjoint()), "model_box_open2_disjoint.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelTwoBoxesOpen()), "model_two_boxes.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxFarAway()), "model_box_far_away.gs");
-    //genModelWriteToJSONFile(gs.genThreeModel(gs.genModelManyBoxes()), "model_many_boxes.gs");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelDifficultPolymesh()), "model_difficult_polymesh.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelInvalidPolymesh()), "model_invalid_polymesh.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelPolyinesBoxes()), "model_polylines_boxes.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelGrid()), "model_grid.json");
-    genModelWriteToJSONFile(gs.genThreeModel(gs.genModelTorus()), "model_torus.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelEmpty()), "model_empty.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelPoints()), "model_points.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelOpenPolyline()), "model_open_polyline.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelClosedPolyline()), "model_closed_polyline.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBox()), "model_box.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxWithAttribs()), "model_box_with_attribs.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxOpen1()), "model_box_open1.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxOpen2()), "model_box_open2.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxOpen2Disjoint()), "model_box_open2_disjoint.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelTwoBoxesOpen()), "model_two_boxes.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelBoxFarAway()), "model_box_far_away.gs");
+    // //genModelWriteToJSONFile(gs.genThreeModel(gs.genModelManyBoxes()), "model_many_boxes.gs");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelDifficultPolymesh()), "model_difficult_polymesh.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelInvalidPolymesh()), "model_invalid_polymesh.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelPolyinesBoxes()), "model_polylines_boxes.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelGrid()), "model_grid.json");
+    // genModelWriteToJSONFile(gs.genThreeModel(gs.genModelTorus()), "model_torus.json");
     //genModelWriteToJSONFile(gs.genThreeModel(gs.genModelManyTorus()), "model_many_torus.gs");
 
     //OPTIMISED
@@ -59,6 +59,7 @@ export function genGsModelsWriteFiles(): void {
     genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelTorus()), "model_torus_opt.json");
     //genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelManyTorus()), "model_many_torus_opt.json");
     genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelCircles()), "model_circles_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelPlanes()), "model_planes_opt.json");
 }
 
 export function debug(): void {
@@ -74,4 +75,3 @@ export function debug(): void {
 if(require.main === module)  {
     genGsModelsWriteFiles();
 }
-

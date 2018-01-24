@@ -8,6 +8,8 @@ describe("Tests for gen_models functions", () => {
     it("test_genModelOpenPolyline", () => {
         expect( tests.test_genModelOpenPolyline() ).toBe(true);
     });
-
+    it("test_genModelPlanes", () => {
+        expect( tests.test_genModelPlanes() ).toBe(true);
+    });
 
 });

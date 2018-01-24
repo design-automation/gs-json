@@ -8,7 +8,7 @@ import * as math_conics from "./math_conics";
 export interface IThreeData {
     xyzs_flat: number[];
     indexes: number[];
-    reverse_map: Map<string|number, gs.ITopoPathData>;
+    reverse_map: Map<string|number, gs.ITopoPathData|number>;
 }
 
 /**
@@ -157,22 +157,110 @@ export function getDataFromAllVertices(objs: gs.IObj[]): IThreeData {
  */
 export function getDataAllOtherLines(objs: gs.IObj[]): IThreeData {
     // filter
-    const objs_filtered: Array<gs.IPolymesh|gs.IPolyline> = objs.filter((obj) =>
-        obj.getObjType() === gs.EObjType.circle ||
-        obj.getObjType() === gs.EObjType.ellipse);
+    //const objs_filtered: Array<gs.IRay|gs.IPlane|gs.ICircle> = objs.filter((obj) =>
+    const objs_filtered = objs.filter((obj) =>
+        obj.getObjType() === gs.EObjType.ray ||
+        obj.getObjType() === gs.EObjType.plane ||
+        obj.getObjType() === gs.EObjType.circle);
     // create points
     const indexes: number[] = [];
     const xyzs: gs.XYZ[][] = [];
     let index_counter: number = 0;
     for (const [i, obj] of objs_filtered.entries()) {
-        const obj_render_xyzs: gs.XYZ[] = math_conics.getRenderXYZs(obj, 1);
-        xyzs.push(obj_render_xyzs);
-        for (let j = 0; j < obj_render_xyzs.length - 1; j++) {
-            indexes.push(index_counter);
-            indexes.push(++index_counter);
+        switch (obj.getObjType()) {
+            case gs.EObjType.ray:
+                const ray: gs.IRay = obj as gs.IRay;
+                const ray_line: gs.XYZ[] = _renderRay(ray);
+                xyzs.push(ray_line);
+                indexes.push(index_counter);
+                index_counter++;
+                indexes.push(index_counter);
+                index_counter++;
+                break;
+            case gs.EObjType.plane:
+                const plane: gs.IPlane = obj as gs.IPlane;
+                const p_faces: gs.XYZ[][] = _renderPlane(plane);
+                for (const face of p_faces) {
+                    xyzs.push(face);
+                    for (let j = 0; j < face.length - 1; j++) {
+                        indexes.push(index_counter);
+                        indexes.push(++index_counter);
+                    }
+                    index_counter++;
+                }
+                break;
+            case gs.EObjType.circle:
+                const obj_render_xyzs: gs.XYZ[] = math_conics.getRenderXYZs(obj, 1);
+                xyzs.push(obj_render_xyzs);
+                for (let j = 0; j < obj_render_xyzs.length - 1; j++) {
+                    indexes.push(index_counter);
+                    indexes.push(++index_counter);
+                }
+                index_counter++;
+                break;
+            default:
+                // code...
+                break;
         }
-        index_counter++;
     }
     // return the data
-    return {xyzs_flat: gs.Arr.flatten(xyzs), indexes: indexes,  reverse_map: null};
+    const xyzs_flat = gs.Arr.flatten(xyzs);
+    return {xyzs_flat, indexes, reverse_map: null};
+}
+
+function _renderRay(ray: gs.IRay): gs.XYZ[] {
+    const r_origin: gs.XYZ = ray.getOrigin().getPosition();
+    const r_origin_vec: three.Vector3 = new three.Vector3(...r_origin);
+    const r_dir: gs.XYZ = ray.getVector();
+    const r_dir_vec: three.Vector3 = new three.Vector3(...r_dir);
+    r_dir_vec.setLength(100);
+    const r_end: gs.XYZ =  threex.addVectors(r_origin_vec, r_dir_vec).toArray() as gs.XYZ;
+    return [r_origin, r_end];
+}
+
+function _renderPlane(plane: gs.IPlane): gs.XYZ[][] {
+    const p_origin: gs.XYZ = plane.getOrigin().getPosition();
+    const p_origin_vec: three.Vector3 = new three.Vector3(...p_origin);
+    const p_axes: gs.XYZ[] = plane.getVectors();
+    const x_axis: three.Vector3 = new three.Vector3(...p_axes[0]);
+    x_axis.setLength(10);
+    const y_axis: three.Vector3 = new three.Vector3(...p_axes[1]);
+    y_axis.setLength(10);
+    const f1_1: three.Vector3 =  threex.addVectors(p_origin_vec, x_axis);
+    const f1_2: three.Vector3 =  threex.addVectors(f1_1, y_axis);
+    const f1_3: three.Vector3 =  threex.subVectors(f1_2, y_axis);
+    const f1: gs.XYZ[] = [p_origin_vec, f1_1, f1_2, f1_3].map((v) => v.toArray() as gs.XYZ);
+    const f2_1: three.Vector3 =  threex.addVectors(p_origin_vec, y_axis);
+    const f2_2: three.Vector3 =  threex.subVectors(f2_1, x_axis);
+    const f2_3: three.Vector3 =  threex.subVectors(f2_2, y_axis);
+    const f2: gs.XYZ[] = [p_origin_vec, f2_1, f2_2, f2_3].map((v) => v.toArray() as gs.XYZ);
+    const f3_1: three.Vector3 =  threex.subVectors(p_origin_vec, x_axis);
+    const f3_2: three.Vector3 =  threex.subVectors(f3_1, y_axis);
+    const f3_3: three.Vector3 =  threex.addVectors(f3_2, x_axis);
+    const f3: gs.XYZ[] = [p_origin_vec, f3_1, f3_2, f3_3].map((v) => v.toArray() as gs.XYZ);
+    const f4_1: three.Vector3 =  threex.subVectors(p_origin_vec, y_axis);
+    const f4_2: three.Vector3 =  threex.addVectors(f4_1, x_axis);
+    const f4_3: three.Vector3 =  threex.addVectors(f4_2, y_axis);
+    const f4: gs.XYZ[] = [p_origin_vec, f4_1, f4_2, f4_3].map((v) => v.toArray() as gs.XYZ);
+    const p_faces: gs.XYZ[][] = [f1, f2, f3, f4];
+    return p_faces;
+}
+//  POINTS ====================================================================================================
+
+/**
+ * Get point data.
+ */
+export function getDataFromAllPoints(points: gs.IPoint[]): IThreeData {
+    // create a map from index to vertex path
+    const reverse_map: Map<number, number> = new Map();
+    // create points
+    const indexes: number[] = [];
+    const xyzs: gs.XYZ[] = [];
+    for (const [i, point] of points.entries()) {
+        xyzs.push(point.getPosition());
+        indexes.push(i);
+        reverse_map.set(i, point.getID());
+    }
+    // return the data
+    return {xyzs_flat: gs.Arr.flatten(xyzs), indexes: indexes,  reverse_map: reverse_map};
 }

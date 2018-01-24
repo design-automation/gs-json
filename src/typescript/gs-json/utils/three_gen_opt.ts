@@ -79,22 +79,25 @@ function createOtherLines(scene: gs.IThreeScene, objects: gs.IObj[], material: g
 /**
  * Add all points to the scene and create one big point soup out of it.
  */
-function createPoints(scene: gs.IThreeScene, points: gs.IPoint[], material: gs.IThreeMaterial): void {
+function createPoints(scene: gs.IThreeScene, points: gs.IPoint[], material: gs.IThreeMaterial):
+        Map<number, number> {
     //  create xyzs gs.Array
-    const xyzs: gs.XYZ[] = points.map((point) => point.getPosition());
-    const xyzs_flat: number[] = gs.Arr.flatten(xyzs);
-    const points_geom: gs.IThreeBufferedGeom = threes.genGeom(xyzs_flat);
-    //add(scene, "Points", "All points", data, material);
-    threes.addGeomToScene(scene, points_geom);
-    threes.addObjToScene(scene, threes.genObj("Points", "All points", points_geom, material));
+    const data: threeg.IThreeData = threeg.getDataFromAllPoints(points);
+    if (data !== null) {
+        add(scene, "Points", "All points", data, material);
+        return data.reverse_map as Map<number, number>;
+    }
+    return null;
 }
 
 /**
  * Generate the model.
  */
 export function genThreeOptModel(model: gs.IModel): gs.IThreeScene {
-
+    // check that this is model, this is required for Mobius
     if (model.constructor.name !== "Model") {throw new Error("Invalid model.");}
+
+    // create scene
     const scene: gs.IThreeScene = threes.genScene();
     const mats: gs.IThreeMaterial[] = threes.genDefaultMaterials();
     threes.addMatsToScene(scene, mats);
@@ -108,11 +111,12 @@ export function genThreeOptModel(model: gs.IModel): gs.IThreeScene {
     const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, objs, mats[0]);
     const vertices_map: Map<number, gs.ITopoPathData> = createVertices(scene, objs, mats[4]);
 
+    // add points
+    const all_points: gs.IPoint[] = model.getGeom().getAllPoints();
+    const points_map: Map<number, number> = createPoints(scene, all_points, mats[4]);
+
     // other
     createOtherLines(scene, objs, mats[0]);
-
-    // add the points
-    createPoints(scene, model.getGeom().getAllPoints(), mats[4]);
 
     // return the scene with object and points
     return scene;
@@ -124,8 +128,9 @@ export function genThreeOptModel(model: gs.IModel): gs.IThreeScene {
 export function genThreeOptModelAndMaps(model: gs.IModel): {scene: gs.IThreeScene,
                                                             faces_map: Map<number, gs.ITopoPathData>,
                                                             wires_map: Map<number, gs.ITopoPathData>,
-                                                            edges_map: Map<number, gs.ITopoPathData>
-                                                            vertices_map: Map<number, gs.ITopoPathData>} {
+                                                            edges_map: Map<number, gs.ITopoPathData>,
+                                                            vertices_map: Map<number, gs.ITopoPathData>,
+                                                            points_map: Map<number, number>} {
 
     if (model.constructor.name !== "Model") {throw new Error("Invalid model.");}
     const scene: gs.IThreeScene = threes.genScene();
@@ -141,12 +146,13 @@ export function genThreeOptModelAndMaps(model: gs.IModel): {scene: gs.IThreeScen
     const edges_map: Map<number, gs.ITopoPathData> = createEdges(scene, objs, mats[0]);
     const vertices_map: Map<number, gs.ITopoPathData> = createVertices(scene, objs, mats[4]);
 
+    // add points
+    const all_points: gs.IPoint[] = model.getGeom().getAllPoints();
+    const points_map: Map<number, number> = createPoints(scene, all_points, mats[4]);
+
     // other
     createOtherLines(scene, objs, mats[0]);
 
-    // add the points
-    createPoints(scene, model.getGeom().getAllPoints(), mats[4]);
-
     // return the scene with object and points
-    return {scene, faces_map, wires_map, edges_map, vertices_map};
+    return {scene, faces_map, wires_map, edges_map, vertices_map, points_map};
 }

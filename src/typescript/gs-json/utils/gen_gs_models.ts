@@ -1296,6 +1296,22 @@ export function genModelCircles(): gs.IModel {
 }
 
 /**
+ * Generates a model with some planes.
+ */
+export function genModelPlanes(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const points: gs.IPoint[] = m.getGeom().addPoints([
+            [7,  33, 2],
+            [10, 12, 23],
+            [10, 10, -10],
+        ]);
+    m.getGeom().addPlane(points[0], [7,0,0],  [0,1,0]);
+    m.getGeom().addPlane(points[1], [0,23,0], [1,0,0]);
+    m.getGeom().addPlane(points[2], [0,0,16], [0,1,0]);
+    return m;
+}
+
+/**
  * Write all models to disk as json files.
  */
 export function genThreeModelsWriteFiles(): void {
@@ -1318,6 +1334,7 @@ export function genThreeModelsWriteFiles(): void {
     genModelWriteToJSONFile(genModelTorus(), "model_torus.gs");
     //genModelWriteToJSONFile(genModelManyTorus(), "model_many_torus.gs");
     genModelWriteToJSONFile(genModelCircles(), "model_circles.gs");
+    genModelWriteToJSONFile(genModelPlanes(), "model_planes.gs");
 }
 
 /**
