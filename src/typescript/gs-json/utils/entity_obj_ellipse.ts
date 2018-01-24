@@ -3,6 +3,7 @@ import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
 import * as threex from "./three_utils";
+import * as three from "three";
 /**
  * Class ConicCurve.
  */
@@ -80,5 +81,23 @@ export class Ellipse extends Obj implements IEllipse {
      */
     public isClosed(): boolean {
         return (this._kernel.objGetParams(this._id)[4] === undefined);
+    }
+
+    /**
+     * @return Returns a Vector of length x, along the first unitary vector of the ellipse
+     */
+    public get_U1(): three.Vector3 {
+        return new three.Vector3(this._kernel.objGetParams(this._id)[1][0],
+            this._kernel.objGetParams(this._id)[1][1],
+            this._kernel.objGetParams(this._id)[1][2]);
+    }
+
+    /**
+     * @return Returns a Vector of length x, along the first unitary vector of the ellipse
+     */
+    public get_V1(): three.Vector3 {
+        return new three.Vector3(this._kernel.objGetParams(this._id)[2][0],
+            this._kernel.objGetParams(this._id)[2][1],
+            this._kernel.objGetParams(this._id)[2][2]);
     }
 }
