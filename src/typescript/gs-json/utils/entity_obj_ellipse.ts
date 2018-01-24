@@ -72,7 +72,7 @@ export class Ellipse extends Obj implements IEllipse {
         return [
             threex.lengthXYZ(this._kernel.objGetParams(this._id)[1]),
             threex.lengthXYZ(this._kernel.objGetParams(this._id)[2]),
-        ]
+        ];
     }
 
     /**
@@ -86,18 +86,24 @@ export class Ellipse extends Obj implements IEllipse {
     /**
      * @return Returns a Vector of length x, along the first unitary vector of the ellipse
      */
-    public get_U1(): three.Vector3 {
-        return new three.Vector3(this._kernel.objGetParams(this._id)[1][0],
+    public get_U1(): XYZ {
+        // return new three.Vector3(this._kernel.objGetParams(this._id)[1][0],
+        //     this._kernel.objGetParams(this._id)[1][1],
+        //     this._kernel.objGetParams(this._id)[1][2]);
+        return [this._kernel.objGetParams(this._id)[1][0],
             this._kernel.objGetParams(this._id)[1][1],
-            this._kernel.objGetParams(this._id)[1][2]);
+            this._kernel.objGetParams(this._id)[1][2]];
     }
 
     /**
      * @return Returns a Vector of length x, along the first unitary vector of the ellipse
      */
-    public get_V1(): three.Vector3 {
-        return new three.Vector3(this._kernel.objGetParams(this._id)[2][0],
+    public get_V1(): XYZ {
+        // return new three.Vector3(this._kernel.objGetParams(this._id)[2][0],
+        //     this._kernel.objGetParams(this._id)[2][1],
+        //     this._kernel.objGetParams(this._id)[2][2]);
+        return [this._kernel.objGetParams(this._id)[2][0],
             this._kernel.objGetParams(this._id)[2][1],
-            this._kernel.objGetParams(this._id)[2][2]);
-    }
+            this._kernel.objGetParams(this._id)[2][2]]
+            ;}
 }

@@ -78,19 +78,25 @@ export class Circle extends Obj implements ICircle {
      *
      * @return U1_Vector of the Circle.
      */
-    public get_U1(): three.Vector3  {
-        return new three.Vector3(this._kernel.objGetParams(this._id)[1][0],
+    public get_U1(): XYZ  {
+        // return new three.Vector3(this._kernel.objGetParams(this._id)[1][0],
+        //     this._kernel.objGetParams(this._id)[1][1],
+        //     this._kernel.objGetParams(this._id)[1][2]);
+        return [this._kernel.objGetParams(this._id)[1][0],
             this._kernel.objGetParams(this._id)[1][1],
-            this._kernel.objGetParams(this._id)[1][2]);
+            this._kernel.objGetParams(this._id)[1][2]];
     }
     /**
      *
      * @return V1_Vector of the Circle.
      */
-    public get_V1(): three.Vector3  {
-        return new three.Vector3(this._kernel.objGetParams(this._id)[2][0],
+    public get_V1(): XYZ  {
+        // return new three.Vector3(this._kernel.objGetParams(this._id)[2][0],
+        //     this._kernel.objGetParams(this._id)[2][1],
+        //     this._kernel.objGetParams(this._id)[2][2]);
+        return [this._kernel.objGetParams(this._id)[2][0],
             this._kernel.objGetParams(this._id)[2][1],
-            this._kernel.objGetParams(this._id)[2][2]);
+            this._kernel.objGetParams(this._id)[2][2]];
     }
     /**
      * Checks if the circle is closed.
@@ -132,6 +138,4 @@ export class Circle extends Obj implements ICircle {
         }
         return this._kernel.getGeom().addPoints(xyzs);
     }
-
-
 }
