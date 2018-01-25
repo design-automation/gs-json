@@ -23,4 +23,10 @@ describe("Tests for Obj class", () => {
     it("test_obj_getFaces", () => {
         expect( entity_obj_tests.test_obj_getFaces() ).toBe(true);
     });
+    it("test_obj_getNumWires", () => {
+        expect( entity_obj_tests.test_obj_getNumWires() ).toBe(true);
+    });
+    it("test_obj_getNumFaces", () => {
+        expect( entity_obj_tests.test_obj_getNumFaces() ).toBe(true);
+    });
 });

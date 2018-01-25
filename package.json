@@ -6,7 +6,7 @@
     "description": "gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs').",
     "homepage": "https://github.com/phtj/gs-json#readme",
     "types": "dist/index.d.ts",
-    "main": "dist/index.js",
+    "main": "dist2015/index.js",
     "directories": {
         "doc": "docs"
     },
@@ -17,7 +17,7 @@
         "gen_three_models": "node ./dist2015/src/typescript/gs-json/utils/gen_three_models.js",
         "gen_gs_models": "node ./dist2015/src/typescript/gs-json/utils/gen_gs_models.js",
         "build2015": "tsc && babel --presets es2015 ./dist --out-dir ./dist2015",
-        "prepare": "npm run build",
+        "prepare": "npm run build2015",
         "build": "tsc",
         "test": "karma start ./karma.conf.ts",
         "docs": "typedoc --out  ./docs/typescript ./src/typescript/gs-json/utils --module commonjs --theme minimal"

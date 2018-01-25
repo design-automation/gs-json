@@ -70,10 +70,10 @@ export function test_setAngles(): boolean {
 export function test_getRadius(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    const radius: number = Math.sqrt(2);
-    const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.ICircle = g.addCircle(pt,[radius,0,0],[0,radius,0],[45,135]);
-    if(!Arr.equal([curve.getRadius()], [radius])) {return false;}
+    const radius: number = 1.23;
+    const pt: gs.IPoint = g.addPoint([5,6,7]);
+    const curve: gs.ICircle = g.addCircle(pt,[radius,0,0],[0,1,0],[45,135]);
+    if(curve.getRadius() !== radius) {return false;}
     return true;
 }
 export function test_isClosed(): boolean {

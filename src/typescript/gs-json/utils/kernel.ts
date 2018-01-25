@@ -374,6 +374,7 @@ export class Kernel {
                 jsonData.attribs.objs = Array.from(this._attribs.get(EGeomType.objs).values());
             }
         }
+        //TODO add groups
         return JSON.stringify(jsonData, null, 4);
     }
 

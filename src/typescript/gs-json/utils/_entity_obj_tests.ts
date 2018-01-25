@@ -71,3 +71,17 @@ export function test_obj_getFaces(): boolean {
 
     return true;
 }
+
+export function test_obj_getNumWires(): boolean {
+    const m: gs.IModel = new gs.Model(test_data.open_box());
+    const obj: gs.IObj = m.getGeom().getObj(0);
+    if (obj.numWires() !== 1) {return false;}
+    return true;
+}
+
+export function test_obj_getNumFaces(): boolean {
+    const m: gs.IModel = new gs.Model(test_data.open_box());
+    const obj: gs.IObj = m.getGeom().getObj(0);
+    if (obj.numFaces() !== 5) {return false;}
+    return true;
+}
