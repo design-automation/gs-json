@@ -11,4 +11,7 @@ describe("Tests for Polyline class", () => {
     it("test_Polyline_insertVertex", () => {
         expect( entity_obj_polyline_tests.test_Polyline_insertVertex() ).toBe(true);
     });
+    it("test_Polyline_toString", () => {
+        expect( entity_obj_polyline_tests.test_Polyline_toString() ).toBe(true);
+    });
 });

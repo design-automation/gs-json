@@ -224,6 +224,6 @@ export abstract class Obj extends Ent implements IObj {
      * @return Strig
      */
     public toString(): string {
-        return mapObjTypeToString[this.getObjType()];
+        return "Obj:"+ mapObjTypeToString.get(this.getObjType());
     }
 }
