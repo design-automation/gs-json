@@ -35,6 +35,12 @@ describe("Tests for Geom class", () => {
     it("test_Geom_numPoints", () => {
         expect( geom_tests.test_Geom_numPoints() ).toBe(true);
     });
+    it("test_Geom_mergePoints", () => {
+        expect( geom_tests.test_Geom_mergePoints() ).toBe(true);
+    });
+
+
+
     // it("test_Geom_getObjIDs", () => {
     //     expect( geom_tests.test_Geom_getAllObjIDs() ).toBe(true);
     // });

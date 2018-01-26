@@ -520,11 +520,29 @@ export class Kernel {
     }
 
     /**
+     * Merge points, replaces these points with a new point.
+     * @param
+     * @return
+     */
+    public geomMergePoints(ids: number[]): number {
+        // calc the center point
+        const centre: XYZ = this.geomCalcPointsCentroid(ids);
+        // replace old with new
+        const new_point_id = this.geomAddPoint(centre);
+        for (const id of ids) {
+            this._swapAllObjsPoint(id, new_point_id);
+        }
+        this.geomDelPoints(ids);
+        // return the new point, the centre of the old points
+        return new_point_id;
+    }
+
+    /**
      * Merge points.
      * @param
      * @return
      */
-    public geomMergePoints(ids: number[], tolerance: number): number[] {
+    public geomMergePointsByTol(ids: number[], tolerance: number): number[] {
         if (ids === undefined) {ids = this.geomGetPointIDs(); }
         // get all the points that are closer than tolerance, store the data in some maps
         const dist_map: Map<number, Map<number, XYZ>> = new Map();
@@ -620,7 +638,7 @@ export class Kernel {
      * @return
      */
     public geomMergeAllPoints(tolerance: number): number[] {
-        return this.geomMergePoints(this.geomGetPointIDs(), tolerance);
+        return this.geomMergePointsByTol(this.geomGetPointIDs(), tolerance);
     }
 
     //  Geom Object Constructors------------------------------------------------------------------------------

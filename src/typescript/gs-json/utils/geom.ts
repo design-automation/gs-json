@@ -186,8 +186,12 @@ export class Geom implements IGeom {
      * @param
      * @return
      */
-    public mergePoints(points: IPoint[], tolerance: number): IPoint[] {
-        return this._kernel.geomMergePoints(points.map((point) => point.getID()), tolerance)
+    public mergePoints(points: IPoint[], tolerance?: number): IPoint[] {
+        if (tolerance === undefined) {
+            const id: number = this._kernel.geomMergePoints(points.map((point) => point.getID()));
+            return [new Point(this._kernel, id)];
+        }
+        return this._kernel.geomMergePointsByTol(points.map((point) => point.getID()), tolerance)
             .map((id) => new Point(this._kernel, id));
     }
 

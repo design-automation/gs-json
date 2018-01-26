@@ -216,7 +216,8 @@ export function test_Geom_numPoints(): boolean {
 }
 
 export function test_Geom_mergePoints(): boolean {
-    const m: gs.Model = new gs.Model();
+    console.log("TEST MERGE POINTS")
+    const m: gs.IModel = new gs.Model();
     const geom: gs.IGeom = m.getGeom();
     for (let i = 0; i < 1000; i++) {
         geom.addPoint([Math.random(), Math.random(), Math.random()]);
@@ -228,6 +229,13 @@ export function test_Geom_mergePoints(): boolean {
     }
     geom.mergeAllPoints(0.2);
     if (geom.numPoints() === 1000) {return false;}
+    const m2: gs.Model = new gs.Model();
+    const g2: gs.IGeom = m2.getGeom();
+    const p1: gs.IPoint = g2.addPoint([10,0,0]);
+    const p2: gs.IPoint = g2.addPoint([20,0,0]);
+    const new_points: gs.IPoint[] = g2.mergePoints([p1, p2]);
+    if(new_points.length !== 1) {return false;}
+    if(new_points[0].getPosition()[0] !== 15) {return false;}
     return true;
 }
 

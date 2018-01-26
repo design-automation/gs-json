@@ -60,7 +60,7 @@ export interface IGeom  {
     delPoints(points: IPoint[]): boolean;
     delPoint(point: IPoint): boolean;
     numPoints(): number;
-    mergePoints(points: IPoint[], tolerance: number): IPoint[];
+    mergePoints(points: IPoint[], tolerance?: number): IPoint[];
     mergeAllPoints(tolerance: number): IPoint[];
     // Objs
     findObjs(obj_type?: EObjType): IObj[];
