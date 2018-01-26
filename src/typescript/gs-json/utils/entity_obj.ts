@@ -2,7 +2,7 @@ import * as three from "three";
 import {Arr} from "./arr";
 import {XYZ, IObj, IPoint, IVertex, IEdge, IWire, IFace, IGroup} from "./ifaces_gs";
 import {ITopoPathData} from "./ifaces_json";
-import {EGeomType, EObjType} from "./enums";
+import {EGeomType, EObjType, mapObjTypeToString} from "./enums";
 import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {Ent} from "./entity";
 import {Point} from "./entity_point";
@@ -215,5 +215,15 @@ export abstract class Obj extends Ent implements IObj {
      */
     public addToGroup(group: IGroup): boolean {
         return this._kernel.groupAddObj(group.getName(), this._id);
+    }
+
+    //  toString -------------------------------------------------------------------------------------
+
+    /**
+     * Create s string representation of this object.
+     * @return Strig
+     */
+    public toString(): string {
+        return mapObjTypeToString[this.getObjType()];
     }
 }

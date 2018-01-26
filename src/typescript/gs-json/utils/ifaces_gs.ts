@@ -103,6 +103,8 @@ export interface IEnt  {
     // groups
     getGroups(): IGroup[];
     addToGroup(group: IGroup): boolean;
+    // strings
+    toString(): string;
 }
 
 /**

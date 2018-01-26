@@ -216,7 +216,6 @@ export function test_Geom_numPoints(): boolean {
 }
 
 export function test_Geom_mergePoints(): boolean {
-    console.log("TEST MERGE POINTS")
     const m: gs.IModel = new gs.Model();
     const geom: gs.IGeom = m.getGeom();
     for (let i = 0; i < 1000; i++) {

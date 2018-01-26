@@ -107,4 +107,14 @@ export class Point extends Ent implements IPoint {
     public addToGroup(group: IGroup): boolean {
         return this._kernel.groupAddPoint(group.getName(), this._id);
     }
+
+    //  toString -------------------------------------------------------------------------------------
+
+    /**
+     * Create s string representation of this point.
+     * @return Strig
+     */
+    public toString(): string {
+        return "Point:" + this.getPosition();
+    }
 }

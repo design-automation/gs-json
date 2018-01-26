@@ -42,6 +42,26 @@ export const enum EObjType {
     bezier_surface = 221,
 }
 
+/**
+ * Map, from EObjType to string.
+ * This is used when generating string representations of objects.
+ */
+export let mapObjTypeToString = new Map<EObjType, string> ([
+    [EObjType.acorn, "acorn"],
+    [EObjType.ray, "ray"],
+    [EObjType.plane, "plane"],
+    [EObjType.circle, "circle"],
+    [EObjType.ellipse, "ellipse"],
+    [EObjType.hyperbola, "hyperbola"],
+    [EObjType.parabola, "parabola"],
+    [EObjType.polyline, "polyline"],
+    [EObjType.nurbs_curve, "nurbs_curve"],
+    [EObjType.bezier_curve, "bezier_curve"],
+    [EObjType.polymesh, "polymesh"],
+    [EObjType.nurbs_surface, "nurbs_surface"],
+    [EObjType.bezier_surface, "bezier_surface"],
+]);
+
 // =================== MAPS ===================
 // mapStringToAttribType, mapStringToDataType
 export type TGeomTypeStr = "points" | "vertices" | "edges" | "wires" | "faces" | "objs";

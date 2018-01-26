@@ -166,4 +166,17 @@ export abstract class Ent implements IEnt{
         // Do not implement this method.
         throw new Error ("Method to be overridden by subclass.");
     }
+
+    //  toString -------------------------------------------------------------------------------------
+
+    /**
+     * Create s string representation of this object.
+     * This method must be overridden by the sub-classes.
+     * @return Strig
+     */
+    public toString(): string {
+        // Do not implement this method.
+        throw new Error ("Method to be overridden by subclass.");
+    }
+
 }
