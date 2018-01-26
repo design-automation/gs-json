@@ -267,4 +267,33 @@ export class Model implements IModel {
     public toJSON(): string {
         return this._kernel.modelToJSON();
     }
+
+    /**
+     *  Save the model as  file
+     * @param
+     * @return
+     */
+    public toString(): string {
+        let rep: string = ""
+        rep += "Num Points:" + this.getGeom().numPoints() + "\n";
+        rep += "Num Objects:" + this.getGeom().numObjs() + "\n";
+        for (const obj of this.getGeom().getAllObjs()) {
+            rep += "   " + obj.toString();
+        }
+        const attribs: [IEntAttrib[], ITopoAttrib[]] = this.getAllAttribs();
+        rep += "Num Entity Attribs:" + attribs[0].length;
+        for (const attrib of attribs[0]) {
+            rep += "   " + attrib.toString();
+        }
+        rep += "Num Topo Attribs:" + attribs[1].length;
+        for (const attrib of attribs[1]) {
+            rep += "   " + attrib.toString();
+        }
+        const groups: IGroup[] = this.getAllGroups();
+        rep += "Num Groups:" + groups.length;
+        for (const group of groups) {
+            rep += "   " + group.toString();
+        }
+        return rep;
+    }
 }

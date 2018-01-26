@@ -2,6 +2,7 @@ import * as gs from "./_export";
 import {Arr} from "./arr";
 import * as td from "./test_data";
 
+
 export function test_Model_constructor(): boolean {
     let model: gs.IModel = new gs.Model(td.open_box());
     // model with no attribs
@@ -13,16 +14,33 @@ export function test_Model_constructor(): boolean {
             [5, 6, 7, 4])) {
         return false;
     }
+
     // model with attribs
     model = new gs.Model(td.box_with_attribs());
     const attribs: gs.IAttrib[] = model.findAttribs(gs.EGeomType.vertices);
     if (attribs[0].getName() !== "test2") {return false; }
     const test3: gs.ITopoAttrib = model.getTopoAttrib("test3", gs.EGeomType.faces);
     if (model.getGeom().getObj(0).getFaces()[0].getAttribValue(test3) !== 2.0) {return false; }
+
     // model with groups
     model = new gs.Model(td.box_with_groups());
     model.getAllGroups();
     const grp: gs.IGroup = model.getGroup("building_obj");
+
+    // save the data to JSON, the read it back again
+    const my_model: gs.IModel = new gs.Model();
+    const myg: gs.IGeom = my_model.getGeom();
+    const p1: gs.IPoint = myg.addPoint([1,2,3]);
+    const p2: gs.IPoint = myg.addPoint([4,5,6]);
+    const p3: gs.IPoint = myg.addPoint([6,2,9]);
+    const p4: gs.IPoint = myg.addPoint([1,2,7]);
+    const p5: gs.IPoint = myg.addPoint([5,6,3]);
+    const pline: gs.IPolyline  = myg.addPolyline([p1,p2,p3,p4,p5], false);
+    const model_string: string = my_model.toJSON();
+    const model_data: gs.IModelData = JSON.parse(model_string) as gs.IModelData;
+    //console.log("TEST", model_data);
+    let model2: gs.IModel = new gs.Model(model_data);
+    //console.log("TEST2", model2);
     return true;
 }
 
