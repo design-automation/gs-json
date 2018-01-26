@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "@types/mathjs": "0.0.37",
-        "@types/three": "^0.89.3",
+        "@types/three": "^0.89.4",
         "mathjs": "^3.20.1",
         "three": "^0.89.0",
         "update": "^0.7.4"
@@ -39,11 +39,11 @@
         "babel-cli": "^6.26.0",
         "babel-preset-es2015": "^6.24.1",
         "jasmine": "^2.9.0",
-        "jasmine-core": "^2.9.0",
+        "jasmine-core": "^2.9.1",
         "karma": "^2.0.0",
         "karma-chrome-launcher": "^2.2.0",
         "karma-cli": "^1.0.1",
-        "karma-coverage-istanbul-reporter": "^1.3.3",
+        "karma-coverage-istanbul-reporter": "^1.4.1",
         "karma-html-reporter": "^0.2.7",
         "karma-jasmine": "^1.1.0",
         "karma-jasmine-html-reporter": "^0.2.2",

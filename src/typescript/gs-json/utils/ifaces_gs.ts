@@ -173,7 +173,6 @@ export interface ICircle  extends IObj {
     evalParam(t: number): IPoint;
     equiPoints(num_points: number): IPoint[];
 }
-
 /**
  * Interface, for a Ellipse class.
  */
@@ -187,7 +186,21 @@ export interface IEllipse  extends IObj {
     getAngles(): [number, number];
     setAngles(angles: [number, number]): void;
 }
-
+/**
+ * Interface, for a Hyperbola class.
+ */
+export interface IHyperbola  extends IObj {
+    getObjType(): EObjType;
+    getOrigin(): IPoint;
+    getVectors(): XYZ[];
+    setVectors(x_vec: XYZ, y_vec: XYZ): void;
+    getAngles(): [number, number];
+    setAngles(angles: [number, number]): void;
+    getRadii(): [number, number];
+    length(): number;
+    evalParam(t: number): IPoint;
+    equiPoints(num_points: number): IPoint[];
+}
 /**
  * Interface, for a Polyline class.
  */
