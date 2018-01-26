@@ -274,25 +274,25 @@ export class Model implements IModel {
      * @return
      */
     public toString(): string {
-        let rep: string = ""
+        let rep: string = "";
         rep += "Num Points:" + this.getGeom().numPoints() + "\n";
         rep += "Num Objects:" + this.getGeom().numObjs() + "\n";
         for (const obj of this.getGeom().getAllObjs()) {
-            rep += "   " + obj.toString();
+            rep += "   " + obj.toString() + "\n";
         }
         const attribs: [IEntAttrib[], ITopoAttrib[]] = this.getAllAttribs();
-        rep += "Num Entity Attribs:" + attribs[0].length;
+        rep += "Num Entity Attribs:" + attribs[0].length + "\n";
         for (const attrib of attribs[0]) {
-            rep += "   " + attrib.toString();
+            rep += "   " + attrib.toString() + "\n";
         }
-        rep += "Num Topo Attribs:" + attribs[1].length;
+        rep += "Num Topo Attribs:" + attribs[1].length + "\n";
         for (const attrib of attribs[1]) {
-            rep += "   " + attrib.toString();
+            rep += "   " + attrib.toString() + "\n";
         }
         const groups: IGroup[] = this.getAllGroups();
-        rep += "Num Groups:" + groups.length;
+        rep += "Num Groups:" + groups.length + "\n";
         for (const group of groups) {
-            rep += "   " + group.toString();
+            rep += "   " + group.toString() + "\n";
         }
         return rep;
     }

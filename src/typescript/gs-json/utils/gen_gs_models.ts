@@ -40,6 +40,21 @@ export function genModelPoints(): gs.IModel {
 }
 
 /**
+ * Generates a model with 4 points. Two of the points have the same position.
+ */
+export function genModelPointsInclDel(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const points:gs.IPoint[] = m.getGeom().addPoints([
+            [0,0,0],
+            [10,0,0],
+            [10,10,0],
+            [30,30,30],
+        ]);
+    m.getGeom().delPoint(points[1]);
+    return m;
+}
+
+/**
  * Generates an open polyline with three points.
  */
 export function genModelOpenPolyline(): gs.IModel {
