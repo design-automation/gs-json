@@ -5,6 +5,7 @@ import {Point} from "./entity_point";
 import * as threex from "./three_utils";
 import * as math_conics from "./math_conics";
 import * as three from "three";
+import * as util from "./_utils";
 
 /**
  * Class ConicCurve.
@@ -31,22 +32,31 @@ export class Circle extends Obj implements ICircle {
      * Returns the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
      * @return The x and y vectors.
      */
-    public getVectors(): XYZ[] {
-        // param are [type, x_vec, y_vec, z_vec, angles]
-        // return this._kernel.objGetParams(this._id).slice(2,4);
-        // Slight modification in getVectors(), used [] instead of .slice();
-        return [this._kernel.objGetParams(this._id)[1],this._kernel.objGetParams(this._id)[2]];
+    public getAxes(): [XYZ,XYZ,XYZ] {
+        const params: any[] = this._kernel.objGetParams(this._id);
+        return [params[1],params[2],params[3]];
+    }
+
+    /**
+     * Returns the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
+     * @return The x and y vectors.
+     */
+    public getNormal(): XYZ {
+        return this._kernel.objGetParams(this._id)[3];
     }
 
     /**
      * Sets the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
-     * @return The x and y vectors.
+     * @param x_vec Vector, the x axis
+     * @param vec vector, in the plane
      */
-    public setVectors(x_vec: XYZ, y_vec: XYZ): void {
+    public setOrientation(x_vec: XYZ, vec: XYZ): void {
         // param are [type, x_vec, y_vec, z_vec, angles]
-        this._kernel.objGetParams(this._id)[1] = x_vec;
-        this._kernel.objGetParams(this._id)[2] = y_vec;
-        this._kernel.objGetParams(this._id)[3] = threex.crossXYZs(x_vec, y_vec, true);
+        const vecs: XYZ[] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        const params: any[] = this._kernel.objGetParams(this._id);
+        params[1] = vecs[0];
+        params[2] = vecs[1];
+        params[3] = vecs[2];
     }
 
     /**
@@ -54,7 +64,6 @@ export class Circle extends Obj implements ICircle {
      * @return The Alpha and Beta angles.
      */
     public getAngles(): [number, number] {
-        // param are [type, x_vec, y_vec, z_vec, angles]
         return this._kernel.objGetParams(this._id)[4];
     }
 
@@ -63,17 +72,30 @@ export class Circle extends Obj implements ICircle {
      * @return The Alpha and Beta angles.
      */
     public setAngles(angles: [number, number]): void {
-        // param are [type, x_vec, y_vec, z_vec, angles]
+        // make sure the angles are ok
+        angles = util.checkCircleAngles(angles);
         this._kernel.objGetParams(this._id)[4] = angles;
     }
 
     /**
-     * Returns the radius of this curve (the length of the x vector).
+     * Returns the radius of this circle (the length of the x vector).
      * @return Tthe radius.
      */
     public getRadius(): number  {
         return threex.lengthXYZ(this._kernel.objGetParams(this._id)[1]);
     }
+
+    /**
+     * Set the radius of this circle (the length of the x vector).
+     * @return The old radius.
+     */
+    public setRadius(radius: number): number  {
+        const x_vec: XYZ = this._kernel.objGetParams(this._id)[3];
+        const old_radius: number = threex.lengthXYZ(x_vec);
+        this._kernel.objGetParams(this._id)[3] = threex.setLengthXYZ(x_vec, radius);
+        return old_radius;
+    }
+
     /**
      * Checks if the circle is closed.
      * @return True if the polyline is closed.

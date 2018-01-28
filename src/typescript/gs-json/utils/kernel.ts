@@ -667,21 +667,17 @@ export class Kernel {
 
     /**
      * Adds a new plane to the model defined by an origin and two vectors.
-     * @param origin The plane origin point.
-     * @param x_vec A vector defining the x axis.
-     * @param vec A vector on the plane.
+     * @param origin_id The plane origin point.
+     * @param axes Three orthogonal aaxes as XYZ vectors
      * @return ID of object.
      */
-    public geomAddPlane(origin_id: number, x_vec: XYZ, vec: XYZ): number {
+    public geomAddPlane(origin_id: number, axes: [XYZ, XYZ, XYZ]): number {
         const new_id: number = this._objs.length;
-        // make the three ortho vectors
-        const vecs: XYZ[] = threex.makeXYZOrthogonal(x_vec, vec, true);
-        if (vecs === null) {throw new Error("Vectors cannot be parallel.");}
         // add the obj
         this._objs.push([
             [[origin_id]], // wires
             [], // faces
-            [EObjType.plane, vecs[0], vecs[1], vecs[2]], // parameters
+            [EObjType.plane, axes[0], axes[1], axes[2]], // parameters
         ]); // add the obj
         // update all attributes
         this._newObjAddToAttribs(new_id);
@@ -693,22 +689,39 @@ export class Kernel {
      * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
      * two angles.
      * @param origin_id The origin point.
-     * @param x_vec A vector defining the radius in the local x direction.
-     * @param vec A vector in the plane.
+     * @param axes Three orthogonal axes as XYZ vectors
      * @param angles The angles, can be undefined, in which case a closed circle is generated.
      * @return ID of object.
      */
-    public geomAddCircle(origin_id: number, x_vec: XYZ, vec: XYZ,
-                         angles?: [number, number]): number {
+    public geomAddCircle(origin_id: number, axes: [XYZ, XYZ, XYZ], angles?: [number, number]): number {
         const new_id: number = this._objs.length;
-        // make the three ortho vectors
-        const vecs: XYZ[] = threex.makeXYZOrthogonal(x_vec, vec, false);
-        if (vecs === null) {throw new Error("Vectors cannot be parallel.");}
         // add the obj
         this._objs.push([
             [[origin_id]], // wire with just a single point
             [], // faces, none
-            [EObjType.circle, vecs[0], vecs[1], vecs[2], angles], // params
+            [EObjType.circle, axes[0], axes[1], axes[2], angles], // params
+        ]);
+        // update all attributes
+        this._newObjAddToAttribs(new_id);
+        // return the new conic id
+        return new_id;
+    }
+
+    /**
+     * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
+     * two angles.
+     * @param origin_id The origin point.
+     * @param axes Three orthogonal axes as XYZ vectors
+     * @param angles The angles, can be undefined, in which case a ellipse is generated.
+     * @return ID of object.
+     */
+    public geomAddEllipse(origin_id: number, axes: [XYZ, XYZ, XYZ], angles?: [number, number]): number {
+        const new_id: number = this._objs.length;
+        // add the obj
+        this._objs.push([
+            [[origin_id]], // wire with just a single point
+            [], // faces, none
+            [EObjType.ellipse, axes[0], axes[1], axes[2], angles], // params
         ]);
         // update all attributes
         this._newObjAddToAttribs(new_id);
@@ -728,49 +741,6 @@ export class Kernel {
         // create the pline
         if (is_closed) {point_ids.push(-1); }
         this._objs.push([[point_ids], [], [EObjType.polyline]]); // add the obj
-        // update all attributes
-        this._newObjAddToAttribs(new_id);
-        // return the new pline
-        return new_id;
-    }
-
-    /**
-     * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
-     * two angles.
-     * @param origin_id The origin point.
-     * @param x_vec A vector defining the radius in the local x direction.
-     * @param y_vec A vector defining the radius in the local y direction.
-     * @param angles The angles, can be undefined, in which case a ellipse is generated.
-     * @return ID of object.
-     */
-    public geomAddEllipse(origin_id: number, x_vec: XYZ, y_vec: XYZ,
-                          angles?: [number, number]): number {
-        const new_id: number = this._objs.length;
-        // add the obj
-        this._objs.push([
-            [[origin_id, -2]], // wire with just a single point
-            [], // faces, none
-            [EObjType.ellipse, x_vec, y_vec, threex.crossXYZs(x_vec, y_vec), angles], // params
-        ]);
-        // update all attributes
-        this._newObjAddToAttribs(new_id);
-        // return the new conic id
-        return new_id;
-    }
-
-    /**
-     * Adds a new NURBS curve to the model given a set of control points.
-     * @param control_points, which is a collection of Points
-     * @param is_closed Indicates whether the polyline is closed.
-     * @param is_closed Indicates whether the polyline is closed.
-     * @return ID of object.
-     */
-    public geomAddNurbsCurve(ctrl_point_ids: number[], is_closed: boolean, order: number): number {
-        if (ctrl_point_ids.length < order) {throw new Error("Too few points for creating a NURBS curve."); }
-        const new_id: number = this._objs.length;
-        // create the pline
-        if (is_closed) {ctrl_point_ids.push(-1); }
-        this._objs.push([[ctrl_point_ids], [], [EObjType.nurbs_curve, order]]); // add the obj
         // update all attributes
         this._newObjAddToAttribs(new_id);
         // return the new pline
@@ -1234,6 +1204,16 @@ export class Kernel {
      */
     public objGetParams(id: number): any {
         return this._objs[id][2];
+    }
+
+    /**
+     * Get the parameters for this object.
+     * @return The parameters array.
+     */
+    public objSetParams(id: number, params: any[]): any[] {
+        const old_params: any[] = this._objs[id][2];
+        this._objs[id][2] = params;
+        return old_params;
     }
 
     /**

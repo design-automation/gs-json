@@ -92,9 +92,9 @@ export function getLinesFromEllipse(curve: gs.IEllipse, resolution: number): num
  */
 export function getLinesFromPlane(curve: gs.IPlane): number[][] {
     const o: gs.XYZ = curve.getOrigin().getPosition();
-    const x_vec: gs.XYZ = curve.getVectors()[0];
-    const y_vec: gs.XYZ = curve.getVectors()[1];
-    const z_vec: gs.XYZ = curve.getVectors()[2];
+    const x_vec: gs.XYZ = curve.getAxes()[0];
+    const y_vec: gs.XYZ = curve.getAxes()[1];
+    const z_vec: gs.XYZ = curve.getAxes()[2];
     const x_end: gs.XYZ = [o[0] + x_vec[0], o[1] + x_vec[1], o[2] + x_vec[2]];
     const y_end: gs.XYZ = [o[0] + y_vec[0], o[1] + y_vec[1], o[2] + y_vec[2]];
     const z_end: gs.XYZ = [o[0] + z_vec[0], o[1] + z_vec[1], o[2] + z_vec[2]];

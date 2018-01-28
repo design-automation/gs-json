@@ -12,6 +12,8 @@ import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";
 import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {_castToObjType} from "./entity_obj_cast";
+import * as threex from "./three_utils";
+import * as util from "./_utils";
 
 /**
  * Class Geom
@@ -74,11 +76,11 @@ export class Geom implements IGeom {
     public copyPlaneFromModel(plane: IPlane): IPlane {
         // get the data
         const origin: IPoint = plane.getOrigin();
-        const vecs: XYZ[] = plane.getVectors();
+        const axes: [XYZ,XYZ,XYZ] = plane.getAxes();
         // create the points
         const origin_id: number = this._kernel.geomAddPoint(origin.getPosition());
         // create the obj
-        const id: number = this._kernel.geomAddPlane(origin_id, vecs[0], vecs[1]);
+        const id: number = this._kernel.geomAddPlane(origin_id, axes);
         return new Plane(this._kernel, id);
     }
 
@@ -90,12 +92,12 @@ export class Geom implements IGeom {
     public copyCircleFromModel(circle: ICircle): ICircle {
         // get the data
         const origin: IPoint = circle.getOrigin();
-        const vecs: XYZ[] = circle.getVectors();
+        const axes: [XYZ,XYZ,XYZ] = circle.getAxes();
         const angles: [number, number] = circle.getAngles();
         // create the points
         const origin_id: number = this._kernel.geomAddPoint(origin.getPosition());
         // create the obj
-        const id: number = this._kernel.geomAddCircle(origin_id, vecs[0], vecs[1], angles);
+        const id: number = this._kernel.geomAddCircle(origin_id, axes, angles);
         return new Circle(this._kernel, id);
     }
 
@@ -188,35 +190,34 @@ export class Geom implements IGeom {
      * Adds a new plane to the model.
      * @param origin_point The plane origin point.
      * @param x_vec A vector defining the x axis.
-     * @param y_vec A vector defining the y axis, orthogonal to x.
+     * @param vec A vector in the plane.
      * @return Object of type Plane
      */
-    public addPlane(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ): IPlane {
-        const id: number = this._kernel.geomAddPlane(origin_point.getID(), x_vec, y_vec);
+    public addPlane(origin_point: IPoint, x_vec: XYZ, vec: XYZ): IPlane {
+        // make three ortho vectors
+        const axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        if (axes === null) {throw new Error("Vectors cannot be parallel.");}
+        // make the circle
+        const id: number = this._kernel.geomAddPlane(origin_point.getID(), axes);
         return new Plane(this._kernel, id);
     }
-
 
     /**
      * Adds a new circle to the model.
      * @param Origin The origin point.
      * @param x_vec A vector in the local x direction, also defines the raidus.
-     * @param y_vec A vector in the local y direction, must be orthogonal to x.
+     * @param vec A vector in the plane
      * @param angles The angles, can be undefined, in which case a closed conic is generated.
      * @return Object of type Circle
      */
-    public addCircle(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]): ICircle {
-        // Proposal of direct sense for angles:
-
-
-        if(angles !== undefined && (angles[1] - angles[0]) < 0) {
-            throw new Error("Increasing order for angles required: ["
-             + [angles[1],angles[0]] + "] as opposed to [" +  [angles[0],angles[1]] + "]");}
-        ////
-
-
-
-        const id: number = this._kernel.geomAddCircle(origin_point.getID(), x_vec, y_vec, angles);
+    public addCircle(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles?: [number, number]): ICircle {
+        // make the angles correct
+        angles = util.checkCircleAngles(angles);
+        // make three ortho vectors
+        const axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        if (axes === null) {throw new Error("Vectors cannot be parallel.");}
+        // make the circle
+        const id: number = this._kernel.geomAddCircle(origin_point.getID(), axes, angles);
         return new Circle(this._kernel, id);
     }
 
@@ -228,8 +229,14 @@ export class Geom implements IGeom {
      * @param angles The angles, can be undefined, in which case a closed conic is generated.
      * @return Object of type Ellipse
      */
-    public addEllipse(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]): IEllipse {
-        const id: number = this._kernel.geomAddEllipse(origin_point.getID(), x_vec, y_vec, angles);
+    public addEllipse(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles?: [number, number]): IEllipse {
+        // make the angles correct
+        angles = util.checkCircleAngles(angles);
+        // make three ortho vectors
+        const axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        if (axes === null) {throw new Error("Vectors cannot be parallel.");}
+        // make the circle
+        const id: number = this._kernel.geomAddEllipse(origin_point.getID(), axes, angles);
         return new Ellipse(this._kernel, id);
     }
 

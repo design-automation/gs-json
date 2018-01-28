@@ -12,7 +12,6 @@ describe("Tests for Geom class", () => {
         expect( geom_tests.test_Geom_copyObjFromModel() ).toBe(true);
     });
 
-
     it("test_createPoint", () => {
         expect( geom_tests.test_Geom_createPoint() ).toBe(true);
     });

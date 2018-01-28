@@ -4,12 +4,15 @@ import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
 import * as threex from "./three_utils";
 import * as three from "three";
+import * as util from "./_utils";
+
 /**
  * Class ConicCurve.
  */
 export class Ellipse extends Obj implements IEllipse {
+
     /**
-     * Get the object type: "ellipse".
+     * Get the object type: "circle".
      * @return ConicCurve object type.
      */
     public getObjType(): EObjType {
@@ -25,27 +28,34 @@ export class Ellipse extends Obj implements IEllipse {
     }
 
     /**
-     * Returns the x and y vectors of this curve. The length of these vectors define the x and y
-     * radii for the ellipse.
+     * Returns the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
      * @return The x and y vectors.
      */
-    public getVectors(): XYZ[] {
-        // param are [type, x_vec, y_vec, z_vec, angles]
-        // return this._kernel.objGetParams(this._id).slice(2,4);
-        // return [this._kernel.objGetParams(this._id)[3],this._kernel.objGetParams(this._id)[0]];
-        return [this._kernel.objGetParams(this._id)[1],this._kernel.objGetParams(this._id)[2]];
+    public getAxes(): [XYZ,XYZ,XYZ] {
+        const params: any[] = this._kernel.objGetParams(this._id);
+        return [params[1],params[2],params[3]];
     }
 
     /**
-     * Sets the x and y vectors of this curve. The length of these vectors define the x and y
-     * radii for the ellipse.
+     * Returns the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
      * @return The x and y vectors.
      */
-    public setVectors(x_vec: XYZ, y_vec: XYZ): void {
+    public getNormal(): XYZ {
+        return this._kernel.objGetParams(this._id)[3];
+    }
+
+    /**
+     * Sets the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
+     * @param x_vec Vector, the x axis
+     * @param vec vector, in the plane
+     */
+    public setOrientation(x_vec: XYZ, vec: XYZ): void {
         // param are [type, x_vec, y_vec, z_vec, angles]
-        this._kernel.objGetParams(this._id)[1] = x_vec;
-        this._kernel.objGetParams(this._id)[2] = y_vec;
-        this._kernel.objGetParams(this._id)[3] = threex.crossXYZs(x_vec, y_vec, true);
+        const vecs: XYZ[] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        const params: any[] = this._kernel.objGetParams(this._id);
+        params[1] = vecs[0];
+        params[2] = vecs[1];
+        params[3] = vecs[2];
     }
 
     /**
@@ -53,7 +63,6 @@ export class Ellipse extends Obj implements IEllipse {
      * @return The Alpha and Beta angles.
      */
     public getAngles(): [number, number] {
-        // param are [type, x_vec, y_vec, z_vec, angles]
         return this._kernel.objGetParams(this._id)[4];
     }
 
@@ -62,7 +71,8 @@ export class Ellipse extends Obj implements IEllipse {
      * @return The Alpha and Beta angles.
      */
     public setAngles(angles: [number, number]): void {
-        // param are [type, x_vec, y_vec, z_vec, angles]
+        // make sure the angles are ok
+        angles = util.checkCircleAngles(angles);
         this._kernel.objGetParams(this._id)[4] = angles;
     }
 

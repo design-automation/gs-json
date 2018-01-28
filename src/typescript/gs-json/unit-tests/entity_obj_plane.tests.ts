@@ -6,6 +6,6 @@ describe("Tests for Plane class", () => {
         expect( entity_obj_plane_tests.test_Plane_getCartesians() ).toBe(true);
     });
     it("test_Plane_getVectors", () => {
-        expect( entity_obj_plane_tests.test_Plane_getVectors() ).toBe(true);
+        expect( entity_obj_plane_tests.test_Plane_getAxes() ).toBe(true);
     });
 });

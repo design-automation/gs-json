@@ -8,11 +8,11 @@ describe("Tests for Entity Object Circle", () => {
     it("test_getOrigin", () => {
         expect( tests.test_getOrigin() ).toBe(true);
     });
-    it("test_getVectors", () => {
-        expect( tests.test_getVectors() ).toBe(true);
+    it("test_getAxes", () => {
+        expect( tests.test_getAxes() ).toBe(true);
     });
-    it("test_setVectors", () => {
-        expect( tests.test_setVectors() ).toBe(true);
+    it("test_setOrientation", () => {
+        expect( tests.test_setOrientation() ).toBe(true);
     });
     it("test_getAngles", () => {
         expect( tests.test_getAngles() ).toBe(true);

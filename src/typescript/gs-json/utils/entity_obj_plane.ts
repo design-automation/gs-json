@@ -2,6 +2,7 @@ import {XYZ, IPlane, IPoint} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
+import * as threex from "./three_utils";
 
 /**
  * Class Plane.
@@ -31,8 +32,31 @@ export class Plane extends Obj implements IPlane {
      * Get the x and y vectors  of the plane.
      * @return Plane object type.
      */
-    public getVectors(): XYZ[] {
-        return this._kernel.objGetParams(this._id).slice(1,3);
+    public getAxes(): [XYZ,XYZ,XYZ] {
+        const params: any[] = this._kernel.objGetParams(this._id);
+        return [params[1],params[2],params[3]];
+    }
+
+    /**
+     * Returns the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
+     * @return The x and y vectors.
+     */
+    public getNormal(): XYZ {
+        return this._kernel.objGetParams(this._id)[3];
+    }
+
+    /**
+     * Sets the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
+     * @param x_vec Vector, the x axis
+     * @param vec vector, in the plane
+     */
+    public setOrientation(x_vec: XYZ, vec: XYZ): void {
+        // param are [type, x_vec, y_vec, z_vec, angles]
+        const vecs: XYZ[] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        const params: any[] = this._kernel.objGetParams(this._id);
+        params[1] = vecs[0];
+        params[2] = vecs[1];
+        params[3] = vecs[2];
     }
 
     /**

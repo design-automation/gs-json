@@ -19,18 +19,17 @@ export function test_getOrigin(): boolean {
     if(!Arr.equal(curve.getOrigin().getPosition(), pt.getPosition())) {return false;}
     return true;
 }
-export function test_getVectors(): boolean {
+export function test_getAxes(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
     const vector_x: gs.XYZ = [1,0,0];
     const vector_y: gs.XYZ = [0,1,0];
     const curve: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
-    if(!Arr.equal(curve.getVectors()[0], vector_x)) {return false;}
-    if(!Arr.equal(curve.getVectors()[1], vector_y)) {return false;}
+    if(!Arr.equal(curve.getAxes()[0], vector_x)) {return false;}
     return true;
 }
-export function test_setVectors(): boolean {
+export function test_setOrientation(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
@@ -39,9 +38,8 @@ export function test_setVectors(): boolean {
     const vector_x_new: gs.XYZ = [0,1,0];
     const vector_y_new: gs.XYZ = [-1,0,0];
     const curve: gs.ICircle = g.addCircle(pt,vector_x,vector_y,[45,135]);
-    curve.setVectors(vector_x_new,vector_y_new);
-    if(!Arr.equal(curve.getVectors()[0], vector_x_new)) {return false;}
-    if(!Arr.equal(curve.getVectors()[1], vector_y_new)) {return false;}
+    curve.setOrientation(vector_x_new,vector_y_new);
+    if(!Arr.equal(curve.getAxes()[0], vector_x_new)) {return false;}
     return true;
 }
 export function test_getAngles(): boolean {
@@ -74,6 +72,16 @@ export function test_getRadius(): boolean {
     const pt: gs.IPoint = g.addPoint([5,6,7]);
     const curve: gs.ICircle = g.addCircle(pt,[radius,0,0],[0,1,0],[45,135]);
     if(curve.getRadius() !== radius) {return false;}
+    return true;
+}
+export function test_setRadius(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const radius: number = 1.23;
+    const pt: gs.IPoint = g.addPoint([5,6,7]);
+    const curve: gs.ICircle = g.addCircle(pt,[radius,0,0],[0,1,0],[45,135]);
+    curve.setRadius(123);
+    if(curve.getRadius() !== 123) {return false;}
     return true;
 }
 export function test_isClosed(): boolean {

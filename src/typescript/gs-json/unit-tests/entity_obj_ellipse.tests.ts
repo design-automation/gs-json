@@ -12,7 +12,7 @@ describe("Tests for Entity Object Ellipse", () => {
         expect( tests.test_getOrigin() ).toBe(true);
     });
     it("test_getVectors", () => {
-        expect( tests.test_getVectors() ).toBe(true);
+        expect( tests.test_getAxes() ).toBe(true);
     });
     it("test_getRadii", () => {
         expect( tests.test_getRadii() ).toBe(true);

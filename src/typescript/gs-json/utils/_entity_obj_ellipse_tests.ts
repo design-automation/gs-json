@@ -29,12 +29,12 @@ export function test_getOrigin(): boolean {
     if(!Arr.equal(curve.getOrigin().getPosition(), pt.getPosition())) {return false;}
     return true;
 }
-export function test_getVectors(): boolean {
+export function test_getAxes(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
     const curve: gs.IEllipse = g.addEllipse(pt,[1.123,4,6],[3,1.456,9],[45,135]);
-    curve.getVectors();
+    curve.getAxes();
     return true;
 }
 export function test_getRadii(): boolean {

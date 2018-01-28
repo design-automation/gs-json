@@ -99,7 +99,11 @@ export function lengthXYZ(xyz: gs.XYZ): number {
     return new three.Vector3(...xyz).length();
 }
 
-export function makeXYZOrthogonal(xyz1: gs.XYZ, xyz2: gs.XYZ, normalize:boolean): gs.XYZ[] {
+export function setLengthXYZ(xyz: gs.XYZ, length: number): gs.XYZ {
+    return new three.Vector3(...xyz).setLength(length).toArray() as gs.XYZ;
+}
+
+export function makeXYZOrthogonal(xyz1: gs.XYZ, xyz2: gs.XYZ, normalize:boolean): [gs.XYZ, gs.XYZ, gs.XYZ] {
     // create normalised vecors
     const vec1: three.Vector3 = new three.Vector3(...xyz1).normalize();
     const vec2: three.Vector3 = new three.Vector3(...xyz2).normalize();

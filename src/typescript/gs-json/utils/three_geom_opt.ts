@@ -221,7 +221,7 @@ function _renderRay(ray: gs.IRay): gs.XYZ[] {
 function _renderPlane(plane: gs.IPlane): gs.XYZ[][] {
     const p_origin: gs.XYZ = plane.getOrigin().getPosition();
     const p_origin_vec: three.Vector3 = new three.Vector3(...p_origin);
-    const p_axes: gs.XYZ[] = plane.getVectors();
+    const p_axes: gs.XYZ[] = plane.getAxes();
     const x_axis: three.Vector3 = new three.Vector3(...p_axes[0]);
     x_axis.setLength(10);
     const y_axis: three.Vector3 = new three.Vector3(...p_axes[1]);

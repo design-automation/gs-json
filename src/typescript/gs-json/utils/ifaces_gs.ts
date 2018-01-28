@@ -163,7 +163,9 @@ export interface IRay  extends IObj {
 export interface IPlane  extends IObj {
     getObjType(): EObjType;
     getOrigin(): IPoint;
-    getVectors(): XYZ[];
+    getAxes(): [XYZ,XYZ,XYZ];
+    getNormal(): XYZ;
+    setOrientation(x_vec: XYZ, vec: XYZ): void;
     getCartesians(): number[];
 }
 
@@ -174,11 +176,13 @@ export interface ICircle  extends IObj {
     getObjType(): EObjType;
     isClosed(): boolean;
     getOrigin(): IPoint;
-    getVectors(): XYZ[];
-    setVectors(x_vec: XYZ, y_vec: XYZ): void;
-    getRadius(): number;
+    getAxes(): [XYZ,XYZ,XYZ];
+    getNormal(): XYZ;
+    setOrientation(x_vec: XYZ, vec: XYZ): void;
     getAngles(): [number, number];
     setAngles(angles: [number, number]): void;
+    getRadius(): number;
+    setRadius(radius: number): number ;
     length(): number;
     evalParam(t: number): IPoint;
     equiPoints(num_points: number): IPoint[];
@@ -190,8 +194,9 @@ export interface IEllipse  extends IObj {
     getObjType(): EObjType;
     isClosed(): boolean;
     getOrigin(): IPoint;
-    getVectors(): XYZ[];
-    setVectors(x_vec: XYZ, y_vec: XYZ): void;
+    getAxes(): [XYZ,XYZ,XYZ];
+    getNormal(): XYZ;
+    setOrientation(x_vec: XYZ, vec: XYZ): void;
     getRadii(): [number, number];
     getAngles(): [number, number];
     setAngles(angles: [number, number]): void;
