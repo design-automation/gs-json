@@ -107,7 +107,6 @@ export function makeXYZOrthogonal(xyz1: gs.XYZ, xyz2: gs.XYZ, normalize:boolean)
     // create normalised vecors
     const vec1: three.Vector3 = new three.Vector3(...xyz1).normalize();
     const vec2: three.Vector3 = new three.Vector3(...xyz2).normalize();
-    const vec_up: three.Vector3 = new three.Vector3();
     // set the x vector
     if (normalize) {
         xyz1 = vec1.toArray() as gs.XYZ;
@@ -116,9 +115,10 @@ export function makeXYZOrthogonal(xyz1: gs.XYZ, xyz2: gs.XYZ, normalize:boolean)
     const abs_dot: number = Math.abs(vec1.dot(vec2));
     if ((1 - abs_dot) < EPS) {return null;}
     // make vec2 ortho
+    const vec_up: three.Vector3 = new three.Vector3();
     vec_up.crossVectors(vec1, vec2).normalize();
     const vec_ortho: three.Vector3 = new three.Vector3();
-    vec_ortho.crossVectors(vec1, vec_up);
+    vec_ortho.crossVectors(vec_up, vec1);
     return [
         xyz1,
         vec_ortho.toArray() as gs.XYZ,
