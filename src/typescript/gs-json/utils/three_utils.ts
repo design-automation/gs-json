@@ -112,18 +112,11 @@ export function makeXYZOrthogonal(xyz1: gs.XYZ, xyz2: gs.XYZ, normalize:boolean)
     if (normalize) {
         xyz1 = vec1.toArray() as gs.XYZ;
     }
-    // check if vec2 is already ortho
-    vec_up.crossVectors(vec1, vec2).normalize();
+    // check if vec1 and vec2 are parallel
     const abs_dot: number = Math.abs(vec1.dot(vec2));
     if ((1 - abs_dot) < EPS) {return null;}
-    if (abs_dot < EPS) {
-        return [
-            xyz1,
-            vec2.toArray() as gs.XYZ,
-            vec_up.toArray() as gs.XYZ,
-        ];
-    }
     // make vec2 ortho
+    vec_up.crossVectors(vec1, vec2).normalize();
     const vec_ortho: three.Vector3 = new three.Vector3();
     vec_ortho.crossVectors(vec1, vec_up);
     return [
