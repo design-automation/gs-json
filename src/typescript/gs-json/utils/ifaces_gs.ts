@@ -44,6 +44,14 @@ export interface IModel {
  * Interface, for the Geom class, that gives access to geometry in the model.
  */
 export interface IGeom  {
+    //Copy
+    copyRayFromModel(ray: IRay): IRay;
+    copyPlaneFromModel(plane: IPlane): IPlane;
+    copyCircleFromModel(circle: ICircle): ICircle;
+    copyPlineFromModel(pline: IPolyline): IPolyline;
+    copyPmeshFromModel(pline: IPolymesh): IPolymesh;
+    copyObjFromModel(obj: IObj): IObj;
+    copyObjsFromModel(objs: IObj[]): IObj[];
     // Creation
     addPoint(xyz: XYZ): IPoint;
     addPoints(xyz_arr: XYZ[]): IPoint[];

@@ -28,6 +28,130 @@ export class Geom implements IGeom {
         this._kernel = kernel;
     }
 
+    //  Copy from model -----------------------------------------------------------------------------------
+
+    /**
+     * Copies a point from another model to thid model.
+     * @param point The point to copy
+     * @return A new point.
+     */
+    public copyPointFromModel(point: IPoint): IPoint {
+        const id: number = this._kernel.geomAddPoint(point.getPosition());
+        return new Point(this._kernel, id);
+    }
+
+    /**
+     * Copies a set of new points to the model, from an array of xyz coordinates.
+     * @param points An array of points to copy.
+     * @return An array of new points.
+     */
+    public copyPointsFromModel(points: IPoint[]): IPoint[] {
+        return points.map((point) => this.addPoint(point.getPosition()));
+    }
+
+    /**
+     * Copies a ray to the model.
+     * @param ray The ray to copy.
+     * @param ray_vec A vector defining the direction of the ray.
+     * @return Object of type Ray
+     */
+    public copyRayFromModel(ray: IRay): IRay {
+        // get the data
+        const origin: IPoint = ray.getOrigin();
+        const vec: XYZ = ray.getVector();
+        // create the points
+        const origin_id: number = this._kernel.geomAddPoint(origin.getPosition());
+        // create the obj
+        const id: number = this._kernel.geomAddRay(origin_id, vec);
+        return new Ray(this._kernel, id);
+    }
+
+    /**
+     * Copies a plane to the model.
+     * @param plane The plane to copy.
+     * @return Object of type Plane
+     */
+    public copyPlaneFromModel(plane: IPlane): IPlane {
+        // get the data
+        const origin: IPoint = plane.getOrigin();
+        const vecs: XYZ[] = plane.getVectors();
+        // create the points
+        const origin_id: number = this._kernel.geomAddPoint(origin.getPosition());
+        // create the obj
+        const id: number = this._kernel.geomAddPlane(origin_id, vecs[0], vecs[1]);
+        return new Plane(this._kernel, id);
+    }
+
+    /**
+     * Copies a circle to the model.
+     * @param circle The circle to copy.
+     * @return Object of type Circle
+     */
+    public copyCircleFromModel(circle: ICircle): ICircle {
+        // get the data
+        const origin: IPoint = circle.getOrigin();
+        const vecs: XYZ[] = circle.getVectors();
+        const angles: [number, number] = circle.getAngles();
+        // create the points
+        const origin_id: number = this._kernel.geomAddPoint(origin.getPosition());
+        // create the obj
+        const id: number = this._kernel.geomAddCircle(origin_id, vecs[0], vecs[1], angles);
+        return new Circle(this._kernel, id);
+    }
+
+    /**
+     * Copies a polyline to the model.
+     * @param circle The polyline to copy.
+     * @return Object of type Polyline
+     */
+    public copyPlineFromModel(pline: IPolyline): IPolyline {
+        //TODO copy polylines
+        throw new Error("Method not implemented");
+    }
+
+    /**
+     * Copies a polyline to the model.
+     * @param circle The polyline to copy.
+     * @return Object of type Polyline
+     */
+    public copyPmeshFromModel(pline: IPolymesh): IPolymesh {
+        //TODO copy polymeshes
+        throw new Error("Method not implemented");
+    }
+
+    /**
+     * Copies an obj to the model.
+     * @param obj The obj to copy.
+     * @return Object
+     */
+    public copyObjFromModel(obj: IObj): IObj {
+        switch (obj.getObjType()) {
+            case EObjType.ray:
+                return this.copyRayFromModel(obj as IRay);
+            case EObjType.plane:
+                return this.copyPlaneFromModel(obj as IPlane);
+            case EObjType.circle:
+                return this.copyCircleFromModel(obj as ICircle);
+            case EObjType.polyline:
+                return this.copyPlineFromModel(obj as IPolyline);
+            case EObjType.polymesh:
+                return this.copyPmeshFromModel(obj as IPolymesh);
+            default:
+                throw new Error("Object type not found:" + obj.getObjType());
+        }
+    }
+
+    /**
+     * Copies an array of objs to the model.
+     * @param objs The objs to copy.
+     * @return Object
+     */
+    public copyObjsFromModel(objs: IObj[]): IObj[] {
+        //TODO copy objects with the shared points
+        // The rtick here is tomake sure that points are still shared between the objects
+        throw new Error("Method not implemented");
+    }
+
     //  Creation -----------------------------------------------------------------------------------
 
     /**
@@ -50,16 +174,28 @@ export class Geom implements IGeom {
     }
 
     /**
-     * Adds a new polyline to the model.
-     * @param points A collection of Points.
-     * @param is_closed True if the polyline is closed.
-     * @return Object of type Polyline
+     * Adds a new ray to the model.
+     * @param origin_point The ray origin point.
+     * @param ray_vec A vector defining the direction of the ray.
+     * @return Object of type Ray
      */
-    public addPolyline(points: IPoint[], is_closed: boolean): IPolyline {
-        const point_ids: number[] = points.map((p) => p.getID());
-        const id: number = this._kernel.geomAddPolyline(point_ids, is_closed);
-        return new Polyline(this._kernel, id);
+    public addRay(origin_point: IPoint, ray_vec: XYZ): IRay {
+        const id: number = this._kernel.geomAddRay(origin_point.getID(), ray_vec);
+        return new Ray(this._kernel, id);
     }
+
+    /**
+     * Adds a new plane to the model.
+     * @param origin_point The plane origin point.
+     * @param x_vec A vector defining the x axis.
+     * @param y_vec A vector defining the y axis, orthogonal to x.
+     * @return Object of type Plane
+     */
+    public addPlane(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ): IPlane {
+        const id: number = this._kernel.geomAddPlane(origin_point.getID(), x_vec, y_vec);
+        return new Plane(this._kernel, id);
+    }
+
 
     /**
      * Adds a new circle to the model.
@@ -71,10 +207,15 @@ export class Geom implements IGeom {
      */
     public addCircle(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]): ICircle {
         // Proposal of direct sense for angles:
+
+
         if(angles !== undefined && (angles[1] - angles[0]) < 0) {
             throw new Error("Increasing order for angles required: ["
              + [angles[1],angles[0]] + "] as opposed to [" +  [angles[0],angles[1]] + "]");}
         ////
+
+
+
         const id: number = this._kernel.geomAddCircle(origin_point.getID(), x_vec, y_vec, angles);
         return new Circle(this._kernel, id);
     }
@@ -93,6 +234,18 @@ export class Geom implements IGeom {
     }
 
     /**
+     * Adds a new polyline to the model.
+     * @param points A collection of Points.
+     * @param is_closed True if the polyline is closed.
+     * @return Object of type Polyline
+     */
+    public addPolyline(points: IPoint[], is_closed: boolean): IPolyline {
+        const point_ids: number[] = points.map((p) => p.getID());
+        const id: number = this._kernel.geomAddPolyline(point_ids, is_closed);
+        return new Polyline(this._kernel, id);
+    }
+
+    /**
      * Adds a new polymesh to the model.
      * @param face_points An array of arrays of points.
      * @return Object of type Polymesh
@@ -101,27 +254,6 @@ export class Geom implements IGeom {
         const point_ids: number[][] = face_points.map((f) => f.map((p) => p.getID()));
         const id: number = this._kernel.geomAddPolymesh(point_ids);
         return new Polymesh(this._kernel, id);
-    }
-    /**
-     * Adds a new ray to the model.
-     * @param origin_point The ray origin point.
-     * @param ray_vec A vector defining the direction of the ray.
-     * @return Object of type Ray
-     */
-    public addRay(origin_point: IPoint, ray_vec: XYZ): IRay {
-        const id: number = this._kernel.geomAddRay(origin_point.getID(), ray_vec);
-        return new Ray(this._kernel, id);
-    }
-    /**
-     * Adds a new plane to the model.
-     * @param origin_point The plane origin point.
-     * @param x_vec A vector defining the x axis.
-     * @param y_vec A vector defining the y axis, orthogonal to x.
-     * @return Object of type Plane
-     */
-    public addPlane(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ): IPlane {
-        const id: number = this._kernel.geomAddPlane(origin_point.getID(), x_vec, y_vec);
-        return new Plane(this._kernel, id);
     }
 
     //  Points -------------------------------------------------------------------------------------

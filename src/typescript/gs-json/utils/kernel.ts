@@ -470,7 +470,9 @@ export class Kernel {
     public geomDelPoints(ids: number[]): boolean {
         let ok: boolean = true;
         for (const id of ids) {
-            if  (!this.geomDelPoint(id)) {ok = false;}
+            if (this.geomHasPoint(id)) {
+                if (!this.geomDelPoint(id)) {ok = false;}
+            }
         }
         return ok;
     }
@@ -667,23 +669,50 @@ export class Kernel {
      * Adds a new plane to the model defined by an origin and two vectors.
      * @param origin The plane origin point.
      * @param x_vec A vector defining the x axis.
-     * @param y_vec A vector defining the y axis, orthogonal to x.
+     * @param vec A vector on the plane.
      * @return ID of object.
      */
-    public geomAddPlane(origin_id: number, x_vec: XYZ, y_vec: XYZ): number {
-        const x_vector: three.Vector3 = new three.Vector3(...x_vec).normalize();
-        const y_vector: three.Vector3 = new three.Vector3(...y_vec).normalize();
-        const z_vector: three.Vector3 = new three.Vector3();
-        z_vector.crossVectors(x_vector, y_vector);
+    public geomAddPlane(origin_id: number, x_vec: XYZ, vec: XYZ): number {
         const new_id: number = this._objs.length;
+        // make the three ortho vectors
+        const vecs: XYZ[] = threex.makeXYZOrthogonal(x_vec, vec, true);
+        if (vecs === null) {throw new Error("Vectors cannot be parallel.");}
+        // add the obj
         this._objs.push([
             [[origin_id]], // wires
             [], // faces
-            [EObjType.plane, x_vector.toArray(), y_vector.toArray(), z_vector.toArray()], // parameters
+            [EObjType.plane, vecs[0], vecs[1], vecs[2]], // parameters
         ]); // add the obj
         // update all attributes
         this._newObjAddToAttribs(new_id);
         // return the new pline
+        return new_id;
+    }
+
+    /**
+     * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
+     * two angles.
+     * @param origin_id The origin point.
+     * @param x_vec A vector defining the radius in the local x direction.
+     * @param vec A vector in the plane.
+     * @param angles The angles, can be undefined, in which case a closed circle is generated.
+     * @return ID of object.
+     */
+    public geomAddCircle(origin_id: number, x_vec: XYZ, vec: XYZ,
+                         angles?: [number, number]): number {
+        const new_id: number = this._objs.length;
+        // make the three ortho vectors
+        const vecs: XYZ[] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        if (vecs === null) {throw new Error("Vectors cannot be parallel.");}
+        // add the obj
+        this._objs.push([
+            [[origin_id]], // wire with just a single point
+            [], // faces, none
+            [EObjType.circle, vecs[0], vecs[1], vecs[2], angles], // params
+        ]);
+        // update all attributes
+        this._newObjAddToAttribs(new_id);
+        // return the new conic id
         return new_id;
     }
 
@@ -702,30 +731,6 @@ export class Kernel {
         // update all attributes
         this._newObjAddToAttribs(new_id);
         // return the new pline
-        return new_id;
-    }
-
-    /**
-     * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
-     * two angles.
-     * @param origin_id The origin point.
-     * @param x_vec A vector defining the radius in the local x direction.
-     * @param y_vec A vector defining the local y direction.
-     * @param angles The angles, can be undefined, in which case a closed circle is generated.
-     * @return ID of object.
-     */
-    public geomAddCircle(origin_id: number, x_vec: XYZ, y_vec: XYZ,
-                         angles?: [number, number]): number {
-        const new_id: number = this._objs.length;
-        // add the obj
-        this._objs.push([
-            [[origin_id]], // wire with just a single point
-            [], // faces, none
-            [EObjType.circle, x_vec, y_vec, threex.crossXYZs(x_vec, y_vec), angles], // params
-        ]);
-        // update all attributes
-        this._newObjAddToAttribs(new_id);
-        // return the new conic id
         return new_id;
     }
 

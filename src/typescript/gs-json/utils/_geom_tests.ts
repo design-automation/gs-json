@@ -2,7 +2,68 @@ import {Arr} from "./arr";
 import * as gs from "./_export";
 import * as td from "./test_data";
 
-export function test_createPoint(): boolean {
+export function test_Geom_copyRayFromModel(): boolean {
+    const m1: gs.IModel = new gs.Model();
+    const g1: gs.IGeom =  m1.getGeom();
+    const p1: gs.IPoint = g1.addPoint([0.1234, 0.44566, 0.345778]);
+    const ray1: gs.IRay = g1.addRay(p1, [1,2,3]);
+    const m2: gs.IModel = new gs.Model();
+    const g2: gs.IGeom =  m2.getGeom();
+    const ray2: gs.IRay = g2.copyRayFromModel(ray1);
+    if(g2.numObjs() !== 1) {return false;}
+    if(g2.numPoints() !== 1) {return false;}
+    if(ray1.getOrigin()[2] !== ray2.getOrigin()[2]) {return false;}
+    return true;
+}
+
+export function test_Geom_copyPlaneFromModel(): boolean {
+    const m1: gs.IModel = new gs.Model();
+    const g1: gs.IGeom =  m1.getGeom();
+    const p: gs.IPoint = g1.addPoint([0.1234, 0.44566, 0.345778]);
+    const pl1: gs.IPlane = g1.addPlane(p, [1,2,3], [7,2,5]);
+    const m2: gs.IModel = new gs.Model();
+    const g2: gs.IGeom =  m2.getGeom();
+    const pl2: gs.IPlane = g2.copyPlaneFromModel(pl1);
+    if(g2.numObjs() !== 1) {return false;}
+    if(g2.numPoints() !== 1) {return false;}
+    if(pl1.getOrigin()[2] !== pl2.getOrigin()[2]) {return false;}
+    return true;
+}
+
+export function test_Geom_copyCircleFromModel(): boolean {
+    const m1: gs.IModel = new gs.Model();
+    const g1: gs.IGeom =  m1.getGeom();
+    const p: gs.IPoint = g1.addPoint([0.1234, 0.44566, 0.345778]);
+    const cir1: gs.ICircle = g1.addCircle(p, [1,2,3], [7,2,5]);
+    const m2: gs.IModel = new gs.Model();
+    const g2: gs.IGeom =  m2.getGeom();
+    const cir2: gs.ICircle = g2.copyCircleFromModel(cir1);
+    if(g2.numObjs() !== 1) {return false;}
+    if(g2.numPoints() !== 1) {return false;}
+    if(cir1.getOrigin()[2] !== cir2.getOrigin()[2]) {return false;}
+    return true;
+}
+
+export function test_Geom_copyObjFromModel(): boolean {
+    const m1: gs.IModel = new gs.Model();
+    const g1: gs.IGeom =  m1.getGeom();
+    const p1: gs.IPoint = g1.addPoint([0.1234, 0.44566, 0.345778]);
+    const ray1: gs.IRay = g1.addRay(p1, [1,2,3]);
+    const pl1: gs.IPlane = g1.addPlane(p1, [1,2,3], [7,2,5]);
+    const cir1: gs.ICircle = g1.addCircle(p1, [1,2,3], [7,2,5]);
+    const m2: gs.IModel = new gs.Model();
+    const g2: gs.IGeom =  m2.getGeom();
+    // copy three objects
+    const ray2: gs.IRay = g2.copyRayFromModel(ray1) as gs.IRay;
+    const pl2: gs.IPlane = g2.copyPlaneFromModel(pl1) as gs.IPlane;
+    const cir2: gs.ICircle = g2.copyObjFromModel(cir1) as gs.ICircle;
+    if(g2.numObjs() !== 3) {return false;}
+    if(g2.numPoints() !== 3) {return false;}
+    if(cir1.getOrigin()[2] !== cir2.getOrigin()[2]) {return false;}
+    return true;
+}
+
+export function test_Geom_createPoint(): boolean {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom =  m.getGeom();
     const p1: gs.IPoint = g.addPoint([1,2,3]);

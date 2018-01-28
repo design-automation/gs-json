@@ -2,6 +2,7 @@ import * as gs from "./_export";
 import * as three from "three";
 import * as earcut from "./extras/Earcut";
 
+const EPS: number = 1e-6;
 /**
  * Utility functions for threejs.
  */
@@ -96,6 +97,36 @@ export function normalizeXYZ(xyz: gs.XYZ): gs.XYZ {
 
 export function lengthXYZ(xyz: gs.XYZ): number {
     return new three.Vector3(...xyz).length();
+}
+
+export function makeXYZOrthogonal(xyz1: gs.XYZ, xyz2: gs.XYZ, normalize:boolean): gs.XYZ[] {
+    // create normalised vecors
+    const vec1: three.Vector3 = new three.Vector3(...xyz1).normalize();
+    const vec2: three.Vector3 = new three.Vector3(...xyz2).normalize();
+    const vec_up: three.Vector3 = new three.Vector3();
+    // set the x vector
+    if (normalize) {
+        xyz1 = vec1.toArray() as gs.XYZ;
+    }
+    // check if vec2 is already ortho
+    vec_up.crossVectors(vec1, vec2).normalize();
+    const abs_dot: number = Math.abs(vec1.dot(vec2));
+    if ((1 - abs_dot) < EPS) {return null;}
+    if (abs_dot < EPS) {
+        return [
+            xyz1,
+            vec2.toArray() as gs.XYZ,
+            vec_up.toArray() as gs.XYZ,
+        ];
+    }
+    // make vec2 ortho
+    const vec_ortho: three.Vector3 = new three.Vector3();
+    vec_ortho.crossVectors(vec1, vec_up);
+    return [
+        xyz1,
+        vec_ortho.toArray() as gs.XYZ,
+        vec_up.toArray() as gs.XYZ,
+    ];
 }
 
 //  Points ========================================================================================================

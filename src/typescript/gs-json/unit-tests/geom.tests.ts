@@ -2,8 +2,19 @@ import {} from "jasmine";
 import * as geom_tests from "../utils/_geom_tests";
 
 describe("Tests for Geom class", () => {
+    it("test_copyPlaneFromModel", () => {
+        expect( geom_tests.test_Geom_copyPlaneFromModel() ).toBe(true);
+    });
+    it("test_copyCircleFromModel", () => {
+        expect( geom_tests.test_Geom_copyCircleFromModel() ).toBe(true);
+    });
+    it("test_copyObjFromModel", () => {
+        expect( geom_tests.test_Geom_copyObjFromModel() ).toBe(true);
+    });
+
+
     it("test_createPoint", () => {
-        expect( geom_tests.test_createPoint() ).toBe(true);
+        expect( geom_tests.test_Geom_createPoint() ).toBe(true);
     });
     it("test_Geom_constructor", () => {
         expect( geom_tests.test_Geom_constructor() ).toBe(true);
