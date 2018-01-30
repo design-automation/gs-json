@@ -927,6 +927,9 @@ img { max-width: 100%; }
 		<li class=" tsd-kind-function tsd-parent-kind-external-module">
 			<a href="_math_conics_.html#ellipselength" class="tsd-kind-icon">ellipse<wbr>Length</a>
 		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-external-module">
+			<a href="_math_conics_.html#getrenderxyzs" class="tsd-kind-icon">get<wbr>RenderXYZs</a>
+		</li>
 	</ul>
 </nav>
 <div class="container container-main">
@@ -944,6 +947,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_math_conics_.html#ellipseevaluate" class="tsd-kind-icon">ellipse<wbr>Evaluate</a></li>
 							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_math_conics_.html#ellipsegetrenderxyzs" class="tsd-kind-icon">ellipse<wbr>Get<wbr>RenderXYZs</a></li>
 							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_math_conics_.html#ellipselength" class="tsd-kind-icon">ellipse<wbr>Length</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_math_conics_.html#getrenderxyzs" class="tsd-kind-icon">get<wbr>RenderXYZs</a></li>
 						</ul>
 					</section>
 				</div>
@@ -955,13 +959,13 @@ img { max-width: 100%; }
 				<a name="circleevaluate" class="tsd-anchor"></a>
 				<h3>circle<wbr>Evaluate</h3>
 				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-					<li class="tsd-signature tsd-kind-icon">circle<wbr>Evaluate<span class="tsd-signature-symbol">(</span>curve<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a>, t<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">gs.XYZ</span></li>
+					<li class="tsd-signature tsd-kind-icon">circle<wbr>Evaluate<span class="tsd-signature-symbol">(</span>circle<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a>, t<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">gs.XYZ</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/6e2ef0f/src/typescript/gs-json/utils/math_conics.ts#L15">math_conics.ts:15</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/19f4cfd/src/typescript/gs-json/utils/math_conics.ts#L41">math_conics.ts:41</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -972,7 +976,7 @@ img { max-width: 100%; }
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>curve: <a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a></h5>
+								<h5>circle: <a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a></h5>
 							</li>
 							<li>
 								<h5>t: <span class="tsd-signature-type">number</span></h5>
@@ -986,13 +990,13 @@ img { max-width: 100%; }
 				<a name="circlegetrenderxyzs" class="tsd-anchor"></a>
 				<h3>circle<wbr>Get<wbr>RenderXYZs</h3>
 				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-					<li class="tsd-signature tsd-kind-icon">circle<wbr>Get<wbr>RenderXYZs<span class="tsd-signature-symbol">(</span>curve<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a>, resolution<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">gs.XYZ</span><span class="tsd-signature-symbol">[]</span></li>
+					<li class="tsd-signature tsd-kind-icon">circle<wbr>Get<wbr>RenderXYZs<span class="tsd-signature-symbol">(</span>circle<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a>, resolution<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">gs.XYZ</span><span class="tsd-signature-symbol">[]</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/6e2ef0f/src/typescript/gs-json/utils/math_conics.ts#L52">math_conics.ts:52</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/19f4cfd/src/typescript/gs-json/utils/math_conics.ts#L107">math_conics.ts:107</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1004,7 +1008,7 @@ img { max-width: 100%; }
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>curve: <a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a></h5>
+								<h5>circle: <a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a></h5>
 							</li>
 							<li>
 								<h5>resolution: <span class="tsd-signature-type">number</span></h5>
@@ -1018,13 +1022,13 @@ img { max-width: 100%; }
 				<a name="circlelength" class="tsd-anchor"></a>
 				<h3>circle<wbr>Length</h3>
 				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-					<li class="tsd-signature tsd-kind-icon">circle<wbr>Length<span class="tsd-signature-symbol">(</span>curve<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					<li class="tsd-signature tsd-kind-icon">circle<wbr>Length<span class="tsd-signature-symbol">(</span>circle<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/6e2ef0f/src/typescript/gs-json/utils/math_conics.ts#L8">math_conics.ts:8</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/19f4cfd/src/typescript/gs-json/utils/math_conics.ts#L23">math_conics.ts:23</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1035,7 +1039,7 @@ img { max-width: 100%; }
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>curve: <a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a></h5>
+								<h5>circle: <a href="../interfaces/_ifaces_gs_.icircle.html" class="tsd-signature-type">ICircle</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -1052,7 +1056,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/6e2ef0f/src/typescript/gs-json/utils/math_conics.ts#L120">math_conics.ts:120</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/19f4cfd/src/typescript/gs-json/utils/math_conics.ts#L221">math_conics.ts:221</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1083,7 +1087,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/6e2ef0f/src/typescript/gs-json/utils/math_conics.ts#L179">math_conics.ts:179</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/19f4cfd/src/typescript/gs-json/utils/math_conics.ts#L280">math_conics.ts:280</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1114,7 +1118,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/6e2ef0f/src/typescript/gs-json/utils/math_conics.ts#L81">math_conics.ts:81</a></li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/19f4cfd/src/typescript/gs-json/utils/math_conics.ts#L182">math_conics.ts:182</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1129,6 +1133,38 @@ img { max-width: 100%; }
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+				<a name="getrenderxyzs" class="tsd-anchor"></a>
+				<h3>get<wbr>RenderXYZs</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>RenderXYZs<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a>, resolution<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">gs.XYZ</span><span class="tsd-signature-symbol">[]</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/19f4cfd/src/typescript/gs-json/utils/math_conics.ts#L9">math_conics.ts:9</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Calculate a set of xyz position on the circle/arc ir ellipse/arc. The number of points = length / resolution.
+								With resolution from 0.0001 to 0.5, 0.0001 being a higher resolution than 0.5</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>obj: <a href="../interfaces/_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a></h5>
+							</li>
+							<li>
+								<h5>resolution: <span class="tsd-signature-type">number</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">gs.XYZ</span><span class="tsd-signature-symbol">[]</span></h4>
 					</li>
 				</ul>
 			</section>

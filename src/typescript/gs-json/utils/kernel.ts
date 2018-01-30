@@ -57,46 +57,52 @@ export class Kernel {
         }
         // Geom points
         if (data && data.geom !== undefined && data.geom.points !== undefined) {
+            data.geom.points[0].forEach((p, i) => (p === null) && delete data.geom.points[0][i]);
             this._points = data.geom.points;
-            this._points.forEach((p, i) => (p === null) && delete this._points[i]);
         } else {
             this._points = [[], [null]];
         }
         // Geom objs
         if (data && data.geom !== undefined && data.geom.objs !== undefined) {
+            data.geom.objs.forEach((o, i) => (o === null) && delete data.geom.objs[i]);
             this._objs = data.geom.objs;
-            this._objs.forEach((o, i) => (o === null) && delete this._objs[i]);
         } else {
             this._objs = [];
         }
         // Attributes
         if (data && data.attribs && data.attribs.points !== undefined) {
             for (const attrib_data of data.attribs.points) {
+                attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
                 this._attribs.get(EGeomType.points).set(attrib_data.name, attrib_data);
             }
         }
         if (data && data.attribs && data.attribs.objs !== undefined) {
             for (const attrib_data of data.attribs.objs) {
+                attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
                 this._attribs.get(EGeomType.objs).set(attrib_data.name, attrib_data);
             }
         }
         if (data && data.attribs && data.attribs.vertices !== undefined) {
             for (const attrib_data of data.attribs.vertices) {
+                attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
                 this._attribs.get(EGeomType.vertices).set(attrib_data.name, attrib_data);
             }
         }
         if (data && data.attribs && data.attribs.edges !== undefined) {
             for (const attrib_data of data.attribs.edges) {
+                attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
                 this._attribs.get(EGeomType.edges).set(attrib_data.name, attrib_data);
             }
         }
         if (data && data.attribs && data.attribs.wires !== undefined) {
             for (const attrib_data of data.attribs.wires) {
+                attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
                 this._attribs.get(EGeomType.wires).set(attrib_data.name, attrib_data);
             }
         }
         if (data && data.attribs && data.attribs.faces !== undefined) {
             for (const attrib_data of data.attribs.faces) {
+                attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
                 this._attribs.get(EGeomType.faces).set(attrib_data.name, attrib_data);
             }
         }
