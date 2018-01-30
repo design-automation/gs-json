@@ -20,7 +20,11 @@ export function multXYZMatrix(xyz: gs.XYZ, m: three.Matrix4): gs.XYZ {
     v2.applyMatrix4(m);
     return v2.toArray().slice(0,3) as gs.XYZ;
 }
+
 export function xformMatrix(o: three.Vector3, x: three.Vector3, y: three.Vector3, z: three.Vector3): three.Matrix4 {
+    x.normalize();
+    y.normalize();
+    z.normalize();
     const m1: three.Matrix4 = new three.Matrix4();
     const o_neg: three.Vector3 = o.clone().negate();
     m1.setPosition(o_neg);
@@ -30,6 +34,16 @@ export function xformMatrix(o: three.Vector3, x: three.Vector3, y: three.Vector3
     const m3: three.Matrix4 = new three.Matrix4();
     m3.multiplyMatrices(m2, m1);
     return m3;
+}
+
+export function xformMatrixFromXYZs(o: gs.XYZ, axes: [gs.XYZ, gs.XYZ, gs.XYZ]): three.Matrix4 {
+    return xformMatrix(new three.Vector3(...o),
+        new three.Vector3(...axes[0]),new three.Vector3(...axes[1]),new three.Vector3(...axes[2]));
+}
+
+export function matrixInv(m: three.Matrix4): three.Matrix4 {
+    const m2: three.Matrix4 = new three.Matrix4();
+    return m2.getInverse(m);
 }
 
 //  Vectors =======================================================================================================

@@ -1327,6 +1327,60 @@ export function genModelPlanes(): gs.IModel {
 }
 
 /**
+ * Generates a model with del points.
+ */
+export function genModelDelPoints(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const points: gs.IPoint[] = m.getGeom().addPoints([
+            [7,  33, 2],
+            [10, 12, 23],
+            [10, 10, -10],
+        ]);
+    m.getGeom().delPoint(points[1]);
+    return m;
+}
+
+/**
+ * Generates a model with del objs.
+ */
+export function genModelDelObjs(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const points: gs.IPoint[] = m.getGeom().addPoints([
+            [-0.7794438004493713, -1.0, 0.0],
+            [0.22055619955062866, -1.0, 0.0],
+            [0.22055619955062866, -1.0, 3.0],
+            [-0.7794438004493713, -1.0, 3.0],
+            [-0.7794438004493713, 1.0, 0.0],
+            [0.22055619955062866, 1.0, 0.0],
+            [0.22055619955062866, 1.0, 3.0],
+            [-0.7794438004493713, 1.0, 3.0],
+            [1.3269386291503906, -1.0, 0.0],
+            [2.3269386291503906, -1.0, 0.0],
+            [2.3269386291503906, -1.0, 3.0],
+            [1.3269386291503906, -1.0, 3.0],
+            [1.3269386291503906, 1.0, 0.0],
+            [2.3269386291503906, 1.0, 0.0],
+            [2.3269386291503906, 1.0, 3.0],
+            [1.3269386291503906, 1.0, 3.0],
+        ]);
+    const box1: gs.IPolymesh = m.getGeom().addPolymesh([
+            [points[1], points[5], points[4], points[0]],
+            [points[2], points[6], points[5], points[1]],
+            [points[3], points[7], points[6], points[2]],
+            [points[0], points[4], points[7], points[3]],
+            [points[5], points[6], points[7], points[4]],
+        ]);
+    const box2: gs.IPolymesh = m.getGeom().addPolymesh([
+            [points[9], points[13], points[12], points[8]],
+            [points[11], points[15], points[14], points[10]],
+            [points[10], points[9], points[8], points[11]],
+            [points[13], points[14], points[15], points[12]],
+        ]);
+    m.getGeom().delObj(box1, false);
+    return m;
+}
+
+/**
  * Write all models to disk as json files.
  */
 export function genThreeModelsWriteFiles(): void {
@@ -1350,6 +1404,8 @@ export function genThreeModelsWriteFiles(): void {
     //genModelWriteToJSONFile(genModelManyTorus(), "model_many_torus.gs");
     genModelWriteToJSONFile(genModelCircles(), "model_circles.gs");
     genModelWriteToJSONFile(genModelPlanes(), "model_planes.gs");
+    genModelWriteToJSONFile(genModelDelPoints(), "model_del_points.gs");
+    genModelWriteToJSONFile(genModelDelObjs(), "model_del_objs.gs");
 }
 
 /**
