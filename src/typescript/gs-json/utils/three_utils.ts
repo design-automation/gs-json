@@ -104,26 +104,36 @@ export function setLengthXYZ(xyz: gs.XYZ, length: number): gs.XYZ {
 }
 
 export function makeXYZOrthogonal(xyz1: gs.XYZ, xyz2: gs.XYZ, normalize:boolean): [gs.XYZ, gs.XYZ, gs.XYZ] {
-    // create normalised vecors
-    const vec1: three.Vector3 = new three.Vector3(...xyz1).normalize();
+    // create normalised vectors
+    const vec_x: three.Vector3 = new three.Vector3(...xyz1);
+    const len: number = vec_x.length();
+    if (len < EPS) {return null;}
+    vec_x.normalize();
     const vec2: three.Vector3 = new three.Vector3(...xyz2).normalize();
-    // set the x vector
-    if (normalize) {
-        xyz1 = vec1.toArray() as gs.XYZ;
-    }
     // check if vec1 and vec2 are parallel
-    const abs_dot: number = Math.abs(vec1.dot(vec2));
+    const abs_dot: number = Math.abs(vec_x.dot(vec2));
     if ((1 - abs_dot) < EPS) {return null;}
-    // make vec2 ortho
-    const vec_up: three.Vector3 = new three.Vector3();
-    vec_up.crossVectors(vec1, vec2).normalize();
-    const vec_ortho: three.Vector3 = new three.Vector3();
-    vec_ortho.crossVectors(vec_up, vec1);
-    return [
-        xyz1,
-        vec_ortho.toArray() as gs.XYZ,
-        vec_up.toArray() as gs.XYZ,
-    ];
+    // make vec_z
+    const vec_z: three.Vector3 = new three.Vector3();
+    vec_z.crossVectors(vec_x, vec2);
+    // make vec_y
+    const vec_y: three.Vector3 = new three.Vector3();
+    vec_y.crossVectors(vec_z, vec_x);
+    // return
+    if (normalize) {
+        return [
+            vec_x.toArray() as gs.XYZ,    // length 1
+            vec_y.toArray() as gs.XYZ,    // length 1
+            vec_z.toArray() as gs.XYZ,    // length 1
+        ];
+    } else {
+        return [
+            xyz1,                                         // length len
+            vec_y.setLength(len).toArray() as gs.XYZ,     // length len
+            vec_z.toArray() as gs.XYZ,                    // length 1
+        ];
+    }
+
 }
 
 //  Points ========================================================================================================
