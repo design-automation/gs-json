@@ -58,12 +58,14 @@ export class Kernel {
         // Geom points
         if (data && data.geom !== undefined && data.geom.points !== undefined) {
             this._points = data.geom.points;
+            this._points.forEach((p, i) => (p === null) && delete this._points[i]);
         } else {
             this._points = [[], [null]];
         }
         // Geom objs
         if (data && data.geom !== undefined && data.geom.objs !== undefined) {
             this._objs = data.geom.objs;
+            this._objs.forEach((o, i) => (o === null) && delete this._objs[i]);
         } else {
             this._objs = [];
         }

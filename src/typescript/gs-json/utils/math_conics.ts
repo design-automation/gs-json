@@ -125,7 +125,7 @@ export function circleGetRenderXYZs(circle: gs.ICircle, resolution: number): gs.
     } else {
         arc_angle = (angles[0]-angles[1]) * (Math.PI / 180);
     }
-    // calculate number of segments
+    // calculate number of points
     let N: number = Math.floor(arc_angle / (Math.PI/ 36));
     if (N < 3) {N = 3;}
     // create matrix to map from XY plane into the 3D plane for circle
