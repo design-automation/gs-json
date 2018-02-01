@@ -40,6 +40,7 @@ export function genGsModelsWriteFiles(): void {
     genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelTorus()), "model_torus_opt.json");
     //genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelManyTorus()), "model_many_torus_opt.json");
     genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelCircles()), "model_circles_opt.json");
+    genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelGroups()), "model_groups.json");
     genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelPlanes()), "model_planes_opt.json");
     genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelDelPoints()), "model_del_points.json");
     genModelWriteToJSONFile(gs.genThreeOptModel(gs.genModelDelObjs()), "model_del_objs.json");

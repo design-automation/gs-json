@@ -2,7 +2,7 @@
     "metadata": {
         "filetype": "gs-json",
         "version": "0.1.8",
-        "uuid": "7089d35c-ae66-4b35-aa7f-1b7055aab453"
+        "uuid": "b5594b90-1408-4736-9032-6d138836854a"
     },
     "geom": {
         "points": [
@@ -120,5 +120,6 @@
         "wires": [],
         "faces": [],
         "objs": []
-    }
+    },
+    "groups": []
 }

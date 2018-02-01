@@ -1311,6 +1311,69 @@ export function genModelCircles(): gs.IModel {
 }
 
 /**
+ * Generates a model with some circles.
+ */
+export function genModelGroups(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    // circles
+    const points1: gs.IPoint[] = m.getGeom().addPoints([
+            [0, 0, 10],
+            [0, 0, 20],
+            [0, 0, 30],
+        ]);
+    const c1: gs.ICircle = m.getGeom().addCircle(points1[0], [7,0,0],  [0,1,0], [10,20]);
+    const c2: gs.ICircle = m.getGeom().addCircle(points1[1], [0,23,0], [1,0,0], [30, 300]);
+    const c3: gs.ICircle = m.getGeom().addCircle(points1[2], [0,0,16], [0,1,0], [20, 100]);
+
+    // polylines 3d
+    const points2: gs.IPoint[] = [];
+    for (let i = 0; i < 20; i++) {
+        points2.push(m.getGeom().addPoint([Math.random() * 20, Math.random() * 20, Math.random() * 20]));
+    }
+    m.getGeom().addPolyline(points2, false);
+
+    // polylines 2d
+    const points3: gs.IPoint[] = [];
+    for (let i = 0; i < 20; i++) {
+        points3.push(m.getGeom().addPoint([Math.random() * 100, Math.random() * 100, 0]));
+    }
+    const plines: gs.IPolyline[] = [];
+    for (let i = 0; i < 10; i++) {
+        const pline_points: gs.IPoint[] = [];
+        for (const point of points3) {
+            if (Math.random() > 0.5) {
+                pline_points.push(point);
+            }
+        }
+        plines.push(m.getGeom().addPolyline(pline_points, false));
+    }
+
+    // circles group
+    const group1 = m.addGroup("circles");
+    group1.addObjs([c1, c2, c3]);
+
+    // polylines group
+    const group2 = m.addGroup("polylines");
+    group2.setProps([["descr", "a group with some polylines"], ["dummy", 456]]);
+    for (const pline of plines) {
+        if (Math.random() > 0.5) {
+            group2.addObj(pline);
+        }
+    }
+    // points group
+    const group3 = m.addGroup("points");
+    group3.setParentGroup(group2);
+    group3.setProps([["descr", "a group with some points"], ["test", 123]]);
+    for (const point of points3) {
+        if (Math.random() > 0.5) {
+            group3.addPoint(point);
+        }
+    }
+    // return
+    return m;
+}
+
+/**
  * Generates a model with some planes.
  */
 export function genModelPlanes(): gs.IModel {
@@ -1403,6 +1466,7 @@ export function genThreeModelsWriteFiles(): void {
     genModelWriteToJSONFile(genModelTorus(), "model_torus.gs");
     //genModelWriteToJSONFile(genModelManyTorus(), "model_many_torus.gs");
     genModelWriteToJSONFile(genModelCircles(), "model_circles.gs");
+    genModelWriteToJSONFile(genModelGroups(), "model_groups.gs");
     genModelWriteToJSONFile(genModelPlanes(), "model_planes.gs");
     genModelWriteToJSONFile(genModelDelPoints(), "model_del_points.gs");
     genModelWriteToJSONFile(genModelDelObjs(), "model_del_objs.gs");

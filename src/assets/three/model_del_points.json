@@ -6,7 +6,7 @@
     },
     "geometries": [
         {
-            "uuid": "2172fc58-4b26-4ea4-a152-097afedce63c",
+            "uuid": "6ea127b2-d8b5-494a-8708-bd12734c79bb",
             "type": "BufferGeometry",
             "data": {
                 "attributes": {
@@ -24,7 +24,7 @@
             }
         },
         {
-            "uuid": "40ed42a6-9739-4302-b29e-216e28b58097",
+            "uuid": "80053147-de18-4670-ba39-2c332714842e",
             "type": "BufferGeometry",
             "data": {
                 "attributes": {
@@ -52,7 +52,7 @@
             }
         },
         {
-            "uuid": "0bbc5450-04f5-490b-84aa-ac2ed905b41f",
+            "uuid": "4d8cebdf-1ef8-4354-912b-76ed169c91e2",
             "type": "BufferGeometry",
             "data": {
                 "attributes": {
@@ -72,7 +72,7 @@
     ],
     "materials": [
         {
-            "uuid": "f7ee2fe2-48ec-4ca3-b305-9c940b566e8b",
+            "uuid": "8da15cc0-74e6-462e-9476-0b64b3efa59e",
             "type": "LineBasicMaterial",
             "color": 0,
             "vertexColors": 0,
@@ -83,7 +83,7 @@
             "depthWrite": true
         },
         {
-            "uuid": "771dd500-d6f0-42d5-a42a-daf80a71df79",
+            "uuid": "290cf4c4-f723-4e96-a579-69c7b612ba15",
             "type": "LineBasicMaterial",
             "color": 255,
             "vertexColors": 0,
@@ -94,7 +94,7 @@
             "depthWrite": true
         },
         {
-            "uuid": "b9f403f3-2dd9-4c3b-b5a8-18fcd318a0da",
+            "uuid": "43c21b0d-c5ec-491e-9c52-6611650a8673",
             "type": "MeshPhongMaterial",
             "color": 16777215,
             "emissive": 0,
@@ -111,7 +111,7 @@
             "flatShading": true
         },
         {
-            "uuid": "427af8ca-eba3-441c-9285-33dd9e98569b",
+            "uuid": "bd670f78-d80a-42fb-97d8-5ea4986865ea",
             "type": "MeshPhongMaterial",
             "color": 0,
             "emissive": 0,
@@ -129,7 +129,7 @@
             "flatShading": true
         },
         {
-            "uuid": "ad8ad96d-2863-47c8-8220-a6f553f45db7",
+            "uuid": "e9fe1e02-936f-4296-b458-eb58c4d10591",
             "type": "PointsMaterial",
             "color": 16777215,
             "size": 2,
@@ -141,29 +141,29 @@
         "name": "Scene",
         "children": [
             {
-                "uuid": "f74bf0b4-9e0c-442b-878a-7f435d7ef9e5",
+                "uuid": "09adeff3-aeac-4725-8a3d-fac7bea6f752",
                 "type": "Mesh",
                 "name": "All faces",
-                "geometry": "2172fc58-4b26-4ea4-a152-097afedce63c",
-                "material": "b9f403f3-2dd9-4c3b-b5a8-18fcd318a0da",
+                "geometry": "6ea127b2-d8b5-494a-8708-bd12734c79bb",
+                "material": "43c21b0d-c5ec-491e-9c52-6611650a8673",
                 "castShadow": true,
                 "receiveShadow": true
             },
             {
-                "uuid": "a7734810-c090-4ad8-9ea0-2293cee2294d",
+                "uuid": "abbda5ae-ffea-4407-bd2b-e864e2318e51",
                 "type": "Points",
                 "name": "All points",
-                "geometry": "40ed42a6-9739-4302-b29e-216e28b58097",
-                "material": "ad8ad96d-2863-47c8-8220-a6f553f45db7",
+                "geometry": "80053147-de18-4670-ba39-2c332714842e",
+                "material": "e9fe1e02-936f-4296-b458-eb58c4d10591",
                 "castShadow": false,
                 "receiveShadow": false
             },
             {
-                "uuid": "dd6337fb-cc5a-4294-af1e-b35b32955682",
+                "uuid": "18c9e9cc-bacc-4b61-866c-b3dee98d3cbb",
                 "type": "LineSegments",
                 "name": "Other lines",
-                "geometry": "0bbc5450-04f5-490b-84aa-ac2ed905b41f",
-                "material": "f7ee2fe2-48ec-4ca3-b305-9c940b566e8b",
+                "geometry": "4d8cebdf-1ef8-4354-912b-76ed169c91e2",
+                "material": "8da15cc0-74e6-462e-9476-0b64b3efa59e",
                 "castShadow": false,
                 "receiveShadow": false
             }
