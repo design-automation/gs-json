@@ -111,10 +111,8 @@ export function circleGetRenderXYZs(circle: gs.ICircle, resolution: number): gs.
     let arc_start: number;
     if (angles === undefined) {
         arc_start = 0;
-    } else if (angles[0] < angles[1]) {
-        arc_start = angles[0] * (Math.PI / 180);
     } else {
-        arc_start = angles[1] * (Math.PI / 180);
+        arc_start = angles[0] * (Math.PI / 180);
     }
     // calculate the angle of the arc
     let arc_angle: number;
