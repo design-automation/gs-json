@@ -124,6 +124,8 @@ export interface IPoint extends IEnt {
     getPosition(): XYZ;
     setPosition(xyz: XYZ): XYZ;
     getVertices(): IVertex[];
+    //copy
+    copy(copy_attribs?: boolean): IPoint; //overrides return value of IEnt
 }
 
 /**
@@ -146,6 +148,8 @@ export interface IObj extends IEnt {
     // nums
     numWires(): number;
     numFaces(): number;
+    // copy
+    copy(copy_attribs?: boolean): IObj; //overrides return value of IEnt
 }
 
 /**

@@ -29,17 +29,25 @@ export function test_Model_constructor(): boolean {
 
     // save the data to JSON, the read it back again
     const my_model: gs.IModel = new gs.Model();
+    const group: gs.IGroup = my_model.addGroup("test");
     const myg: gs.IGeom = my_model.getGeom();
     const p1: gs.IPoint = myg.addPoint([1,2,3]);
     const p2: gs.IPoint = myg.addPoint([4,5,6]);
     const p3: gs.IPoint = myg.addPoint([6,2,9]);
     const p4: gs.IPoint = myg.addPoint([1,2,7]);
     const p5: gs.IPoint = myg.addPoint([5,6,3]);
+    p1.addToGroup(group);
+    group.addPoints([p3, p4]);
     const pline: gs.IPolyline  = myg.addPolyline([p1,p2,p3,p4,p5], false);
+    group.addObj(pline);
     const model_string: string = my_model.toJSON();
     const model_data: gs.IModelData = JSON.parse(model_string) as gs.IModelData;
     //console.log("TEST", model_data);
     let model2: gs.IModel = new gs.Model(model_data);
+    const group2: gs.IGroup = model2.getGroup("test");
+    if (group2 === undefined) {return false;}
+    if (group2.getPoints().length !== 3) {return false;}
+    if (group2.getObjs().length !== 1) {return false;}
     //console.log("TEST2", model2);
     return true;
 }

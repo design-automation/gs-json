@@ -349,7 +349,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Exports the model as json data.
      * @param
      * @return
      */
@@ -382,7 +382,10 @@ export class Kernel {
                 jsonData.attribs.objs = Array.from(this._attribs.get(EGeomType.objs).values());
             }
         }
-        //TODO add groups
+        //TODO add topos to groups
+        if (this._groups !== undefined) {
+            jsonData.groups = Array.from(this._groups.values());
+        }
         return JSON.stringify(jsonData, null, 4);
     }
 
