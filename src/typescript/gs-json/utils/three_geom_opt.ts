@@ -38,7 +38,8 @@ export function getPointsFromObjs(objs: gs.IObj[]): {xyzs: gs.XYZ[], id_map: Map
  */
 export function getDataFromAllFaces(objs: gs.IObj[]): IThreeData {
     // filter
-    const objs_filtered: gs.IPolymesh[] = objs.filter((obj) => obj.getObjType() === gs.EObjType.polymesh);
+    const objs_filtered: gs.IPolymesh[] =
+        objs.filter((obj) => obj.getObjType() === gs.EObjType.polymesh) as gs.IPolymesh[];
     // get the points
     const points = getPointsFromObjs(objs_filtered);
     // create a map from index to face path
@@ -74,7 +75,7 @@ export function getDataFromAllFaces(objs: gs.IObj[]): IThreeData {
  */
 export function getDataFromAllWires(objs: gs.IObj[]): IThreeData {
     // filter
-    const objs_filtered: Array<gs.IPolymesh|gs.IPolyline> = objs.filter((obj) =>
+    const objs_filtered: gs.IObj[] = objs.filter((obj) =>
         obj.getObjType() === gs.EObjType.polymesh ||
         obj.getObjType() === gs.EObjType.polyline);
     // get the wires
@@ -106,7 +107,7 @@ export function getDataFromAllWires(objs: gs.IObj[]): IThreeData {
  */
 export function getDataFromAllEdges(objs: gs.IObj[]): IThreeData {
     // filter
-    const objs_filtered: Array<gs.IPolymesh|gs.IPolyline> = objs.filter((obj) =>
+    const objs_filtered: gs.IObj[] = objs.filter((obj) =>
         obj.getObjType() === gs.EObjType.polymesh ||
         obj.getObjType() === gs.EObjType.polyline);
     // get the points

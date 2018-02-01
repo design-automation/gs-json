@@ -84,7 +84,7 @@ export function test_Topo_setAttribValue(): boolean {
 export function test_Topo_getGroups(): boolean {
     const m: gs.IModel = new gs.Model(td.box_with_attribs());
     const g: gs.IGeom = m.getGeom();
-    const p: gs.IPolymesh = g.getObj(0);
+    const p: gs.IPolymesh = g.getObj(0) as gs.IPolymesh;
 
     // TODO
 

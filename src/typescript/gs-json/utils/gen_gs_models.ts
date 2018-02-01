@@ -1285,7 +1285,7 @@ export function genModelTorus(): gs.IModel {
 export function genModelManyTorus(): gs.IModel {
     const m: gs.IModel = genModelTorus();
     const g: gs.IGeom = m.getGeom();
-    const o: gs.IPolymesh = g.getObj(0);
+    const o: gs.IPolymesh = g.getObj(0) as gs.IPolymesh;
     for (let i = 0;i < 50; i++) {
         const matrix: three.Matrix4 = new three.Matrix4();
         matrix.setPosition(new three.Vector3(Math.random() * 50, Math.random() * 50, 0));

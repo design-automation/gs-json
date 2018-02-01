@@ -239,6 +239,17 @@ export interface IPolyline  extends IObj {
  */
 export interface IPolymesh extends IObj {
     getObjType(): EObjType;
+    isClosed(): boolean;
+    numWireVertices(): number;
+    numFaceVertices(): number;
+    numWireEdges(): number;
+    numFaceEdges(): number;
+    getWireVertices(): IVertex[];
+    getFaceVertices(): IVertex[];
+    getWireEdges(): IEdge[];
+    getFaceEdges(): IEdge[];
+    getWirePoints(): IPoint[];
+    getFacePoints(): IPoint[];
 }
 
 //  INTERFACES for Topo classes and Subclasses =====================================================

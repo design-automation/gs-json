@@ -335,7 +335,7 @@ export function test_Geom_delObj(): boolean {
     const p4 = g.addPoint([7,4,9]);
     const p5 = g.addPoint([1,2,6]);
     const p6 = g.addPoint([7,8,99]);
-    const box: gs.IPolymesh = g.getObj(0);
+    const box: gs.IPolymesh = g.getObj(0) as gs.IPolymesh;
     const pline1: gs.IPolyline = g.addPolyline([p1,p2,p3,p4,p5,p6], true);
     const pline2: gs.IPolyline = g.addPolyline([p1,p2,p3], false);
     const pline3: gs.IPolyline = g.addPolyline([p1,p3,p4], false);

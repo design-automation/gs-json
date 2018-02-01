@@ -2857,7 +2857,7 @@ export class Kernel {
                 }
             }
         }
-        this._points.length = end + 1;
+        this._points.splice(end + 1);
         // change the points in the objs
         for (const [oi, o] of this._objs.entries()) {
             for (const [fi, f] of o.entries()) {
