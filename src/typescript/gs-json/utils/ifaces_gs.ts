@@ -145,6 +145,12 @@ export interface IObj extends IEnt {
     getEdges(edge_type?: EGeomType.wires|EGeomType.faces): IEdge[][][];
     getWires(): IWire[];
     getFaces(): IFace[];
+    numWireVertices(): number;
+    numFaceVertices(): number;
+    numWireEdges(): number;
+    numFaceEdges(): number;
+    getWirePoints(): IPoint[];
+    getFacePoints(): IPoint[];
     // nums
     numWires(): number;
     numFaces(): number;
@@ -240,16 +246,6 @@ export interface IPolyline  extends IObj {
 export interface IPolymesh extends IObj {
     getObjType(): EObjType;
     isClosed(): boolean;
-    numWireVertices(): number;
-    numFaceVertices(): number;
-    numWireEdges(): number;
-    numFaceEdges(): number;
-    getWireVertices(): IVertex[];
-    getFaceVertices(): IVertex[];
-    getWireEdges(): IEdge[];
-    getFaceEdges(): IEdge[];
-    getWirePoints(): IPoint[];
-    getFacePoints(): IPoint[];
 }
 
 //  INTERFACES for Topo classes and Subclasses =====================================================

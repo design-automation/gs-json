@@ -112,9 +112,9 @@ export class Point extends Ent implements IPoint {
 
     /**
      * Create s string representation of this point.
-     * @return Strig
+     * @return String
      */
     public toString(): string {
-        return "Point:" + this.getPosition();
+        return "Point:[" + this.getPosition() + "]";
     }
 }

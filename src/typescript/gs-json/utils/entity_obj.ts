@@ -198,6 +198,67 @@ export abstract class Obj extends Ent implements IObj {
         return this._kernel.objNumFaces(this._id);
     }
 
+
+
+    /**
+     * Returns the number of vertices in this polymesh wires.
+     * @return Return the number of vertices.
+     */
+    public numWireVertices(): number {
+        let count: number = 0;
+        for (const wire of this.getWires()) {count += wire.numVertices();}
+        return count;
+    }
+
+    /**
+     * Returns the number of vertices in this polymesh faces.
+     * @return Return the number of vertices.
+     */
+    public numFaceVertices(): number {
+        let count: number = 0;
+        for (const face of this.getFaces()) {count += face.numVertices();}
+        return count;
+    }
+
+    /**
+     * Returns the number of edges in this polymesh wires.
+     * @return Return the number of edges.
+     */
+    public numWireEdges(): number {
+        let count: number = 0;
+        for (const wire of this.getWires()) {count += wire.numEdges();}
+        return count;
+    }
+
+    /**
+     * Returns the number of edges in this polymesh faces.
+     * @return Return the number of edges.
+     */
+    public numFaceEdges(): number {
+        let count: number = 0;
+        for (const face of this.getFaces()) {count += face.numEdges();}
+        return count;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public getWirePoints(): IPoint[] {
+        const points: IPoint[] = [];
+        for (const wire of this.getWires()) {points.push(...wire.getVertices().map((v) => v.getPoint()));}
+        return points;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public getFacePoints(): IPoint[] {
+        const points: IPoint[] = [];
+        for (const face of this.getFaces()) {points.push(...face.getVertices().map((v) => v.getPoint()));}
+        return points;
+    }
     //  Groups -------------------------------------------------------------------------------------
 
     /**
@@ -224,6 +285,9 @@ export abstract class Obj extends Ent implements IObj {
      * @return Strig
      */
     public toString(): string {
-        return "Obj:"+ mapObjTypeToString.get(this.getObjType());
+        return "Obj('"+ this.getLabel() +"', "+ mapObjTypeToString.get(this.getObjType()) +
+            ", faces:" + this.numFaces() + ", wires:" + this.numWires() +
+            ", edges:" + (this.numFaceEdges() + this.numWireEdges()) +
+            ", vertices:" + (this.numFaceVertices() + this.numWireVertices()) + ")";
     }
 }
