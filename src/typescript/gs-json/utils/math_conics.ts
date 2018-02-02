@@ -43,7 +43,7 @@ export function circleEvaluate(circle: gs.ICircle, t: number): gs.XYZ {
     const angles: number[] = circle.getAngles();
     // calculat the arc start angle
     let arc_start: number;
-    if (angles === undefined) {
+    if (angles === undefined || angles === null) {
         arc_start = 0;
     } else if (angles[0] < angles[1]) {
         arc_start = angles[0] * (Math.PI / 180);
