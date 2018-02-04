@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as entity_obj_polymesh_tests from "../utils/_entity_obj_polymesh_tests";
+import * as entity_obj_polymesh_tests from "../_entity_obj_polymesh_tests";
 
 describe("Tests for Polymesh class", () => {
     it("test_Polymesh_getObjType", () => {

@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as topo_vertex_tests from "../utils/_topo_vertex_tests";
+import * as topo_vertex_tests from "../_topo_vertex_tests";
 
 describe("Tests for Vertex class", () => {
     it("test_Vertex_getGeomType", () => {

@@ -14,13 +14,13 @@
         "build_three_models": "npm run build2015 && npm run gen_three_models",
         "build_gs_models": "npm run build2015 && npm run gen_gs_models",
         "build_models": "npm run build2015 && npm run gen_gs_models && npm run gen_three_models",
-        "gen_three_models": "node ./dist2015/src/typescript/gs-json/utils/gen_three_models.js",
-        "gen_gs_models": "node ./dist2015/src/typescript/gs-json/utils/gen_gs_models.js",
+        "gen_three_models": "node ./dist2015/src/typescript/gs-json/generate/gen_three_test_models.js",
+        "gen_gs_models": "node ./dist2015/src/typescript/gs-json/generate/gen_gs_test_models.js",
         "build2015": "tsc && babel --presets es2015 ./dist --out-dir ./dist2015",
         "prepare": "npm run build2015",
         "build": "tsc",
         "test": "karma start ./karma.conf.ts",
-        "docs": "typedoc --out  ./docs/typescript ./src/typescript/gs-json/utils --module commonjs --theme minimal"
+        "docs": "typedoc --out  ./docs/typescript ./src/typescript/gs-json --module commonjs --theme minimal"
     },
     "repository": {
         "type": "git",
@@ -34,8 +34,8 @@
         "update": "^0.7.4"
     },
     "devDependencies": {
-        "@types/jasmine": "^2.8.4",
-        "@types/node": "^9.3.0",
+        "@types/jasmine": "^2.8.6",
+        "@types/node": "^9.4.0",
         "babel-cli": "^6.26.0",
         "babel-preset-es2015": "^6.24.1",
         "jasmine": "^2.9.0",
@@ -47,10 +47,10 @@
         "karma-html-reporter": "^0.2.7",
         "karma-jasmine": "^1.1.0",
         "karma-jasmine-html-reporter": "^0.2.2",
-        "karma-typescript": "^3.0.9",
+        "karma-typescript": "^3.0.12",
         "karma-typescript-preprocessor": "^0.3.1",
         "typedoc": "^0.9.0",
-        "typescript": "^2.6.1"
+        "typescript": "^2.7.1"
     },
     "bugs": {
         "url": "https://github.com/phtj/gs-json/issues"

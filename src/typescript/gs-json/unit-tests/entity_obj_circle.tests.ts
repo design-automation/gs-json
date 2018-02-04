@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as tests from "../utils/_entity_obj_circle_tests";
+import * as tests from "../_entity_obj_circle_tests";
 
 describe("Tests for Entity Object Circle", () => {
     it("test_getObjType", () => {

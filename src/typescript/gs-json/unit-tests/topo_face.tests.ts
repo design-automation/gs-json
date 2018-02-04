@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as topo_face_tests from "../utils/_topo_face_tests";
+import * as topo_face_tests from "../_topo_face_tests";
 
 describe("Tests for Face class", () => {
     it("test_Face_getGeomType", () => {

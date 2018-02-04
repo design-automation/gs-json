@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as geom_tests from "../utils/_geom_tests";
+import * as geom_tests from "../_geom_tests";
 
 describe("Tests for Geom class", () => {
     it("test_copyPlaneFromModel", () => {

@@ -1,4 +1,4 @@
-import * as gs from "../../utils/_export";
+import * as gs from "../../_export";
 
 /**
  * To be completed

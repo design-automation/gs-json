@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as topo_trees_tests from "../utils/_topo_trees_tests";
+import * as topo_trees_tests from "../_topo_trees_tests";
 
 describe("Tests for Class Topo Tree", () => {
     it("test_TopoTree_constructor", () => {

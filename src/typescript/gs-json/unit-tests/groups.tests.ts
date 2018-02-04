@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as groups_tests from "../utils/_groups_tests";
+import * as groups_tests from "../_groups_tests";
 
 describe("Tests for Group class", () => {
 

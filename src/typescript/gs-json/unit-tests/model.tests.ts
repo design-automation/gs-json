@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as model_tests from "../utils/_model_tests";
+import * as model_tests from "../_model_tests";
 
 describe("Tests for Model class", () => {
     it("test_Model_constructor", () => {

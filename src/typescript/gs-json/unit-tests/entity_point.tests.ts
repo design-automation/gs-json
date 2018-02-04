@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as entity_point_tests from "../utils/_entity_point_tests";
+import * as entity_point_tests from "../_entity_point_tests";
 
 describe("Tests for Point class", () => {
     it("test_point_getGeomType", () => {

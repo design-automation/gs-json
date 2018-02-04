@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as entity_tests from "../utils/_entity_tests";
+import * as entity_tests from "../_entity_tests";
 
 describe("Tests for Entity class", () => {
     it("test_ent_constructor", () => {

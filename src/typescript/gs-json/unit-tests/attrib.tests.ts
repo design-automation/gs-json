@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as attribs_tests from "../utils/_attrib_tests";
+import * as attribs_tests from "../_attrib_tests";
 
 describe("Tests for Attrib class", () => {
     it("test_Attrib_constructor", () => {

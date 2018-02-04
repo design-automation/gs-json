@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as entity_obj_polyline_tests from "../utils/_entity_obj_polyline_tests";
+import * as entity_obj_polyline_tests from "../_entity_obj_polyline_tests";
 
 describe("Tests for Polyline class", () => {
     it("test_Polyline_getObjType", () => {

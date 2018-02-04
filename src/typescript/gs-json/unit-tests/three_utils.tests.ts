@@ -1,5 +1,5 @@
 import {} from "jasmine";
-import * as _test from "../utils/three_utils_tests";
+import * as _test from "../libs/threex/threex_tests";
 
 describe("Tests for Three Utils functions", () => {
     it("test_multVectorMatrix", () => {
