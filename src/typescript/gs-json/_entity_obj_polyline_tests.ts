@@ -90,7 +90,5 @@ export function test_Polyline_toString(): boolean {
     const p4 = g.addPoint([7,4,9]);
     const pline1: gs.IPolyline = g.addPolyline([p1,p2,p3,p4], true);
     if (pline1.toString() === undefined){return false;}
-    console.log("POINT", p1.toString());
-    console.log("POLYLINE", pline1.toString());
     return true;
 }

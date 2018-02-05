@@ -396,4 +396,7 @@ export interface IGroup {
     // Properties for this group (key-value pairs)
     getProps(): Array<[string, any]>; // TODO
     setProps(new_Map: Array<[string, any]>): Array<[string, any]>; // TODO
+
+    // strings
+    toString(): string;
 }

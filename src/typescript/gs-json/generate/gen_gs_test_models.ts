@@ -29,6 +29,7 @@ export function genThreeModelsWriteFiles(): void {
     filesys.writeGsToJSONFile(gm.genModelPlanes(), path + "model_planes.gs");
     filesys.writeGsToJSONFile(gm.genModelDelPoints(), path + "model_del_points.gs");
     filesys.writeGsToJSONFile(gm.genModelDelObjs(), path + "model_del_objs.gs");
+    filesys.writeGsToJSONFile(gm.genModelObjWithAttribs(), path + "model_obj_with_attribs.gs");
 }
 
 /**

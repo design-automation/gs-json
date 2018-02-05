@@ -293,3 +293,16 @@ export function test_Groups_setProps(): boolean {
     // if (!(g.getProps() === a)) {return false; }
     return true;
 }
+
+export function test_Groups_toJson(): boolean {
+    const m1: gs.Model = new gs.Model();
+    const g: gs.IGroup = m1.addGroup("mygrp");
+    g.setProps([["testing", [123,456,789]]]);
+    const j1: string = m1.toJSON();
+    const m2: gs.Model = new gs.Model(JSON.parse(j1) as gs.IModelData);
+    const j2: string = m2.toJSON();
+    const m3: gs.Model = new gs.Model(JSON.parse(j2) as gs.IModelData);
+    if(m3.getGroup("mygrp").getProps()[0][0] !== "testing") {return false;}
+    console.log(g.toString());
+    return true;
+}

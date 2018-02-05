@@ -115,6 +115,15 @@ export class Group implements IGroup {
     //  Objs ---------------------------------------------------------------------------------------
 
     /**
+     * Get the number of objs in this group.
+     * @param
+     * @return
+     */
+    public getNumObjs(obj_type?: EObjType): number {
+        return this._kernel.groupGetNumObjs(this._name, obj_type);
+    }
+
+    /**
      * Get the object in this group.
      * @param
      * @return
@@ -167,6 +176,15 @@ export class Group implements IGroup {
     }
 
     //  Topos --------------------------------------------------------------------------------------
+
+    /**
+     * Get the number of topos in this group.
+     * @param
+     * @return
+     */
+    public getNumTopos(geom_type?: EGeomType): number {
+        return this._kernel.groupGetNumTopos(this._name, geom_type);
+    }
 
     /**
      * Get the topos in this group. (Vertices, edges, wires, faces.)
@@ -254,6 +272,15 @@ export class Group implements IGroup {
     //  Points in this group -----------------------------------------------------------------------
 
     /**
+     * Get the number of points in this group.
+     * @param
+     * @return
+     */
+    public getNumPoints(): number {
+        return this._kernel.groupGetNumPoints(this._name);
+    }
+
+    /**
      * Get the points in this group.
      * @param
      * @return
@@ -327,5 +354,22 @@ export class Group implements IGroup {
      // Map<string, any>): Map<string, any> { // TODO
     public setProps(props: Array<[string, any]>): Array<[string, any]> {
         return this._kernel.groupSetProps(this._name, props);
+    }
+
+    //  toString -------------------------------------------------------------------------------------
+
+    /**
+     * Create s string representation of this point.
+     * @return String
+     */
+    public toString(): string {
+        return "Group('" + this.getName() +
+            "', parent: " + this.getParentGroup().getName() +
+            ", num objs: " + this.getNumObjs() +
+            ", num faces: " + this.getNumTopos(EGeomType.faces) +
+            ", num wires: " + this.getNumTopos(EGeomType.faces) +
+            ", num edges: " + this.getNumTopos(EGeomType.faces) +
+            ", num vertices: " + this.getNumTopos(EGeomType.faces) +
+            ", num points: " + this.getNumPoints() + ")";
     }
 }

@@ -1426,3 +1426,29 @@ export function genModelDelObjs(): gs.IModel {
     m.getGeom().delObj(box1, false);
     return m;
 }
+
+/**
+ * Generates a model with del points.
+ */
+export function genModelObjWithAttribs(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const attrib_p: gs.IEntAttrib = m.addEntAttrib("test_points", gs.EGeomType.points, gs.EDataType.type_num);
+    const attrib_o: gs.IEntAttrib = m.addEntAttrib("test_objs", gs.EGeomType.objs, gs.EDataType.type_num_arr);
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            const points: gs.IPoint[] = m.getGeom().addPoints([
+                    [(10 * i) + (Math.random() * 10 * i), (10 * j) + (Math.random() * 10 * j), 0],
+                    [(10 * i) + (Math.random() * 10 * i), (10 * j) + (Math.random() * 10 * j), 0],
+                    [(10 * i) + (Math.random() * 10 * i), (10 * j) + (Math.random() * 10 * j), 0],
+                    //[(10 * i) + (Math.random() * 10 * i), (10 * j) + (Math.random() * 10 * j), 0],
+
+            ]);
+            const pmesh: gs.IPolymesh = m.getGeom().addPolymesh([points]);
+            pmesh.setAttribValue(attrib_o, [i, Math.random()]);
+            for (const point of points) {
+                point.setAttribValue(attrib_p, i);
+            }
+        }
+    }
+    return m;
+}

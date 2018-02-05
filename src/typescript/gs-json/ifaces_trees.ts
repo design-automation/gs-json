@@ -13,6 +13,7 @@ export interface ITopoTree {
     addTopo(topo: ITopoPathData): boolean ;
     removeTopo(topo: ITopoPathData): boolean ;
     removeObj(id: number): boolean;
+    getNumTopos(geom_type?: EGeomType): number ;
     getTopos(geom_type?: EGeomType): ITopoPathData[] ;
     toArray(): TTreeData;
     fromArray(data: TTreeData): void ;

@@ -79,4 +79,7 @@ describe("Tests for Group class", () => {
     it("test_Groups_setPropeties", () => {
         expect( groups_tests.test_Groups_setProps() ).toBe(true);
     });
+    it("test_Groups_toJson", () => {
+        expect( groups_tests.test_Groups_toJson() ).toBe(true);
+    });
 });

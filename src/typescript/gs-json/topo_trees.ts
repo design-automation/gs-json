@@ -109,6 +109,25 @@ export class TopoTree {
         return found;
     }
 
+    public getNumTopos(geom_type?: EGeomType): number {
+        let counter: number = 0;
+        if (!geom_type || geom_type === EGeomType.faces) {
+            counter += this._faces.flatten().length;
+        }
+        if (!geom_type || geom_type === EGeomType.wires) {
+            counter += this._wires.flatten().length;
+        }
+        if (!geom_type || geom_type === EGeomType.edges) {
+            counter += this._face_edges.flatten().length;
+            counter += this._wire_edges.flatten().length;
+        }
+        if (!geom_type || geom_type === EGeomType.vertices) {
+            counter += this._face_vertices.flatten().length;
+            counter += this._wire_vertices.flatten().length;
+        }
+        return counter;
+    }
+
     public getTopos(geom_type?: EGeomType): ITopoPathData[] {
         let paths: ITopoPathData[] = [];
         if (!geom_type || geom_type === EGeomType.faces) {
@@ -152,7 +171,6 @@ export class TopoTree {
 
     public fromArray(data: TTreeData): void {
         if (data === undefined) { throw new Error("Data array is undefined."); }
-        if (data.length !== 6) { throw new Error("Data array is invalid length."); }
         // topo
         this._faces = new TreeBranch2(data[0] as TTree2Data);
         this._wires = new TreeBranch2(data[1] as TTree2Data);
