@@ -113,10 +113,85 @@ export class Kernel {
                 if (group_data.objs === undefined) {group_data.objs = [];}
                 if (group_data.points === undefined) {group_data.points = [];}
                 this._topos_trees.set(group_data.name, new TopoTree(group_data.topos));
-                group_data.topos = [];
+                group_data.topos = undefined;
                 this._groups.set(group_data.name, group_data);
             }
         }
+    }
+
+    //  Model General ------------------------------------------------------------------------------
+
+    /**
+     * Exports the model as json data.
+     * @param
+     * @return
+     */
+    public modelToJSON(): string {
+        const jsonData: IModelData = {
+            metadata: this._metadata,
+            geom: {
+                points: this._points,
+                objs: this._objs,
+            },
+        };
+        if (this._attribs !== undefined) {
+            jsonData.attribs = {};
+            if (this._attribs.get(EGeomType.points) !== undefined) {
+                jsonData.attribs.points = Array.from(this._attribs.get(EGeomType.points).values());
+            }
+            if (this._attribs.get(EGeomType.vertices) !== undefined) {
+                jsonData.attribs.vertices = Array.from(this._attribs.get(EGeomType.vertices).values());
+            }
+            if (this._attribs.get(EGeomType.edges) !== undefined) {
+                jsonData.attribs.edges = Array.from(this._attribs.get(EGeomType.edges).values());
+            }
+            if (this._attribs.get(EGeomType.wires) !== undefined) {
+                jsonData.attribs.wires = Array.from(this._attribs.get(EGeomType.wires).values());
+            }
+            if (this._attribs.get(EGeomType.faces) !== undefined) {
+                jsonData.attribs.faces = Array.from(this._attribs.get(EGeomType.faces).values());
+            }
+            if (this._attribs.get(EGeomType.objs) !== undefined) {
+                jsonData.attribs.objs = Array.from(this._attribs.get(EGeomType.objs).values());
+            }
+        }
+        //TODO add topos to groups
+        // In the IGroupData, groups data consists of the following:
+        //     name: string;
+        //     parent?: string;
+        //     objs?: number[];
+        //     topos?: TTreeData; <<< This is an array of 2 x TreeBranch2, and 4 x TreeBranch3
+        //     points?: number[];
+        //     props?: Array<[string, any]>;
+        // This kernel maintains a this._groups Map of such data, group_name -> group_data
+        // When saving, the evalues of teh map are saved
+        if (this._groups !== undefined) {
+            jsonData.groups = Array.from(this._groups.values());
+            for (const group of jsonData.groups) {
+                group.topos = []; //TODO add the topo data here
+            }
+        }
+        return JSON.stringify(jsonData, null, 4);
+    }
+
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public modelPurge(): void {
+        this._purgeDelUnusedPoints();
+        this._purgeDelUnusedPointValues();
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public modelValidate(): boolean {
+        throw new Error ("Method not implemented.");
     }
 
     //  The Model object ---------------------------------------------------------------------------
@@ -326,69 +401,6 @@ export class Kernel {
     public modelHasGroup(name: string): boolean {
         return this._groups.has(name);
     }
-
-    //  Model General ------------------------------------------------------------------------------
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public modelPurge(): void {
-        this._purgeDelUnusedPoints();
-        this._purgeDelUnusedPointValues();
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public modelValidate(): boolean {
-        throw new Error ("Method not implemented.");
-    }
-
-    /**
-     * Exports the model as json data.
-     * @param
-     * @return
-     */
-    public modelToJSON(): string {
-        const jsonData: IModelData = {
-            metadata: this._metadata,
-            geom: {
-                points: this._points,
-                objs: this._objs,
-            },
-        };
-        if (this._attribs !== undefined) {
-            jsonData.attribs = {};
-            if (this._attribs.get(EGeomType.points) !== undefined) {
-                jsonData.attribs.points = Array.from(this._attribs.get(EGeomType.points).values());
-            }
-            if (this._attribs.get(EGeomType.vertices) !== undefined) {
-                jsonData.attribs.vertices = Array.from(this._attribs.get(EGeomType.vertices).values());
-            }
-            if (this._attribs.get(EGeomType.edges) !== undefined) {
-                jsonData.attribs.edges = Array.from(this._attribs.get(EGeomType.edges).values());
-            }
-            if (this._attribs.get(EGeomType.wires) !== undefined) {
-                jsonData.attribs.wires = Array.from(this._attribs.get(EGeomType.wires).values());
-            }
-            if (this._attribs.get(EGeomType.faces) !== undefined) {
-                jsonData.attribs.faces = Array.from(this._attribs.get(EGeomType.faces).values());
-            }
-            if (this._attribs.get(EGeomType.objs) !== undefined) {
-                jsonData.attribs.objs = Array.from(this._attribs.get(EGeomType.objs).values());
-            }
-        }
-        //TODO add topos to groups
-        if (this._groups !== undefined) {
-            jsonData.groups = Array.from(this._groups.values());
-        }
-        return JSON.stringify(jsonData, null, 4);
-    }
-
     //  Geom Points --------------------------------------------------------------------------------
 
     /**
@@ -1856,6 +1868,17 @@ export class Kernel {
      * @param
      * @return
      */
+    public groupGetNumObjs(name: string, obj_type?: EObjType): number {
+        const group: IGroupData = this._groups.get(name);
+        if (obj_type === undefined) {return group.objs.length; }
+        return group.objs.filter((oi) => this._objs[oi][2][0] === obj_type).length;
+    }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
     public groupGetObjIDs(name: string, obj_type?: EObjType): number[] {
         const group: IGroupData = this._groups.get(name);
         if (obj_type === undefined) {return group.objs; }
@@ -1935,9 +1958,19 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupGetTopos(name: string, geom_type?: EGeomType): ITopoPathData[] {
-        return this._topos_trees.get(name).getTopos();
+    public groupGetNumTopos(name: string, geom_type?: EGeomType): number {
+        return this._topos_trees.get(name).getNumTopos(geom_type);
     }
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public groupGetTopos(name: string, geom_type?: EGeomType): ITopoPathData[] {
+        return this._topos_trees.get(name).getTopos(geom_type);
+    }
+
     /**
      * to be completed
      * @param
@@ -1991,6 +2024,15 @@ export class Kernel {
     }
 
     //  Points in group ----------------------------------------------------------------------------
+
+    /**
+     * to be completed
+     * @param
+     * @return
+     */
+    public groupGetNumPoints(name: string): number {
+        return this._groups.get(name).points.length;
+    }
 
     /**
      * to be completed

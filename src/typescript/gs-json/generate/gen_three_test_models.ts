@@ -32,6 +32,7 @@ export function genGsModelsWriteFiles(): void {
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModelPlanes()), path + "model_planes_opt.json");
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModelDelPoints()), path + "model_del_points.json");
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModelDelObjs()), path + "model_del_objs.json");
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModelObjWithAttribs()), path + "model_obj_with_attribs.json");
 }
 
 export function debug(): void {
