@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "@types/mathjs": "0.0.37",
-        "@types/three": "^0.89.4",
+        "@types/three": "^0.89.6",
         "mathjs": "^3.20.1",
         "three": "^0.89.0",
         "update": "^0.7.4"

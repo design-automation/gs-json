@@ -1,6 +1,6 @@
+import * as gs from "./_export";
+import * as threex from "./three_utils";
 import * as three from "three";
-import * as gs from "../../_export";
-import * as threex from "../threex/threex";
 
 /**
  * Calculate a set of xyz position on the circle/arc ir ellipse/arc. The number of points = length / resolution.

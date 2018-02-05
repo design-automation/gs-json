@@ -168,6 +168,15 @@ export interface IRay  extends IObj {
 }
 
 /**
+ * Interface, for a Line class.
+ */
+export interface ILine  extends IObj {
+    getObjType(): EObjType;
+    getOrigin(): IPoint;
+    getVector(): XYZ;
+}
+
+/**
  * Interface, for a Plane class.
  */
 export interface IPlane  extends IObj {
