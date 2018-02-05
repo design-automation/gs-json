@@ -675,7 +675,25 @@ export class Kernel {
         // return the new pline
         return new_id;
     }
-
+    /**
+     * Adds a new line to the model that passes through a sequence of points.
+     * @param origin, a point that belongs to the line.
+     * @param dir, the ray direction, as a vector.
+     * @return ID of object.
+     */
+    public geomAddLine(origin_id: number, line_vec: XYZ): number {
+        const new_id: number = this._objs.length;
+        // create the line
+        this._objs.push([
+            [[origin_id]], // wires
+            [], // faces
+            [EObjType.line, line_vec], // parameters
+        ]); // add the obj
+        // update all attributes
+        this._newObjAddToAttribs(new_id);
+        // return the new pline
+        return new_id;
+    }
     /**
      * Adds a new plane to the model defined by an origin and two vectors.
      * @param origin_id The plane origin point.
