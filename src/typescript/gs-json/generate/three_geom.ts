@@ -60,7 +60,7 @@ export function getDataFromAllFaces(objs: gs.IObj[]): IThreeData {
         } else if (verts.length > 3) {
             const verts_tri: number[] = threex.triangulate2D(verts, verts_indexes);
             traingles.push(verts_tri);
-            for (let i = 0;i < verts_tri.length - 3; i = i + 3) {
+            for (let i = 0;i < verts_tri.length - 2; i = i + 3) {
                 reverse_map.set(tri_count, face.getTopoPath());
                 tri_count++;
             }
