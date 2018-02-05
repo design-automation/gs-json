@@ -20,6 +20,7 @@
         "prepare": "npm run build2015",
         "build": "tsc",
         "test": "karma start ./karma.conf.ts",
+        "testsr": "karma start ./karma.conf.ts --single-run",
         "docs": "typedoc --out  ./docs/typescript ./src/typescript/gs-json --module commonjs --theme minimal"
     },
     "repository": {

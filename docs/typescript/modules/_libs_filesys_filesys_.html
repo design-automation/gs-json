@@ -910,7 +910,10 @@ img { max-width: 100%; }
 <nav class="tsd-navigation secondary">
 	<ul>
 		<li class=" tsd-kind-function tsd-parent-kind-external-module">
-			<a href="_libs_filesys_filesys_.html#writetojsonfile" class="tsd-kind-icon">write<wbr>ToJSONFile</a>
+			<a href="_libs_filesys_filesys_.html#writegstojsonfile" class="tsd-kind-icon">write<wbr>GsToJSONFile</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-external-module">
+			<a href="_libs_filesys_filesys_.html#writethreetojsonfile" class="tsd-kind-icon">write<wbr>Three<wbr>ToJSONFile</a>
 		</li>
 	</ul>
 </nav>
@@ -923,7 +926,8 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Functions</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_libs_filesys_filesys_.html#writetojsonfile" class="tsd-kind-icon">write<wbr>ToJSONFile</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_libs_filesys_filesys_.html#writegstojsonfile" class="tsd-kind-icon">write<wbr>GsToJSONFile</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_libs_filesys_filesys_.html#writethreetojsonfile" class="tsd-kind-icon">write<wbr>Three<wbr>ToJSONFile</a></li>
 						</ul>
 					</section>
 				</div>
@@ -932,16 +936,47 @@ img { max-width: 100%; }
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Functions</h2>
 			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-				<a name="writetojsonfile" class="tsd-anchor"></a>
-				<h3>write<wbr>ToJSONFile</h3>
+				<a name="writegstojsonfile" class="tsd-anchor"></a>
+				<h3>write<wbr>GsToJSONFile</h3>
 				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-					<li class="tsd-signature tsd-kind-icon">write<wbr>ToJSONFile<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, filename<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">write<wbr>GsToJSONFile<span class="tsd-signature-symbol">(</span>model<span class="tsd-signature-symbol">: </span><a href="../interfaces/_ifaces_gs_.imodel.html" class="tsd-signature-type">IModel</a>, filename<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in libs/filesys/filesys.ts:6</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/3592629/src/typescript/gs-json/libs/filesys/filesys.ts#L22">libs/filesys/filesys.ts:22</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Write a file.</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>model: <a href="../interfaces/_ifaces_gs_.imodel.html" class="tsd-signature-type">IModel</a></h5>
+							</li>
+							<li>
+								<h5>filename: <span class="tsd-signature-type">string</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+				<a name="writethreetojsonfile" class="tsd-anchor"></a>
+				<h3>write<wbr>Three<wbr>ToJSONFile</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+					<li class="tsd-signature tsd-kind-icon">write<wbr>Three<wbr>ToJSONFile<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, filename<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/phtj/gs-json//blob/3592629/src/typescript/gs-json/libs/filesys/filesys.ts#L7">libs/filesys/filesys.ts:7</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
