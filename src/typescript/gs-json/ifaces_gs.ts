@@ -159,7 +159,7 @@ export interface IObj extends IEnt {
 }
 
 /**
- * Interface, for a Ray class.
+ * Interface, for a Ray2 class.
  */
 export interface IRay  extends IObj {
     getObjType(): EObjType;
@@ -170,7 +170,7 @@ export interface IRay  extends IObj {
 /**
  * Interface, for a Line class.
  */
-export interface ILine  extends IObj {
+export interface IRay2  extends IObj {
     getObjType(): EObjType;
     getOrigin(): IPoint;
     getVector(): XYZ;

@@ -1,4 +1,4 @@
-import {XYZ, ILine, IPoint} from "./ifaces_gs";
+import {XYZ, IRay2, IPoint} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
@@ -10,7 +10,7 @@ import * as util from "./_utils";
 /**
  * Class Line, a Line is supposed to be infinite in the both directions.
  */
-export class Line extends Obj implements ILine {
+export class Ray2 extends Obj implements IRay2 {
     /**
      * Get the object type: "line".
      * @return Ray object type.

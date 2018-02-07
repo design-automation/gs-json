@@ -1,5 +1,5 @@
-import * as gs from "./_export";
-import * as threex from "./three_utils";
+import * as gs from "../../_export";
+import * as threex from "../threex/threex";
 import * as three from "three";
 
 /**
