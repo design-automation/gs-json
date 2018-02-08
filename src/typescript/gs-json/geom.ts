@@ -234,8 +234,8 @@ export class Geom implements IGeom {
         // make the angles correct
         angles = util.checkCircleAngles(angles);
         // make three ortho vectors
-        const a: number = x_vec.length;
-        const b: number = vec.length;
+        const a: number = x_vec.length; // Radius 1
+        const b: number = vec.length; // Radius 2
         let axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
         let axesV3: [three.Vector3,three.Vector3,three.Vector3]
          = [new three.Vector3(axes[0][0],axes[0][1],axes[0][2]),
