@@ -8,7 +8,7 @@ import * as three from "three";
 import * as util from "./_utils";
 
 /**
- * Class Line, a Line is supposed to be infinite in the both directions.
+ * Class Ray2, a Ray2 is Ray which goes in both directions.
  */
 export class Ray2 extends Obj implements IRay2 {
     /**
@@ -16,7 +16,7 @@ export class Ray2 extends Obj implements IRay2 {
      * @return Ray object type.
      */
     public getObjType(): EObjType {
-        return EObjType.line;
+        return EObjType.ray2;
     }
     /**
      * Get the origin of the ray.

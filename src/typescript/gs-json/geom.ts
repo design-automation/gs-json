@@ -14,6 +14,7 @@ import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {_castToObjType} from "./entity_obj_cast";
 import * as threex from "./libs/threex/threex";
 import * as util from "./_utils";
+import * as three from "three";
 
 /**
  * Class Geom
@@ -233,7 +234,18 @@ export class Geom implements IGeom {
         // make the angles correct
         angles = util.checkCircleAngles(angles);
         // make three ortho vectors
-        const axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        const a: number = x_vec.length;
+        const b: number = vec.length;
+        let axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        let axesV3: [three.Vector3,three.Vector3,three.Vector3]
+         = [new three.Vector3(axes[0][0],axes[0][1],axes[0][2]),
+            new three.Vector3(axes[1][0],axes[1][1],axes[1][2]),
+            new three.Vector3(axes[2][0],axes[2][1],axes[2][2]),
+        ];
+        axesV3 = [axesV3[0].setLength(a),axesV3[1].setLength(b),axesV3[2]];
+        axes = [[axesV3[0].x,axesV3[0].y,axesV3[0].z],
+                [axesV3[1].x,axesV3[1].y,axesV3[1].z],
+                [axesV3[2].x,axesV3[2].y,axesV3[2].z]];
         if (axes === null) {throw new Error("Vectors cannot be parallel.");}
         // make the circle
         const id: number = this._kernel.geomAddEllipse(origin_point.getID(), axes, angles);

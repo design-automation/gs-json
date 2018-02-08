@@ -95,4 +95,18 @@ export class Ellipse extends Obj implements IEllipse {
     public isClosed(): boolean {
         return (this._kernel.objGetParams(this._id)[4] === undefined);
     }
+
+    /**
+     * Get a set of equidistant points along the ellipse or arc.
+     * @return An array of points.
+     */
+    public equiPoints(num_points: number): IPoint[] {
+        const length: number = math_conics.ellipseLength(this);
+        const xyzs: XYZ[] = [];
+        for (let i = 0; i < num_points; i++) {
+            xyzs.push(math_conics.ellipseEvaluate(this, i/(num_points - 1)));
+        }
+        return this._kernel.getGeom().addPoints(xyzs);
+    }
+    
 }
