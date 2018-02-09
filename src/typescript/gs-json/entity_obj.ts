@@ -198,8 +198,6 @@ export abstract class Obj extends Ent implements IObj {
         return this._kernel.objNumFaces(this._id);
     }
 
-
-
     /**
      * Returns the number of vertices in this polymesh wires.
      * @return Return the number of vertices.

@@ -12,6 +12,7 @@ import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";
 import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {_castToObjType} from "./entity_obj_cast";
+import * as three from "three";
 import * as threex from "./libs/threex/threex";
 import * as util from "./_utils";
 
@@ -343,6 +344,13 @@ export class Geom implements IGeom {
         return this._kernel.geomMergeAllPoints(tolerance).map((id) => new Point(this._kernel, id));
     }
 
+    /**
+     * Transform the points.
+     */
+    public xformPoints(points: IPoint[], matrix: three.Matrix4): void {
+        return this._kernel.geomXformPoints(points.map((point) => point.getID()), matrix);
+    }
+
     //  Objects ------------------------------------------------------------------------------------
 
     /**
@@ -406,6 +414,13 @@ export class Geom implements IGeom {
      */
     public numObjs(): number {
         return this._kernel.geomNumObjs();
+    }
+
+    /**
+     * Transform all the points for this array of object.
+     */
+    public xformObjs(objs: IObj[], matrix: three.Matrix4): void {
+        return this._kernel.geomXformObjs(objs.map((point) => point.getID()), matrix);
     }
 
     //  Topos --------------------------------------------------------------------------------------

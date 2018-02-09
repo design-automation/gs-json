@@ -19,7 +19,7 @@ import * as threex from "./libs/threex/threex";
 
 /**
  * Kernel Class
- * This class controls all acces to the data and ensures that the data remains consistent.
+ * This class controls all access to the data and ensures that the data remains consistent.
  * No other class should have any direct access to this data.
  */
 export class Kernel {
@@ -174,7 +174,6 @@ export class Kernel {
         return JSON.stringify(jsonData, null, 4);
     }
 
-
     /**
      * to be completed
      * @param
@@ -215,7 +214,7 @@ export class Kernel {
     //  Model attributes ---------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Find attributes in the model of a particular type.
      * @param
      * @return
      */
@@ -237,7 +236,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Get all the attributes in the model.
      * @param
      * @return
      */
@@ -253,7 +252,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Get all attributes in the model, except point attributes.
      * @param
      * @return
      */
@@ -268,7 +267,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Get all entity attributes in the model.
      * @param
      * @return
      */
@@ -280,7 +279,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Get all topo attributes in the model.
      * @param
      * @return
      */
@@ -294,7 +293,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Get an attribute from the model.
      * @param
      * @return
      */
@@ -303,7 +302,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Add a new attribute to the model.
      * @param
      * @return
      */
@@ -325,7 +324,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Delete an attribute from the model.
      * @param
      * @return
      */
@@ -334,7 +333,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Check is a model has an attribute.
      * @param
      * @return
      */
@@ -345,7 +344,7 @@ export class Kernel {
     //  Model Groups -------------------------------------------------------------------------------
 
     /**
-     * to be completed
+     * Get all the groups in the model.
      * @param
      * @return
      */
@@ -354,7 +353,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Get one group in the model.
      * @param
      * @return
      */
@@ -363,7 +362,8 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Add a new group to the model.
+     * If a group with this name already exists, then that group is returned.
      * @param
      * @return
      */
@@ -383,7 +383,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Delete a group from the model.
      * @param
      * @return
      */
@@ -394,7 +394,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Check if the group exists in the model.
      * @param
      * @return
      */
@@ -465,7 +465,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Delete a point from the model.
      * @param
      * @return
      */
@@ -486,7 +486,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Delete a list of points from the model.
      * @param
      * @return
      */
@@ -501,7 +501,7 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Returns the number of points in the model.
      * @param
      * @return
      */
@@ -510,7 +510,8 @@ export class Kernel {
     }
 
     /**
-     * Creates a list if point IDs. The list does not include the empty slots.
+     * Get the list of all point IDs in the model.
+     * The list does not include the empty slots.
      * @param
      * @return
      */
@@ -658,7 +659,7 @@ export class Kernel {
     }
 
     /**
-     * Merge all points in the model.
+     * Merge all points in the model, given a tolerance.
      * @param
      * @return
      */
@@ -893,6 +894,39 @@ export class Kernel {
         return obj_ids;
     }
 
+    /**
+     * Creates a list of unique point IDs for the objects.
+     * @param
+     * @return
+     */
+    public geomGetObjsPointIDs(obj_ids: number[]): number[] {
+        const point_set: Set<number> = new Set();
+        for (const id of obj_ids) {
+            this._objs[id][0].forEach((w) => w.forEach((v) => (v !== -1) && point_set.add(v)));
+            this._objs[id][1].forEach((f) => f.forEach((v) => (v !== -1) && point_set.add(v)));
+        }
+        return Array.from(point_set);
+    }
+
+    /**
+     * Transform the position of the array of points.
+     * @param
+     * @param
+     */
+    public geomXformPoints(ids: number[], matrix: three.Matrix4): void {
+        for (const id of ids) {
+            this.pointSetPosition(id, threex.multXYZMatrix(this.pointGetPosition(id), matrix));
+        }
+    }
+
+    /**
+     * Transform all the points for this object.
+     */
+    public geomXformObjs(ids: number[], matrix: three.Matrix4): void {
+        this.geomXformPoints(this.geomGetObjsPointIDs(ids), matrix);
+        this._objXformAxes(ids, matrix);
+    }
+
     //  Geom Topo ----------------------------------------------------------------------------------
 
     /**
@@ -1040,7 +1074,7 @@ export class Kernel {
         // }
         // }
         // return faces;
-        throw new Error("Method not implemented.");
+        throw new Error("Method not implemented."); // TODO
     }
 
     /**
@@ -1097,7 +1131,7 @@ export class Kernel {
 
     /**
      * Get the points for this object. If the point_type is not specified, then
-     * points for both wires and faces are returned.
+     * points for both wires and faces are returned,as nested arrays.
      * @return A nested array of point ids.
      */
     public objGetPointIDs(id: number, point_type?: EGeomType.wires|EGeomType.faces): number[][][] {
@@ -1253,33 +1287,8 @@ export class Kernel {
      * Transform all the points for this object.
      */
     public objXform(id: number, matrix: three.Matrix4): void {
-        this.pointsXform(this.objGetAllPointIDs(id), matrix);
-        switch (this.objGetType(id)) {
-            case EObjType.ray: case EObjType.plane:  case EObjType.circle:  // cannot be streched
-                // set position of matrix to 0 so no translation
-                const matrix2 = matrix.clone();
-                matrix2.setPosition(new three.Vector3());
-                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][1], matrix2); //TODO check this
-                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][2], matrix2);
-                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][3], matrix2);
-                break;
-            case EObjType.ellipse: // can be streched
-                // multiply by transpose of the inverse of that matrix
-                const matrix3 = matrix.clone();
-                matrix3.setPosition(new three.Vector3());
-                matrix3.getInverse(matrix).transpose();
-                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][1], matrix3); //TODO check this
-                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][2], matrix3);
-                this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][3], matrix3);
-                break;
-            case EObjType.polyline: case EObjType.polymesh:
-                //no need to do anything
-                break;
-            default:
-                throw new Error("Object type not found: " + this.objGetType(id));
-        }
-        // TODO what about attributes that are vectors, they should be transformed as well
-        // matrix2.getInverse(matrix).transpose();
+        this.geomXformPoints(this.objGetAllPointIDs(id), matrix);
+        this._objXformAxes([id], matrix);
     }
 
     //  Points -------------------------------------------------------------------------------------
@@ -1330,9 +1339,9 @@ export class Kernel {
      * @param
      * @return
      */
-    public pointIsUnused(point_id: number): boolean { // TODO replace implementation with reverse map
+    public pointIsUnused(id: number): boolean { // TODO replace implementation with reverse map
         for (const obj of this._objsDense()) { // sparse array
-            if (Arr.flatten(obj.slice(0,3)).indexOf(point_id) !== -1) {return false;} // Slow
+            if (Arr.flatten(obj.slice(0,3)).indexOf(id) !== -1) {return false;} // Slow
         }
         return true;
     }
@@ -1354,17 +1363,6 @@ export class Kernel {
      */
     public pointXform(id: number, matrix: three.Matrix4): void {
         this.pointSetPosition(id, threex.multXYZMatrix(this.pointGetPosition(id), matrix));
-    }
-
-    /**
-     * Transform the position of this point.
-     * @param
-     * @param
-     */
-    public pointsXform(ids: number[], matrix: three.Matrix4): void {
-        for (const id of ids) {
-            this.pointSetPosition(id, threex.multXYZMatrix(this.pointGetPosition(id), matrix));
-        }
     }
 
     //  Topo ---------------------------------------------------------------------------------
@@ -2910,6 +2908,34 @@ export class Kernel {
         }
 
         throw new Error("Not implemented");
+    }
+
+    /**
+     * This is called by geomXformObj() and geomXformObjs()
+     * @param
+     * @return
+     */
+    private _objXformAxes(ids: number[], matrix: three.Matrix4): void {
+        for (const id of ids) {
+            switch (this.objGetType(id)) {
+                case EObjType.ray: case EObjType.plane:  case EObjType.circle: case EObjType.ellipse:
+                    // set position of matrix to 0 so no translation
+                    const matrix2 = matrix.clone();
+                    matrix2.setPosition(new three.Vector3());
+                    this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][1], matrix2);
+                    this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][2], matrix2);
+                    this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][3], matrix2);
+                    break;
+                case EObjType.polyline: case EObjType.polymesh:
+                    //no need to do anything
+                    break;
+                default:
+                    throw new Error("Object type not found: " + this.objGetType(id));
+            }
+        }
+
+        // TODO what about attributes that are vectors, they should be transformed as well
+        // matrix2.getInverse(matrix).transpose();
     }
 
     //  ------------------------------------------------------------------------------------------------------

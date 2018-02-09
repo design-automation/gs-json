@@ -70,6 +70,7 @@ export interface IGeom  {
     numPoints(): number;
     mergePoints(points: IPoint[], tolerance?: number): IPoint[];
     mergeAllPoints(tolerance: number): IPoint[];
+    xformPoints(points: IPoint[], matrix: three.Matrix4): void;
     // Objs
     findObjs(obj_type?: EObjType): IObj[];
     getAllObjs(): IObj[];
@@ -78,6 +79,7 @@ export interface IGeom  {
     delObjs(objs: IObj[], keep_points: boolean): boolean;
     delObj(obj: IObj, keep_points: boolean): boolean;
     numObjs(): number;
+    xformObjs(objs: IObj[], matrix: three.Matrix4): void;
     // Topos
     // getTopos(topo_type: EGeomType): ITopo[];
     getTopos(topo_type: EGeomType): (IVertex[] | IEdge[] | IWire[] | IFace[]);
@@ -197,6 +199,7 @@ export interface ICircle  extends IObj {
     evalParam(t: number): IPoint;
     equiPoints(num_points: number): IPoint[];
 }
+
 /**
  * Interface, for a Ellipse class.
  */
@@ -211,6 +214,7 @@ export interface IEllipse  extends IObj {
     getAngles(): [number, number];
     setAngles(angles: [number, number]): void;
 }
+
 /**
  * Interface, for a Hyperbola class.
  */
@@ -226,6 +230,7 @@ export interface IHyperbola  extends IObj {
     evalParam(t: number): IPoint;
     equiPoints(num_points: number): IPoint[];
 }
+
 /**
  * Interface, for a Polyline class.
  */
