@@ -667,6 +667,17 @@ export class Kernel {
         return this.geomMergePointsByTol(this.geomGetPointIDs(), tolerance);
     }
 
+    /**
+     * Transform the position of the array of points.
+     * @param
+     * @param
+     */
+    public geomXformPoints(ids: number[], matrix: three.Matrix4): void {
+        for (const id of ids) {
+            this.pointSetPosition(id, threex.multXYZMatrix(this.pointGetPosition(id), matrix));
+        }
+    }
+
     //  Geom Object Constructors------------------------------------------------------------------------------
 
     /**
@@ -803,7 +814,7 @@ export class Kernel {
     }
 
     /**
-     * Copy and object.
+     * Copy an object and  its points.
      * If copy_attribs is true, then the copied object will have the same attributes as the original object.
      * @param ids
      * @param copy_attribs
@@ -824,14 +835,31 @@ export class Kernel {
     }
 
     /**
-     * Copy a list of objects.
+     * Copy a list of objects and all the points.
+     * If points are shared, the are only copied once, so that the new objects also have shared points.
      * If copy_attribs is true, then the copied objects will have the same attributes as the original objects.
      * @param ids
      * @param copy_attribs
      * @return Array of new ids
      */
     public geomCopyObjs(ids: number[], copy_attribs: boolean = true): number[] {
-        return ids.map((id) => this.geomCopyObj(id, copy_attribs));
+        // copy points
+        const old_points: number[] = this.geomGetObjsPointIDs(ids);
+        const new_points: number[] = this.geomCopyPoints(old_points, copy_attribs);
+        // copy all the objects, one by one
+        const new_ids: number[] = [];
+        for (const id of ids) {
+            const new_id: number = this._objs.length;
+            new_ids.push(new_id);
+            // create the copy
+            this._objs.push(Arr.deepCopy(this._objs[id]) as TObjData); // add the obj
+            // swap the points
+            this._swapObjPoints(new_id, old_points, new_points);
+            // update all attributes?
+            this._copiedObjAddToAttribs(id, new_id, copy_attribs);
+        }
+        // return the new pline
+        return new_ids;
     }
 
     /**
@@ -906,17 +934,6 @@ export class Kernel {
             this._objs[id][1].forEach((f) => f.forEach((v) => (v !== -1) && point_set.add(v)));
         }
         return Array.from(point_set);
-    }
-
-    /**
-     * Transform the position of the array of points.
-     * @param
-     * @param
-     */
-    public geomXformPoints(ids: number[], matrix: three.Matrix4): void {
-        for (const id of ids) {
-            this.pointSetPosition(id, threex.multXYZMatrix(this.pointGetPosition(id), matrix));
-        }
     }
 
     /**

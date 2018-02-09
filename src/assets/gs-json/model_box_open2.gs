@@ -2,7 +2,7 @@
     "metadata": {
         "filetype": "gs-json",
         "version": "0.1.8",
-        "uuid": "559655aa-f425-4544-83c9-83a0ed86c1e8"
+        "uuid": "60a67583-9b02-4d62-89a4-2da68153c52a"
     },
     "geom": {
         "points": [

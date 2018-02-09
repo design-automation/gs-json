@@ -70,6 +70,7 @@ export interface IGeom  {
     numPoints(): number;
     mergePoints(points: IPoint[], tolerance?: number): IPoint[];
     mergeAllPoints(tolerance: number): IPoint[];
+    copyPoints(points: IPoint[]): IPoint[];
     xformPoints(points: IPoint[], matrix: three.Matrix4): void;
     // Objs
     findObjs(obj_type?: EObjType): IObj[];
@@ -79,6 +80,7 @@ export interface IGeom  {
     delObjs(objs: IObj[], keep_points: boolean): boolean;
     delObj(obj: IObj, keep_points: boolean): boolean;
     numObjs(): number;
+    copyObjs(objs: IObj[]): IObj[];
     xformObjs(objs: IObj[], matrix: three.Matrix4): void;
     // Topos
     // getTopos(topo_type: EGeomType): ITopo[];

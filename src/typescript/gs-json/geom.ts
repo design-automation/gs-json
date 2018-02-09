@@ -345,6 +345,14 @@ export class Geom implements IGeom {
     }
 
     /**
+     * Copy the points.
+     */
+    public copyPoints(points: IPoint[], copy_attribs: boolean = true):  IPoint[] {
+        return this._kernel.geomCopyPoints(points.map((point) => point.getID()), copy_attribs)
+            .map((id) => new Point(this._kernel, id));
+    }
+
+    /**
      * Transform the points.
      */
     public xformPoints(points: IPoint[], matrix: three.Matrix4): void {
@@ -414,6 +422,14 @@ export class Geom implements IGeom {
      */
     public numObjs(): number {
         return this._kernel.geomNumObjs();
+    }
+
+    /**
+     * Copy the array of object.
+     */
+    public copyObjs(objs: IObj[], copy_attribs: boolean = true): IObj[] {
+        return this._kernel.geomCopyObjs(objs.map((obj) => obj.getID()), copy_attribs)
+            .map((id) => _castToObjType(this._kernel, id));
     }
 
     /**
