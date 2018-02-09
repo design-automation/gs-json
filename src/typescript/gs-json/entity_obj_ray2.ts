@@ -1,4 +1,4 @@
-import {XYZ, IRay2, IPoint} from "./ifaces_gs";
+import {XYZ, IRayTwo, IPoint} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
@@ -10,13 +10,13 @@ import * as util from "./_utils";
 /**
  * Class Ray2, a Ray2 is Ray which goes in both directions.
  */
-export class Ray2 extends Obj implements IRay2 {
+export class RayTwo extends Obj implements IRayTwo {
     /**
      * Get the object type: "line".
      * @return Ray object type.
      */
     public getObjType(): EObjType {
-        return EObjType.ray2;
+        return EObjType.rayTwo;
     }
     /**
      * Get the origin of the ray.

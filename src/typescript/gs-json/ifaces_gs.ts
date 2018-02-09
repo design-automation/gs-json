@@ -155,11 +155,11 @@ export interface IObj extends IEnt {
     numWires(): number;
     numFaces(): number;
     // copy
-    copy(copy_attribs?: boolean): IObj; //overrides return value of IEnt
+    copy(copy_attribs?: boolean): IObj; // overrides return value of IEnt
 }
 
 /**
- * Interface, for a Ray2 class.
+ * Interface, for a Ray class.
  */
 export interface IRay  extends IObj {
     getObjType(): EObjType;
@@ -168,9 +168,9 @@ export interface IRay  extends IObj {
 }
 
 /**
- * Interface, for a Line class.
+ * Interface, for a RayTwo class.
  */
-export interface IRay2  extends IObj {
+export interface IRayTwo  extends IObj {
     getObjType(): EObjType;
     getOrigin(): IPoint;
     getVector(): XYZ;
@@ -221,11 +221,28 @@ export interface IEllipse  extends IObj {
     setAngles(angles: [number, number]): void;
 }
 /**
+ * Interface, for a Parabola class.
+ */
+export interface IParabola  extends IObj {
+    getObjType(): EObjType;
+    getOrigin(): IPoint;
+    getAxes(): [XYZ,XYZ,XYZ];
+    getVectors(): XYZ[];
+    setVectors(x_vec: XYZ, y_vec: XYZ): void;
+    getAngles(): [number, number];
+    setAngles(angles: [number, number]): void;
+    getRadii(): [number, number];
+    length(): number;
+    evalParam(t: number): IPoint;
+    equiPoints(num_points: number): IPoint[];
+}
+/**
  * Interface, for a Hyperbola class.
  */
 export interface IHyperbola  extends IObj {
     getObjType(): EObjType;
     getOrigin(): IPoint;
+    getAxes(): [XYZ,XYZ,XYZ];
     getVectors(): XYZ[];
     setVectors(x_vec: XYZ, y_vec: XYZ): void;
     getAngles(): [number, number];

@@ -29,7 +29,7 @@ export enum EDataType {
 export const enum EObjType {
     acorn = 0,
     ray = 1,
-    ray2 = 11,
+    rayTwo = 11,
     plane = 2,
     circle = 3,
     ellipse = 4,
@@ -51,7 +51,7 @@ export const enum EObjType {
 export let mapObjTypeToString = new Map<EObjType, string> ([
     [EObjType.acorn, "acorn"],
     [EObjType.ray, "ray"],
-    [EObjType.ray2, "ray2"],
+    [EObjType.rayTwo, "rayTwo"],
     [EObjType.plane, "plane"],
     [EObjType.circle, "circle"],
     [EObjType.ellipse, "ellipse"],

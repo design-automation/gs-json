@@ -688,18 +688,18 @@ export class Kernel {
         return new_id;
     }
     /**
-     * Adds a new line to the model that passes through a sequence of points.
+     * Adds a new rayTwo to the model that passes through a sequence of points.
      * @param origin, a point that belongs to the line.
      * @param dir, the ray direction, as a vector.
      * @return ID of object.
      */
-    public geomAddLine(origin_id: number, line_vec: XYZ): number {
+    public geomAddrayTwo(origin_id: number, line_vec: XYZ): number {
         const new_id: number = this._objs.length;
         // create the line
         this._objs.push([
             [[origin_id]], // wires
             [], // faces
-            [EObjType.line, line_vec], // parameters
+            [EObjType.rayTwo, line_vec], // parameters
         ]); // add the obj
         // update all attributes
         this._newObjAddToAttribs(new_id);
@@ -747,7 +747,6 @@ export class Kernel {
         // return the new conic id
         return new_id;
     }
-
     /**
      * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
      * two angles.
@@ -769,7 +768,48 @@ export class Kernel {
         // return the new conic id
         return new_id;
     }
-
+    /**
+     * Adds a new Parabola to the model defined by origin and two vectors for the x and y axes, and
+     * two angles.
+     * @param origin_id The origin point.
+     * @param axes Three orthogonal axes as XYZ vectors
+     * @param angles The angles, can be undefined, in which case a Parabola is generated.
+     * @return ID of object.
+     */
+    public geomAddParabola(origin_id: number, axes: [XYZ, XYZ, XYZ], angles?: [number, number]): number {
+        const new_id: number = this._objs.length;
+        // add the obj
+        this._objs.push([
+            [[origin_id]], // wire with just a single point
+            [], // faces, none
+            [EObjType.parabola, axes[0], axes[1], axes[2], angles], // params
+        ]);
+        // update all attributes
+        this._newObjAddToAttribs(new_id);
+        // return the new conic id
+        return new_id;
+    }
+    /**
+     * Adds a new Hyperbola to the model defined by origin and two vectors for the x and y axes, and
+     * two angles.
+     * @param origin_id The origin point.
+     * @param axes Three orthogonal axes as XYZ vectors
+     * @param angles The angles, can be undefined, in which case a Hyperbola is generated.
+     * @return ID of object.
+     */
+    public geomAddHyperbola(origin_id: number, axes: [XYZ, XYZ, XYZ], angles?: [number, number]): number {
+        const new_id: number = this._objs.length;
+        // add the obj
+        this._objs.push([
+            [[origin_id]], // wire with just a single point
+            [], // faces, none
+            [EObjType.hyperbola, axes[0], axes[1], axes[2], angles], // params
+        ]);
+        // update all attributes
+        this._newObjAddToAttribs(new_id);
+        // return the new conic id
+        return new_id;
+    }
     /**
      * Adds a new polyline to the model that passes through a sequence of points.
      * @param points An array of Points.

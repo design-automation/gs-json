@@ -1,5 +1,5 @@
-import {XYZ, IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane, ICircle, IEllipse,
-        IPolyline, IPolymesh, ITopo} from "./ifaces_gs";
+import {XYZ, IGeom, IPoint, IVertex, IEdge, IHyperbola, IWire, IFace, IObj, IRay, IPlane, ICircle, IEllipse,
+        IParabola, IPolyline, IPolymesh, ITopo} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
@@ -7,6 +7,8 @@ import {Point} from "./entity_point";
 import {Polyline} from "./entity_obj_polyline";
 import {Circle} from "./entity_obj_circle";
 import {Ellipse} from "./entity_obj_ellipse";
+import {Hyperbola} from "./entity_obj_hyperbola";
+import {Parabola} from "./entity_obj_parabola";
 import {Polymesh} from "./entity_obj_polymesh";
 import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";
@@ -202,7 +204,6 @@ export class Geom implements IGeom {
         const id: number = this._kernel.geomAddPlane(origin_point.getID(), axes);
         return new Plane(this._kernel, id);
     }
-
     /**
      * Adds a new circle to the model.
      * @param Origin The origin point.
@@ -221,7 +222,6 @@ export class Geom implements IGeom {
         const id: number = this._kernel.geomAddCircle(origin_point.getID(), axes, angles);
         return new Circle(this._kernel, id);
     }
-
     /**
      * Adds a new ellipse to the model.
      * @param Origin The origin point.
@@ -251,7 +251,64 @@ export class Geom implements IGeom {
         const id: number = this._kernel.geomAddEllipse(origin_point.getID(), axes, angles);
         return new Ellipse(this._kernel, id);
     }
-
+    /**
+     * Adds a new Parabola to the model.
+     * @param Origin The origin point.
+     * @param x_vec A vector defining the length in the local x direction.
+     * @param y_vec A vector defining the length in the local y direction, must be orthogonal to x.
+     * @param angles The angles, can be undefined, in which case a closed conic is generated.
+     * @return Object of type Parabola
+     */
+    public addParabola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles?: [number, number]): IParabola {
+        // make the angles correct
+        angles = util.checkParabolaAngles(angles);
+        // make three ortho vectors
+        const a: number = x_vec.length; // Radius 1
+        const b: number = vec.length; // Radius 2
+        let axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        let axesV3: [three.Vector3,three.Vector3,three.Vector3]
+         = [new three.Vector3(axes[0][0],axes[0][1],axes[0][2]),
+            new three.Vector3(axes[1][0],axes[1][1],axes[1][2]),
+            new three.Vector3(axes[2][0],axes[2][1],axes[2][2]),
+        ];
+        axesV3 = [axesV3[0].setLength(a),axesV3[1].setLength(b),axesV3[2]];
+        axes = [[axesV3[0].x,axesV3[0].y,axesV3[0].z],
+                [axesV3[1].x,axesV3[1].y,axesV3[1].z],
+                [axesV3[2].x,axesV3[2].y,axesV3[2].z]];
+        if (axes === null) {throw new Error("Vectors cannot be parallel.");}
+        // make the Parabola
+        const id: number = this._kernel.geomAddParabola(origin_point.getID(), axes, angles);
+        return new Parabola(this._kernel, id);
+    }
+    /**
+     * Adds a new Hyperbola to the model.
+     * @param Origin The origin point.
+     * @param x_vec A vector defining the radius in the local x direction.
+     * @param y_vec A vector defining the radius in the local y direction, must be orthogonal to x.
+     * @param angles The angles, can be undefined, in which case a closed conic is generated.
+     * @return Object of type Hyperbola
+     */
+    public addHyperbola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles?: [number, number]): IHyperbola {
+        // make the angles correct
+        angles = util.checkHyperbolaAngles(angles);
+        // make three ortho vectors
+        const a: number = x_vec.length; // Length 1
+        const b: number = vec.length; // Length 2
+        let axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
+        let axesV3: [three.Vector3,three.Vector3,three.Vector3]
+         = [new three.Vector3(axes[0][0],axes[0][1],axes[0][2]),
+            new three.Vector3(axes[1][0],axes[1][1],axes[1][2]),
+            new three.Vector3(axes[2][0],axes[2][1],axes[2][2]),
+        ];
+        axesV3 = [axesV3[0].setLength(a),axesV3[1].setLength(b),axesV3[2]];
+        axes = [[axesV3[0].x,axesV3[0].y,axesV3[0].z],
+                [axesV3[1].x,axesV3[1].y,axesV3[1].z],
+                [axesV3[2].x,axesV3[2].y,axesV3[2].z]];
+        if (axes === null) {throw new Error("Vectors cannot be parallel.");}
+        // make the Hyperbola
+        const id: number = this._kernel.geomAddHyperbola(origin_point.getID(), axes, angles);
+        return new Hyperbola(this._kernel, id);
+    }
     /**
      * Adds a new polyline to the model.
      * @param points A collection of Points.

@@ -1,5 +1,5 @@
 import * as three from "three";
-import {XYZ, IHyperbola, IPoint} from "./ifaces_gs";
+import {XYZ, IParabola, IPoint} from "./ifaces_gs";
 import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
@@ -9,13 +9,13 @@ import * as math_conics from "./libs/conics/conics";
 /**
  * Class ConicCurve.
  */
-export class Hyperbola extends Obj implements IHyperbola {
+export class Parabola extends Obj implements IParabola {
     /**
      * Get the object type: "hyperbola".
      * @return ConicCurve object type.
      */
     public getObjType(): EObjType {
-        return EObjType.hyperbola;
+        return EObjType.parabola;
     }
     /**
      * Get the origin of the hyperbola.
