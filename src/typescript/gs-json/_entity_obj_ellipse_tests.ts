@@ -34,6 +34,7 @@ export function test_getAxes(): boolean {
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
     const curve: gs.IEllipse = g.addEllipse(pt,[1.123,4,6],[3,1.456,9],[45,135]);
+    console.log("curve.getAxes() = " + curve.getAxes())
     curve.getAxes();
     return true;
 }

@@ -56,9 +56,12 @@ export interface IGeom  {
     addPoint(xyz: XYZ): IPoint;
     addPoints(xyz_arr: XYZ[]): IPoint[];
     addRay(origin_point: IPoint, ray_vec: XYZ): IRay;
+    addRayTwo(origin_point: IPoint, ray_vec: XYZ): IRayTwo;
     addPlane(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ): IPlane;
     addCircle(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]);
     addEllipse(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]);
+    addParabola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles: [number, number]): IParabola;
+    addHyperbola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles: [number, number]): IHyperbola;
     addPolyline(wire_points: IPoint[], is_closed: boolean): IPolyline;
     addPolymesh(face_points: IPoint[][]): IPolymesh;
     // Points

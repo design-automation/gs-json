@@ -693,7 +693,7 @@ export class Kernel {
      * @param dir, the ray direction, as a vector.
      * @return ID of object.
      */
-    public geomAddrayTwo(origin_id: number, line_vec: XYZ): number {
+    public geomAddRayTwo(origin_id: number, line_vec: XYZ): number {
         const new_id: number = this._objs.length;
         // create the line
         this._objs.push([

@@ -1,6 +1,7 @@
 import * as gs from "../../_export";
 import * as threex from "../threex/threex";
 import * as three from "three";
+import * as utils from "../../_utils";
 
 /**
  * Calculate a set of xyz position on the circle/arc ir ellipse/arc. The number of points = length / resolution.
@@ -68,37 +69,6 @@ export function circleEvaluate(circle: gs.ICircle, t: number): gs.XYZ {
     point.applyMatrix4(matrix_inv);
     // return the points
     return point.toArray() as gs.XYZ;
-
-    // const origin: gs.XYZ = curve.getOrigin().getPosition();
-    // const alpha: number = (curve.getAngles()[0] + t*(curve.getAngles()[1]-curve.getAngles()[0]))*(2*Math.PI)/360;
-    // const x: number = curve.getRadius() * Math.cos(alpha);
-    // const y: number = curve.getRadius() * Math.sin(alpha);
-    // const U111: three.Vector3 = new three.Vector3(1,0,0);
-    // const V111: three.Vector3 = new three.Vector3(0,1,0);
-    // const U1: three.Vector3 = new three.Vector3(
-    //     curve.getAxes()[0][0], curve.getAxes()[0][1], curve.getAxes()[0][2]);
-    // const V1: three.Vector3 = new three.Vector3(
-    //     curve.getAxes()[1][0], curve.getAxes()[1][1], curve.getAxes()[1][2]);
-    // const O1O2: three.Vector3 = new three.Vector3(
-    //     curve.getOrigin().getPosition()[0], curve.getOrigin().getPosition()[1], curve.getOrigin().getPosition()[2]);
-    // const U11: three.Vector3 = new three.Vector3(x,0,0);
-    // const V11: three.Vector3 = new three.Vector3(0,y,0);
-    // const O2P: three.Vector3 = threex.addVectors(U11,V11);
-    // const u1_projection: three.Vector3 = new three.Vector3(U1.x,U1.y,0);
-    // const alpha_1_cos: number = U1.normalize().dot(u1_projection.normalize());
-    // const alpha_1_sin: number = U1.normalize().z;
-    // const o2P_prime: three.Vector3 = new three.Vector3(
-    //     O2P.x*alpha_1_cos - O2P.z*alpha_1_sin,
-    //     O2P.y,
-    //     O2P.z*alpha_1_cos + O2P.x*alpha_1_sin);
-    // const alpha_2_cos: number = u1_projection.normalize().x;
-    // const alpha_2_sin: number = u1_projection.normalize().y;
-    // const o2P_second: three.Vector3 = new three.Vector3(
-    //     o2P_prime.x*alpha_2_cos - o2P_prime.y*alpha_2_sin,
-    //     o2P_prime.y*alpha_2_cos + o2P_prime.x*alpha_2_sin,
-    //     o2P_prime.z);
-    // const O1P: three.Vector3 = threex.addVectors(O1O2,o2P_second);
-    // return [O1P.x,O1P.y,O1P.z];
 }
 /**
  * Calculate a set of xyz position on the circle or arc. The number of points = length / resolution.
@@ -140,38 +110,6 @@ export function circleGetRenderXYZs(circle: gs.ICircle, resolution: number): gs.
     }
     // return the points
     return xyz_points;
-
-    // const O1: three.Vector3 = new three.Vector3(0,0,0);
-    // const e1: three.Vector3 = new three.Vector3(1,0,0);
-    // const e2: three.Vector3 = new three.Vector3(0,1,0);
-    // const e3: three.Vector3 = new three.Vector3(0,0,1);
-    // const C1: three.Vector3 = new three.Vector3(...origin);
-    // const U1: three.Vector3 = new three.Vector3(...curve.getAxes()[0]).normalize();
-    // const V1: three.Vector3 = new three.Vector3(...curve.getAxes()[1]).normalize();
-    // const W1: three.Vector3 = threex.crossVectors(U1,V1,true);
-    // const C1O1: three.Vector3 = threex.subVectors(O1,C1,false);
-    // const vec_O_1: three.Vector3 = new three.Vector3(
-    // C1O1.dot(U1),C1O1.dot(V1),C1O1.dot(W1));
-    // const x1: three.Vector3 = new three.Vector3(
-    // e1.dot(U1),e1.dot(V1),e1.dot(W1));
-    // const y1: three.Vector3 = new three.Vector3(
-    // e2.dot(U1),e2.dot(V1),e2.dot(W1));
-    // let z1: three.Vector3 = new three.Vector3();
-    // z1 = z1.crossVectors(x1,y1);
-    // const m1: three.Matrix4 = new three.Matrix4();
-    // const o_neg: three.Vector3 = vec_O_1.clone().negate();
-    // m1.setPosition(o_neg);
-    // let m2: three.Matrix4 = new three.Matrix4();
-    // m2 = m2.makeBasis(x1.normalize(), y1.normalize(), z1.normalize());
-    // m2 = m2.getInverse(m2);
-    // const m3: three.Matrix4 = new three.Matrix4();
-    // const rotation1: three.Matrix4 = m3.multiplyMatrices(m2, m1);
-    // const results_c1: three.Vector3[] = [];
-    // for (const point of results) {
-    //     results_c1.push(threex.multVectorMatrix(point,rotation1));
-    // }
-    // // create and return the list of XYZ positions
-    // return results_c1.map((point) => [point.x,point.y,point.z] as gs.XYZ);
 }
 
 /**
@@ -362,147 +300,58 @@ export function ellipseGetRenderXYZs(curve: gs.IEllipse, resolution: number): gs
     return renderXYZs;
 }
 /**
- * Calculate a set of xyz position on the Parabola. The number of points = length / resolution.
+ * Calculate a set of xyz positions on the Parabola. The number of points = diff_angles() / resolution.
  */
 export function parabolaGetRenderXYZs(curve: gs.IParabola, resolution: number): gs.XYZ[] {
-    throw new Error("Method not implemented");
-    // const O: number[] = curve.getOrigin().getPosition();
-    // const U1: three.Vector3 = new three.Vector3(...curve.getAxes()[0]).normalize();
-    // const V1: three.Vector3 = new three.Vector3(...curve.getAxes()[1]).normalize();
-    // const renderingXYZs: gs.XYZ[] = [];
-    // const L: number = parabola length;
-    // const l: number = L * resolution;
-    // eval length
-    // assess Number of points
-    // project points by using Theta angles and Position = r.cos_Theta.U1 + r.sin_Theta.V1
-
-    const O: number[] = curve.getOrigin().getPosition();
-    const renderingXYZs: gs.XYZ[] = [];
+    const origin: number[] = curve.getOrigin().getPosition();
     const renderXYZs: gs.XYZ[] = [];
-    let r: number = null;
-    let theta: number = 0;
-    let d_theta: number = 0;
     const U1: three.Vector3 = new three.Vector3(...curve.getAxes()[0]).normalize();
     const V1: three.Vector3 = new three.Vector3(...curve.getAxes()[1]).normalize();
     const a: number = new three.Vector3(...curve.getAxes()[0]).length();
     const b: number = new three.Vector3(...curve.getAxes()[1]).length();
-    const L: number = Math.PI * Math.sqrt(2*(a*a + b*b) - (a-b)*(a-b)/2);
-    const l: number = L * resolution;
     const param: number = b*b/a;
-    const c: number = Math.sqrt(Math.abs(a*a - b*b));
-    const e: number = Math.sqrt(1 - b*b/(a*a));
-    let N: number = 0;
-    let eps: number = 1;
-    while (eps>0) {
-    theta = theta + d_theta ;
-    eps = Math.PI*2 - theta;
-    N++;
-    r = param / (1 + e*Math.cos(theta));
-    d_theta = l/r;
+    let r: number;
+    const angles: number[] = utils.checkParabolaAngles([curve.getAngles()[0],curve.getAngles()[1]]);
+    const N: number = Math.floor(1/resolution);
+    const d_theta: number = ((angles[1] - angles[0])/(N-1)) * (2*Math.PI)/360;
+    let theta: number = angles[0] * (2*Math.PI)/360;
+    for (let k: number = 0;k<N;k++) {
+            r = param / (1 + Math.cos(theta));
+            renderXYZs.push([
+                        origin[0] + r*Math.cos(theta)*U1.x + r*Math.sin(theta)*V1.x,
+                        origin[1] + r*Math.cos(theta)*U1.y + r*Math.sin(theta)*V1.y,
+                        origin[2] + r*Math.cos(theta)*U1.z + r*Math.sin(theta)*V1.z,
+                ]);
+            theta = theta + d_theta;
     }
-    N--;
-    theta = 0;
-    d_theta = 0;
-    for (let k = 0; k<N;k++) {
-    theta = theta + d_theta ;
-    r = param / (1 + e*Math.cos(theta));
-    d_theta = l/r;
-    renderingXYZs.push([(r*Math.cos(theta)) + c,r * Math.sin(theta),0]);
-    }
-    const results: three.Vector3[] = [];
-    for (const point of renderingXYZs) {results.push(new three.Vector3(point[0],point[1],point[2]));}
-    const O1: three.Vector3 = new three.Vector3(0,0,0);
-    const e1: three.Vector3 = new three.Vector3(1,0,0);
-    const e2: three.Vector3 = new three.Vector3(0,1,0);
-    const e3: three.Vector3 = new three.Vector3(0,0,1);
-    const C1: three.Vector3 = new three.Vector3(
-    curve.getOrigin().getPosition()[0],curve.getOrigin().getPosition()[1],curve.getOrigin().getPosition()[2]);
-    const W1: three.Vector3 = threex.crossVectors(U1,V1,true);
-    const C1O1: three.Vector3 = threex.subVectors(O1,C1,false);
-    const vec_O_1: three.Vector3 = new three.Vector3(
-    C1O1.dot(U1),C1O1.dot(V1),C1O1.dot(W1));
-    const x1: three.Vector3 = new three.Vector3(e1.dot(U1),e1.dot(V1),e1.dot(W1));
-    const y1: three.Vector3 = new three.Vector3(e2.dot(U1),e2.dot(V1),e2.dot(W1));
-    let z1: three.Vector3 = new three.Vector3();
-    z1 = z1.crossVectors(x1,y1);
-    const m1: three.Matrix4 = new three.Matrix4();
-    const o_neg: three.Vector3 = vec_O_1.clone().negate();
-    m1.setPosition(o_neg);
-    let m2: three.Matrix4 = new three.Matrix4();
-    m2 = m2.makeBasis(x1.normalize(), y1.normalize(), z1.normalize());
-    m2 = m2.getInverse(m2);
-    const m3: three.Matrix4 = new three.Matrix4();
-    const rotation1: three.Matrix4 = m3.multiplyMatrices(m2, m1);
-    const results_c1: three.Vector3[] = [];
-    for (const point of results) {results_c1.push(threex.multVectorMatrix(point,rotation1));}
-    for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
     return renderXYZs;
 }
 /**
- * Calculate a set of xyz position on the Parabola. The number of points = length / resolution.
+ * Calculate a set of xyz positions on the Hyperbola. The number of points = diff_angles() / resolution.
  */
 export function hyperbolaGetRenderXYZs(curve: gs.IHyperbola, resolution: number): gs.XYZ[] {
-    throw new Error("Method not implemented");
-    const O: number[] = curve.getOrigin().getPosition();
-    const renderingXYZs: gs.XYZ[] = [];
+    const origin: number[] = curve.getOrigin().getPosition();
     const renderXYZs: gs.XYZ[] = [];
-    let r: number = null;
-    let theta: number = 0;
-    let d_theta: number = 0;
     const U1: three.Vector3 = new three.Vector3(...curve.getAxes()[0]).normalize();
     const V1: three.Vector3 = new three.Vector3(...curve.getAxes()[1]).normalize();
     const a: number = new three.Vector3(...curve.getAxes()[0]).length();
     const b: number = new three.Vector3(...curve.getAxes()[1]).length();
-    const L: number = Math.PI * Math.sqrt(2*(a*a + b*b) - (a-b)*(a-b)/2);
-    const l: number = L * resolution;
-    const param: number = b*b/a;
-    const c: number = Math.sqrt(Math.abs(a*a - b*b));
-    const e: number = Math.sqrt(1 - b*b/(a*a));
-    let N: number = 0;
-    let eps: number = 1;
-    while (eps>0) {
-    theta = theta + d_theta ;
-    eps = Math.PI*2 - theta;
-    N++;
-    r = param / (1 + e*Math.cos(theta));
-    d_theta = l/r;
+    const param: number = 0; // to update
+    const e: number = Math.sqrt(1 - (b/a)*(b/a)); // to update
+    let r: number;
+    const angles: number[] = utils.checkParabolaAngles([curve.getAngles()[0],curve.getAngles()[1]]);
+    const N: number = Math.floor(1/resolution);
+    const d_theta: number = ((angles[1] - angles[0])/(N-1)) * (2*Math.PI)/360;
+    let theta: number = angles[0] * (2*Math.PI)/360;
+    for (let k: number = 0;k<N;k++) {
+            r = param / (1 + e*Math.cos(theta));
+            renderXYZs.push([
+                        origin[0] + r*Math.cos(theta)*U1.x + r*Math.sin(theta)*V1.x,
+                        origin[1] + r*Math.cos(theta)*U1.y + r*Math.sin(theta)*V1.y,
+                        origin[2] + r*Math.cos(theta)*U1.z + r*Math.sin(theta)*V1.z,
+                ]);
+            theta = theta + d_theta;
     }
-    N--;
-    theta = 0;
-    d_theta = 0;
-    for (let k = 0; k<N;k++) {
-    theta = theta + d_theta ;
-    r = param / (1 + e*Math.cos(theta));
-    d_theta = l/r;
-    renderingXYZs.push([(r*Math.cos(theta)) + c,r * Math.sin(theta),0]);
-    }
-    const results: three.Vector3[] = [];
-    for (const point of renderingXYZs) {results.push(new three.Vector3(point[0],point[1],point[2]));}
-    const O1: three.Vector3 = new three.Vector3(0,0,0);
-    const e1: three.Vector3 = new three.Vector3(1,0,0);
-    const e2: three.Vector3 = new three.Vector3(0,1,0);
-    const e3: three.Vector3 = new three.Vector3(0,0,1);
-    const C1: three.Vector3 = new three.Vector3(
-    curve.getOrigin().getPosition()[0],curve.getOrigin().getPosition()[1],curve.getOrigin().getPosition()[2]);
-    const W1: three.Vector3 = threex.crossVectors(U1,V1,true);
-    const C1O1: three.Vector3 = threex.subVectors(O1,C1,false);
-    const vec_O_1: three.Vector3 = new three.Vector3(
-    C1O1.dot(U1),C1O1.dot(V1),C1O1.dot(W1));
-    const x1: three.Vector3 = new three.Vector3(e1.dot(U1),e1.dot(V1),e1.dot(W1));
-    const y1: three.Vector3 = new three.Vector3(e2.dot(U1),e2.dot(V1),e2.dot(W1));
-    let z1: three.Vector3 = new three.Vector3();
-    z1 = z1.crossVectors(x1,y1);
-    const m1: three.Matrix4 = new three.Matrix4();
-    const o_neg: three.Vector3 = vec_O_1.clone().negate();
-    m1.setPosition(o_neg);
-    let m2: three.Matrix4 = new three.Matrix4();
-    m2 = m2.makeBasis(x1.normalize(), y1.normalize(), z1.normalize());
-    m2 = m2.getInverse(m2);
-    const m3: three.Matrix4 = new three.Matrix4();
-    const rotation1: three.Matrix4 = m3.multiplyMatrices(m2, m1);
-    const results_c1: three.Vector3[] = [];
-    for (const point of results) {results_c1.push(threex.multVectorMatrix(point,rotation1));}
-    for(const point of results_c1) {renderXYZs.push([point.x,point.y,point.z]);}
     return renderXYZs;
 }
 

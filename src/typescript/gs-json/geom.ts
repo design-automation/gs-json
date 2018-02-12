@@ -1,4 +1,4 @@
-import {XYZ, IGeom, IPoint, IVertex, IEdge, IHyperbola, IWire, IFace, IObj, IRay, IPlane, ICircle, IEllipse,
+import {XYZ, IGeom, IPoint, IVertex, IEdge, IHyperbola, IWire, IFace, IObj, IRay, IRayTwo, IPlane, ICircle, IEllipse,
         IParabola, IPolyline, IPolymesh, ITopo} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
@@ -12,6 +12,7 @@ import {Parabola} from "./entity_obj_parabola";
 import {Polymesh} from "./entity_obj_polymesh";
 import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";
+import {RayTwo} from "./entity_obj_rayTwo";
 import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {_castToObjType} from "./entity_obj_cast";
 import * as threex from "./libs/threex/threex";
@@ -177,7 +178,6 @@ export class Geom implements IGeom {
     public addPoints(xyz_arr: XYZ[]): IPoint[] {
         return xyz_arr.map((xyz) => this.addPoint(xyz));
     }
-
     /**
      * Adds a new ray to the model.
      * @param origin_point The ray origin point.
@@ -188,6 +188,23 @@ export class Geom implements IGeom {
         const id: number = this._kernel.geomAddRay(origin_point.getID(), ray_vec);
         return new Ray(this._kernel, id);
     }
+
+
+    /**
+     * Adds a new rayTwo to the model.
+     * @param origin_point The rayTwo origin point.
+     * @param ray_vec A vector defining the direction of the ray.
+     * @return Object of type RayTwo, which is a ray that is defined in the two directions of the Ray.
+     */
+    public addRayTwo(origin_point: IPoint, ray_vec: XYZ): IRayTwo {
+        const id: number = this._kernel.geomAddRayTwo(origin_point.getID(), ray_vec);
+        return new RayTwo(this._kernel, id);
+    }
+
+
+
+
+
 
     /**
      * Adds a new plane to the model.
@@ -259,7 +276,7 @@ export class Geom implements IGeom {
      * @param angles The angles, can be undefined, in which case a closed conic is generated.
      * @return Object of type Parabola
      */
-    public addParabola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles?: [number, number]): IParabola {
+    public addParabola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles: [number, number]): IParabola {
         // make the angles correct
         angles = util.checkParabolaAngles(angles);
         // make three ortho vectors
@@ -288,7 +305,7 @@ export class Geom implements IGeom {
      * @param angles The angles, can be undefined, in which case a closed conic is generated.
      * @return Object of type Hyperbola
      */
-    public addHyperbola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles?: [number, number]): IHyperbola {
+    public addHyperbola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles: [number, number]): IHyperbola {
         // make the angles correct
         angles = util.checkHyperbolaAngles(angles);
         // make three ortho vectors

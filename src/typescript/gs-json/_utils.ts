@@ -53,7 +53,10 @@ export function checkEllipseAngles(angles: [number, number]): [number, number] {
  */
 export function checkParabolaAngles(angles: [number, number]): [number, number] {
     if (angles === undefined || angles === null) {return undefined;}
-    return [((angles[0] % 360) + 360) % 360,((angles[1] % 360) + 360) % 360];
+    const angle_0: number = ((angles[0] % 360) + 360) % 360;
+    const angle_1: number = ((angles[1] % 360) + 360) % 360;
+    if (angle_0 > angle_1) {throw new Error("Check parabola angles, those should in increasing order");}
+    return [angle_0,angle_1];
 }
 /**
  * Corrects the angles in a hyperbola
@@ -62,5 +65,8 @@ export function checkParabolaAngles(angles: [number, number]): [number, number] 
  */
 export function checkHyperbolaAngles(angles: [number, number]): [number, number] {
     if (angles === undefined || angles === null) {return undefined;}
-    return [((angles[0] % 360) + 360) % 360,((angles[1] % 360) + 360) % 360];
+    const angle_0: number = ((angles[0] % 360) + 360) % 360;
+    const angle_1: number = ((angles[1] % 360) + 360) % 360;
+    if (angle_0 > angle_1) {throw new Error("Check Hyperbola angles, those should in increasing order");}
+    return [angle_0,angle_1];
 }
