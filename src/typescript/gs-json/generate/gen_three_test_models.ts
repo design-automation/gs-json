@@ -43,5 +43,10 @@ export function debug(): void {
  */
 if(require.main === module)  {
     // genGsModelsWriteFiles();
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModelParabola_Ellipse()), path + "model_Parabola_Ellipse.json");
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Ellipse()), path + "model_genModel_3DConic_Ellipse.json");
 }
+if(require.main === module)  {
+    // genGsModelsWriteFiles();
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Ellipse()), path + "model_genModel_3DConic_Ellipse.json");
+}
+

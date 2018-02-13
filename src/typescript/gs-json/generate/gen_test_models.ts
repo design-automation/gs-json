@@ -1,5 +1,8 @@
 import * as three from "three";
 import * as gs from "../_export";
+import * as ellipse_polyline from "../conic_polyline/ellipse_polyline";
+import * as hyperbola_polyline from "../conic_polyline/hyperbola_polyline";
+import * as parbola_polyline from "../conic_polyline/parabola_polyline";
 
 /**
  * Generates an empty model with nothing in it.
@@ -1452,27 +1455,29 @@ export function genModelObjWithAttribs(): gs.IModel {
     return m;
 }
 /**
- * Generates model with a 3D rendered Parabola.
+ * Generates model with a 3D Polylined Ellipse.
  */
 export function genModel_3DConic_Ellipse(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const center: gs.IPoint = g.addPoint([1,1,1]);
     const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [1,0,0], [0,1,1], [0, 180]);
+    const polyline: gs.IPolyline = ellipse_polyline.ellipse_polyline(ellipse);
     return m;
 }
 /**
- * Generates model with a 3D rendered Parabola.
+ * Generates model with a 3D Polylined Parabola.
  */
 export function genModel_3DConic_Parabola(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const focal: gs.IPoint = g.addPoint([1,1,1]);
     const parabola: gs.IParabola = m.getGeom().addParabola(focal, [1,0,0], [0,1,1], [0, 180]);
+     
     return m;
 }
 /**
- * Generates model with a 3D rendered Hyperbola.
+ * Generates model with a 3D Polylined Hyperbola.
  */
 export function genModel_3DConic_Hyperbola(): gs.IModel {
     const m: gs.IModel = new gs.Model();
@@ -1482,7 +1487,7 @@ export function genModel_3DConic_Hyperbola(): gs.IModel {
     return m;
 }
 /**
- * Generates model with a 3D rendered RayTwo.
+ * Generates model with a 3D Polylined RayTwo.
  */
 export function genModel_3DConic_RayTwo(): gs.IModel {
     const m: gs.IModel = new gs.Model();
