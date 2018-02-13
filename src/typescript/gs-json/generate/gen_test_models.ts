@@ -1461,7 +1461,7 @@ export function genModel_3DConic_Ellipse(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const center: gs.IPoint = g.addPoint([1,1,1]);
-    const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [4,0,0], [0,1,1], [0, 180]);
+    const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [4,0,0], [0,0,1], [0, 240]);
     const polyline: gs.IPolyline = ellipse_polyline.ellipse_polyline(ellipse);
     return m;
 }

@@ -1443,7 +1443,7 @@ function genModel_3DConic_Ellipse() {
     const m = new gs.Model();
     const g = m.getGeom();
     const center = g.addPoint([1, 1, 1]);
-    const ellipse = m.getGeom().addEllipse(center, [4, 0, 0], [0, 1, 1], [0, 180]);
+    const ellipse = m.getGeom().addEllipse(center, [4, 0, 0], [0, 0, 1], [0, 240]);
     const polyline = ellipse_polyline.ellipse_polyline(ellipse);
     return m;
 }

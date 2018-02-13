@@ -229,8 +229,8 @@ class Geom {
         // make the angles correct
         angles = util.checkCircleAngles(angles);
         // make three ortho vectors
-        const a = x_vec.length; // Radius 1
-        const b = vec.length; // Radius 2
+        const a = Math.sqrt(x_vec[0] * x_vec[0] + x_vec[1] * x_vec[1] + x_vec[2] * x_vec[2]); // Radius 1
+        const b = Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]); // Radius 2
         let axes = threex.makeXYZOrthogonal(x_vec, vec, false);
         let axesV3 = [new three.Vector3(axes[0][0], axes[0][1], axes[0][2]),
             new three.Vector3(axes[1][0], axes[1][1], axes[1][2]),

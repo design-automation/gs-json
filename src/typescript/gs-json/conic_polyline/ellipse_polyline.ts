@@ -18,7 +18,7 @@ export function ellipse_polyline(ellipse: IEllipse): IPolyline {
     const b: number = new three.Vector3(ellipse.getAxes()[1][0],
                                         ellipse.getAxes()[1][1],
                                         ellipse.getAxes()[1][2]).length();
-    // if(a<b) {throw new Error("Enter a>=b");}
+    if(a<b) {throw new Error("Enter a>=b");}
     const e: number = Math.sqrt(1 - (b/a)*(b/a));
     const c: number = Math.sqrt(a*a - b*b);
     const param: number = b*b/a;
@@ -35,7 +35,7 @@ export function ellipse_polyline(ellipse: IEllipse): IPolyline {
                                                    ellipse.getOrigin().getPosition()[2] + c * U1.z);
     let theta: number = angle0 * (2*Math.PI)/360;
     let r: number;
-    const N: number = 50;
+    const N: number = 200;
     const d_theta: number = (((((angle1 - angle0) %360) + 360) %360) / (N-1)) * (2*Math.PI)/360;
     for(let k: number = 0;k<N;k++) {
         r = param / (1 + e*Math.cos(theta));
@@ -46,6 +46,10 @@ export function ellipse_polyline(ellipse: IEllipse): IPolyline {
             );
         points.push(geometry.addPoint([point.x,point.y,point.z]));
         theta = theta + d_theta;
+        // console.log([point.x,point.y,point.z]);
+        // console.log("r = " + r)
+        // console.log("focal = " + [focal.x,focal.y,focal.z])
+        // console.log("theta = " + theta);
     }
     return geometry.addPolyline(points,false);
     }
