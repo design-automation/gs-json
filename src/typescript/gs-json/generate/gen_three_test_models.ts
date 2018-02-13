@@ -42,11 +42,12 @@ export function debug(): void {
  * Just type "npm run build_models" in the shell.
  */
 if(require.main === module)  {
-    // genGsModelsWriteFiles();
-    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Ellipse()), path + "model_genModel_3DConic_Ellipse.json");
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Ellipse()),
+                                                     path + "model_genModel_3DConic_Ellipse.json");
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Parabola()),
+                                                     path + "model_genModel_3DConic_Parabola.json");
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Hyperbola()),
+                                                     path + "model_genModel_3DConic_Hyperbola.json");
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_RayTwo()),
+                                                     path + "model_genModel_3DConic_RayTwo.json");
 }
-if(require.main === module)  {
-    // genGsModelsWriteFiles();
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Ellipse()), path + "model_genModel_3DConic_Ellipse.json");
-}
-

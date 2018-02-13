@@ -1,0 +1,15 @@
+export declare function test_Model_constructor(): boolean;
+export declare function test_Model_getGeom(): boolean;
+export declare function test_Model_findAttribs(): boolean;
+export declare function test_Model_getAttrib(): boolean;
+export declare function test_Model_addAttrib(): boolean;
+export declare function test_Model_delAttrib(): boolean;
+export declare function test_Model_getGroups(): boolean;
+export declare function test_Model_getGroup(): boolean;
+export declare function test_Model_addGroup(): boolean;
+export declare function test_Model_hasGroup(): boolean;
+export declare function test_Model_delGroup(): boolean;
+export declare function test_Model_purgePoints(): boolean;
+export declare function test_Model_purgeNulls(): boolean;
+export declare function test_Model_validateModel(): boolean;
+export declare function test_Model_toJSON(): boolean;

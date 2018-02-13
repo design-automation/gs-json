@@ -53,7 +53,7 @@
                     "--target", "ES6",
                     "--module", "ES6",
                     "--sourceMap",
-                    "--outDir", "$project_path/dist",
+                    "--outDir", "$project_path/dist2015",
                     "--listFiles",
                     "--listEmittedFiles",
                     "$file"

@@ -1,0 +1,106 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const enums_1 = require("./enums");
+const topo_sub_1 = require("./topo_sub");
+const entity_1 = require("./entity");
+const groups_1 = require("./groups");
+/**
+ * Class Point.
+ * A point with x, y, z coordinates.
+ * A point may be part of a group and may have attributes.
+ */
+class Point extends entity_1.Ent {
+    /**
+     * Check if this entity exists in the model. (i.e has it been deleted?)
+     * @return The entity ID number.
+     */
+    exists() {
+        return this._kernel.geomHasPoint(this._id);
+    }
+    /**
+     * Get the geometry type for this entity.
+     * This method overrides the method in the Ent class.
+     * @return The geometry type.
+     */
+    getGeomType() {
+        return enums_1.EGeomType.points;
+    }
+    /**
+     * Set the cartesian x,y,z coordinates of a point.
+     * @param xyz Cartesian coordinates
+     * @return Arrays of pre-defined coordinates
+     */
+    setPosition(xyz) {
+        return this._kernel.pointSetPosition(this._id, xyz);
+    }
+    /**
+     * Get the cartesian x, y, z coordinates of a point.
+     * @return Returns an array that contains the x, y, z coordinates
+     */
+    getPosition() {
+        return this._kernel.pointGetPosition(this._id);
+    }
+    /**
+     * Get all the vertices linked to a point or a set of points.
+     * @return Returns the array of vertices.
+     */
+    getVertices() {
+        const paths = this._kernel.pointGetVertices(this._id);
+        return paths.map((path) => new topo_sub_1.Vertex(this._kernel, path));
+    }
+    /**
+     * Get the label of this point.
+     * @return The xyz of the centroid.
+     */
+    getLabel() {
+        return "p" + this._id;
+    }
+    /**
+     * Get the label centroid of this points.
+     * @return The xyz of the label.
+     */
+    getLabelCentroid() {
+        return this.getPosition();
+    }
+    /**
+     * Make a copy of this entity.
+     * This method must be overridden by the sub-classes.
+     * @return The geometry type.
+     */
+    copy(copy_attribs) {
+        return new Point(this._kernel, this._kernel.geomCopyPoint(this._id, copy_attribs));
+    }
+    /**
+     * Transform the points for this object.
+     * @param matrix The xform matrix.
+     */
+    xform(matrix) {
+        return this._kernel.pointXform(this._id, matrix);
+    }
+    //  Groups -------------------------------------------------------------------------------------
+    /**
+     * Get the group names for all the groups for which this entity is a member.
+     * @return The array of group names.
+     */
+    getGroups() {
+        return this._kernel.pointGetGroups(this._id).map((v) => new groups_1.Group(this._kernel, v));
+    }
+    /**
+     * Add this entity to a group.
+     * @param name The group name.
+     * @return True if the entity was added, False is the entity was already in the group.
+     */
+    addToGroup(group) {
+        return this._kernel.groupAddPoint(group.getName(), this._id);
+    }
+    //  toString -------------------------------------------------------------------------------------
+    /**
+     * Create s string representation of this point.
+     * @return String
+     */
+    toString() {
+        return "Point:[" + this.getPosition() + "]";
+    }
+}
+exports.Point = Point;
+//# sourceMappingURL=entity_point.js.map

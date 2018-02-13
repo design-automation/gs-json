@@ -18,7 +18,7 @@ export function ellipse_polyline(ellipse: IEllipse): IPolyline {
     const b: number = new three.Vector3(ellipse.getAxes()[1][0],
                                         ellipse.getAxes()[1][1],
                                         ellipse.getAxes()[1][2]).length();
-    if(a<b) {throw new Error("Enter a>=b");}
+    // if(a<b) {throw new Error("Enter a>=b");}
     const e: number = Math.sqrt(1 - (b/a)*(b/a));
     const c: number = Math.sqrt(a*a - b*b);
     const param: number = b*b/a;

@@ -940,6 +940,12 @@ img { max-width: 100%; }
 					<a href="_ifaces_gs_.igeom.html#addellipse" class="tsd-kind-icon">add<wbr>Ellipse</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
+					<a href="_ifaces_gs_.igeom.html#addhyperbola" class="tsd-kind-icon">add<wbr>Hyperbola</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-interface">
+					<a href="_ifaces_gs_.igeom.html#addparabola" class="tsd-kind-icon">add<wbr>Parabola</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-interface">
 					<a href="_ifaces_gs_.igeom.html#addplane" class="tsd-kind-icon">add<wbr>Plane</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
@@ -956,6 +962,9 @@ img { max-width: 100%; }
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
 					<a href="_ifaces_gs_.igeom.html#addray" class="tsd-kind-icon">add<wbr>Ray</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-interface">
+					<a href="_ifaces_gs_.igeom.html#addraytwo" class="tsd-kind-icon">add<wbr>Ray<wbr>Two</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-interface">
 					<a href="_ifaces_gs_.igeom.html#copycirclefrommodel" class="tsd-kind-icon">copy<wbr>Circle<wbr>From<wbr>Model</a>
@@ -1050,6 +1059,9 @@ img { max-width: 100%; }
 			<a href="_ifaces_gs_.iobj.html" class="tsd-kind-icon">IObj</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+			<a href="_ifaces_gs_.iparabola.html" class="tsd-kind-icon">IParabola</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 			<a href="_ifaces_gs_.iplane.html" class="tsd-kind-icon">IPlane</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
@@ -1063,6 +1075,9 @@ img { max-width: 100%; }
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 			<a href="_ifaces_gs_.iray.html" class="tsd-kind-icon">IRay</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+			<a href="_ifaces_gs_.iraytwo.html" class="tsd-kind-icon">IRay<wbr>Two</a>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 			<a href="_ifaces_gs_.itopo.html" class="tsd-kind-icon">ITopo</a>
@@ -1113,12 +1128,15 @@ img { max-width: 100%; }
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addcircle" class="tsd-kind-icon">add<wbr>Circle</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addellipse" class="tsd-kind-icon">add<wbr>Ellipse</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addhyperbola" class="tsd-kind-icon">add<wbr>Hyperbola</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addparabola" class="tsd-kind-icon">add<wbr>Parabola</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addplane" class="tsd-kind-icon">add<wbr>Plane</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addpoint" class="tsd-kind-icon">add<wbr>Point</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addpoints" class="tsd-kind-icon">add<wbr>Points</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addpolyline" class="tsd-kind-icon">add<wbr>Polyline</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addpolymesh" class="tsd-kind-icon">add<wbr>Polymesh</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addray" class="tsd-kind-icon">add<wbr>Ray</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#addraytwo" class="tsd-kind-icon">add<wbr>Ray<wbr>Two</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#copycirclefrommodel" class="tsd-kind-icon">copy<wbr>Circle<wbr>From<wbr>Model</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#copyobjfrommodel" class="tsd-kind-icon">copy<wbr>Obj<wbr>From<wbr>Model</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_ifaces_gs_.igeom.html#copyobjsfrommodel" class="tsd-kind-icon">copy<wbr>Objs<wbr>From<wbr>Model</a></li>
@@ -1162,7 +1180,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:60</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L61">ifaces_gs.ts:61</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1194,7 +1212,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:61</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L62">ifaces_gs.ts:62</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1217,6 +1235,70 @@ img { max-width: 100%; }
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+				<a name="addhyperbola" class="tsd-anchor"></a>
+				<h3>add<wbr>Hyperbola</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Hyperbola<span class="tsd-signature-symbol">(</span>origin_point<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a>, x_vec<span class="tsd-signature-symbol">: </span><a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a>, vec<span class="tsd-signature-symbol">: </span><a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a>, angles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ihyperbola.html" class="tsd-signature-type">IHyperbola</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L64">ifaces_gs.ts:64</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>origin_point: <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></h5>
+							</li>
+							<li>
+								<h5>x_vec: <a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a></h5>
+							</li>
+							<li>
+								<h5>vec: <a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a></h5>
+							</li>
+							<li>
+								<h5>angles: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.ihyperbola.html" class="tsd-signature-type">IHyperbola</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+				<a name="addparabola" class="tsd-anchor"></a>
+				<h3>add<wbr>Parabola</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Parabola<span class="tsd-signature-symbol">(</span>origin_point<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a>, x_vec<span class="tsd-signature-symbol">: </span><a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a>, vec<span class="tsd-signature-symbol">: </span><a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a>, angles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iparabola.html" class="tsd-signature-type">IParabola</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L63">ifaces_gs.ts:63</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>origin_point: <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></h5>
+							</li>
+							<li>
+								<h5>x_vec: <a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a></h5>
+							</li>
+							<li>
+								<h5>vec: <a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a></h5>
+							</li>
+							<li>
+								<h5>angles: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.iparabola.html" class="tsd-signature-type">IParabola</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 				<a name="addplane" class="tsd-anchor"></a>
 				<h3>add<wbr>Plane</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -1226,7 +1308,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:59</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L60">ifaces_gs.ts:60</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1255,7 +1337,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:56</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L56">ifaces_gs.ts:56</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1278,7 +1360,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:57</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L57">ifaces_gs.ts:57</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1301,7 +1383,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:62</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L65">ifaces_gs.ts:65</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1327,7 +1409,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:63</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L66">ifaces_gs.ts:66</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1350,7 +1432,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:58</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L58">ifaces_gs.ts:58</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1367,6 +1449,32 @@ img { max-width: 100%; }
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+				<a name="addraytwo" class="tsd-anchor"></a>
+				<h3>add<wbr>Ray<wbr>Two</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Ray<wbr>Two<span class="tsd-signature-symbol">(</span>origin_point<span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a>, ray_vec<span class="tsd-signature-symbol">: </span><a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_ifaces_gs_.iraytwo.html" class="tsd-signature-type">IRayTwo</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L59">ifaces_gs.ts:59</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>origin_point: <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a></h5>
+							</li>
+							<li>
+								<h5>ray_vec: <a href="../modules/_ifaces_gs_.html#xyz" class="tsd-signature-type">XYZ</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.iraytwo.html" class="tsd-signature-type">IRayTwo</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 				<a name="copycirclefrommodel" class="tsd-anchor"></a>
 				<h3>copy<wbr>Circle<wbr>From<wbr>Model</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -1376,7 +1484,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:50</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L50">ifaces_gs.ts:50</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1399,7 +1507,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:53</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L53">ifaces_gs.ts:53</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1422,7 +1530,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:54</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L54">ifaces_gs.ts:54</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1445,7 +1553,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:49</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L49">ifaces_gs.ts:49</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1468,7 +1576,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:51</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L51">ifaces_gs.ts:51</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1491,7 +1599,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:52</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L52">ifaces_gs.ts:52</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1514,7 +1622,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:48</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L48">ifaces_gs.ts:48</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1537,7 +1645,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:79</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L82">ifaces_gs.ts:82</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1563,7 +1671,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:78</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L81">ifaces_gs.ts:81</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1589,7 +1697,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:69</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L72">ifaces_gs.ts:72</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1612,7 +1720,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:68</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L71">ifaces_gs.ts:71</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1635,7 +1743,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:74</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L77">ifaces_gs.ts:77</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1658,7 +1766,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:75</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L78">ifaces_gs.ts:78</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.iobj.html" class="tsd-signature-type">IObj</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -1675,7 +1783,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:65</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L68">ifaces_gs.ts:68</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="_ifaces_gs_.ipoint.html" class="tsd-signature-type">IPoint</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -1692,7 +1800,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:77</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L80">ifaces_gs.ts:80</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1715,7 +1823,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:76</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L79">ifaces_gs.ts:79</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1738,7 +1846,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:67</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L70">ifaces_gs.ts:70</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1761,7 +1869,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:66</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L69">ifaces_gs.ts:69</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1784,7 +1892,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:85</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L88">ifaces_gs.ts:88</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1814,7 +1922,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:86</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L89">ifaces_gs.ts:89</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1844,7 +1952,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:83</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L86">ifaces_gs.ts:86</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1874,7 +1982,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:72</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L75">ifaces_gs.ts:75</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1897,7 +2005,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:71</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L74">ifaces_gs.ts:74</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1923,7 +2031,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:80</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L83">ifaces_gs.ts:83</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -1940,7 +2048,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:70</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L73">ifaces_gs.ts:73</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -1957,7 +2065,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in ifaces_gs.ts:84</li>
+								<li>Defined in <a href="https://github.com/phtj/gs-JSON/blob/45f8389/src/typescript/gs-json/ifaces_gs.ts#L87">ifaces_gs.ts:87</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>

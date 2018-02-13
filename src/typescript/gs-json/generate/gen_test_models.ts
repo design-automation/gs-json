@@ -1461,7 +1461,7 @@ export function genModel_3DConic_Ellipse(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const center: gs.IPoint = g.addPoint([1,1,1]);
-    const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [1,0,0], [0,1,1], [0, 180]);
+    const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [4,0,0], [0,1,1], [0, 180]);
     const polyline: gs.IPolyline = ellipse_polyline.ellipse_polyline(ellipse);
     return m;
 }
@@ -1471,9 +1471,9 @@ export function genModel_3DConic_Ellipse(): gs.IModel {
 export function genModel_3DConic_Parabola(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    const focal: gs.IPoint = g.addPoint([1,1,1]);
-    const parabola: gs.IParabola = m.getGeom().addParabola(focal, [1,0,0], [0,1,1], [0, 180]);
-     
+    const focal: gs.IPoint = g.addPoint([10,10,10]);
+    const parabola: gs.IParabola = m.getGeom().addParabola(focal, [1,0,0], [0,1,1], [10, 240]);
+    const polyline: gs.IPolyline = parbola_polyline.parabola_polyline(parabola);
     return m;
 }
 /**
@@ -1482,8 +1482,9 @@ export function genModel_3DConic_Parabola(): gs.IModel {
 export function genModel_3DConic_Hyperbola(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    const focal: gs.IPoint = g.addPoint([1,1,1]);
-    const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(focal, [1,0,0], [0,1,1], [0, 180]);
+    const focal: gs.IPoint = g.addPoint([10,10,10]);
+    const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(focal, [4,0,0], [0,1,1], [10, 200]);
+    const polyline: gs.IPolyline = hyperbola_polyline.hyperbola_polyline(hyperbola);
     return m;
 }
 /**
@@ -1492,7 +1493,6 @@ export function genModel_3DConic_Hyperbola(): gs.IModel {
 export function genModel_3DConic_RayTwo(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    console.log("RayTwo");
     const origin: gs.IPoint = g.addPoint([1,1,1]);
     const direction: gs.XYZ = [1,1,1];
     const line: gs.IRayTwo = m.getGeom().addRayTwo(origin, direction);

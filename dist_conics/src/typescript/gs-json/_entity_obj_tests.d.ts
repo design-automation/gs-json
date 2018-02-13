@@ -1,0 +1,9 @@
+export declare function test_obj_getGeomType(): boolean;
+export declare function test_obj_getObjType(): boolean;
+export declare function test_obj_getPoints(): boolean;
+export declare function test_obj_getVertices(): boolean;
+export declare function test_obj_getEdges(): boolean;
+export declare function test_obj_getWires(): boolean;
+export declare function test_obj_getFaces(): boolean;
+export declare function test_obj_getNumWires(): boolean;
+export declare function test_obj_getNumFaces(): boolean;

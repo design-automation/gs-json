@@ -1,0 +1,9 @@
+export declare function test_TopoTree_constructor(): boolean;
+export declare function test_TopoTree_hasTopo(): boolean;
+export declare function test_TopoTree_addTopo(): boolean;
+export declare function test_TopoTree_removeTopo2(): boolean;
+export declare function test_TopoTree_getTopos2(): boolean;
+export declare function test_TopoTree_toArray2(): boolean;
+export declare function test_TopoTree_fromArray2(): boolean;
+export declare function test_TopoTree_removeTopo(): boolean;
+export declare function test_TopoTree_getTopos(): boolean;
