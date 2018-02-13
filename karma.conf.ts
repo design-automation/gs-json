@@ -7,7 +7,7 @@ module.exports = (config) => {
         files: [
             {pattern: "src/assets/gs-json/*.gs",
                 watched: false, included: false, served: true, nocache: false},
-            {pattern: "src/typescript/gs-json/**/*.ts",
+            {pattern: "src/typescript/**/*.ts",
                 watched: true,  included: true,  served: true, nocache: false},
         ],
         karmaTypescriptConfig: {
