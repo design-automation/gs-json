@@ -63,12 +63,18 @@ function checkParabolaAngles(angles) {
     if (angles === undefined || angles === null) {
         return undefined;
     }
-    const angle_0 = ((angles[0] % 360) + 360) % 360;
-    const angle_1 = ((angles[1] % 360) + 360) % 360;
-    if (angle_0 > angle_1) {
-        throw new Error("Check parabola angles, those should in increasing order");
+    let angle0 = ((angles[0] % 360) + 360) % 360;
+    const angle1 = ((angles[1] % 360) + 360) % 360;
+    if (angle0 > angle1) {
+        angle0 = angle0 - 360;
     }
-    return [angle_0, angle_1];
+    if (angle0 < -90) {
+        throw new Error("Revise first angle");
+    }
+    if (angle1 > 270) {
+        throw new Error("Revise second angle");
+    }
+    return [angle0, angle1];
 }
 exports.checkParabolaAngles = checkParabolaAngles;
 /**

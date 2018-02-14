@@ -2,7 +2,7 @@ import * as three from "three";
 import * as gs from "../_export";
 import * as ellipse_polyline from "../conic_polyline/ellipse_polyline";
 import * as hyperbola_polyline from "../conic_polyline/hyperbola_polyline";
-import * as parbola_polyline from "../conic_polyline/parabola_polyline";
+import * as parabola_polyline from "../conic_polyline/parabola_polyline";
 
 /**
  * Generates an empty model with nothing in it.
@@ -1460,9 +1460,14 @@ export function genModelObjWithAttribs(): gs.IModel {
 export function genModel_3DConic_Ellipse(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    const center: gs.IPoint = g.addPoint([1,1,1]);
-    const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [4,0,0], [0,0,1], [0, 240]);
+    for(let k: number = 0; k<20; k++) {
+    const center: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
+    const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [10*Math.random(),10*Math.random(),10*Math.random()],
+                                                                [10*Math.random(),10*Math.random(),10*Math.random()],
+                                                                [360*Math.random(), 360*Math.random()]);
     const polyline: gs.IPolyline = ellipse_polyline.ellipse_polyline(ellipse);
+    g.delObj(ellipse,false);
+    }
     return m;
 }
 /**
@@ -1471,9 +1476,26 @@ export function genModel_3DConic_Ellipse(): gs.IModel {
 export function genModel_3DConic_Parabola(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    const focal: gs.IPoint = g.addPoint([10,10,10]);
-    const parabola: gs.IParabola = m.getGeom().addParabola(focal, [1,0,0], [0,1,1], [10, 240]);
-    const polyline: gs.IPolyline = parbola_polyline.parabola_polyline(parabola);
+    for(let k: number = 0; k<20; k++) {
+    const center: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
+    const angle0: number = 90*(Math.random()-1);
+    const angle2: number = ((angle0%360) + (270 - (angle0%360))*Math.random())%360;
+    console.log("[angle0,angle2] =" + [angle0,angle2]);
+    const angle1: number = 270*Math.random();
+    const parabola: gs.IParabola = m.getGeom().addParabola(center, [10*Math.random(),10*Math.random(),10*Math.random()],
+                                                                [10*Math.random(),10*Math.random(),10*Math.random()],
+                                                                [angle0, angle1]);
+    const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
+    g.delObj(parabola,false);
+    }
+    // const center: gs.IPoint = g.addPoint([1,8,1]);
+    // const angle0: number = 360*Math.random();
+    // const angle1: number = angle0 + (360 - angle0)*Math.random();
+    // const parabola: gs.IParabola = m.getGeom().addParabola(center, [4,0,0],
+    //                                                             [0,1,0],
+    //                                                             [320, 180]);
+    // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
+    // g.delObj(parabola,false);
     return m;
 }
 /**
@@ -1482,8 +1504,8 @@ export function genModel_3DConic_Parabola(): gs.IModel {
 export function genModel_3DConic_Hyperbola(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    const focal: gs.IPoint = g.addPoint([10,10,10]);
-    const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(focal, [4,0,0], [0,1,1], [10, 200]);
+    const center: gs.IPoint = g.addPoint([10,10,10]);
+    const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(center, [4,0,0], [0,1,1], [10, 200]);
     const polyline: gs.IPolyline = hyperbola_polyline.hyperbola_polyline(hyperbola);
     return m;
 }

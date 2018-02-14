@@ -108,5 +108,4 @@ export class Ellipse extends Obj implements IEllipse {
         }
         return this._kernel.getGeom().addPoints(xyzs);
     }
-    
 }
