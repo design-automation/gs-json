@@ -53,11 +53,11 @@ export function checkEllipseAngles(angles: [number, number]): [number, number] {
  */
 export function checkParabolaAngles(angles: [number, number]): [number, number] {
     if (angles === undefined || angles === null) {return undefined;}
-    let angle0: number = ((angles[0] %360) + 360) %360;
-    const angle1: number = ((angles[1] %360) + 360) %360;
-    if(angle0>angle1) {angle0 = angle0 - 360;}
-    if(angle0 < -90) {throw new Error ("Revise first angle");}
-    if(angle1 > 270) {throw new Error ("Revise second angle");}
+    const angle0: number = ((angles[0] %360) + 360) %360;
+    if (angle0 === 270) {throw new Error ("Revise first angle");}
+    let angle1: number = ((angles[1] %360) + 360) %360;
+    if(angle0>angle1) {angle1 = angle1 + 360;}
+    if(angle1 > 270 + 360) {throw new Error ("Revise second angle");}
     return [angle0,angle1];
 }
 /**
@@ -65,10 +65,14 @@ export function checkParabolaAngles(angles: [number, number]): [number, number] 
  * @param
  * @return
  */
-export function checkHyperbolaAngles(angles: [number, number]): [number, number] {
+export function checkHyperbolaAngles(angles: [number, number],
+                                     x_vec_length: number, vec_length: number): [number, number] {
     if (angles === undefined || angles === null) {return undefined;}
-    const angle_0: number = ((angles[0] % 360) + 360) % 360;
-    const angle_1: number = ((angles[1] % 360) + 360) % 360;
-    if (angle_0 > angle_1) {throw new Error("Check Hyperbola angles, those should in increasing order");}
-    return [angle_0,angle_1];
+    const angle_max: number = Math.atan(x_vec_length / vec_length) * 360/(2*Math.PI);
+    const angle0: number = ((angles[0] %360) + 360) %360;
+    if (angle0 >= 270-angle_max && angle0 <= 270+angle_max) {throw new Error ("Revise first angle");}
+    let angle1: number = ((angles[1] %360) + 360) %360;
+    if(angle0>angle1) {angle1 = angle1 + 360;}
+    if(angle1 >= 270-angle_max + 360) {throw new Error ("Revise second angle");}
+    return [angle0,angle1];
 }

@@ -17,7 +17,7 @@ export function parabola_polyline(parabola: IParabola): IPolyline {
     const angle0: number = ((parabola.getAngles()[0] %360) + 360) %360;
     let angle1: number = (((parabola.getAngles()[1] %360) + 360) %360);
     if(angle1<angle0) {angle1 = angle1 + 360;}
-    if(angle0 > angle1) { throw new Error("Swap angles");}
+    // if(angle0 > angle1) { throw new Error("Swap angles");}
     const U1: three.Vector3 = new three.Vector3(parabola.getAxes()[0][0],
                                                 parabola.getAxes()[0][1],
                                                 parabola.getAxes()[0][2]).normalize();

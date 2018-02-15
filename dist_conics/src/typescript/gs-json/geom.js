@@ -287,10 +287,10 @@ class Geom {
      */
     addHyperbola(origin_point, x_vec, vec, angles) {
         // make the angles correct
-        angles = util.checkHyperbolaAngles(angles);
         // make three ortho vectors
         const a = x_vec.length; // Length 1
         const b = vec.length; // Length 2
+        angles = util.checkHyperbolaAngles(angles, x_vec.length, vec.length);
         let axes = threex.makeXYZOrthogonal(x_vec, vec, false);
         let axesV3 = [new three.Vector3(axes[0][0], axes[0][1], axes[0][2]),
             new three.Vector3(axes[1][0], axes[1][1], axes[1][2]),

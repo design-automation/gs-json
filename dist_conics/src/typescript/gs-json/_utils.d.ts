@@ -21,4 +21,4 @@ export declare function checkParabolaAngles(angles: [number, number]): [number, 
  * @param
  * @return
  */
-export declare function checkHyperbolaAngles(angles: [number, number]): [number, number];
+export declare function checkHyperbolaAngles(angles: [number, number], x_vec_length: number, vec_length: number): [number, number];

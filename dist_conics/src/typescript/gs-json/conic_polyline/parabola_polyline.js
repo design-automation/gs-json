@@ -17,9 +17,7 @@ function parabola_polyline(parabola) {
     if (angle1 < angle0) {
         angle1 = angle1 + 360;
     }
-    if (angle0 > angle1) {
-        throw new Error("Swap angles");
-    }
+    // if(angle0 > angle1) { throw new Error("Swap angles");}
     const U1 = new three.Vector3(parabola.getAxes()[0][0], parabola.getAxes()[0][1], parabola.getAxes()[0][2]).normalize();
     const V1 = new three.Vector3(parabola.getAxes()[1][0], parabola.getAxes()[1][1], parabola.getAxes()[1][2]).normalize();
     const center = new three.Vector3(parabola.getOrigin().getPosition()[0], parabola.getOrigin().getPosition()[1], parabola.getOrigin().getPosition()[2]);

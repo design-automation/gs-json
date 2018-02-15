@@ -1457,22 +1457,18 @@ exports.genModel_3DConic_Ellipse = genModel_3DConic_Ellipse;
 function genModel_3DConic_Parabola() {
     const m = new gs.Model();
     const g = m.getGeom();
-    for (let k = 0; k < 20; k++) {
+    for (let k = 0; k < 10; k++) {
         const center = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
-        const angle0 = 90 * (Math.random() - 1);
-        const angle2 = ((angle0 % 360) + (270 - (angle0 % 360)) * Math.random()) % 360;
-        console.log("[angle0,angle2] =" + [angle0, angle2]);
-        const angle1 = 270 * Math.random();
+        const angle0 = 270 + 90 * Math.random();
+        const angle1 = angle0 + (270 + 360 - angle0) * Math.random();
         const parabola = m.getGeom().addParabola(center, [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [angle0, angle1]);
         const polyline = parabola_polyline.parabola_polyline(parabola);
         g.delObj(parabola, false);
     }
-    // const center: gs.IPoint = g.addPoint([1,8,1]);
-    // const angle0: number = 360*Math.random();
-    // const angle1: number = angle0 + (360 - angle0)*Math.random();
-    // const parabola: gs.IParabola = m.getGeom().addParabola(center, [4,0,0],
-    //                                                             [0,1,0],
-    //                                                             [320, 180]);
+    // const center: gs.IPoint = g.addPoint([0,8,0]);
+    // const angle0: number = 0;
+    // const angle1: number = 180;
+    // const parabola: gs.IParabola = m.getGeom().addParabola(center, [4,0,0], [0,1000,0], [angle0, angle1]);
     // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
     // g.delObj(parabola,false);
     return m;
@@ -1484,8 +1480,8 @@ exports.genModel_3DConic_Parabola = genModel_3DConic_Parabola;
 function genModel_3DConic_Hyperbola() {
     const m = new gs.Model();
     const g = m.getGeom();
-    const center = g.addPoint([10, 10, 10]);
-    const hyperbola = m.getGeom().addHyperbola(center, [4, 0, 0], [0, 1, 1], [10, 200]);
+    const center = g.addPoint([0, 8, 0]);
+    const hyperbola = m.getGeom().addHyperbola(center, [4, 0, 0], [0, 4, 0], [315.00001, 224.999999999]);
     const polyline = hyperbola_polyline.hyperbola_polyline(hyperbola);
     return m;
 }

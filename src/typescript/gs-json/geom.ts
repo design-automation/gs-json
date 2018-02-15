@@ -307,10 +307,10 @@ export class Geom implements IGeom {
      */
     public addHyperbola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles: [number, number]): IHyperbola {
         // make the angles correct
-        angles = util.checkHyperbolaAngles(angles);
         // make three ortho vectors
         const a: number = x_vec.length; // Length 1
         const b: number = vec.length; // Length 2
+        angles = util.checkHyperbolaAngles(angles,x_vec.length,vec.length);
         let axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
         let axesV3: [three.Vector3,three.Vector3,three.Vector3]
          = [new three.Vector3(axes[0][0],axes[0][1],axes[0][2]),

@@ -63,15 +63,15 @@ function checkParabolaAngles(angles) {
     if (angles === undefined || angles === null) {
         return undefined;
     }
-    let angle0 = ((angles[0] % 360) + 360) % 360;
-    const angle1 = ((angles[1] % 360) + 360) % 360;
-    if (angle0 > angle1) {
-        angle0 = angle0 - 360;
-    }
-    if (angle0 < -90) {
+    const angle0 = ((angles[0] % 360) + 360) % 360;
+    if (angle0 === 270) {
         throw new Error("Revise first angle");
     }
-    if (angle1 > 270) {
+    let angle1 = ((angles[1] % 360) + 360) % 360;
+    if (angle0 > angle1) {
+        angle1 = angle1 + 360;
+    }
+    if (angle1 > 270 + 360) {
         throw new Error("Revise second angle");
     }
     return [angle0, angle1];
@@ -82,16 +82,23 @@ exports.checkParabolaAngles = checkParabolaAngles;
  * @param
  * @return
  */
-function checkHyperbolaAngles(angles) {
+function checkHyperbolaAngles(angles, x_vec_length, vec_length) {
     if (angles === undefined || angles === null) {
         return undefined;
     }
-    const angle_0 = ((angles[0] % 360) + 360) % 360;
-    const angle_1 = ((angles[1] % 360) + 360) % 360;
-    if (angle_0 > angle_1) {
-        throw new Error("Check Hyperbola angles, those should in increasing order");
+    const angle_max = Math.atan(x_vec_length / vec_length) * 360 / (2 * Math.PI);
+    const angle0 = ((angles[0] % 360) + 360) % 360;
+    if (angle0 >= 270 - angle_max && angle0 <= 270 + angle_max) {
+        throw new Error("Revise first angle");
     }
-    return [angle_0, angle_1];
+    let angle1 = ((angles[1] % 360) + 360) % 360;
+    if (angle0 > angle1) {
+        angle1 = angle1 + 360;
+    }
+    if (angle1 >= 270 - angle_max + 360) {
+        throw new Error("Revise second angle");
+    }
+    return [angle0, angle1];
 }
 exports.checkHyperbolaAngles = checkHyperbolaAngles;
 //# sourceMappingURL=_utils.js.map
