@@ -27,9 +27,13 @@ function hyperbola_polyline(hyperbola) {
     let theta = angle0 * (2 * Math.PI) / 360;
     let r;
     const N = 50;
-    const d_theta = (((((angle1 - angle0) % 360) + 360) % 360) / (N - 1)) * (2 * Math.PI) / 360;
+    const d_theta = (((((angle1 - angle0) % 360) + 360) % 360) / N * (2 * Math.PI) / 360);
     for (let k = 0; k < N; k++) {
         r = param / (1 + e * Math.cos(theta - (Math.PI / 2)));
+        const value = (1 + e * Math.cos(theta - (Math.PI / 2)));
+        // console.log(value);
+        const angle_value = (theta * 180 / Math.PI) % 360;
+        // console.log(angle_value);
         const point = new three.Vector3(center.x + r * Math.cos(theta) * U1.x + r * Math.sin(theta) * V1.x, center.y + r * Math.cos(theta) * U1.y + r * Math.sin(theta) * V1.y, center.z + r * Math.cos(theta) * U1.z + r * Math.sin(theta) * V1.z);
         points.push(geometry.addPoint([point.x, point.y, point.z]));
         theta = theta + d_theta;

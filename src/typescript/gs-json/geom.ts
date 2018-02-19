@@ -280,8 +280,8 @@ export class Geom implements IGeom {
         // make the angles correct
         angles = util.checkParabolaAngles(angles);
         // make three ortho vectors
-        const a: number = x_vec.length; // Radius 1
-        const b: number = vec.length; // Radius 2
+        const a: number = Math.sqrt(x_vec[0]*x_vec[0] + x_vec[1]*x_vec[1] + x_vec[2]*x_vec[2]); // Radius 1
+        const b: number = Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]); // Radius 2
         let axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
         let axesV3: [three.Vector3,three.Vector3,three.Vector3]
          = [new three.Vector3(axes[0][0],axes[0][1],axes[0][2]),
@@ -308,9 +308,9 @@ export class Geom implements IGeom {
     public addHyperbola(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles: [number, number]): IHyperbola {
         // make the angles correct
         // make three ortho vectors
-        const a: number = x_vec.length; // Length 1
-        const b: number = vec.length; // Length 2
-        angles = util.checkHyperbolaAngles(angles,x_vec.length,vec.length);
+        const a: number = Math.sqrt(x_vec[0]*x_vec[0] + x_vec[1]*x_vec[1] + x_vec[2]*x_vec[2]); // Radius 1
+        const b: number = Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]); // Radius 2
+        angles = util.checkHyperbolaAngles(angles,a,b);
         let axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
         let axesV3: [three.Vector3,three.Vector3,three.Vector3]
          = [new three.Vector3(axes[0][0],axes[0][1],axes[0][2]),

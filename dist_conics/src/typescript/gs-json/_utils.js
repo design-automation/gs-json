@@ -89,13 +89,25 @@ function checkHyperbolaAngles(angles, x_vec_length, vec_length) {
     const angle_max = Math.atan(x_vec_length / vec_length) * 360 / (2 * Math.PI);
     const angle0 = ((angles[0] % 360) + 360) % 360;
     if (angle0 >= 270 - angle_max && angle0 <= 270 + angle_max) {
+        console.log("angle0 " + angle0);
+        const c = 270 - angle_max;
+        const d = 270 + angle_max;
+        console.log("angle_max " + angle_max);
+        console.log(">= 270-angle_max " + c);
+        console.log("<= 270+angle_max " + d);
         throw new Error("Revise first angle");
     }
     let angle1 = ((angles[1] % 360) + 360) % 360;
     if (angle0 > angle1) {
         angle1 = angle1 + 360;
     }
-    if (angle1 >= 270 - angle_max + 360) {
+    if ((angle1 % 360) >= 270 - angle_max) {
+        console.log("angle1 " + angle1);
+        const c = 270 - angle_max;
+        const d = 270 + angle_max;
+        console.log("angle_max " + angle_max);
+        console.log(">= 270-angle_max " + c);
+        console.log("<= 270+angle_max " + d);
         throw new Error("Revise second angle");
     }
     return [angle0, angle1];

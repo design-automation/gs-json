@@ -1466,8 +1466,8 @@ function genModel_3DConic_Parabola() {
         g.delObj(parabola, false);
     }
     // const center: gs.IPoint = g.addPoint([0,8,0]);
-    // const angle0: number = 0;
-    // const angle1: number = 180;
+    // const angle0: number = 180;
+    // const angle1: number = 240;
     // const parabola: gs.IParabola = m.getGeom().addParabola(center, [4,0,0], [0,1000,0], [angle0, angle1]);
     // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
     // g.delObj(parabola,false);
@@ -1480,9 +1480,41 @@ exports.genModel_3DConic_Parabola = genModel_3DConic_Parabola;
 function genModel_3DConic_Hyperbola() {
     const m = new gs.Model();
     const g = m.getGeom();
-    const center = g.addPoint([0, 8, 0]);
-    const hyperbola = m.getGeom().addHyperbola(center, [4, 0, 0], [0, 4, 0], [315.00001, 224.999999999]);
-    const polyline = hyperbola_polyline.hyperbola_polyline(hyperbola);
+    for (let k = 0; k < 1000; k++) {
+        const center = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
+        const t_v1 = new three.Vector3(40 * Math.random(), 40 * Math.random(), 40 * Math.random());
+        const vec1 = [t_v1.x, t_v1.y, t_v1.z];
+        const a = t_v1.length();
+        const t_v2 = new three.Vector3(40 * Math.random(), 40 * Math.random(), 40 * Math.random());
+        const vec2 = [t_v2.x, t_v2.y, t_v2.z];
+        const b = t_v2.length();
+        const angle_max = Math.atan(a / b) * 360 / (2 * Math.PI);
+        const angle0 = (((270 + angle_max) % 360 + 360) % 360 + (360 - 2 * angle_max) * Math.random()) % 360;
+        const angle0_max = (270 + angle_max) % 360;
+        const angle1_max = (270 - angle_max) % 360;
+        const angle1 = angle1_max * Math.random();
+        // console.log("angle0 = " +angle0 );
+        // console.log("angle0_max = " +angle0_max );
+        // console.log("angle1 = " +angle1 );
+        // console.log("angle1_max = " +angle1_max +"\n");
+        const hyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0, angle1]);
+        // const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0_max, angle1_max]);
+        const polyline = hyperbola_polyline.hyperbola_polyline(hyperbola);
+        g.delObj(hyperbola, false);
+    }
+    // const center: gs.IPoint = g.addPoint([0,0,0]);
+    // const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(center, [ 13.336233217389308, 9.57049713177569, 36.847043034622295 ],
+    //                                                                   [ 22.092295304115144, 5.197813581508139, 16.21330482952696 ],
+    //                                                                   [325.33789726209466, 214.66210273790534]); // 214.66210273790534
+    // const polyline: gs.IPolyline = hyperbola_polyline.hyperbola_polyline(hyperbola);
+    // console.log(polyline.getPointsArr()[47].getPosition());
+    // console.log(polyline.getPointsArr()[48].getPosition());
+    // console.log(polyline.getPointsArr()[49].getPosition());
+    // let angle_max: number = Math.atan(hyperbola.getRadii()[0]/hyperbola.getRadii()[1])*180/Math.PI;
+    // angle_max = (angle_max%360 +360)%360;
+    // console.log(270 - angle_max);
+    // console.log(270 + angle_max);
+    // console.log(214.66210273790534 - 214.66210273790648);
     return m;
 }
 exports.genModel_3DConic_Hyperbola = genModel_3DConic_Hyperbola;
