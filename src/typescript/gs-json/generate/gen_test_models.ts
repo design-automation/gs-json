@@ -1476,22 +1476,24 @@ export function genModel_3DConic_Ellipse(): gs.IModel {
 export function genModel_3DConic_Parabola(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    for(let k: number = 0; k<10; k++) {
-    const center: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
-    const angle0: number = 270 + 90*Math.random();
-    const angle1: number = angle0 + (270 + 360 - angle0)*Math.random();
-    const parabola: gs.IParabola = m.getGeom().addParabola(center, [10*Math.random(),10*Math.random(),10*Math.random()],
-                                                                [10*Math.random(),10*Math.random(),10*Math.random()],
-                                                                [angle0, angle1]);
-    const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
-    g.delObj(parabola,false);
-    }
-    // const center: gs.IPoint = g.addPoint([0,8,0]);
-    // const angle0: number = 180;
-    // const angle1: number = 240;
-    // const parabola: gs.IParabola = m.getGeom().addParabola(center, [4,0,0], [0,1000,0], [angle0, angle1]);
+    // for(let k: number = 0; k<10; k++) {
+    // const center: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
+    // const angle0: number = 270 + 90*Math.random();
+    // const angle1: number = angle0 + (270 + 360 - angle0)*Math.random();
+    // const parabola: gs.IParabola = m.getGeom().addParabola(center, [10*Math.random(),10*Math.random(),10*Math.random()],
+    //                                                             [10*Math.random(),10*Math.random(),10*Math.random()],
+    //                                                             [angle0, angle1]);
     // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
     // g.delObj(parabola,false);
+    // }
+
+    const center: gs.IPoint = g.addPoint([0,0,0]);
+    const angle0: number = 340;
+    const angle1: number = 230;
+    const parabola: gs.IParabola = m.getGeom().addParabola(center, [10,0,0],[0,1,0],[angle0, angle1]);
+    // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
+    const polyline: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola);
+    g.delObj(parabola,false);
     return m;
 }
 /**

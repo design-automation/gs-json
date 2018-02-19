@@ -104,12 +104,12 @@ function checkHyperbolaAngles(angles, x_vec_length, vec_length) {
     const angle1 = ((angles[1] % 360) + 360) % 360;
     if (angle0 < angle1_max) {
         if (angle1 < angle0 || angle1 >= angle1_max) {
-            throw new Error("Revise second angle, l1");
+            throw new Error("Revise second angle");
         }
     }
     if (angle0 > angle0_max) {
         if (angle1 >= angle1_max && angle1 < angle0) {
-            throw new Error("Revise second angle, l2");
+            throw new Error("Revise second angle");
         }
     }
     return [angle0, angle1];
