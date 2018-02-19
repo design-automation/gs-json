@@ -39,9 +39,7 @@ export function hyperbola_polyline(hyperbola: IHyperbola): IPolyline {
     for(let k: number = 0;k<N;k++) {
         r = param / (1 + e*Math.cos(theta - (Math.PI/2)));
         const value: number = (1 + e*Math.cos(theta - (Math.PI/2)));
-        // console.log(value);
         const angle_value: number = (theta*180/Math.PI)%360;
-        // console.log(angle_value);
         const point: three.Vector3 = new three.Vector3(
             center.x + r*Math.cos(theta)*U1.x + r*Math.sin(theta)*V1.x,
             center.y + r*Math.cos(theta)*U1.y + r*Math.sin(theta)*V1.y,

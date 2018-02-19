@@ -1480,7 +1480,7 @@ exports.genModel_3DConic_Parabola = genModel_3DConic_Parabola;
 function genModel_3DConic_Hyperbola() {
     const m = new gs.Model();
     const g = m.getGeom();
-    for (let k = 0; k < 1000; k++) {
+    for (let k = 0; k < 40; k++) {
         const center = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
         const t_v1 = new three.Vector3(40 * Math.random(), 40 * Math.random(), 40 * Math.random());
         const vec1 = [t_v1.x, t_v1.y, t_v1.z];
@@ -1489,16 +1489,20 @@ function genModel_3DConic_Hyperbola() {
         const vec2 = [t_v2.x, t_v2.y, t_v2.z];
         const b = t_v2.length();
         const angle_max = Math.atan(a / b) * 360 / (2 * Math.PI);
-        const angle0 = (((270 + angle_max) % 360 + 360) % 360 + (360 - 2 * angle_max) * Math.random()) % 360;
+        const domain_angle0 = 360 - 2 * angle_max;
+        const angle0 = (270 + angle_max + domain_angle0 * Math.random()) % 360;
         const angle0_max = (270 + angle_max) % 360;
         const angle1_max = (270 - angle_max) % 360;
-        const angle1 = angle1_max * Math.random();
-        // console.log("angle0 = " +angle0 );
-        // console.log("angle0_max = " +angle0_max );
-        // console.log("angle1 = " +angle1 );
-        // console.log("angle1_max = " +angle1_max +"\n");
-        const hyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0, angle1]);
-        // const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0_max, angle1_max]);
+        let domain_angle1;
+        if (angle0 < angle1_max) {
+            domain_angle1 = angle1_max - angle0;
+        }
+        if (angle0 > angle0_max) {
+            domain_angle1 = 360 - (angle0 - angle1_max);
+        }
+        const angle1 = (angle0 + domain_angle1 * Math.random()) % 360;
+        // const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0, angle1]);
+        const hyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0_max + 0.0001, angle1_max - 0.0001]);
         const polyline = hyperbola_polyline.hyperbola_polyline(hyperbola);
         g.delObj(hyperbola, false);
     }

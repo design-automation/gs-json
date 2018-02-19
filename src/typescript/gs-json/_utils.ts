@@ -68,25 +68,24 @@ export function checkParabolaAngles(angles: [number, number]): [number, number] 
 export function checkHyperbolaAngles(angles: [number, number],
                                      x_vec_length: number, vec_length: number): [number, number] {
     if (angles === undefined || angles === null) {return undefined;}
-    const angle_max: number = Math.atan(x_vec_length / vec_length) * 360/(2*Math.PI);
+    const angle_max: number = Math.atan(x_vec_length/vec_length)*360/(2*Math.PI) %360;
+    const angle0_max: number = (270 + angle_max ) %360;
+    const angle1_max: number = (270 - angle_max ) %360;
+    const domain_angle0: number = 360 - 2*angle_max;
     const angle0: number = ((angles[0] %360) + 360) %360;
-    if (angle0 >= 270-angle_max && angle0 <= 270+angle_max) {
-        console.log("angle0 " +angle0);
-        const c: number = 270-angle_max;
-        const d: number = 270+angle_max;
-        console.log("angle_max " + angle_max);
-        console.log(">= 270-angle_max " + c);
-        console.log("<= 270+angle_max " + d);
+    if (angle0 <= 270+angle_max && angle0 >= 270-angle_max) {
         throw new Error ("Revise first angle");}
-    let angle1: number = ((angles[1] %360) + 360) %360;
-    if(angle0>angle1) {angle1 = angle1 + 360;}
-    if((angle1%360) >= 270-angle_max) {
-        console.log("angle1 " +angle1);
-        const c: number = 270-angle_max;
-        const d: number = 270+angle_max;
-        console.log("angle_max " + angle_max);
-        console.log(">= 270-angle_max " + c);
-        console.log("<= 270+angle_max " + d);
-        throw new Error ("Revise second angle");}
+    let domain_angle1: number;
+    if (angle0 < angle1_max) {domain_angle1 = angle1_max - angle0;}
+    if (angle0 > angle0_max) {domain_angle1 = 360 - (angle0 - angle0_max);}
+    const angle1: number = ((angles[1] %360) + 360) %360;
+    if (angle0 < angle1_max) {
+        if (angle1 < angle0 || angle1 >= angle1_max) {
+            throw new Error ("Revise second angle");}
+    }
+    if (angle0 > angle0_max) {
+        if(angle1 >= angle1_max && angle1 < angle0) {
+            throw new Error ("Revise second angle");}
+    }
     return [angle0,angle1];
 }

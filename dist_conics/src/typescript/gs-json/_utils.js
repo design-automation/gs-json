@@ -86,29 +86,31 @@ function checkHyperbolaAngles(angles, x_vec_length, vec_length) {
     if (angles === undefined || angles === null) {
         return undefined;
     }
-    const angle_max = Math.atan(x_vec_length / vec_length) * 360 / (2 * Math.PI);
+    const angle_max = Math.atan(x_vec_length / vec_length) * 360 / (2 * Math.PI) % 360;
+    const angle0_max = (270 + angle_max) % 360;
+    const angle1_max = (270 - angle_max) % 360;
+    const domain_angle0 = 360 - 2 * angle_max;
     const angle0 = ((angles[0] % 360) + 360) % 360;
-    if (angle0 >= 270 - angle_max && angle0 <= 270 + angle_max) {
-        console.log("angle0 " + angle0);
-        const c = 270 - angle_max;
-        const d = 270 + angle_max;
-        console.log("angle_max " + angle_max);
-        console.log(">= 270-angle_max " + c);
-        console.log("<= 270+angle_max " + d);
+    if (angle0 <= 270 + angle_max && angle0 >= 270 - angle_max) {
         throw new Error("Revise first angle");
     }
-    let angle1 = ((angles[1] % 360) + 360) % 360;
-    if (angle0 > angle1) {
-        angle1 = angle1 + 360;
+    let domain_angle1;
+    if (angle0 < angle1_max) {
+        domain_angle1 = angle1_max - angle0;
     }
-    if ((angle1 % 360) >= 270 - angle_max) {
-        console.log("angle1 " + angle1);
-        const c = 270 - angle_max;
-        const d = 270 + angle_max;
-        console.log("angle_max " + angle_max);
-        console.log(">= 270-angle_max " + c);
-        console.log("<= 270+angle_max " + d);
-        throw new Error("Revise second angle");
+    if (angle0 > angle0_max) {
+        domain_angle1 = 360 - (angle0 - angle0_max);
+    }
+    const angle1 = ((angles[1] % 360) + 360) % 360;
+    if (angle0 < angle1_max) {
+        if (angle1 < angle0 || angle1 >= angle1_max) {
+            throw new Error("Revise second angle, l1");
+        }
+    }
+    if (angle0 > angle0_max) {
+        if (angle1 >= angle1_max && angle1 < angle0) {
+            throw new Error("Revise second angle, l2");
+        }
     }
     return [angle0, angle1];
 }
