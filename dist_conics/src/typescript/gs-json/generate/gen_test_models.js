@@ -5,6 +5,7 @@ const gs = require("../_export");
 const ellipse_polyline = require("../conic_polyline/ellipse_polyline");
 const hyperbola_polyline = require("../conic_polyline/hyperbola_polyline");
 const parabola_polyline = require("../conic_polyline/parabola_polyline");
+const ellipse_1 = require("../conic_intersect/ellipse");
 /**
  * Generates an empty model with nothing in it.
  */
@@ -1442,12 +1443,23 @@ exports.genModelObjWithAttribs = genModelObjWithAttribs;
 function genModel_3DConic_Ellipse() {
     const m = new gs.Model();
     const g = m.getGeom();
-    for (let k = 0; k < 20; k++) {
+    for (let k = 0; k < 10; k++) {
         const center = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
         const ellipse = m.getGeom().addEllipse(center, [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [360 * Math.random(), 360 * Math.random()]);
-        const polyline = ellipse_polyline.ellipse_polyline(ellipse);
+        const polyline = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse);
         g.delObj(ellipse, false);
+        g.delPoint(center);
     }
+    // const center: gs.IPoint = g.addPoint([0,0,0]);
+    // const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [4,0,0], [0,20,0], [0, 360]);
+    // const polyline: gs.IPolyline = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse);
+    // const center2: gs.IPoint = g.addPoint([0,0,0.5]);
+    // const ellipse2: gs.IEllipse = m.getGeom().addEllipse(center2, [4,0,0], [0,20,0], [0, 360]);
+    // const polyline2: gs.IPolyline = ellipse_polyline.ellipse_polyline(ellipse2);
+    // g.delObj(ellipse,false);
+    // g.delObj(ellipse2,false);
+    // g.delPoint(center);
+    // g.delPoint(center2);
     return m;
 }
 exports.genModel_3DConic_Ellipse = genModel_3DConic_Ellipse;
@@ -1457,23 +1469,27 @@ exports.genModel_3DConic_Ellipse = genModel_3DConic_Ellipse;
 function genModel_3DConic_Parabola() {
     const m = new gs.Model();
     const g = m.getGeom();
-    // for(let k: number = 0; k<10; k++) {
-    // const center: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
-    // const angle0: number = 270 + 90*Math.random();
-    // const angle1: number = angle0 + (270 + 360 - angle0)*Math.random();
-    // const parabola: gs.IParabola = m.getGeom().addParabola(center, [10*Math.random(),10*Math.random(),10*Math.random()],
-    //                                                             [10*Math.random(),10*Math.random(),10*Math.random()],
-    //                                                             [angle0, angle1]);
-    // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
+    for (let k = 0; k < 10; k++) {
+        const center = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
+        const angle0 = 270 + 90 * Math.random();
+        const angle1 = angle0 + (270 + 360 - angle0) * Math.random();
+        const parabola = m.getGeom().addParabola(center, [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [angle0, angle1]);
+        const polyline = parabola_polyline.parabola_polyline(parabola);
+        g.delObj(parabola, false);
+    }
+    // const center: gs.IPoint = g.addPoint([0,0,0]);
+    // const angle0: number = 340;
+    // const angle1: number = 230;
+    // const parabola: gs.IParabola = m.getGeom().addParabola(center, [10,0,0],[0,1,0],[angle0, angle1]);
+    // // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
+    // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola);
     // g.delObj(parabola,false);
-    // }
-    const center = g.addPoint([0, 0, 0]);
-    const angle0 = 340;
-    const angle1 = 230;
-    const parabola = m.getGeom().addParabola(center, [10, 0, 0], [0, 1, 0], [angle0, angle1]);
-    // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
-    const polyline = parabola_polyline.parabola_polyline_renderXYZ(parabola);
-    g.delObj(parabola, false);
+    // const center2: gs.IPoint = g.addPoint([0,0,4]);
+    // const parabola2: gs.IParabola = m.getGeom().addParabola(center2, [10,0,0],[0,1,0],[angle0, angle1]);
+    // const polyline2: gs.IPolyline = parabola_polyline.parabola_polyline(parabola2);
+    // g.delObj(parabola2,false);
+    // g.delPoint(center);
+    // g.delPoint(center2);
     return m;
 }
 exports.genModel_3DConic_Parabola = genModel_3DConic_Parabola;
@@ -1483,8 +1499,9 @@ exports.genModel_3DConic_Parabola = genModel_3DConic_Parabola;
 function genModel_3DConic_Hyperbola() {
     const m = new gs.Model();
     const g = m.getGeom();
-    for (let k = 0; k < 40; k++) {
+    for (let k = 0; k < 10; k++) {
         const center = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
+        // const center2: gs.IPoint = g.addPoint([center.getPosition()[0]+0.5,center.getPosition()[1]+0.5,center.getPosition()[2]+0.5]);
         const t_v1 = new three.Vector3(40 * Math.random(), 40 * Math.random(), 40 * Math.random());
         const vec1 = [t_v1.x, t_v1.y, t_v1.z];
         const a = t_v1.length();
@@ -1504,10 +1521,16 @@ function genModel_3DConic_Hyperbola() {
             domain_angle1 = 360 - (angle0 - angle1_max);
         }
         const angle1 = (angle0 + domain_angle1 * Math.random()) % 360;
-        // const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0, angle1]);
-        const hyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0_max + 0.0001, angle1_max - 0.0001]);
+        // const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [0, 180]);
+        // const hyperbola2: gs.IHyperbola = m.getGeom().addHyperbola(center2, vec1, vec2, [0, 180]);
+        const hyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0, angle1]);
+        // const hyperbola2: gs.IHyperbola = m.getGeom().addHyperbola(center2, vec1, vec2, [angle0, angle1]);
+        // const hyperbola: gs.IHyperbola = m.getGeom().addHyperbola(center, vec1, vec2, [angle0_max + 0.0001, angle1_max - 0.0001]);
+        // const hyperbola2: gs.IHyperbola = m.getGeom().addHyperbola(center2, vec1, vec2, [angle0_max + 0.0001, angle1_max - 0.0001]);
         const polyline = hyperbola_polyline.hyperbola_polyline(hyperbola);
+        // const polyline2: gs.IPolyline = hyperbola_polyline.hyperbola_polyline_renderXYZ(hyperbola2);
         g.delObj(hyperbola, false);
+        // g.delObj(hyperbola2,false);
     }
     return m;
 }
@@ -1524,4 +1547,41 @@ function genModel_3DConic_RayTwo() {
     return m;
 }
 exports.genModel_3DConic_RayTwo = genModel_3DConic_RayTwo;
+function genModel_ellipse_ellipse() {
+    const m = new gs.Model();
+    const g = m.getGeom();
+    for (let k = 0; k < 1; k++) {
+        const center = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
+        // const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [3,0,0],
+        //                                                             [0,3,0],
+        //                                                             [0, 360]);
+        const ellipse = m.getGeom().addEllipse(center, [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [0, 360]);
+        // const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [10*Math.random(),10*Math.random(),10*Math.random()],
+        //                                                             [10*Math.random(),10*Math.random(),10*Math.random()],
+        //                                                             [360*Math.random(), 360*Math.random()]);
+        const polyline = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse);
+        const U1 = new three.Vector3(ellipse.getAxes()[0][0], ellipse.getAxes()[0][1], ellipse.getAxes()[0][2]).normalize();
+        const V1 = new three.Vector3(ellipse.getAxes()[1][0], ellipse.getAxes()[1][1], ellipse.getAxes()[1][2]).normalize();
+        const origin = new three.Vector3(ellipse.getOrigin().getPosition()[0], ellipse.getOrigin().getPosition()[1], ellipse.getOrigin().getPosition()[2]);
+        const a = U1.length();
+        const b = V1.length();
+        const center2 = g.addPoint([
+            center.getPosition()[0] + (0.5 * a) * V1.x + (0.5 * b) * U1.x,
+            center.getPosition()[1] + (0.5 * a) * V1.y + (0.5 * b) * U1.y,
+            center.getPosition()[2] + (0.5 * a) * V1.z + (0.5 * b) * U1.z
+        ]);
+        const ellipse2 = m.getGeom().addEllipse(center2, ellipse.getAxes()[0], ellipse.getAxes()[1], ellipse.getAngles());
+        const polyline2 = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse2);
+        const points = ellipse_1.ellipse_ellipse(ellipse, ellipse2);
+        for (const point of points) {
+            g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
+        }
+        g.delObj(ellipse, false);
+        g.delPoint(center);
+        g.delObj(ellipse2, false);
+        g.delPoint(center2);
+    }
+    return m;
+}
+exports.genModel_ellipse_ellipse = genModel_ellipse_ellipse;
 //# sourceMappingURL=gen_test_models.js.map

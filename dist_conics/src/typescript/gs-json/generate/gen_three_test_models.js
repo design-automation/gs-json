@@ -48,5 +48,6 @@ if (require.main === module) {
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Parabola()), path + "model_genModel_3DConic_Parabola.json");
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Hyperbola()), path + "model_genModel_3DConic_Hyperbola.json");
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_RayTwo()), path + "model_genModel_3DConic_RayTwo.json");
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_ellipse_ellipse()), path + "model_genModel_ellipse_ellipse.json");
 }
 //# sourceMappingURL=gen_three_test_models.js.map

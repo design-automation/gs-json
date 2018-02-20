@@ -124,3 +124,4 @@ export declare function genModel_3DConic_Hyperbola(): gs.IModel;
  * Generates model with a 3D Polylined RayTwo.
  */
 export declare function genModel_3DConic_RayTwo(): gs.IModel;
+export declare function genModel_ellipse_ellipse(): gs.IModel;
