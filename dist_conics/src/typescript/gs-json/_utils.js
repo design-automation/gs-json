@@ -33,6 +33,7 @@ exports.checkCircleAngles = checkCircleAngles;
  * @return
  */
 function checkEllipseAngles(angles) {
+    const _original_angles = angles;
     if (angles === undefined || angles === null) {
         return undefined;
     }

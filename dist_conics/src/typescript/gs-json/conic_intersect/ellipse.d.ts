@@ -1,10 +1,10 @@
 import { IEllipse, IPoint, XYZ } from "../ifaces_gs";
 import * as three from "three";
 export declare function ellipse_ellipse(ellipse1: IEllipse, ellipse2: IEllipse): IPoint[];
+export declare function planesAreCoplanar(origin1: IPoint, normal1: XYZ, origin2: IPoint, normal2: XYZ): boolean;
 export declare function subVectors(v1: three.Vector3, v2: three.Vector3, norm?: boolean): three.Vector3;
 export declare function crossVectors(v1: three.Vector3, v2: three.Vector3, norm?: boolean): three.Vector3;
 export declare function dotVectors(v1: three.Vector3, v2: three.Vector3): number;
 export declare function vectorFromPointsAtoB(a: IPoint, b: IPoint, norm?: boolean): three.Vector3;
 export declare function multVectorMatrix(v: three.Vector3, m: three.Matrix4): three.Vector3;
 export declare function xformMatrix(o: three.Vector3, x: three.Vector3, y: three.Vector3): three.Matrix4;
-export declare function planesAreCoplanar(origin1: IPoint, normal1: XYZ, origin2: IPoint, normal2: XYZ): boolean;

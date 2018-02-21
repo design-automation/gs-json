@@ -1569,48 +1569,38 @@ export function genModel_3DConic_RayTwo(): gs.IModel {
 export function genModel_ellipse_ellipse(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    for(let k: number = 0; k<1; k++) {
-    const center: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
-    // const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [3,0,0],
-    //                                                             [0,3,0],
-    //                                                             [0, 360]);
-    const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [10*Math.random(),10*Math.random(),10*Math.random()],
-                                                                [10*Math.random(),10*Math.random(),10*Math.random()],
-                                                                [0, 360]);
-    // const ellipse: gs.IEllipse = m.getGeom().addEllipse(center, [10*Math.random(),10*Math.random(),10*Math.random()],
-    //                                                             [10*Math.random(),10*Math.random(),10*Math.random()],
-    //                                                             [360*Math.random(), 360*Math.random()]);
-    const polyline: gs.IPolyline = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse);
+    for(let k: number = 0; k<10; k++) {
+    const center1: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
+    const ellipse1: gs.IEllipse = m.getGeom().addEllipse(center1, [5*Math.random(),5*Math.random(),5*Math.random()],
+                                                                [15*Math.random(),15*Math.random(),15*Math.random()],
+                                                                [360*Math.random(), 360*Math.random()]);
 
-    const U1: three.Vector3 = new three.Vector3(ellipse.getAxes()[0][0],
-                                                ellipse.getAxes()[0][1],
-                                                ellipse.getAxes()[0][2]).normalize();
-    const V1: three.Vector3 = new three.Vector3(ellipse.getAxes()[1][0],
-                                                ellipse.getAxes()[1][1],
-                                                ellipse.getAxes()[1][2]).normalize();
-    const origin: three.Vector3 = new three.Vector3(ellipse.getOrigin().getPosition()[0],
-                                                   ellipse.getOrigin().getPosition()[1],
-                                                   ellipse.getOrigin().getPosition()[2]);
-    const a: number = U1.length();
-    const b: number = V1.length();
+    const U1: three.Vector3 = new three.Vector3(ellipse1.getAxes()[0][0],
+                                                ellipse1.getAxes()[0][1],
+                                                ellipse1.getAxes()[0][2]).normalize();
+    const V1: three.Vector3 = new three.Vector3(ellipse1.getAxes()[1][0],
+                                                ellipse1.getAxes()[1][1],
+                                                ellipse1.getAxes()[1][2]).normalize();
+    const a: number = ellipse1.getRadii()[0];
+    const b: number = ellipse1.getRadii()[1];
     const center2: gs.IPoint = g.addPoint([
-                        center.getPosition()[0] + (0.5*a)*V1.x + (0.5*b)*U1.x,
-                        center.getPosition()[1] + (0.5*a)*V1.y + (0.5*b)*U1.y,
-                        center.getPosition()[2] + (0.5*a)*V1.z + (0.5*b)*U1.z]);
-
+                        center1.getPosition()[0] + (0.5*a)*V1.x + (0.5*b)*U1.x,
+                        center1.getPosition()[1] + (0.5*a)*V1.y + (0.5*b)*U1.y,
+                        center1.getPosition()[2] + (0.5*a)*V1.z + (0.5*b)*U1.z]);
     const ellipse2: gs.IEllipse = m.getGeom().addEllipse(center2,
-                                                        ellipse.getAxes()[0],
-                                                        ellipse.getAxes()[1],
-                                                        ellipse.getAngles());
-    const polyline2: gs.IPolyline = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse2);
+                                                        [b*U1.x,b*U1.y,b*U1.z],
+                                                        [a*V1.x,a*V1.y,a*V1.z],
+                                                        ellipse1.getAngles());
 
-    const points: gs.IPoint[] = ellipse_ellipse(ellipse,ellipse2);
+    const polyline1: gs.IPolyline = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse1);
+    const polyline2: gs.IPolyline = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse2);
+    const points: gs.IPoint[] = ellipse_ellipse(ellipse1,ellipse2);
 
     for(const point of points) {
         g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
     }
-    g.delObj(ellipse,false);
-    g.delPoint(center);
+    g.delObj(ellipse1,false);
+    g.delPoint(center1);
     g.delObj(ellipse2,false);
     g.delPoint(center2);
     }

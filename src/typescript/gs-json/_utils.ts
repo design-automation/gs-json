@@ -28,6 +28,8 @@ export function checkCircleAngles(angles: [number, number]): [number, number] {
  * @return
  */
 export function checkEllipseAngles(angles: [number, number]): [number, number] {
+
+    const _original_angles: [number, number] = angles;
     if (angles === undefined || angles === null) {return undefined;}
     // fix angle 0
     if (Math.abs(angles[0]) > 360) {

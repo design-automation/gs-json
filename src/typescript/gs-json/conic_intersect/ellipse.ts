@@ -2,6 +2,7 @@ import {IEllipse, IPolyline, IGeom, IPoint, IModel, XYZ} from "../ifaces_gs";
 import * as three from "three";
 import * as util from "../_utils";
 import * as kld from "kld-intersections";
+import * as arr from "../libs/arr/arr";
 
 export function ellipse_ellipse(ellipse1: IEllipse, ellipse2: IEllipse): IPoint[] {
     const m: IModel = ellipse1.getModel();
@@ -10,14 +11,11 @@ export function ellipse_ellipse(ellipse1: IEllipse, ellipse2: IEllipse): IPoint[
     if(!planesAreCoplanar(ellipse1.getOrigin(), v1[2], ellipse2.getOrigin(), v2[2])) {
         throw new Error("Entities must be coplanar.");}
     const g: IGeom = m.getGeom();
-
     const rx1: three.Vector3 = new three.Vector3(v1[0][0],v1[0][1],v1[0][2]);
     const ry1: three.Vector3 = new three.Vector3(v1[1][0],v1[1][1],v1[1][2]);
     const rx2: three.Vector3 = new three.Vector3(v2[0][0],v2[0][1],v2[0][2]);
     const ry2: three.Vector3 = new three.Vector3(v2[1][0],v2[1][1],v2[1][2]);
-
     const r: number = Math.max(rx1.length(), ry1.length()) + Math.max(rx2.length(), ry2.length());
-    // const r: number = Math.max(v1[0].length, v1[1].length) + Math.max(v2[0].length, v2[1].length);
     const O1O2: three.Vector3 = vectorFromPointsAtoB(ellipse1.getOrigin(),ellipse2.getOrigin(),false);
     if (O1O2.length() > r ) {return null;}
     const O1: three.Vector3 = new three.Vector3(0,0,0);
@@ -93,20 +91,59 @@ export function ellipse_ellipse(ellipse1: IEllipse, ellipse2: IEllipse): IPoint[
     const results_c1: three.Vector3[] = [];
     for (const point of results) {
         results_c1.push(multVectorMatrix(point,rotation1));
-    }
+    }    
     const points: IPoint[] = [];
+    const original_angles_1: number[] = arr.Arr.deepCopy(ellipse1.getAngles());
+    const original_angles_2: number[] = arr.Arr.deepCopy(ellipse2.getAngles());
     for(const point of results_c1) {
         const c1_to_point: three.Vector3 = new three.Vector3(point.x - C1.x,point.y - C1.y,point.z - C1.z);
         const c2_to_point: three.Vector3 = new three.Vector3(point.x - C2.x,point.y - C2.y,point.z - C2.z);
         let angle_1: number = U1.angleTo(c1_to_point) * 180/Math.PI;
-        if( crossVectors(U1, c1_to_point).dot(crossVectors(U1,V1)) < 0 ) {angle_1 = 360 -angle_1;}
+        if( crossVectors(U1, c1_to_point).dot(crossVectors(U1,V1)) < 0 ) {angle_1 = 360 - angle_1;}
+        angle_1 =  ((angle_1 %360) + 360) %360;
         let angle_2: number = U2.angleTo(c2_to_point) * 180/Math.PI;
-        if( crossVectors(U2, c2_to_point).dot(crossVectors(U2,V2)) < 0 ) {angle_2 = 360 -angle_2;}
-        if(angles_circle_1 - angle_1 >= 0 && angles_circle_2 - angle_2 >= 0) {
-            points.push(g.addPoint([point.x,point.y,point.z]));
+        if( crossVectors(U2, c2_to_point).dot(crossVectors(U2,V2)) < 0 ) {angle_2 = 360 - angle_2;}
+        angle_2 =  ((angle_2 %360) + 360) %360;
+        angles1[0] =  ((angles1[0] %360) + 360) %360;
+        angles1[1] =  ((angles1[1] %360) + 360) %360;
+        if(original_angles_1[0] !== original_angles_1[1] && angles1[1] === angles1[0]) {
+        angles1[1] = angles1[1] + 360;}
+        angles2[0] =  ((angles2[0] %360) + 360) %360;
+        angles2[1] =  ((angles2[1] %360) + 360) %360;
+        if( original_angles_2[0] !== original_angles_2[1] && angles2[1] === angles2[0]) {
+        angles2[1] = angles2[1] + 360;}
+        let ok: boolean = true;
+        if(angles1[1] > angles1[0]) {
+            if( (angle_1 < angles1[0] && angle_1 >= 0 ) || (angle_1 > angles1[1] && angle_1 <= 360)) {
+                ok = false;
+            }
         }
-    }
+        if(angles1[0] > angles1[1]) {
+            if( angle_1 > angles1[1] && angle_1 < angles1[0] ) {ok = false;
+            }
+        }
+        if(angles2[1] > angles2[0]) {
+            if( (angle_2 < angles2[0] && angle_2 >= 0)|| (angle_2 > angles2[1] && angle_2 <= 360)) {ok = false;
+            }
+        }
+        if(angles2[0] > angles2[1]) {
+            if( angle_2 > angles2[1] && angle_2 < angles2[0] ) {ok = false;
+            }
+        }
+        if(ok) {points.push(g.addPoint([point.x,point.y,point.z]));}
+        }
     return points;
+        }
+const EPS: number = 1e-9;
+export function planesAreCoplanar(origin1: IPoint, normal1: XYZ,
+                                  origin2: IPoint, normal2: XYZ): boolean {
+    const origin1_v  = new three.Vector3(...origin1.getPosition());
+    const normal1_v  = new three.Vector3(...normal1).normalize();
+    const origin2_v  = new three.Vector3(...origin2.getPosition());
+    const normal2_v  = new three.Vector3(...normal2).normalize();
+    if (Math.abs(dotVectors(subVectors(origin1_v, origin2_v), normal2_v)) > EPS) {return false;}
+    if (Math.abs(1- Math.abs(normal1_v.dot(normal2_v))) > EPS) {return false; } //fixed bug
+    return true;
 }
 export function subVectors(v1: three.Vector3, v2: three.Vector3, norm: boolean = false): three.Vector3 {
     const v3: three.Vector3 = new three.Vector3();
@@ -144,15 +181,4 @@ export function xformMatrix(o: three.Vector3, x: three.Vector3, y: three.Vector3
     const m3: three.Matrix4 = new three.Matrix4();
     m3.multiplyMatrices(m2, m1);
     return m3;
-}
-const EPS: number = 1e-6;
-export function planesAreCoplanar(origin1: IPoint, normal1: XYZ,
-                                  origin2: IPoint, normal2: XYZ): boolean {
-    const origin1_v  = new three.Vector3(...origin1.getPosition());
-    const normal1_v  = new three.Vector3(...normal1).normalize();
-    const origin2_v  = new three.Vector3(...origin2.getPosition());
-    const normal2_v  = new three.Vector3(...normal2).normalize();
-    if (Math.abs(dotVectors(subVectors(origin1_v, origin2_v), normal2_v)) > EPS) {return false;}
-    if (Math.abs(1- normal1_v.dot(normal2_v)) > EPS) {return false; }
-    return true;
 }
