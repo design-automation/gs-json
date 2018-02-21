@@ -9,3 +9,5 @@ export function rayTwo_ellipse(): IPoint[] { throw new Error("Method not impleme
 export function rayTwo_parabola(): IPoint[] { throw new Error("Method not implemented");}
 
 export function rayTwo_hyperbola(): IPoint[] { throw new Error("Method not implemented");}
+
+

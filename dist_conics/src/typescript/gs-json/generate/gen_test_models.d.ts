@@ -125,3 +125,6 @@ export declare function genModel_3DConic_Hyperbola(): gs.IModel;
  */
 export declare function genModel_3DConic_RayTwo(): gs.IModel;
 export declare function genModel_ellipse_ellipse(): gs.IModel;
+export declare function genModel_plane3D_ellipse(): gs.IModel;
+export declare function genModel_plane3D_hyperbola(): gs.IModel;
+export declare function genModel_plane3D_parabola(): gs.IModel;

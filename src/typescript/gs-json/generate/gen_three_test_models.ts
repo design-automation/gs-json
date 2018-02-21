@@ -52,4 +52,10 @@ if(require.main === module)  {
                                                      path + "model_genModel_3DConic_RayTwo.json");
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_ellipse_ellipse()),
                                                      path + "model_genModel_ellipse_ellipse.json");
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_ellipse()),
+    //                                                  path + "model_genModel_ellipse_plane3D.json");
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_hyperbola()),
+    //                                                  path + "model_genModel_hyperbola_plane3D.json");
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_parabola()),
+                                                 path + "model_genModel_parabola_plane3D.json");
 }
