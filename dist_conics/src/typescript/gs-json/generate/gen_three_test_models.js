@@ -48,11 +48,13 @@ if (require.main === module) {
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Parabola()), path + "model_genModel_3DConic_Parabola.json");
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Hyperbola()), path + "model_genModel_3DConic_Hyperbola.json");
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_RayTwo()), path + "model_genModel_3DConic_RayTwo.json");
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_ellipse_ellipse()), path + "model_genModel_ellipse_ellipse.json");
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_ellipse_ellipse()),
+    //                                                  path + "model_genModel_ellipse_ellipse.json");
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_ellipse()),
     //                                                  path + "model_genModel_ellipse_plane3D.json");
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_hyperbola()),
     //                                                  path + "model_genModel_hyperbola_plane3D.json");
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_parabola()), path + "model_genModel_parabola_plane3D.json");
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_parabola()),
+    //                                              path + "model_genModel_parabola_plane3D.json");
 }
 //# sourceMappingURL=gen_three_test_models.js.map
