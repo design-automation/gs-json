@@ -4,7 +4,7 @@ import * as ellipse_polyline from "../conic_polyline/ellipse_polyline";
 import * as hyperbola_polyline from "../conic_polyline/hyperbola_polyline";
 import * as parabola_polyline from "../conic_polyline/parabola_polyline";
 import {ellipse_ellipse} from "../conic_intersect/ellipse";
-import {plane3D_ellipse, plane3D_hyperbola, plane3D_parabola} from "../conic_intersect/plane3D";
+import {plane3D_ellipse2D, plane3D_circle2D, plane3D_hyperbola, plane3D_parabola} from "../conic_intersect/plane3D";
 
 /**
  * Generates an empty model with nothing in it.
@@ -1608,7 +1608,7 @@ export function genModel_ellipse_ellipse(): gs.IModel {
     return m;
 }
 
-export function genModel_plane3D_ellipse(): gs.IModel {
+export function genModel_plane3D_ellipse2D(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     for(let k: number = 0; k<10; k++) {
@@ -1633,12 +1633,59 @@ export function genModel_plane3D_ellipse(): gs.IModel {
                         center1.getPosition()[2] + (0.5*a)*V1.z + (0.5*b)*U1.z]);
     const plane1: gs.IPlane = g.addPlane(center2,[U1.x,U1.y,U1.z],[W1.x,W1.y,W1.z]);
     const polyline1: gs.IPolyline = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse1);
-    const points: gs.IPoint[] = plane3D_ellipse(ellipse1,plane1);
+    const points: gs.IPoint[] = plane3D_ellipse2D(ellipse1,plane1);
     for(const point of points) {
         g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
     }
     g.delObj(ellipse1,false);
     g.delPoint(center1);
+    }
+    return m;
+}
+
+export function genModel_plane3D_circle2D(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    for(let k: number = 0; k<1; k++) {
+    // const center1: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
+    // const circle1: gs.ICircle = m.getGeom().addCircle(center1, [5*Math.random(),5*Math.random(),5*Math.random()],
+    //                                                             [15*Math.random(),15*Math.random(),15*Math.random()],
+    //                                                             [360*Math.random(), 360*Math.random()]);
+    const center1: gs.IPoint = g.addPoint([1,1,4]);
+    const circle1: gs.ICircle = m.getGeom().addCircle(center1, [14,0,0],
+                                                                [0,14,0],
+                                                                [110, 60]); // (display) //
+
+    const U1: three.Vector3 = new three.Vector3(circle1.getAxes()[0][0],
+                                                circle1.getAxes()[0][1],
+                                                circle1.getAxes()[0][2]).normalize();
+    const V1: three.Vector3 = new three.Vector3(circle1.getAxes()[1][0],
+                                                circle1.getAxes()[1][1],
+                                                circle1.getAxes()[1][2]).normalize();
+    const W1: three.Vector3 = new three.Vector3(circle1.getAxes()[2][0],
+                                                circle1.getAxes()[2][1],
+                                                circle1.getAxes()[2][2]).normalize();
+    const a: number = circle1.getRadius();
+    const b: number = circle1.getRadius();
+    const center2: gs.IPoint = g.addPoint([
+                        center1.getPosition()[0] + (0.5*a)*V1.x + (0.5*b)*U1.x,
+                        center1.getPosition()[1] + (0.5*a)*V1.y + (0.5*b)*U1.y,
+                        center1.getPosition()[2] + (0.5*a)*V1.z + (0.5*b)*U1.z]);
+    const plane1: gs.IPlane = g.addPlane(center2,[U1.x,U1.y,U1.z],[W1.x,W1.y,W1.z]);
+    const pointx: gs.IPoint = g.addPoint([
+                        center1.getPosition()[0] +  (b)*U1.x,
+                        center1.getPosition()[1] +  (b)*U1.y,
+                        center1.getPosition()[2] +  (b)*U1.z]);
+    const pointy: gs.IPoint = g.addPoint([
+                        center1.getPosition()[0] + (a)*V1.x ,
+                        center1.getPosition()[1] + (a)*V1.y ,
+                        center1.getPosition()[2] + (a)*V1.z ]);
+
+    const polyline1: gs.IPolyline = g.addPolyline([pointx, center1, pointy], false);
+    const points: gs.IPoint[] = plane3D_circle2D(circle1,plane1);
+    for(const point of points) {
+        g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+    }
     }
     return m;
 }

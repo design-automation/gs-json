@@ -1578,7 +1578,7 @@ function genModel_ellipse_ellipse() {
     return m;
 }
 exports.genModel_ellipse_ellipse = genModel_ellipse_ellipse;
-function genModel_plane3D_ellipse() {
+function genModel_plane3D_ellipse2D() {
     const m = new gs.Model();
     const g = m.getGeom();
     for (let k = 0; k < 10; k++) {
@@ -1596,7 +1596,7 @@ function genModel_plane3D_ellipse() {
         ]);
         const plane1 = g.addPlane(center2, [U1.x, U1.y, U1.z], [W1.x, W1.y, W1.z]);
         const polyline1 = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse1);
-        const points = plane3D_1.plane3D_ellipse(ellipse1, plane1);
+        const points = plane3D_1.plane3D_ellipse2D(ellipse1, plane1);
         for (const point of points) {
             g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
         }
@@ -1605,7 +1605,47 @@ function genModel_plane3D_ellipse() {
     }
     return m;
 }
-exports.genModel_plane3D_ellipse = genModel_plane3D_ellipse;
+exports.genModel_plane3D_ellipse2D = genModel_plane3D_ellipse2D;
+function genModel_plane3D_circle2D() {
+    const m = new gs.Model();
+    const g = m.getGeom();
+    for (let k = 0; k < 1; k++) {
+        // const center1: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
+        // const circle1: gs.ICircle = m.getGeom().addCircle(center1, [5*Math.random(),5*Math.random(),5*Math.random()],
+        //                                                             [15*Math.random(),15*Math.random(),15*Math.random()],
+        //                                                             [360*Math.random(), 360*Math.random()]);
+        const center1 = g.addPoint([1, 1, 4]);
+        const circle1 = m.getGeom().addCircle(center1, [14, 0, 0], [0, 14, 0], [110, 60]); // (display) //
+        const U1 = new three.Vector3(circle1.getAxes()[0][0], circle1.getAxes()[0][1], circle1.getAxes()[0][2]).normalize();
+        const V1 = new three.Vector3(circle1.getAxes()[1][0], circle1.getAxes()[1][1], circle1.getAxes()[1][2]).normalize();
+        const W1 = new three.Vector3(circle1.getAxes()[2][0], circle1.getAxes()[2][1], circle1.getAxes()[2][2]).normalize();
+        const a = circle1.getRadius();
+        const b = circle1.getRadius();
+        const center2 = g.addPoint([
+            center1.getPosition()[0] + (0.5 * a) * V1.x + (0.5 * b) * U1.x,
+            center1.getPosition()[1] + (0.5 * a) * V1.y + (0.5 * b) * U1.y,
+            center1.getPosition()[2] + (0.5 * a) * V1.z + (0.5 * b) * U1.z
+        ]);
+        const plane1 = g.addPlane(center2, [U1.x, U1.y, U1.z], [W1.x, W1.y, W1.z]);
+        const pointx = g.addPoint([
+            center1.getPosition()[0] + (b) * U1.x,
+            center1.getPosition()[1] + (b) * U1.y,
+            center1.getPosition()[2] + (b) * U1.z
+        ]);
+        const pointy = g.addPoint([
+            center1.getPosition()[0] + (a) * V1.x,
+            center1.getPosition()[1] + (a) * V1.y,
+            center1.getPosition()[2] + (a) * V1.z
+        ]);
+        const polyline1 = g.addPolyline([pointx, center1, pointy], false);
+        const points = plane3D_1.plane3D_circle2D(circle1, plane1);
+        for (const point of points) {
+            g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
+        }
+    }
+    return m;
+}
+exports.genModel_plane3D_circle2D = genModel_plane3D_circle2D;
 function genModel_plane3D_hyperbola() {
     const m = new gs.Model();
     const g = m.getGeom();

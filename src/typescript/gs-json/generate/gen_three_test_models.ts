@@ -58,9 +58,12 @@ if(require.main === module)  {
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_ellipse_ellipse()),
     //                                                  path + "model_genModel_ellipse_ellipse.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_ellipse2D()),
+    //                                                  path + "model_genModel_ellipse_plane3D.json");
     console.log("test " + k); k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_ellipse()),
-                                                     path + "model_genModel_ellipse_plane3D.json");
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_circle2D()),
+                                                     path + "model_genModel_circle_plane3D.json");
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_hyperbola()),
     //                                                  path + "model_genModel_hyperbola_plane3D.json");

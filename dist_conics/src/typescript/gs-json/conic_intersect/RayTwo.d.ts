@@ -1,5 +1,11 @@
-import { IPoint } from "../ifaces_gs";
-export declare function rayTwo_circle(): IPoint[];
-export declare function rayTwo_ellipse(): IPoint[];
-export declare function rayTwo_parabola(): IPoint[];
-export declare function rayTwo_hyperbola(): IPoint[];
+import { IEllipse, ICircle, IParabola, IHyperbola, IPoint, XYZ, IRayTwo } from "../ifaces_gs";
+import * as three from "three";
+export declare function rayTwo_circle(rayTwo: IRayTwo, circle: ICircle): IPoint[];
+export declare function rayTwo_ellipse(rayTwo: IRayTwo, ellipse: IEllipse): IPoint[];
+export declare function rayTwo_parabola(rayTwo: IRayTwo, parabola: IParabola): IPoint[];
+export declare function rayTwo_hyperbola(rayTwo: IRayTwo, hyperbola: IHyperbola): IPoint[];
+export declare function planesAreCoplanar(origin1: IPoint, normal1: XYZ, origin2: IPoint, normal2: XYZ): boolean;
+export declare function dotVectors(v1: three.Vector3, v2: three.Vector3): number;
+export declare function subVectors(v1: three.Vector3, v2: three.Vector3, norm?: boolean): three.Vector3;
+export declare function orthoVectors(vector1: three.Vector3, vector2: three.Vector3): three.Vector3;
+export declare function crossVectors(v1: three.Vector3, v2: three.Vector3, norm?: boolean): three.Vector3;
