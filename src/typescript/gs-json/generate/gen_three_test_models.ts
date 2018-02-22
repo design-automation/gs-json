@@ -42,20 +42,29 @@ export function debug(): void {
  * Just type "npm run build_models" in the shell.
  */
 if(require.main === module)  {
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Ellipse()),
-                                                     path + "model_genModel_3DConic_Ellipse.json");
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Parabola()),
-                                                     path + "model_genModel_3DConic_Parabola.json");
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Hyperbola()),
-                                                     path + "model_genModel_3DConic_Hyperbola.json");
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_RayTwo()),
-                                                     path + "model_genModel_3DConic_RayTwo.json");
+    let k = 1;
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Ellipse()),
+    //                                                  path + "model_genModel_3DConic_Ellipse.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Parabola()),
+    //                                                  path + "model_genModel_3DConic_Parabola.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Hyperbola()),
+    //                                                  path + "model_genModel_3DConic_Hyperbola.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_RayTwo()),
+    //                                                  path + "model_genModel_3DConic_RayTwo.json");
+    // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_ellipse_ellipse()),
     //                                                  path + "model_genModel_ellipse_ellipse.json");
-    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_ellipse()),
-    //                                                  path + "model_genModel_ellipse_plane3D.json");
+    console.log("test " + k); k++;
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_ellipse()),
+                                                     path + "model_genModel_ellipse_plane3D.json");
+    // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_hyperbola()),
     //                                                  path + "model_genModel_hyperbola_plane3D.json");
+    // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_parabola()),
     //                                              path + "model_genModel_parabola_plane3D.json");
 }

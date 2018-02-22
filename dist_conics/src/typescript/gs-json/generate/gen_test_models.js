@@ -1583,7 +1583,7 @@ function genModel_plane3D_ellipse() {
     const g = m.getGeom();
     for (let k = 0; k < 10; k++) {
         const center1 = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
-        const ellipse1 = m.getGeom().addEllipse(center1, [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], [0, 360]);
+        const ellipse1 = m.getGeom().addEllipse(center1, [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], [360 * Math.random(), 360 * Math.random()]);
         const U1 = new three.Vector3(ellipse1.getAxes()[0][0], ellipse1.getAxes()[0][1], ellipse1.getAxes()[0][2]).normalize();
         const V1 = new three.Vector3(ellipse1.getAxes()[1][0], ellipse1.getAxes()[1][1], ellipse1.getAxes()[1][2]).normalize();
         const W1 = new three.Vector3(ellipse1.getAxes()[2][0], ellipse1.getAxes()[2][1], ellipse1.getAxes()[2][2]).normalize();

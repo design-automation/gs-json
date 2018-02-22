@@ -91,7 +91,7 @@ export function ellipse_ellipse(ellipse1: IEllipse, ellipse2: IEllipse): IPoint[
     const results_c1: three.Vector3[] = [];
     for (const point of results) {
         results_c1.push(multVectorMatrix(point,rotation1));
-    }    
+    }
     const points: IPoint[] = [];
     const original_angles_1: number[] = arr.Arr.deepCopy(ellipse1.getAngles());
     const original_angles_2: number[] = arr.Arr.deepCopy(ellipse2.getAngles());

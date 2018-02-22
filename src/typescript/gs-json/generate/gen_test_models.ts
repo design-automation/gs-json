@@ -1615,7 +1615,7 @@ export function genModel_plane3D_ellipse(): gs.IModel {
     const center1: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
     const ellipse1: gs.IEllipse = m.getGeom().addEllipse(center1, [5*Math.random(),5*Math.random(),5*Math.random()],
                                                                 [15*Math.random(),15*Math.random(),15*Math.random()],
-                                                                [0, 360]);
+                                                                [360*Math.random(), 360*Math.random()]);
     const U1: three.Vector3 = new three.Vector3(ellipse1.getAxes()[0][0],
                                                 ellipse1.getAxes()[0][1],
                                                 ellipse1.getAxes()[0][2]).normalize();
