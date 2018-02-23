@@ -1,3 +1,4 @@
+import * as three from "three";
 import * as gs from "../_export";
 /**
  * Generates an empty model with nothing in it.
@@ -130,3 +131,10 @@ export declare function genModel_plane3D_circle2D(): gs.IModel;
 export declare function genModel_plane3D_hyperbola(): gs.IModel;
 export declare function genModel_plane3D_parabola(): gs.IModel;
 export declare function genModel_3D_Ray2_ellipse_2D(): gs.IModel;
+export declare function genModel_3D_Ray2_circle_2D(): gs.IModel;
+export declare function genModel_3D_Ray2_parabola_2D(): gs.IModel;
+export declare function orthoVectors(vector1: three.Vector3, vector2: three.Vector3): three.Vector3;
+export declare function crossVectors(v1: three.Vector3, v2: three.Vector3, norm?: boolean): three.Vector3;
+export declare function planesAreCoplanar(origin1: gs.IPoint, normal1: gs.XYZ, origin2: gs.IPoint, normal2: gs.XYZ): boolean;
+export declare function dotVectors(v1: three.Vector3, v2: three.Vector3): number;
+export declare function subVectors(v1: three.Vector3, v2: three.Vector3, norm?: boolean): three.Vector3;

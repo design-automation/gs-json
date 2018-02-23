@@ -3,24 +3,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const three = require("three");
 const plane3D = require("./plane3D");
 function rayTwo_circle(rayTwo, circle) {
-    const v1 = new three.Vector3(rayTwo.getVector()[0], rayTwo.getVector()[1], rayTwo.getVector()[2]);
-    const v2 = new three.Vector3(circle.getAxes()[0][0], circle.getAxes()[0][1], circle.getAxes()[0][2]);
-    const v3 = new three.Vector3(circle.getAxes()[1][0], circle.getAxes()[1][1], circle.getAxes()[1][2]);
-    let ortho_rC = new three.Vector3();
-    if (orthoVectors(v1, v2).length() !== 0) {
-        ortho_rC = orthoVectors(v1, v2);
-    }
-    if (orthoVectors(v1, v3).length() !== 0) {
-        ortho_rC = orthoVectors(v1, v3);
-    }
-    if (!planesAreCoplanar(circle.getOrigin(), circle.getAxes()[2], rayTwo.getOrigin(), [ortho_rC.x, ortho_rC.y, ortho_rC.z])) {
-        throw new Error("Entities must be coplanar.");
-    }
-    const plane = circle.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(), circle.getAxes()[2]);
-    const points = plane3D.plane3D_circle2D(circle, plane);
-    circle.getGeom().delObj(plane, false);
-    circle.getGeom().delObj(circle, false);
+    const v1 = new three.Vector3(circle.getAxes()[0][0], circle.getAxes()[0][1], circle.getAxes()[0][2]);
+    const v2 = new three.Vector3(circle.getAxes()[1][0], circle.getAxes()[1][1], circle.getAxes()[1][2]);
+    // const r: number = circle.getRadius();
+    const r = 1;
+    const ellipse = rayTwo.getGeom().addEllipse(circle.getOrigin(), [r * v1.x, r * v1.y, r * v1.z], [r * v2.x, r * v2.y, r * v2.z]);
+    const points = rayTwo_ellipse(rayTwo, ellipse);
+    rayTwo.getGeom().delObj(ellipse, false);
     return points;
+    // const v1: three.Vector3 = new three.Vector3(rayTwo.getVector()[0],
+    //                                             rayTwo.getVector()[1],
+    //                                             rayTwo.getVector()[2]);
+    // const v2: three.Vector3 = new three.Vector3(circle.getAxes()[0][0],
+    //                                             circle.getAxes()[0][1],
+    //                                             circle.getAxes()[0][2]);
+    // const v3: three.Vector3 = new three.Vector3(circle.getAxes()[1][0],
+    //                                             circle.getAxes()[1][1],
+    //                                             circle.getAxes()[1][2]);
+    // let ortho_rC: three.Vector3 = new three.Vector3();
+    // const EPS: number = 1e-4;
+    // if(orthoVectors(v1,v2).length() > EPS) {ortho_rC = orthoVectors(v1,v2);}
+    // if(orthoVectors(v1,v3).length() > EPS) {ortho_rC = orthoVectors(v1,v3);}
+    // if(!planesAreCoplanar(circle.getOrigin(), circle.getAxes()[2], rayTwo.getOrigin(),
+    //     [ortho_rC.x,ortho_rC.y,ortho_rC.z])) { throw new Error("Entities must be coplanar.");}
+    // const plane: IPlane = circle.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(), circle.getAxes()[2]);
+    // const points = plane3D.plane3D_circle2D(circle,plane);
+    // circle.getGeom().delObj(plane, false);
+    // circle.getGeom().delObj(circle, false);
+    // return points;
 }
 exports.rayTwo_circle = rayTwo_circle;
 function rayTwo_ellipse(rayTwo, ellipse) {
@@ -28,15 +38,17 @@ function rayTwo_ellipse(rayTwo, ellipse) {
     const v2 = new three.Vector3(ellipse.getAxes()[0][0], ellipse.getAxes()[0][1], ellipse.getAxes()[0][2]);
     const v3 = new three.Vector3(ellipse.getAxes()[1][0], ellipse.getAxes()[1][1], ellipse.getAxes()[1][2]);
     let ortho_rC = new three.Vector3();
-    if (orthoVectors(v1, v2).length() !== 0) {
+    const EPS = 1e-4;
+    if (orthoVectors(v1, v2).length() > EPS) {
         ortho_rC = orthoVectors(v1, v2);
     }
-    if (orthoVectors(v1, v3).length() !== 0) {
+    if (orthoVectors(v1, v3).length() > EPS) {
         ortho_rC = orthoVectors(v1, v3);
     }
-    if (!planesAreCoplanar(ellipse.getOrigin(), ellipse.getAxes()[2], rayTwo.getOrigin(), [ortho_rC.x, ortho_rC.y, ortho_rC.z])) {
-        throw new Error("Entities must be coplanar.");
-    }
+    // console.log();
+    // if(!planesAreCoplanar(ellipse.getOrigin(), ellipse.getAxes()[2], rayTwo.getOrigin(),
+    //     [ortho_rC.x,ortho_rC.y,ortho_rC.z])) {
+    //     throw new Error("Entities must be coplanar.");}
     const plane = ellipse.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(), ellipse.getAxes()[2]);
     const points = plane3D.plane3D_ellipse2D(ellipse, plane);
     ellipse.getGeom().delObj(plane, false);
@@ -44,14 +56,16 @@ function rayTwo_ellipse(rayTwo, ellipse) {
 }
 exports.rayTwo_ellipse = rayTwo_ellipse;
 function rayTwo_parabola(rayTwo, parabola) {
+    // Being developed;
     const v1 = new three.Vector3(rayTwo.getVector()[0], rayTwo.getVector()[1], rayTwo.getVector()[2]);
     const v2 = new three.Vector3(parabola.getAxes()[0][0], parabola.getAxes()[0][1], parabola.getAxes()[0][2]);
     const v3 = new three.Vector3(parabola.getAxes()[1][0], parabola.getAxes()[1][1], parabola.getAxes()[1][2]);
     let ortho_rC = new three.Vector3();
-    if (orthoVectors(v1, v2).length() !== 0) {
+    const EPS = 1e-4;
+    if (orthoVectors(v1, v2).length() > EPS) {
         ortho_rC = orthoVectors(v1, v2);
     }
-    if (orthoVectors(v1, v3).length() !== 0) {
+    if (orthoVectors(v1, v3).length() > EPS) {
         ortho_rC = orthoVectors(v1, v3);
     }
     if (!planesAreCoplanar(parabola.getOrigin(), parabola.getAxes()[2], rayTwo.getOrigin(), [ortho_rC.x, ortho_rC.y, ortho_rC.z])) {
@@ -64,14 +78,16 @@ function rayTwo_parabola(rayTwo, parabola) {
 }
 exports.rayTwo_parabola = rayTwo_parabola;
 function rayTwo_hyperbola(rayTwo, hyperbola) {
+    // Being developed;
     const v1 = new three.Vector3(rayTwo.getVector()[0], rayTwo.getVector()[1], rayTwo.getVector()[2]);
     const v2 = new three.Vector3(hyperbola.getAxes()[0][0], hyperbola.getAxes()[0][1], hyperbola.getAxes()[0][2]);
     const v3 = new three.Vector3(hyperbola.getAxes()[1][0], hyperbola.getAxes()[1][1], hyperbola.getAxes()[1][2]);
     let ortho_rC = new three.Vector3();
-    if (orthoVectors(v1, v2).length() !== 0) {
+    const EPS = 1e-4;
+    if (orthoVectors(v1, v2).length() > EPS) {
         ortho_rC = orthoVectors(v1, v2);
     }
-    if (orthoVectors(v1, v3).length() !== 0) {
+    if (orthoVectors(v1, v3).length() > EPS) {
         ortho_rC = orthoVectors(v1, v3);
     }
     if (!planesAreCoplanar(hyperbola.getOrigin(), hyperbola.getAxes()[2], rayTwo.getOrigin(), [ortho_rC.x, ortho_rC.y, ortho_rC.z])) {

@@ -6,6 +6,8 @@ import * as parabola_polyline from "../conic_polyline/parabola_polyline";
 import {rayTwo_polyline} from "../conic_polyline/rayTwo_polyline";
 import {ellipse_ellipse} from "../conic_intersect/ellipse";
 import {rayTwo_ellipse} from "../conic_intersect/rayTwo";
+import {rayTwo_circle} from "../conic_intersect/rayTwo";
+import {rayTwo_parabola} from "../conic_intersect/rayTwo";
 import {plane3D_ellipse2D, plane3D_circle2D, plane3D_hyperbola, plane3D_parabola} from "../conic_intersect/plane3D";
 
 /**
@@ -1765,12 +1767,13 @@ export function genModel_plane3D_parabola(): gs.IModel {
 export function genModel_3D_Ray2_ellipse_2D(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    for(let k: number = 0; k<1; k++) {
+    for(let k: number = 0; k<4; k++) {
     const ellipse: gs.IEllipse = g.addEllipse(
         g.addPoint([4*Math.random(),4*Math.random(),4*Math.random()]),
         [5*Math.random(),5*Math.random(),5*Math.random()],
         [15*Math.random(),15*Math.random(),15*Math.random()],
-        [360*Math.random(), 360*Math.random()]);
+        [0, 360]);
+        // [360*Math.random(), 360*Math.random()]);
     const U1: three.Vector3 = new three.Vector3(ellipse.getAxes()[0][0],
                                                 ellipse.getAxes()[0][1],
                                                 ellipse.getAxes()[0][2]).normalize();
@@ -1779,13 +1782,9 @@ export function genModel_3D_Ray2_ellipse_2D(): gs.IModel {
                                                 ellipse.getAxes()[1][2]).normalize();
     const a: number = ellipse.getRadii()[0];
     const b: number = ellipse.getRadii()[1];
-    // const center_ray2: gs.IPoint = g.addPoint([
-    //                     ellipse.getOrigin().getPosition()[0] + (0.5*a)*V1.x + (0.5*b)*U1.x,
-    //                     ellipse.getOrigin().getPosition()[1] + (0.5*a)*V1.y + (0.5*b)*U1.y,
-    //                     ellipse.getOrigin().getPosition()[2] + (0.5*a)*V1.z + (0.5*b)*U1.z]);
-
+    const r1:number = 0.5* Math.min(a,b);
     const center_ray2: gs.IPoint = ellipse.getOrigin();
-    const t: number = 0;
+    const t: number = Math.random();
     const ray2_direction: gs.XYZ = [ t*U1.x + (1-t)*V1.x,
                                      t*U1.y + (1-t)*V1.y,
                                      t*U1.z + (1-t)*V1.z];
@@ -1796,8 +1795,105 @@ export function genModel_3D_Ray2_ellipse_2D(): gs.IModel {
     for(const point of points) {
         g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
     }
-    g.delObj(ellipse,false);
-    g.delPoint(center_ray2);
     }
     return m;
+}
+export function genModel_3D_Ray2_circle_2D(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    for(let k: number = 0; k<4; k++) {
+    const circle: gs.ICircle = g.addCircle(
+        g.addPoint([4*Math.random(),4*Math.random(),4*Math.random()]),
+        [5*Math.random(),5*Math.random(),5*Math.random()],
+        [15*Math.random(),15*Math.random(),15*Math.random()],
+        [0, 360]);
+        // [360*Math.random(), 360*Math.random()]);
+    const U1: three.Vector3 = new three.Vector3(circle.getAxes()[0][0],
+                                                circle.getAxes()[0][1],
+                                                circle.getAxes()[0][2]).normalize();
+    const V1: three.Vector3 = new three.Vector3(circle.getAxes()[1][0],
+                                                circle.getAxes()[1][1],
+                                                circle.getAxes()[1][2]).normalize();
+    const r1:number = 0.5* circle.getRadius();
+    const center_ray2: gs.IPoint = circle.getOrigin();
+    const t: number = Math.random();
+    const ray2_direction: gs.XYZ = [ t*U1.x + (1-t)*V1.x,
+                                     t*U1.y + (1-t)*V1.y,
+                                     t*U1.z + (1-t)*V1.z];
+    const ray2: gs.IRayTwo = g.addRayTwo(center_ray2, ray2_direction);
+    // const polyline1: gs.IPolyline = circle_polyline.circle_polyline_renderXYZ(circle);
+    const polyline2: gs.IPolyline = rayTwo_polyline(ray2);
+    const points: gs.IPoint[] = rayTwo_circle(ray2, circle);
+    for(const point of points) {
+        g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+    }
+    }
+    return m;
+}
+
+
+export function genModel_3D_Ray2_parabola_2D(): gs.IModel {
+    const m: gs.IModel = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    for(let k: number = 0; k<4; k++) {
+    const parabola: gs.IParabola = g.addParabola(
+        g.addPoint([4*Math.random(),4*Math.random(),4*Math.random()]),
+        [5*Math.random(),5*Math.random(),5*Math.random()],
+        [15*Math.random(),15*Math.random(),15*Math.random()],
+        [340, 240]);
+        // [360*Math.random(), 360*Math.random()]);
+    const U1: three.Vector3 = new three.Vector3(parabola.getAxes()[0][0],
+                                                parabola.getAxes()[0][1],
+                                                parabola.getAxes()[0][2]).normalize();
+    const V1: three.Vector3 = new three.Vector3(parabola.getAxes()[1][0],
+                                                parabola.getAxes()[1][1],
+                                                parabola.getAxes()[1][2]).normalize();
+    const p: number = parabola.getRadii()[0];
+    const r1:number = 0.5* p;
+    const center_ray2: gs.IPoint = parabola.getOrigin();
+    const t: number = Math.random();
+    const ray2_direction: gs.XYZ = [ t*U1.x + (1-t)*V1.x,
+                                     t*U1.y + (1-t)*V1.y,
+                                     t*U1.z + (1-t)*V1.z];
+    const ray2: gs.IRayTwo = g.addRayTwo(center_ray2, ray2_direction);
+    const polyline1: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola);
+    const polyline2: gs.IPolyline = rayTwo_polyline(ray2);
+    const points: gs.IPoint[] = rayTwo_parabola(ray2, parabola);
+    for(const point of points) {
+        g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+    }
+    }
+    return m;
+}
+
+export function orthoVectors(vector1: three.Vector3, vector2: three.Vector3): three.Vector3 {
+    return crossVectors(vector1, vector2).cross(vector1);
+}
+
+export function crossVectors(v1: three.Vector3, v2: three.Vector3, norm: boolean = false): three.Vector3 {
+    const v3: three.Vector3 = new three.Vector3();
+    v3.crossVectors(v1, v2);
+    if (norm) {v3.normalize();}
+    return v3;
+}
+
+const EPS: number = 1e-9;
+export function planesAreCoplanar(origin1: gs.IPoint, normal1: gs.XYZ,
+                                  origin2: gs.IPoint, normal2: gs.XYZ): boolean {
+    const origin1_v  = new three.Vector3(...origin1.getPosition());
+    const normal1_v  = new three.Vector3(...normal1).normalize();
+    const origin2_v  = new three.Vector3(...origin2.getPosition());
+    const normal2_v  = new three.Vector3(...normal2).normalize();
+    if (Math.abs(dotVectors(subVectors(origin1_v, origin2_v), normal2_v)) > EPS) {return false;}
+    if (Math.abs(1- Math.abs(normal1_v.dot(normal2_v))) > EPS) {return false; } // fixed bug
+    return true;
+}
+export function dotVectors(v1: three.Vector3, v2: three.Vector3): number {
+    return v1.dot(v2);
+}
+export function subVectors(v1: three.Vector3, v2: three.Vector3, norm: boolean = false): three.Vector3 {
+    const v3: three.Vector3 = new three.Vector3();
+    v3.subVectors(v1, v2);
+    if (norm) {v3.normalize();}
+    return v3;
 }
