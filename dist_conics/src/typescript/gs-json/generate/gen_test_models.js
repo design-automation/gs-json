@@ -5,7 +5,9 @@ const gs = require("../_export");
 const ellipse_polyline = require("../conic_polyline/ellipse_polyline");
 const hyperbola_polyline = require("../conic_polyline/hyperbola_polyline");
 const parabola_polyline = require("../conic_polyline/parabola_polyline");
+const rayTwo_polyline_1 = require("../conic_polyline/rayTwo_polyline");
 const ellipse_1 = require("../conic_intersect/ellipse");
+const rayTwo_1 = require("../conic_intersect/rayTwo");
 const plane3D_1 = require("../conic_intersect/plane3D");
 /**
  * Generates an empty model with nothing in it.
@@ -1702,4 +1704,35 @@ function genModel_plane3D_parabola() {
     return m;
 }
 exports.genModel_plane3D_parabola = genModel_plane3D_parabola;
+function genModel_3D_Ray2_ellipse_2D() {
+    const m = new gs.Model();
+    const g = m.getGeom();
+    for (let k = 0; k < 1; k++) {
+        const ellipse = g.addEllipse(g.addPoint([4 * Math.random(), 4 * Math.random(), 4 * Math.random()]), [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], [360 * Math.random(), 360 * Math.random()]);
+        const U1 = new three.Vector3(ellipse.getAxes()[0][0], ellipse.getAxes()[0][1], ellipse.getAxes()[0][2]).normalize();
+        const V1 = new three.Vector3(ellipse.getAxes()[1][0], ellipse.getAxes()[1][1], ellipse.getAxes()[1][2]).normalize();
+        const a = ellipse.getRadii()[0];
+        const b = ellipse.getRadii()[1];
+        // const center_ray2: gs.IPoint = g.addPoint([
+        //                     ellipse.getOrigin().getPosition()[0] + (0.5*a)*V1.x + (0.5*b)*U1.x,
+        //                     ellipse.getOrigin().getPosition()[1] + (0.5*a)*V1.y + (0.5*b)*U1.y,
+        //                     ellipse.getOrigin().getPosition()[2] + (0.5*a)*V1.z + (0.5*b)*U1.z]);
+        const center_ray2 = ellipse.getOrigin();
+        const t = 0;
+        const ray2_direction = [t * U1.x + (1 - t) * V1.x,
+            t * U1.y + (1 - t) * V1.y,
+            t * U1.z + (1 - t) * V1.z];
+        const ray2 = g.addRayTwo(center_ray2, ray2_direction);
+        const polyline1 = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse);
+        const polyline2 = rayTwo_polyline_1.rayTwo_polyline(ray2);
+        const points = rayTwo_1.rayTwo_ellipse(ray2, ellipse);
+        for (const point of points) {
+            g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
+        }
+        g.delObj(ellipse, false);
+        g.delPoint(center_ray2);
+    }
+    return m;
+}
+exports.genModel_3D_Ray2_ellipse_2D = genModel_3D_Ray2_ellipse_2D;
 //# sourceMappingURL=gen_test_models.js.map

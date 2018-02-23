@@ -129,3 +129,4 @@ export declare function genModel_plane3D_ellipse2D(): gs.IModel;
 export declare function genModel_plane3D_circle2D(): gs.IModel;
 export declare function genModel_plane3D_hyperbola(): gs.IModel;
 export declare function genModel_plane3D_parabola(): gs.IModel;
+export declare function genModel_3D_Ray2_ellipse_2D(): gs.IModel;
