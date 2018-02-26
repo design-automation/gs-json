@@ -1746,18 +1746,29 @@ export function genModel_plane3D_parabola(): gs.IModel {
     const W1: three.Vector3 = new three.Vector3(parabola1.getAxes()[2][0],
                                                 parabola1.getAxes()[2][1],
                                                 parabola1.getAxes()[2][2]).normalize();
-    const a: number = parabola1.getRadii()[0];
-    const b: number = parabola1.getRadii()[1];
+    const p: number = parabola1.getRadii()[0];
+    const a1: number = 0.4*p*Math.random();
+    const a2: number = 0.6*p*Math.random();
     const center2: gs.IPoint = g.addPoint([
-                        center1.getPosition()[0] + (0.5*a)*V1.x + (0.5*b)*U1.x,
-                        center1.getPosition()[1] + (0.5*a)*V1.y + (0.5*b)*U1.y,
-                        center1.getPosition()[2] + (0.5*a)*V1.z + (0.5*b)*U1.z]);
-    const plane1: gs.IPlane = g.addPlane(center2,[U1.x,U1.y,U1.z],[W1.x,W1.y,W1.z]);
-    const polyline1: gs.IPolyline = hyperbola_polyline.hyperbola_polyline_renderXYZ(parabola1);
-    const points: gs.IPoint[] = plane3D_hyperbola(parabola1,plane1);
+                        center1.getPosition()[0] + (a1)*U1.x + (a2)*V1.x,
+                        center1.getPosition()[1] + (a1)*U1.y + (a2)*V1.y,
+                        center1.getPosition()[2] + (a1)*U1.z + (a2)*V1.z]);
+    const plane1: gs.IPlane = g.addPlane(center2,[
+        (a1)*U1.x + (a2)*V1.x,
+        (a1)*U1.y + (a2)*V1.y,
+        (a1)*U1.z + (a2)*V1.z],[
+        orthoVectors(new three.Vector3((a1)*U1.x + (a2)*V1.x,(a1)*U1.y + (a2)*V1.y,(a1)*U1.z + (a2)*V1.z), W1).x,
+        orthoVectors(new three.Vector3((a1)*U1.x + (a2)*V1.x,(a1)*U1.y + (a2)*V1.y,(a1)*U1.z + (a2)*V1.z), W1).y,
+        orthoVectors(new three.Vector3((a1)*U1.x + (a2)*V1.x,(a1)*U1.y + (a2)*V1.y,(a1)*U1.z + (a2)*V1.z), W1).z]);
+    const polyline1: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola1);
+    const points: gs.IPoint[] = plane3D_parabola(parabola1,plane1);
+    if( points !== undefined) {
     for(const point of points) {
         g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
     }
+    console.log("points" + "\n" + points.length);
+    }
+    console.log("Plane 3D, Parabola");
     g.delObj(parabola1,false);
     g.delPoint(center1);
     }
@@ -1769,11 +1780,11 @@ export function genModel_3D_Ray2_ellipse_2D(): gs.IModel {
     const g: gs.IGeom = m.getGeom();
     for(let k: number = 0; k<4; k++) {
     const ellipse: gs.IEllipse = g.addEllipse(
-        g.addPoint([4*Math.random(),4*Math.random(),4*Math.random()]),
+        g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]),
         [5*Math.random(),5*Math.random(),5*Math.random()],
         [15*Math.random(),15*Math.random(),15*Math.random()],
-        [0, 360]);
-        // [360*Math.random(), 360*Math.random()]);
+        // [0, 360]);
+        [360*Math.random(), 360*Math.random()]);
     const U1: three.Vector3 = new three.Vector3(ellipse.getAxes()[0][0],
                                                 ellipse.getAxes()[0][1],
                                                 ellipse.getAxes()[0][2]).normalize();
@@ -1830,7 +1841,6 @@ export function genModel_3D_Ray2_circle_2D(): gs.IModel {
     }
     return m;
 }
-
 
 export function genModel_3D_Ray2_parabola_2D(): gs.IModel {
     const m: gs.IModel = new gs.Model();

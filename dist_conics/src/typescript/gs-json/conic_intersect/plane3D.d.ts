@@ -6,3 +6,5 @@ export declare function plane3D_ellipse2D(ellipse: IEllipse, plane: IPlane): IPo
 export declare function plane3D_circle2D(circle: ICircle, plane: IPlane): IPoint[];
 export declare function crossVectors(v1: three.Vector3, v2: three.Vector3, norm?: boolean): three.Vector3;
 export declare function _solve_trigo(A: number, B: number, C: number): number[];
+export declare function vectorFromPointsAtoB(a: IPoint, b: IPoint, norm?: boolean): three.Vector3;
+export declare function subVectors(v1: three.Vector3, v2: three.Vector3, norm?: boolean): three.Vector3;

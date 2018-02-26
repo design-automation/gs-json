@@ -43,6 +43,9 @@ export function debug(): void {
  */
 if(require.main === module)  {
     let k = 1;
+
+    // Conics
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_Ellipse()),
     //                                                  path + "model_genModel_3DConic_Ellipse.json");
@@ -55,9 +58,17 @@ if(require.main === module)  {
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3DConic_RayTwo()),
     //                                                  path + "model_genModel_3DConic_RayTwo.json");
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Conics Conics
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_ellipse_ellipse()),
     //                                                  path + "model_genModel_ellipse_ellipse.json");
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Conics Plane 3D
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_ellipse2D()),
     //                                                  path + "model_genModel_ellipse_plane3D.json");
@@ -65,15 +76,21 @@ if(require.main === module)  {
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_circle2D()),
     //                                                  path + "model_genModel_circle_plane3D.json");
     // console.log("test " + k); k++;
-    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_ellipse_2D()),
-    //                                                  path + "genModel_3D_Ray2_ellipse_2D.json");
-    console.log("test " + k); k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_circle_2D()),
-                                                     path + "genModel_3D_Ray2_circle_2D.json");
-    // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_hyperbola()),
     //                                                  path + "model_genModel_hyperbola_plane3D.json");
+    console.log("test " + k); k++;
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_parabola()),
+                                                 path + "model_genModel_parabola_plane3D.json");
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Conics Ray 2D
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     // console.log("test " + k); k++;
-    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_parabola()),
-    //                                              path + "model_genModel_parabola_plane3D.json");
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_ellipse_2D()),
+    //                                                  path + "genModel_3D_Ray2_ellipse_2D.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_circle_2D()),
+    //                                                  path + "genModel_3D_Ray2_circle_2D.json");
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
