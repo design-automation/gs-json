@@ -89,9 +89,12 @@ if (require.main === module) {
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_circle_2D()),
     //                                                  path + "genModel_3D_Ray2_circle_2D.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_parabola_2D()),
+    //                                                  path + "genModel_3D_Ray2_parabola_2D.json");
     console.log("test " + k);
     k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_parabola_2D()), path + "genModel_3D_Ray2_parabola_2D.json");
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_hyperbola_2D()), path + "genModel_3D_Ray2_hyperbola_2D.json");
     //////////////////////////////////////////////////////////////////////////////////////////////////
 }
 //# sourceMappingURL=gen_three_test_models.js.map

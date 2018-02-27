@@ -77,25 +77,23 @@ export function rayTwo_parabola(rayTwo: IRayTwo, parabola: IParabola): IPoint[] 
                                                 parabola.getAxes()[1][1],
                                                 parabola.getAxes()[1][2]);
     let ortho_rC: three.Vector3 = new three.Vector3();
-    let check_coplanarity: three.Vector3 = new three.Vector3();
     const EPS: number = 1e-4;
     if(crossVectors(v1,v2).length() > EPS) {
-        check_coplanarity = v2;
         ortho_rC = crossVectors(v1,v2).normalize();}
     if(crossVectors(v1,v3).length() > EPS) {
-        check_coplanarity = v3;
         ortho_rC = crossVectors(v1,v3).normalize();}
     if(!planesAreCoplanar(parabola.getOrigin(), parabola.getAxes()[2],
     rayTwo.getOrigin(), [ortho_rC.x,ortho_rC.y,ortho_rC.z])) {
-        throw new Error("Entities must be coplanar.");}
-    const plane: IPlane = parabola.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(),[ortho_rC.x,ortho_rC.y,ortho_rC.z]);
+    throw new Error("Entities must be coplanar.");}
+    const plane: IPlane = parabola.getGeom().addPlane(rayTwo.getOrigin(),
+    rayTwo.getVector(),
+    [ortho_rC.x,ortho_rC.y,ortho_rC.z]);
     const points = plane3D.plane3D_parabola(parabola,plane);
     parabola.getGeom().delObj(plane, false);
     return points;
 }
 
 export function rayTwo_hyperbola(rayTwo: IRayTwo, hyperbola: IHyperbola): IPoint[] {
-    // Being developed;
     const v1: three.Vector3 = new three.Vector3(rayTwo.getVector()[0],
                                                 rayTwo.getVector()[1],
                                                 rayTwo.getVector()[2]);
@@ -107,13 +105,14 @@ export function rayTwo_hyperbola(rayTwo: IRayTwo, hyperbola: IHyperbola): IPoint
                                                 hyperbola.getAxes()[1][2]);
     let ortho_rC: three.Vector3 = new three.Vector3();
     const EPS: number = 1e-4;
-    if(orthoVectors(v1,v2).length() > EPS) {ortho_rC = orthoVectors(v1,v2);}
-    if(orthoVectors(v1,v3).length() > EPS) {ortho_rC = orthoVectors(v1,v3);}
-    if(!planesAreCoplanar(hyperbola.getOrigin(), hyperbola.getAxes()[2], rayTwo.getOrigin(),
-        [ortho_rC.x,ortho_rC.y,ortho_rC.z])) {
+    if(crossVectors(v1,v2).length() > EPS) {
+        ortho_rC = crossVectors(v1,v2).normalize();}
+    if(crossVectors(v1,v3).length() > EPS) {
+        ortho_rC = crossVectors(v1,v3).normalize();}
+    if(!planesAreCoplanar(hyperbola.getOrigin(), hyperbola.getAxes()[2],
+    rayTwo.getOrigin(), [ortho_rC.x,ortho_rC.y,ortho_rC.z])) {
         throw new Error("Entities must be coplanar.");}
-
-    const plane: IPlane = hyperbola.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(), hyperbola.getAxes()[2]);
+    const plane: IPlane = hyperbola.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(),[ortho_rC.x,ortho_rC.y,ortho_rC.z]);
     const points = plane3D.plane3D_hyperbola(hyperbola,plane);
     hyperbola.getGeom().delObj(plane, false);
     return points;

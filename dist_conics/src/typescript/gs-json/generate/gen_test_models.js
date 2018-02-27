@@ -1798,6 +1798,53 @@ function genModel_3D_Ray2_parabola_2D() {
     return m;
 }
 exports.genModel_3D_Ray2_parabola_2D = genModel_3D_Ray2_parabola_2D;
+function genModel_3D_Ray2_hyperbola_2D() {
+    const m = new gs.Model();
+    const g = m.getGeom();
+    let points = [];
+    while (points.length !== 2) {
+        // for(let k: number = 0; k<4; k++) {
+        const t_v1 = new three.Vector3(40 * Math.random(), 40 * Math.random(), 40 * Math.random());
+        const vec1 = [t_v1.x, t_v1.y, t_v1.z];
+        const a = t_v1.length();
+        const t_v2 = new three.Vector3(40 * Math.random(), 40 * Math.random(), 40 * Math.random());
+        const vec2 = [t_v2.x, t_v2.y, t_v2.z];
+        const b = t_v2.length();
+        const angle_max = Math.atan(a / b) * 360 / (2 * Math.PI);
+        const domain_angle0 = 360 - 2 * angle_max;
+        const angle0 = (270 + angle_max + domain_angle0 * Math.random()) % 360;
+        const angle0_max = (270 + angle_max) % 360;
+        const angle1_max = (270 - angle_max) % 360;
+        let domain_angle1;
+        if (angle0 < angle1_max) {
+            domain_angle1 = angle1_max - angle0;
+        }
+        if (angle0 > angle0_max) {
+            domain_angle1 = 360 - (angle0 - angle1_max);
+        }
+        const angle1 = (angle0 + domain_angle1 * Math.random()) % 360;
+        const hyperbola = m.getGeom().addHyperbola(g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]), vec1, vec2, [angle0, angle1]);
+        const U1 = new three.Vector3(hyperbola.getAxes()[0][0], hyperbola.getAxes()[0][1], hyperbola.getAxes()[0][2]).normalize();
+        const V1 = new three.Vector3(hyperbola.getAxes()[1][0], hyperbola.getAxes()[1][1], hyperbola.getAxes()[1][2]).normalize();
+        const r1 = 0.5 * (0.5 * a + 0.5 * b);
+        const center_ray2 = hyperbola.getOrigin();
+        const t = 1;
+        const ray2_direction = [t * U1.normalize().x + (1 - t) * V1.normalize().x,
+            t * U1.normalize().y + (1 - t) * V1.normalize().y,
+            t * U1.normalize().z + (1 - t) * V1.normalize().z];
+        const ray2 = g.addRayTwo(center_ray2, ray2_direction);
+        const polyline1 = parabola_polyline.parabola_polyline_renderXYZ(hyperbola);
+        const polyline2 = rayTwo_polyline_1.rayTwo_polyline(ray2);
+        // const points: gs.IPoint[] = rayTwo_parabola(ray2, hyperbola);
+        points = rayTwo_3.rayTwo_parabola(ray2, hyperbola);
+        for (const point of points) {
+            g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
+        }
+        console.log("points num = " + points.length);
+    }
+    return m;
+}
+exports.genModel_3D_Ray2_hyperbola_2D = genModel_3D_Ray2_hyperbola_2D;
 function orthoVectors(vector1, vector2) {
     return crossVectors(vector1, vector2).cross(vector1);
 }
