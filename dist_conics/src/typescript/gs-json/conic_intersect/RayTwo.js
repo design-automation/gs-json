@@ -45,10 +45,9 @@ function rayTwo_ellipse(rayTwo, ellipse) {
     if (orthoVectors(v1, v3).length() > EPS) {
         ortho_rC = orthoVectors(v1, v3);
     }
-    // console.log();
-    // if(!planesAreCoplanar(ellipse.getOrigin(), ellipse.getAxes()[2], rayTwo.getOrigin(),
-    //     [ortho_rC.x,ortho_rC.y,ortho_rC.z])) {
-    //     throw new Error("Entities must be coplanar.");}
+    if (!planesAreCoplanar(ellipse.getOrigin(), ellipse.getAxes()[2], rayTwo.getOrigin(), [ortho_rC.x, ortho_rC.y, ortho_rC.z])) {
+        throw new Error("Entities must be coplanar.");
+    }
     const plane = ellipse.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(), ellipse.getAxes()[2]);
     const points = plane3D.plane3D_ellipse2D(ellipse, plane);
     ellipse.getGeom().delObj(plane, false);
@@ -56,22 +55,24 @@ function rayTwo_ellipse(rayTwo, ellipse) {
 }
 exports.rayTwo_ellipse = rayTwo_ellipse;
 function rayTwo_parabola(rayTwo, parabola) {
-    // Being developed;
     const v1 = new three.Vector3(rayTwo.getVector()[0], rayTwo.getVector()[1], rayTwo.getVector()[2]);
     const v2 = new three.Vector3(parabola.getAxes()[0][0], parabola.getAxes()[0][1], parabola.getAxes()[0][2]);
     const v3 = new three.Vector3(parabola.getAxes()[1][0], parabola.getAxes()[1][1], parabola.getAxes()[1][2]);
     let ortho_rC = new three.Vector3();
+    let check_coplanarity = new three.Vector3();
     const EPS = 1e-4;
-    if (orthoVectors(v1, v2).length() > EPS) {
-        ortho_rC = orthoVectors(v1, v2);
+    if (crossVectors(v1, v2).length() > EPS) {
+        check_coplanarity = v2;
+        ortho_rC = crossVectors(v1, v2).normalize();
     }
-    if (orthoVectors(v1, v3).length() > EPS) {
-        ortho_rC = orthoVectors(v1, v3);
+    if (crossVectors(v1, v3).length() > EPS) {
+        check_coplanarity = v3;
+        ortho_rC = crossVectors(v1, v3).normalize();
     }
     if (!planesAreCoplanar(parabola.getOrigin(), parabola.getAxes()[2], rayTwo.getOrigin(), [ortho_rC.x, ortho_rC.y, ortho_rC.z])) {
         throw new Error("Entities must be coplanar.");
     }
-    const plane = parabola.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(), parabola.getAxes()[2]);
+    const plane = parabola.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(), [ortho_rC.x, ortho_rC.y, ortho_rC.z]);
     const points = plane3D.plane3D_parabola(parabola, plane);
     parabola.getGeom().delObj(plane, false);
     return points;

@@ -78,9 +78,9 @@ if(require.main === module)  {
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_hyperbola()),
     //                                                  path + "model_genModel_hyperbola_plane3D.json");
-    console.log("test " + k); k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_parabola()),
-                                                 path + "model_genModel_parabola_plane3D.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_plane3D_parabola()),
+    //                                              path + "model_genModel_parabola_plane3D.json");
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Conics Ray 2D
@@ -91,6 +91,10 @@ if(require.main === module)  {
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_circle_2D()),
     //                                                  path + "genModel_3D_Ray2_circle_2D.json");
+    console.log("test " + k); k++;
+    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_Ray2_parabola_2D()),
+                                                     path + "genModel_3D_Ray2_parabola_2D.json");
+
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
 }

@@ -1736,7 +1736,7 @@ export function genModel_plane3D_parabola(): gs.IModel {
     const center1: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
     const parabola1: gs.IParabola = m.getGeom().addParabola(center1, [5*Math.random(),5*Math.random(),5*Math.random()],
                                                                 [15*Math.random(),15*Math.random(),15*Math.random()],
-                                                                [300, 240]);
+                                                                [80, 110]);
     const U1: three.Vector3 = new three.Vector3(parabola1.getAxes()[0][0],
                                                 parabola1.getAxes()[0][1],
                                                 parabola1.getAxes()[0][2]).normalize();
@@ -1747,16 +1747,16 @@ export function genModel_plane3D_parabola(): gs.IModel {
                                                 parabola1.getAxes()[2][1],
                                                 parabola1.getAxes()[2][2]).normalize();
     const p: number = parabola1.getRadii()[0];
-    const a1: number = 0.4*p*Math.random();
-    const a2: number = 0.6*p*Math.random();
+    const a1: number = 4*p*Math.random();
+    const a2: number = 4*p*Math.random();
     const center2: gs.IPoint = g.addPoint([
-                        center1.getPosition()[0] + (a1)*U1.x + (a2)*V1.x,
-                        center1.getPosition()[1] + (a1)*U1.y + (a2)*V1.y,
-                        center1.getPosition()[2] + (a1)*U1.z + (a2)*V1.z]);
+                        center1.getPosition()[0] + (a1)*U1.normalize().x + (a2)*V1.normalize().x,
+                        center1.getPosition()[1] + (a1)*U1.normalize().y + (a2)*V1.normalize().y,
+                        center1.getPosition()[2] + (a1)*U1.normalize().z + (a2)*V1.normalize().z]);
     const plane1: gs.IPlane = g.addPlane(center2,[
-        (a1)*U1.x + (a2)*V1.x,
-        (a1)*U1.y + (a2)*V1.y,
-        (a1)*U1.z + (a2)*V1.z],[
+        (a1)*U1.normalize().x + (a2)*V1.normalize().x,
+        (a1)*U1.normalize().y + (a2)*V1.normalize().y,
+        (a1)*U1.normalize().z + (a2)*V1.normalize().z],[
         orthoVectors(new three.Vector3((a1)*U1.x + (a2)*V1.x,(a1)*U1.y + (a2)*V1.y,(a1)*U1.z + (a2)*V1.z), W1).x,
         orthoVectors(new three.Vector3((a1)*U1.x + (a2)*V1.x,(a1)*U1.y + (a2)*V1.y,(a1)*U1.z + (a2)*V1.z), W1).y,
         orthoVectors(new three.Vector3((a1)*U1.x + (a2)*V1.x,(a1)*U1.y + (a2)*V1.y,(a1)*U1.z + (a2)*V1.z), W1).z]);
@@ -1847,7 +1847,7 @@ export function genModel_3D_Ray2_parabola_2D(): gs.IModel {
     const g: gs.IGeom = m.getGeom();
     for(let k: number = 0; k<4; k++) {
     const parabola: gs.IParabola = g.addParabola(
-        g.addPoint([4*Math.random(),4*Math.random(),4*Math.random()]),
+        g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]),
         [5*Math.random(),5*Math.random(),5*Math.random()],
         [15*Math.random(),15*Math.random(),15*Math.random()],
         [340, 240]);
@@ -1859,7 +1859,7 @@ export function genModel_3D_Ray2_parabola_2D(): gs.IModel {
                                                 parabola.getAxes()[1][1],
                                                 parabola.getAxes()[1][2]).normalize();
     const p: number = parabola.getRadii()[0];
-    const r1:number = 0.5* p;
+    const r1: number = 0.5* p;
     const center_ray2: gs.IPoint = parabola.getOrigin();
     const t: number = Math.random();
     const ray2_direction: gs.XYZ = [ t*U1.x + (1-t)*V1.x,
@@ -1868,6 +1868,8 @@ export function genModel_3D_Ray2_parabola_2D(): gs.IModel {
     const ray2: gs.IRayTwo = g.addRayTwo(center_ray2, ray2_direction);
     const polyline1: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola);
     const polyline2: gs.IPolyline = rayTwo_polyline(ray2);
+
+
     const points: gs.IPoint[] = rayTwo_parabola(ray2, parabola);
     for(const point of points) {
         g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
@@ -1894,6 +1896,13 @@ export function planesAreCoplanar(origin1: gs.IPoint, normal1: gs.XYZ,
     const normal1_v  = new three.Vector3(...normal1).normalize();
     const origin2_v  = new three.Vector3(...origin2.getPosition());
     const normal2_v  = new three.Vector3(...normal2).normalize();
+
+    const cond1: boolean = (Math.abs(dotVectors(subVectors(origin1_v, origin2_v), normal2_v)) > EPS);
+    const cond2: boolean = (Math.abs(1- Math.abs(normal1_v.dot(normal2_v))) > EPS);
+    console.log("Math.abs(1- Math.abs(normal1_v.dot(normal2_v))) = " + Math.abs(1- Math.abs(normal1_v.dot(normal2_v))));
+    console.log("coplanar check 1 = " + cond1);
+    console.log("coplanar check 2 = " + cond2);
+
     if (Math.abs(dotVectors(subVectors(origin1_v, origin2_v), normal2_v)) > EPS) {return false;}
     if (Math.abs(1- Math.abs(normal1_v.dot(normal2_v))) > EPS) {return false; } // fixed bug
     return true;

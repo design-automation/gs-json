@@ -2,48 +2,43 @@ import {IEllipse, IParabola, IHyperbola, ICircle, IPolyline, IGeom, IPoint, IMod
 import * as arr from "../libs/arr/arr";
 import * as three from "three";
 
-// export function plane3D_ellipse(): IPoint[] { throw new Error("Method not implemented");}
-
 export function plane3D_parabola(parabola: IParabola, plane: IPlane): IPoint[] {
     const m: IModel = parabola.getModel();
     const eps: number = 1e-7;
     if(plane.getModel() !== m) {
         throw new Error("Identical models are required for the parabola and the plane");
     }
-    // get plane
     const PO: number[] = plane.getOrigin().getPosition();
     const n1: number[] = [plane.getCartesians()[0],plane.getCartesians()[1],plane.getCartesians()[2]];
-    // get parabola
     const C0: number[] = parabola.getOrigin().getPosition();
     const CA: [XYZ,XYZ,XYZ] = parabola.getAxes();
     const p: number = parabola.getRadii()[0];
     const U1: three.Vector3 = new three.Vector3(...CA[0]).setLength(p);
     const V1: three.Vector3 = new three.Vector3(...CA[1]).setLength(p/2);
     const _n1: three.Vector3 = new three.Vector3(n1[0],n1[1],n1[2]);
-    // calculate t
-
-//    throw new Error("not implemented") // modify parameters A,B,C
-
     const A: number = n1[0]*(C0[0] - PO[0]) + n1[1]*(C0[1] - PO[1]) + n1[2]*(C0[2] - PO[2]);
-    const B: number = n1[0]*U1.x + n1[1]*U1.y + n1[2]*U1.z;
-    const C: number = n1[0]*V1.x + n1[1]*V1.y + n1[2]*V1.z;
+    const B: number = n1[0]*p*U1.normalize().x
+                    + n1[1]*p*U1.normalize().y
+                    + n1[2]*p*U1.normalize().z;
+    const C: number = n1[0]*(C0[0] + p*V1.normalize().x - PO[0])
+                    + n1[1]*(C0[1] + p*V1.normalize().y - PO[1])
+                    + n1[2]*(C0[2] + p*V1.normalize().z - PO[2]);
     const _t: number[] = _solve_trigo(A,B,C);
     if (_t === null) {return [];}
     const result: IPoint[] = [];
-    console.log("_t = " + _t);
     for (const t of _t) {
                 let r: number = p / (1 + Math.cos(t - (Math.PI/2)));
                 const point1: three.Vector3 = new three.Vector3(
-                    C0[0] + r*Math.cos(t )*U1.normalize().x + r*Math.sin(t)*V1.normalize().x - PO[0],
-                    C0[1] + r*Math.cos(t )*U1.normalize().y + r*Math.sin(t)*V1.normalize().y - PO[1],
-                    C0[2] + r*Math.cos(t )*U1.normalize().z + r*Math.sin(t)*V1.normalize().z - PO[2],
+                    C0[0] + r*Math.cos(t)*U1.normalize().x + r*Math.sin(t)*V1.normalize().x - PO[0],
+                    C0[1] + r*Math.cos(t)*U1.normalize().y + r*Math.sin(t)*V1.normalize().y - PO[1],
+                    C0[2] + r*Math.cos(t)*U1.normalize().z + r*Math.sin(t)*V1.normalize().z - PO[2],
                     );
-                console.log("_n1.dot(point1) " + _n1.dot(point1))
                 if( Math.abs(_n1.dot(point1)) < eps ) {
                 const vec_point1: three.Vector3 = new three.Vector3(
-                    Math.cos(t)*U1.x + Math.sin(t)*V1.x,
-                    Math.cos(t)*U1.y + Math.sin(t)*V1.y,
-                    Math.cos(t)*U1.z + Math.sin(t)*V1.z);
+                    r*Math.cos(t)*U1.normalize().x + r*Math.sin(t)*V1.normalize().x,
+                    r*Math.cos(t)*U1.normalize().y + r*Math.sin(t)*V1.normalize().y,
+                    r*Math.cos(t)*U1.normalize().z + r*Math.sin(t)*V1.normalize().z,
+                    );
                 let angle_point1: number = Math.sign(
                 crossVectors(U1,V1).dot(
                 crossVectors(U1,vec_point1))) * vec_point1.angleTo(U1) * 180 / Math.PI;
@@ -73,46 +68,35 @@ export function plane3D_parabola(parabola: IParabola, plane: IPlane): IPoint[] {
                 (angle_point1 >= angle_0) &&
                 (angle_point1 <= angle_1);
 
-                console.log("cond1 = " + cond1);
-                console.log("cond2 = " + cond2);
-                console.log("cond3 = " + cond3);
-
                 if(cond1) {ok_angle_point1 = true;}
                 if(cond2) {ok_angle_point1 = true;}
                 if(cond3) {ok_angle_point1 = true;}
-                console.log("ok_angle_point1 = " + ok_angle_point1);
-                if (ok_angle_point1) {
-                r = p / (1 + Math.cos(angle_point1*(2*Math.PI)/360 - (Math.PI/2)));
-                result.push(m.getGeom().addPoint([
-                    C0[0] + r*Math.cos(angle_point1*(2*Math.PI)/360)*U1.normalize().x + r*Math.sin(angle_point1*(2*Math.PI)/360)*V1.normalize().x,
-                    C0[1] + r*Math.cos(angle_point1*(2*Math.PI)/360)*U1.normalize().y + r*Math.sin(angle_point1*(2*Math.PI)/360)*V1.normalize().y,
-                    C0[2] + r*Math.cos(angle_point1*(2*Math.PI)/360)*U1.normalize().z + r*Math.sin(angle_point1*(2*Math.PI)/360)*V1.normalize().z]));}
-                }
 
-                r = p / (1 + Math.cos(t + Math.PI - (Math.PI/2)));
+                if (ok_angle_point1) {
+                result.push(m.getGeom().addPoint([
+                    C0[0] + r*Math.cos(t)*U1.normalize().x + r*Math.sin(t)*V1.normalize().x,
+                    C0[1] + r*Math.cos(t)*U1.normalize().y + r*Math.sin(t)*V1.normalize().y,
+                    C0[2] + r*Math.cos(t)*U1.normalize().z + r*Math.sin(t)*V1.normalize().z,
+                ]));}
+                }
+                r = p / (1 + Math.cos( (t + Math.PI) - (Math.PI/2)));
                 const point2: three.Vector3 = new three.Vector3(
-                    C0[0] + r*Math.cos(t + Math.PI )*U1.normalize().x + r*Math.sin(t + Math.PI )*V1.normalize().x - PO[0],
-                    C0[1] + r*Math.cos(t + Math.PI )*U1.normalize().y + r*Math.sin(t + Math.PI )*V1.normalize().y - PO[1],
-                    C0[2] + r*Math.cos(t + Math.PI )*U1.normalize().z + r*Math.sin(t + Math.PI )*V1.normalize().z - PO[2],
+                C0[0] + r*Math.cos((t + Math.PI))*U1.normalize().x + r*Math.sin((t + Math.PI))*V1.normalize().x - PO[0],
+                C0[1] + r*Math.cos((t + Math.PI))*U1.normalize().y + r*Math.sin((t + Math.PI))*V1.normalize().y - PO[1],
+                C0[2] + r*Math.cos((t + Math.PI))*U1.normalize().z + r*Math.sin((t + Math.PI))*V1.normalize().z - PO[2],
                     );
-                console.log("_n1.dot(point2) " + _n1.dot(point2))
                 if( Math.abs(_n1.dot(point2)) < eps ) {
-                console.log("check 2 ");
                 const vec_point2: three.Vector3 = new three.Vector3(
-                    Math.cos(t + Math.PI)*U1.normalize().x + Math.sin(t + Math.PI)*V1.normalize().x,
-                    Math.cos(t + Math.PI)*U1.normalize().y + Math.sin(t + Math.PI)*V1.normalize().y,
-                    Math.cos(t + Math.PI)*U1.normalize().z + Math.sin(t + Math.PI)*V1.normalize().z);
+                r*Math.cos((t + Math.PI))*U1.normalize().x + r*Math.sin((t + Math.PI))*V1.normalize().x,
+                r*Math.cos((t + Math.PI))*U1.normalize().y + r*Math.sin((t + Math.PI))*V1.normalize().y,
+                r*Math.cos((t + Math.PI))*U1.normalize().z + r*Math.sin((t + Math.PI))*V1.normalize().z,
+                );
                 let angle_point2: number = Math.sign(crossVectors(U1,V1).dot(
                 crossVectors(U1,vec_point2))) * vec_point2.angleTo(U1) * 180 / Math.PI;
                 let ok_angle_point2: boolean = false;
                 angle_point2 = ((angle_point2%360)+360)%360;
                 const angle_0: number = ((parabola.getAngles()[0]%360)+360)%360;
                 const angle_1: number = ((parabola.getAngles()[1]%360)+360)%360;
-
-                console.log("angle_0 = " + angle_0)
-                console.log("angle_1 = " + angle_1)
-                console.log("angle_point2 = " + angle_point2)
-
                 const cond1: boolean = (angle_0 <= 360) &&
                 (angle_0 > 270) &&
                 (angle_1 < 270) &&
@@ -133,15 +117,9 @@ export function plane3D_parabola(parabola: IParabola, plane: IPlane): IPoint[] {
                 (angle_1 <= 360) &&
                 (angle_point2 >= angle_0) &&
                 (angle_point2 <= angle_1);
-
-                console.log("cond1 = " + cond1);
-                console.log("cond2 = " + cond2);
-                console.log("cond3 = " + cond3);
-
                 if(cond1) {ok_angle_point2 = true;}
                 if(cond2) {ok_angle_point2 = true;}
                 if(cond3) {ok_angle_point2 = true;}
-                console.log("ok_angle_point2 = " + ok_angle_point2);
                 if (ok_angle_point2) {
                     result.push(m.getGeom().addPoint([
                     C0[0] + r*Math.cos(t + Math.PI)*U1.normalize().x + r*Math.sin(t + Math.PI)*V1.normalize().x,
@@ -150,12 +128,35 @@ export function plane3D_parabola(parabola: IParabola, plane: IPlane): IPoint[] {
                 }
         }
     }
-    // if(result.length === 2) {
-    // if(vectorFromPointsAtoB(result[0],result[1]).length() < eps) {
-    //     result[0].getGeom().delPoint(result[1]);
-    //     return [result[0]];
-    // }
-    // }
+    if(result.length >= 1) {
+        switch(result.length) {
+            case 1:
+                return result;
+            case 2:
+                if(vectorFromPointsAtoB(result[0],result[1]).length() < eps) {
+                    result[0].getGeom().delPoint(result[1]);
+                    return [result[0]];
+                } else {return result;}
+            case 3:
+                if(vectorFromPointsAtoB(result[0],result[1]).length() < eps) {
+                    result[0].getGeom().delPoint(result[1]);
+                    return [result[0],result[2]];
+                } else {
+                    result[0].getGeom().delPoint(result[2]);
+                    return [result[0],result[1]];}
+            case 4:
+                if(vectorFromPointsAtoB(result[0],result[1]).length() > eps) {
+                    result[0].getGeom().delPoint(result[2]);
+                    result[0].getGeom().delPoint(result[3]);
+                    return [result[0],result[1]];
+                } else {
+                    result[0].getGeom().delPoint(result[1]);
+                    result[0].getGeom().delPoint(result[3]);
+                    return [result[0],result[2]];
+                }
+            default: throw new Error("Error in parameters");
+        }
+    }
     return result;
 }
 

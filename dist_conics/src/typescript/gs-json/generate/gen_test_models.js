@@ -1683,22 +1683,22 @@ function genModel_plane3D_parabola() {
     const g = m.getGeom();
     for (let k = 0; k < 1; k++) {
         const center1 = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
-        const parabola1 = m.getGeom().addParabola(center1, [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], [300, 240]);
+        const parabola1 = m.getGeom().addParabola(center1, [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], [80, 110]);
         const U1 = new three.Vector3(parabola1.getAxes()[0][0], parabola1.getAxes()[0][1], parabola1.getAxes()[0][2]).normalize();
         const V1 = new three.Vector3(parabola1.getAxes()[1][0], parabola1.getAxes()[1][1], parabola1.getAxes()[1][2]).normalize();
         const W1 = new three.Vector3(parabola1.getAxes()[2][0], parabola1.getAxes()[2][1], parabola1.getAxes()[2][2]).normalize();
         const p = parabola1.getRadii()[0];
-        const a1 = 0.4 * p * Math.random();
-        const a2 = 0.6 * p * Math.random();
+        const a1 = 4 * p * Math.random();
+        const a2 = 4 * p * Math.random();
         const center2 = g.addPoint([
-            center1.getPosition()[0] + (a1) * U1.x + (a2) * V1.x,
-            center1.getPosition()[1] + (a1) * U1.y + (a2) * V1.y,
-            center1.getPosition()[2] + (a1) * U1.z + (a2) * V1.z
+            center1.getPosition()[0] + (a1) * U1.normalize().x + (a2) * V1.normalize().x,
+            center1.getPosition()[1] + (a1) * U1.normalize().y + (a2) * V1.normalize().y,
+            center1.getPosition()[2] + (a1) * U1.normalize().z + (a2) * V1.normalize().z
         ]);
         const plane1 = g.addPlane(center2, [
-            (a1) * U1.x + (a2) * V1.x,
-            (a1) * U1.y + (a2) * V1.y,
-            (a1) * U1.z + (a2) * V1.z
+            (a1) * U1.normalize().x + (a2) * V1.normalize().x,
+            (a1) * U1.normalize().y + (a2) * V1.normalize().y,
+            (a1) * U1.normalize().z + (a2) * V1.normalize().z
         ], [
             orthoVectors(new three.Vector3((a1) * U1.x + (a2) * V1.x, (a1) * U1.y + (a2) * V1.y, (a1) * U1.z + (a2) * V1.z), W1).x,
             orthoVectors(new three.Vector3((a1) * U1.x + (a2) * V1.x, (a1) * U1.y + (a2) * V1.y, (a1) * U1.z + (a2) * V1.z), W1).y,
@@ -1776,7 +1776,7 @@ function genModel_3D_Ray2_parabola_2D() {
     const m = new gs.Model();
     const g = m.getGeom();
     for (let k = 0; k < 4; k++) {
-        const parabola = g.addParabola(g.addPoint([4 * Math.random(), 4 * Math.random(), 4 * Math.random()]), [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], [340, 240]);
+        const parabola = g.addParabola(g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]), [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], [340, 240]);
         // [360*Math.random(), 360*Math.random()]);
         const U1 = new three.Vector3(parabola.getAxes()[0][0], parabola.getAxes()[0][1], parabola.getAxes()[0][2]).normalize();
         const V1 = new three.Vector3(parabola.getAxes()[1][0], parabola.getAxes()[1][1], parabola.getAxes()[1][2]).normalize();
@@ -1817,6 +1817,11 @@ function planesAreCoplanar(origin1, normal1, origin2, normal2) {
     const normal1_v = new three.Vector3(...normal1).normalize();
     const origin2_v = new three.Vector3(...origin2.getPosition());
     const normal2_v = new three.Vector3(...normal2).normalize();
+    const cond1 = (Math.abs(dotVectors(subVectors(origin1_v, origin2_v), normal2_v)) > EPS);
+    const cond2 = (Math.abs(1 - Math.abs(normal1_v.dot(normal2_v))) > EPS);
+    console.log("Math.abs(1- Math.abs(normal1_v.dot(normal2_v))) = " + Math.abs(1 - Math.abs(normal1_v.dot(normal2_v))));
+    console.log("coplanar check 1 = " + cond1);
+    console.log("coplanar check 2 = " + cond2);
     if (Math.abs(dotVectors(subVectors(origin1_v, origin2_v), normal2_v)) > EPS) {
         return false;
     }
