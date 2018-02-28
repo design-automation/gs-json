@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const three = require("three");
 const plane3D = require("./plane3D");
+/////
 function rayTwo_circle(rayTwo, circle) {
     const v1 = new three.Vector3(circle.getAxes()[0][0], circle.getAxes()[0][1], circle.getAxes()[0][2]);
     const v2 = new three.Vector3(circle.getAxes()[1][0], circle.getAxes()[1][1], circle.getAxes()[1][2]);

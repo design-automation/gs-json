@@ -189,7 +189,6 @@ export class Geom implements IGeom {
         return new Ray(this._kernel, id);
     }
 
-
     /**
      * Adds a new rayTwo to the model.
      * @param origin_point The rayTwo origin point.
@@ -200,11 +199,6 @@ export class Geom implements IGeom {
         const id: number = this._kernel.geomAddRayTwo(origin_point.getID(), ray_vec);
         return new RayTwo(this._kernel, id);
     }
-
-
-
-
-
 
     /**
      * Adds a new plane to the model.

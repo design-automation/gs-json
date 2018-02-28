@@ -3,7 +3,7 @@ import {IEllipse, ICircle, IParabola,
 import * as three from "three";
 import * as util from "../_utils";
 import * as plane3D from "./plane3D";
-
+/////
 export function rayTwo_circle(rayTwo: IRayTwo, circle: ICircle): IPoint[] {
 
     const v1: three.Vector3 = new three.Vector3(circle.getAxes()[0][0],

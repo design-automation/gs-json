@@ -10,6 +10,7 @@ const ellipse_1 = require("../conic_intersect/ellipse");
 const rayTwo_1 = require("../conic_intersect/rayTwo");
 const rayTwo_2 = require("../conic_intersect/rayTwo");
 const rayTwo_3 = require("../conic_intersect/rayTwo");
+const parabola_1 = require("../conic_intersect/parabola");
 const plane3D_1 = require("../conic_intersect/plane3D");
 /**
  * Generates an empty model with nothing in it.
@@ -1845,6 +1846,87 @@ function genModel_3D_Ray2_hyperbola_2D() {
     return m;
 }
 exports.genModel_3D_Ray2_hyperbola_2D = genModel_3D_Ray2_hyperbola_2D;
+function genModel_3D_parabola_parabola_2D() {
+    const m = new gs.Model();
+    const g = m.getGeom();
+    for (let k = 0; k < 1; k++) {
+        const parabola1 = g.addParabola(g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]), [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], [340, 240]);
+        // const polyline1: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola1);
+        //     // [360*Math.random(), 360*Math.random()]);
+        const U1 = new three.Vector3(parabola1.getAxes()[0][0], parabola1.getAxes()[0][1], parabola1.getAxes()[0][2]).normalize();
+        const V1 = new three.Vector3(parabola1.getAxes()[1][0], parabola1.getAxes()[1][1], parabola1.getAxes()[1][2]).normalize();
+        // const p: number = parabola1.getRadii()[0];
+        // const xyz: any[] = Arr.deepCopy(parabola1.getOrigin().getPosition());
+        // const center_ray2: gs.IPoint = g.addPoint([xyz[0],xyz[1],xyz[2]]);
+        // const ray2_direction: gs.XYZ = [V1.x, V1.y,V1.z];
+        const parabola2 = g.addParabola(parabola1.getOrigin(), [V1.x, V1.y, V1.z], [U1.x, U1.y, U1.z], [340, 240]);
+        const points = parabola_1.parabola_parabola(parabola1, parabola2);
+        // const polyline2: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
+        // for(let i: number = -10; i<10; i++) {
+        // center_ray2.setPosition([xyz[0]+ (i/p)*U1.x,xyz[1]+(i/p)*U1.y,xyz[2]+(i/p)*U1.z]);
+        // const ray2: gs.IRayTwo = g.addRayTwo(center_ray2, ray2_direction);
+        // const polyline3: gs.IPolyline = rayTwo_polyline(ray2);
+        // const points1: gs.IPoint[] = rayTwo_parabola(ray2, parabola1);
+        // for(const point of points1) {
+        //     g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+        // }
+        // const points2 = rayTwo_parabola(ray2, parabola2);
+        // // console.log("points 2 = " + points2);
+        // let d: number = 0;
+        // if( points2.length >=1 && points1.length >= 1) {
+        //     switch(points2.length) {
+        //         case 1: g.addCircle(points2[0], [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+        //                 d = vectorFromPointsAtoB(points1[0],points2[0],false).length();
+        //                 console.log("d1 = " + d);
+        //                 break;
+        //         case 2:
+        //                 d = vectorFromPointsAtoB(points1[0],points2[0],false).length();
+        //                 if( d <= vectorFromPointsAtoB(points1[0],points2[1],false).length()) {
+        //                 g.addCircle(points2[0], [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+        //                 console.log("d2.1 = " + d);
+        //                 } else { g.addCircle(points2[1], [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+        //                                     console.log("d2.2 = " + d);
+        //                 }
+        //                 break;
+        //         default: throw new Error("check parameters");
+        //     }
+        // }
+        // // for(const point of points2) {
+        // //     g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+        // // }
+        // g.delObj(ray2,true);
+        // }
+    }
+    return m;
+    // const m: gs.IModel = new gs.Model();
+    // const g: gs.IGeom = m.getGeom();
+    // let points: gs.IPoint[] = [];
+    // for(let k: number = 0; k<1; k++) {
+    // const center: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
+    // const angle0: number = 270 + 90*Math.random();
+    // const angle1: number = angle0 + (270 + 360 - angle0)*Math.random();
+    // const parabola1: gs.IParabola = m.getGeom().addParabola(center, [10*Math.random(),10*Math.random(),10*Math.random()],
+    //                                                             [10*Math.random(),10*Math.random(),10*Math.random()],
+    //                                                             [330, 250]);
+    //                                                             // [angle0, angle1]);
+    // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola1);
+    // // g.delObj(parabola1,false);
+    // const U1: three.Vector3 = new three.Vector3(parabola1.getAxes()[0][0],
+    //                                             parabola1.getAxes()[0][1],
+    //                                             parabola1.getAxes()[0][2]).normalize();
+    // const V1: three.Vector3 = new three.Vector3(parabola1.getAxes()[1][0],
+    //                                             parabola1.getAxes()[1][1],
+    //                                             parabola1.getAxes()[1][2]).normalize();
+    // // points = parabola_parabola(parabola1, parabola1);
+    // for(const point of points) {
+    //     g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+    // }
+    // }
+    // console.log("points num = " + points.length);
+    // return m;
+}
+exports.genModel_3D_parabola_parabola_2D = genModel_3D_parabola_parabola_2D;
+////////////////////////////////////////////////////////////
 function orthoVectors(vector1, vector2) {
     return crossVectors(vector1, vector2).cross(vector1);
 }
@@ -1891,4 +1973,12 @@ function subVectors(v1, v2, norm = false) {
     return v3;
 }
 exports.subVectors = subVectors;
+function vectorFromPointsAtoB(a, b, norm = false) {
+    const v = subVectors(new three.Vector3(...b.getPosition()), new three.Vector3(...a.getPosition()));
+    if (norm) {
+        v.normalize();
+    }
+    return v;
+}
+exports.vectorFromPointsAtoB = vectorFromPointsAtoB;
 //# sourceMappingURL=gen_test_models.js.map
