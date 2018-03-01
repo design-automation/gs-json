@@ -42,7 +42,7 @@ export function debug(): void {
  * Just type "npm run build_models" in the shell.
  */
 if(require.main === module)  {
-    let k = 1;
+    let k = 0;
 
     // Conics
     //////////////////////////////////////////////////////////////////////////////////////////////////

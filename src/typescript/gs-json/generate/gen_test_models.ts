@@ -1933,109 +1933,34 @@ export function genModel_3D_Ray2_hyperbola_2D(): gs.IModel {
 export function genModel_3D_parabola_parabola_2D(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
-    for(let k: number = 0; k<1; k++) {
     const parabola1: gs.IParabola = g.addParabola(
         g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]),
         [5*Math.random(),5*Math.random(),5*Math.random()],
         [15*Math.random(),15*Math.random(),15*Math.random()],
-        [340, 240]);
-    // const polyline1: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola1);
-    //     // [360*Math.random(), 360*Math.random()]);
+        [300, 240]);
     const U1: three.Vector3 = new three.Vector3(parabola1.getAxes()[0][0],
                                                 parabola1.getAxes()[0][1],
-                                                parabola1.getAxes()[0][2]).normalize();
+                                                parabola1.getAxes()[0][2]);
     const V1: three.Vector3 = new three.Vector3(parabola1.getAxes()[1][0],
                                                 parabola1.getAxes()[1][1],
-                                                parabola1.getAxes()[1][2]).normalize();
-    // const p: number = parabola1.getRadii()[0];
-    // const xyz: any[] = Arr.deepCopy(parabola1.getOrigin().getPosition());
-    // const center_ray2: gs.IPoint = g.addPoint([xyz[0],xyz[1],xyz[2]]);
-    // const ray2_direction: gs.XYZ = [V1.x, V1.y,V1.z];
+                                                parabola1.getAxes()[1][2]);
     const parabola2: gs.IParabola = g.addParabola(
         parabola1.getOrigin(),
-        [V1.x,V1.y,V1.z],
         [U1.x,U1.y,U1.z],
-        [340, 240]);
+        [-V1.x,-V1.y,-V1.z],
+        [300, 240]);
+    console.time("parabola_parabola");
     const points: gs.IPoint[] = parabola_parabola(parabola1, parabola2);
+    console.timeEnd("parabola_parabola");
+    console.log("\n");
 
-    // const polyline2: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
-
-
-    // for(let i: number = -10; i<10; i++) {
-    // center_ray2.setPosition([xyz[0]+ (i/p)*U1.x,xyz[1]+(i/p)*U1.y,xyz[2]+(i/p)*U1.z]);
-    // const ray2: gs.IRayTwo = g.addRayTwo(center_ray2, ray2_direction);
-    // const polyline3: gs.IPolyline = rayTwo_polyline(ray2);
-    // const points1: gs.IPoint[] = rayTwo_parabola(ray2, parabola1);
-    // for(const point of points1) {
-    //     g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
-    // }
-    // const points2 = rayTwo_parabola(ray2, parabola2);
-    // // console.log("points 2 = " + points2);
-    // let d: number = 0;
-    // if( points2.length >=1 && points1.length >= 1) {
-    //     switch(points2.length) {
-    //         case 1: g.addCircle(points2[0], [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
-    //                 d = vectorFromPointsAtoB(points1[0],points2[0],false).length();
-    //                 console.log("d1 = " + d);
-    //                 break;
-    //         case 2:
-    //                 d = vectorFromPointsAtoB(points1[0],points2[0],false).length();
-    //                 if( d <= vectorFromPointsAtoB(points1[0],points2[1],false).length()) {
-    //                 g.addCircle(points2[0], [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
-    //                 console.log("d2.1 = " + d);
-    //                 } else { g.addCircle(points2[1], [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
-    //                                     console.log("d2.2 = " + d);
-    //                 }
-    //                 break;
-    //         default: throw new Error("check parameters");
-    //     }
-    // }
-
-    // // for(const point of points2) {
-    // //     g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
-    // // }
-
-
-    // g.delObj(ray2,true);
-    // }
-    }
+    let test11: number = 1e-60 + 1e-80;
+    test11 = test11 - 1e-60;
+    console.log(test11);
+    console.log("\n");
 
     return m;
-
-    // const m: gs.IModel = new gs.Model();
-    // const g: gs.IGeom = m.getGeom();
-    // let points: gs.IPoint[] = [];
-    // for(let k: number = 0; k<1; k++) {
-    // const center: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
-    // const angle0: number = 270 + 90*Math.random();
-    // const angle1: number = angle0 + (270 + 360 - angle0)*Math.random();
-    // const parabola1: gs.IParabola = m.getGeom().addParabola(center, [10*Math.random(),10*Math.random(),10*Math.random()],
-    //                                                             [10*Math.random(),10*Math.random(),10*Math.random()],
-    //                                                             [330, 250]);
-    //                                                             // [angle0, angle1]);
-    // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola1);
-    // // g.delObj(parabola1,false);
-    // const U1: three.Vector3 = new three.Vector3(parabola1.getAxes()[0][0],
-    //                                             parabola1.getAxes()[0][1],
-    //                                             parabola1.getAxes()[0][2]).normalize();
-    // const V1: three.Vector3 = new three.Vector3(parabola1.getAxes()[1][0],
-    //                                             parabola1.getAxes()[1][1],
-    //                                             parabola1.getAxes()[1][2]).normalize();
-    // // points = parabola_parabola(parabola1, parabola1);
-    // for(const point of points) {
-    //     g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
-    // }
-    // }
-    // console.log("points num = " + points.length);
-    // return m;
-
 }
-
-
-
-
-
-
 
 ////////////////////////////////////////////////////////////
 
