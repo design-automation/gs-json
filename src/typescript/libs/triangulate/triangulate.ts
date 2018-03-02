@@ -28,7 +28,7 @@ export function makeVertices2D(vertices: gs.IVertex[]): three.Vector3[] {
             vz = threex.crossVectors(vx, threex.subVectors(points[i],o).normalize()).normalize();
             if (vz.lengthSq() !== 0) {break;}
         }
-        if (i === vertices.length - 1) {throw new Error("Trinagulation found bad face.");}
+        if (i === vertices.length - 1) {return null;}
     }
     const vy: three.Vector3 =  threex.crossVectors(vz, vx);
     const m: three.Matrix4 = threex.xformMatrix(o, vx, vy, vz);
@@ -42,6 +42,7 @@ export function makeVertices2D(vertices: gs.IVertex[]): three.Vector3[] {
 
 export function triangulate2D(vertices: gs.IVertex[], verts_indexes: number[]): number[] {
     const points_2d: three.Vector3[] = makeVertices2D(vertices);
+    if (points_2d === null) {return [0, 1, 2].map((v) => verts_indexes[v]);}
     const flat_vert_xyzs: number[] = Arr.flatten(points_2d.map((v) => [v.x, v.y]));
     const tri_indexes: number[] = earcut.Earcut.triangulate(flat_vert_xyzs);
     return tri_indexes.map((v) => verts_indexes[v]);

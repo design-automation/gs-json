@@ -8,7 +8,7 @@ import {_castToObjType} from "./entity_obj_cast";
 
 /**
  * Topo class.
- * An abstrcat class that is the superclass for all topo components:
+ * An abstract class that is the superclass for all topo components:
  * vertices, edges, wires, and faces.
  */
 export abstract class Topo implements ITopo {

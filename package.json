@@ -11,16 +11,19 @@
         "doc": "docs"
     },
     "scripts": {
+        "models": "npm run build2015 && npm run gen_gs_models && npm run gen_three_models",
         "build_three_models": "npm run build2015 && npm run gen_three_models",
         "build_gs_models": "npm run build2015 && npm run gen_gs_models",
-        "models": "npm run build2015 && npm run gen_gs_models && npm run gen_three_models",
         "gen_three_models": "node ./dist2015/src/typescript/generate/gen_three_test_models.js",
         "gen_gs_models": "node ./dist2015/src/typescript/generate/gen_gs_test_models.js",
-        "build2015": "tsc && babel --presets es2015 ./dist --out-dir ./dist2015",
+
         "prepare": "npm run build2015",
+        "build2015": "tsc && babel --presets es2015 ./dist --out-dir ./dist2015",
         "build": "tsc",
+
         "test": "karma start ./karma.conf.ts",
         "testsr": "karma start ./karma.conf.ts --single-run",
+
         "docs": "typedoc --out  ./docs/typescript ./src/typescript --module commonjs --theme minimal"
     },
     "repository": {
