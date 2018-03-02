@@ -20,7 +20,7 @@ function parabola_parabola(parabola1, parabola2) {
     const d2 = Math.abs(r2 * Math.cos(angle1_p1 * (2 * Math.PI / 360)));
     const xyz = arr_1.Arr.deepCopy(parabola1.getOrigin().getPosition());
     const center_ray2 = geom.addPoint([xyz[0], xyz[1], xyz[2]]);
-    const ray2 = geom.addRay(center_ray2, parabola1.getAxes()[1]);
+    let ray2 = geom.addRay(center_ray2, parabola1.getAxes()[1]);
     const N = 80;
     const distances = [];
     let count = 0;
@@ -34,7 +34,7 @@ function parabola_parabola(parabola1, parabola2) {
         center_ray2.setPosition([xyz[0] + ((k / N) * (d1 + d2) - d2) * U1.x,
             xyz[1] + ((k / N) * (d1 + d2) - d2) * U1.y,
             xyz[2] + ((k / N) * (d1 + d2) - d2) * U1.z]);
-        const polyline3 = rayTwo_polyline_1.rayTwo_polyline(ray2);
+        //    const polyline3: IPolyline = rayTwo_polyline(ray2);
         const points1 = rayTwo_1.rayTwo_parabola(ray2, parabola1);
         const points2 = rayTwo_1.rayTwo_parabola(ray2, parabola2);
         let d = 0;
@@ -91,36 +91,60 @@ function parabola_parabola(parabola1, parabola2) {
     }
     // Exact identification ()
     if (k1 !== undefined) {
-        let init_k1 = new three.Vector3(xyz[0] + ((k1 / N) * (d1 + d2) - d2) * U1.x, xyz[1] + ((k1 / N) * (d1 + d2) - d2) * U1.y, xyz[2] + ((k1 / N) * (d1 + d2) - d2) * U1.z);
+        let init_k1_x = xyz[0] + ((k1 / N) * (d1 + d2) - d2) * U1.x;
+        let init_k1_y = xyz[1] + ((k1 / N) * (d1 + d2) - d2) * U1.y;
+        let init_k1_z = xyz[2] + ((k1 / N) * (d1 + d2) - d2) * U1.z;
         let width_k1 = (1 / N) * (d1 + d2);
-        // let distance_k1: number[] = [];
-        // let d_k1: number = 4;
-        // const eps_k1: number = 0.1;
-        // while( d_k1 > eps_k1 ) {
-        //     // identification du d' distance reverse;
-        //     let cond_k1: boolean = true;
-        //     while(cond_k1) {
-        center_ray2.setPosition([init_k1.x + (width_k1 / N) * U1.x, init_k1.y + (width_k1 / N) * U1.y, init_k1.z + (width_k1 / N) * U1.z]);
-        const polyline3 = rayTwo_polyline_1.rayTwo_polyline(ray2);
-        //         const points1: IPoint[] = rayTwo_parabola(ray2, parabola1);
-        //         const points2: IPoint[] = rayTwo_parabola(ray2, parabola2);
-        //         d_k1 = vectorFromPointsAtoB(points1[0],points2[0],false).length();
-        //         if( points2.length === 2 && d_k1 > vectorFromPointsAtoB(points1[0],points2[1],false).length()) {
-        //             d_k1 = vectorFromPointsAtoB(points1[0],points2[1],false).length();
-        //         }
-        //         distance_k1.push(d_k1);
-        //         if(cond_k1) {
-        //             init_k1 =  ;
-        //             width_k1 = ;}
-        //         if( distance_k1.length >= 2) {cond_k1 = distance_k1[distance_k1.length - 1] >  distance_k1[distance_k1.length - 2];}
-        //         }
-        //     init_k1 = init_k1.set(init_k1.x + *U1.x,init_k1.y + *U1.y,init_k1.z + *U1.z) ;
-        //     width_k1 = width_k1/N ;}
+        const distance_k1 = [];
+        let d_k1 = 4;
+        let d = 4;
+        const eps_k1 = 1e-10;
+        let count_while_1 = 0;
+        let count_while_2 = 0;
+        while (d_k1 > eps_k1) {
+            let cond_k1 = true;
+            init_k1_x += count_while_2 * (width_k1) * U1.x;
+            init_k1_y += count_while_2 * (width_k1) * U1.y;
+            init_k1_z += count_while_2 * (width_k1) * U1.z;
+            width_k1 = width_k1 / N;
+            count_while_2 = 0;
+            while (cond_k1) {
+                center_ray2.setPosition([init_k1_x + count_while_2 * (width_k1) * U1.x,
+                    init_k1_y + count_while_2 * (width_k1) * U1.y,
+                    init_k1_z + count_while_2 * (width_k1) * U1.z]);
+                ray2 = geom.addRay(center_ray2, parabola1.getAxes()[1]);
+                const polyline3 = rayTwo_polyline_1.rayTwo_polyline(ray2);
+                const points1 = rayTwo_1.rayTwo_parabola(ray2, parabola1);
+                const points2 = rayTwo_1.rayTwo_parabola(ray2, parabola2);
+                d = vectorFromPointsAtoB(points1[0], points2[0], false).length();
+                if (points2.length === 2 && d > vectorFromPointsAtoB(points1[0], points2[1], false).length()) {
+                    d = vectorFromPointsAtoB(points1[0], points2[1], false).length();
+                }
+                distance_k1.push(d);
+                if (distance_k1.length >= 2) {
+                    if (distance_k1[distance_k1.length - 1] > distance_k1[distance_k1.length - 2]) {
+                        // while() {
+                        //     count_while_2--;
+                        // }
+                        count_while_2 = count_while_2 - 2;
+                        cond_k1 = distance_k1[distance_k1.length - 1] < distance_k1[distance_k1.length - 2];
+                    }
+                }
+                count_while_2++;
+                if (count_while_2 === 20) {
+                    break;
+                }
+            }
+            count_while_1++;
+            d_k1 = d;
+            if (count_while_1 === 2) {
+                break;
+            }
+        }
     }
     const polyline1 = parabola_polyline.parabola_polyline_renderXYZ(parabola1);
     const polyline2 = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
     geom.delObj(ray2, false);
-    //console.log(distances);
     console.log("\n");
     console.log([k1, k2, k3, k4]);
     console.log("\n");
