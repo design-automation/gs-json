@@ -1,7 +1,7 @@
 {
     "name": "gs-json",
     "license": "GPL-3.0",
-    "version": "0.1.55",
+    "version": "0.1.56",
     "author": "Patrick Janssen",
     "description": "gs-JSON is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the 'gs').",
     "homepage": "https://github.com/phtj/gs-json#readme",
@@ -16,14 +16,11 @@
         "build_gs_models": "npm run build2015 && npm run gen_gs_models",
         "gen_three_models": "node ./dist2015/src/typescript/generate/gen_three_test_models.js",
         "gen_gs_models": "node ./dist2015/src/typescript/generate/gen_gs_test_models.js",
-
         "prepare": "npm run build2015",
         "build2015": "tsc && babel --presets es2015 ./dist --out-dir ./dist2015",
         "build": "tsc",
-
         "test": "karma start ./karma.conf.ts",
         "testsr": "karma start ./karma.conf.ts --single-run",
-
         "docs": "typedoc --out  ./docs/typescript ./src/typescript --module commonjs --theme minimal"
     },
     "repository": {
