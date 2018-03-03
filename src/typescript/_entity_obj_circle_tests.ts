@@ -30,8 +30,11 @@ describe("Tests for Entity Object Circle", () => {
     it("test_length", () => {
         expect( test_length() ).toBe(true);
     });
-    it("test_eval", () => {
-        expect( test_eval() ).toBe(true);
+    it("test_evalParam", () => {
+        expect( test_evalParam() ).toBe(true);
+    });
+    it("test_evalPoint", () => {
+        expect( test_evalPoint() ).toBe(true);
     });
     it("test_equiPoints", () => {
         expect( test_equiPoints() ).toBe(true);
@@ -148,15 +151,65 @@ export function test_length(): boolean {
     return true;
 }
 
-export function test_eval(): boolean {
+export function test_evalParam(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const angle_1: number = 0;
-    const angle_2: number = 180;
-    const angle_3: number = 360;
-    const curve1: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[10,200]);
-    const point = curve1.evalParam(0.3);
+    const circle: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
+    const point1 = circle.evalParam(0);
+    //console.log(point1.getPosition());
+    const point2 = circle.evalParam(0.5);
+    //console.log(point2.getPosition());
+    const point3 = circle.evalParam(1);
+    //console.log(point3.getPosition());
+    return true;
+}
+
+export function test_evalPoint(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    {
+        const circle: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[360-45,45]);
+
+        const point1: gs.IPoint = g.addPoint([0,1,0]);
+        const t1:number = circle.evalPoint(point1);
+        //console.log("t1", t1);
+        if (t1 !== 1) {return false;}
+
+        const point2: gs.IPoint = g.addPoint([0,-1,0]);
+        const t2:number = circle.evalPoint(point2);
+        //console.log("t2", t2);
+        if (t2 !== 0) {return false;}
+
+        const point3: gs.IPoint = g.addPoint([1,0,0]);
+        const t3:number = circle.evalPoint(point3);
+        //console.log("t3", t3);
+        if (t3 !== 0.5) {return false;}
+    }
+    {
+        const circle: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
+
+        const point1: gs.IPoint = g.addPoint([1,0,0]);
+        const t1:number = circle.evalPoint(point1);
+        //console.log("t1", t1);
+        if (t1 !== 0) {return false;}
+
+        const point2: gs.IPoint = g.addPoint([-1,0,0]);
+        const t2:number = circle.evalPoint(point2);
+        //console.log("t2", t2);
+        if (t2 !== 1) {return false;}
+
+        const point3: gs.IPoint = g.addPoint([0,1,0]);
+        const t3:number = circle.evalPoint(point3);
+        //console.log("t3", t3);
+        if (t3 !== 0.5) {return false;}
+
+        const point4: gs.IPoint = g.addPoint([0,1,0.2]);
+        const t4:number = circle.evalPoint(point4);
+        //console.log("t3", t3);
+        if (t4 !== 0.5) {return false;}
+    }
     return true;
 }
 

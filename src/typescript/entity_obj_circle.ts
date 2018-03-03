@@ -8,13 +8,13 @@ import * as three from "three";
 import * as util from "./_utils";
 
 /**
- * Class ConicCurve.
+ * Class Circle.
  */
 export class Circle extends Obj implements ICircle {
 
     /**
      * Get the object type: "circle".
-     * @return ConicCurve object type.
+     * @return Circle object.
      */
     public getObjType(): EObjType {
         return EObjType.circle;
@@ -22,7 +22,7 @@ export class Circle extends Obj implements ICircle {
 
     /**
      * Get the origin of the ellipse.
-     * @return Plane object type.
+     * @return Point object.
      */
     public getOrigin(): IPoint {
         return new Point(this._kernel, this._kernel.objGetOnePoint(this._id));
@@ -30,7 +30,7 @@ export class Circle extends Obj implements ICircle {
 
     /**
      * Returns the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
-     * @return The x and y vectors.
+     * @return An array of three XYZ vectors.
      */
     public getAxes(): [XYZ,XYZ,XYZ] {
         const params: any[] = this._kernel.objGetParams(this._id);
@@ -39,7 +39,7 @@ export class Circle extends Obj implements ICircle {
 
     /**
      * Returns the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
-     * @return The x and y vectors.
+     * @return XYZ vector
      */
     public getNormal(): XYZ {
         return this._kernel.objGetParams(this._id)[3];
@@ -47,8 +47,8 @@ export class Circle extends Obj implements ICircle {
 
     /**
      * Sets the x and y vectors of this curve. The length of the x vector defines the radius of the circle.
-     * @param x_vec Vector, the x axis
-     * @param vec vector, in the plane
+     * @param x_vec XYZ vector, the x axis
+     * @param vec XYZ vector, in the plane
      */
     public setOrientation(x_vec: XYZ, vec: XYZ): void {
         // param are [type, x_vec, y_vec, z_vec, angles]
@@ -116,12 +116,20 @@ export class Circle extends Obj implements ICircle {
     }
 
     /**
-     * Get the length of the circle or arc.
-     * @return The length.
+     * Get the t parameter on the circle or arc.
+     * @return A point entity.
      */
     public evalParam(t: number): IPoint {
         const xyz: XYZ = math_conics.circleEvaluate(this, t);
         return this._kernel.getGeom().addPoint(xyz);
+    }
+
+    /**
+     * Project a point onto the circle or arc, and return the t parameter.
+     * @return t parameter value.
+     */
+    public evalPoint(point: IPoint): number {
+        return math_conics.circleEvaluatePoint(this, point);
     }
 
     /**
