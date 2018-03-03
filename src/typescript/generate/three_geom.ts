@@ -2,7 +2,7 @@ import * as three from "three";
 import * as gs from "../gs-json";
 import * as arr from "../libs/arr/arr";
 import * as threex from "../libs/threex/threex";
-import * as math_conics from "../libs/conics/conics";
+import * as math_conics from "../libs/conics/circles";
 import {triangulate2D} from "../libs/triangulate/triangulate";
 
 //  GENERAL ==================================================================================================

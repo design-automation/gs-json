@@ -1,4 +1,4 @@
-import * as cs from "./conics";
+import * as cs from "./circles";
 import * as gs from "../../gs-json";
 
 describe("Tests for Math Conics functions", () => {
@@ -10,15 +10,6 @@ describe("Tests for Math Conics functions", () => {
     });
     it("test_circleGetRenderXYZs", () => {
         expect( test_circleGetRenderXYZs() ).toBe(true);
-    });
-    it("test_ellipseLength", () => {
-        expect( test_ellipseLength() ).toBe(true);
-    });
-    it("test_ellipseEvaluate", () => {
-        expect( test_ellipseEvaluate() ).toBe(true);
-    });
-    it("test_ellipseGetRenderXYZs", () => {
-        expect( test_ellipseGetRenderXYZs() ).toBe(true);
     });
 });
 
@@ -41,6 +32,7 @@ export function test_circleLength(): boolean {
     }
     return true;
 }
+
 export function test_circleEvaluate(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
@@ -83,6 +75,7 @@ export function test_circleEvaluate(): boolean {
     if(Math.abs(xyz[2] - z) > threshold) {return false ;}
     return true;
 }
+
 export function test_circleGetRenderXYZs(): boolean {
     const m: gs.IModel = new gs.Model();
     const g: gs.IGeom = m.getGeom();
@@ -123,35 +116,4 @@ export function test_circleGetRenderXYZs(): boolean {
     // Valid
     return true;
 }
-export function test_ellipseLength(): boolean {
-    return true;
-}
-export function test_ellipseEvaluate(): boolean {
-    return true;
-}
-export function test_ellipseGetRenderXYZs(): boolean {
-    const m: gs.IModel = new gs.Model();
-    const g: gs.IGeom = m.getGeom();
-    // [0,x,y]
-    const center1: gs.IPoint = g.addPoint([0,0,0]);
-    const ellipse1: gs.IEllipse = g.addCircle(center1,[1,0,0],[0,1,0],[0,360]);
-    // console.log(cs.ellipseGetRenderXYZs(ellipse1,0.01));
-    // Valid
 
-    // [0,x,y]
-    const center2: gs.IPoint = g.addPoint([0,0,0]);
-    const ellipse2: gs.IEllipse = g.addCircle(center2,[4,0,0],[0,6,0],[0,360]);
-    // console.log(cs.ellipseGetRenderXYZs(ellipse2,0.05));
-
-    // // [0,x,z]
-    // const center2: gs.IPoint = g.addPoint([0,0,0]);
-    // const ellipse2: gs.IEllipse = g.addEllipse(center2,[0,4,0],[0,0,1],[0,90]);
-    // console.log(cs.ellipseGetRenderXYZs(ellipse2,0.05));
-
-    // // [0,y,z]
-    // const center3: gs.IPoint = g.addPoint([0,0,0]);
-    // const ellipse3: gs.IEllipse = g.addEllipse(center3,[0,1,0],[0,0,1],[0,90]);
-    // // console.log(cs.ellipseGetRenderXYZs(ellipse3,0.05));
-
-    return true;
-}

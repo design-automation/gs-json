@@ -6,7 +6,6 @@ import {EGeomType, EObjType} from "./enums";
 import {Point} from "./entity_point";
 import {Polyline} from "./entity_obj_polyline";
 import {Circle} from "./entity_obj_circle";
-import {Ellipse} from "./entity_obj_ellipse";
 import {Polymesh} from "./entity_obj_polymesh";
 import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";
@@ -220,25 +219,6 @@ export class Geom implements IGeom {
         // make the circle
         const id: number = this._kernel.geomAddCircle(origin_point.getID(), axes, angles);
         return new Circle(this._kernel, id);
-    }
-
-    /**
-     * Adds a new ellipse to the model.
-     * @param Origin The origin point.
-     * @param x_vec A vector defining the radius in the local x direction.
-     * @param y_vec A vector defining the radius in the local y direction, must be orthogonal to x.
-     * @param angles The angles, can be undefined, in which case a closed conic is generated.
-     * @return Object of type Ellipse
-     */
-    public addEllipse(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles?: [number, number]): IEllipse {
-        // make the angles correct
-        angles = util.checkCircleAngles(angles);
-        // make three ortho vectors
-        const axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
-        if (axes === null) {throw new Error("Vectors cannot be parallel.");}
-        // make the circle
-        const id: number = this._kernel.geomAddEllipse(origin_point.getID(), axes, angles);
-        return new Ellipse(this._kernel, id);
     }
 
     /**

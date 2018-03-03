@@ -4,7 +4,7 @@
  * @return
  */
 export function checkCircleAngles(angles: [number, number]): [number, number] {
-    if (angles === undefined || angles === null) {return undefined;}
+    if (angles === undefined || angles === null) {return null;}
     // fix angle 0
     if (Math.abs(angles[0]) > 360) {
         angles[0] = angles[0] % 360;

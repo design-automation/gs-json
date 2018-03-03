@@ -4,7 +4,6 @@ import {EObjType} from "./enums";
 import {Point} from "./entity_point";
 import {Polyline} from "./entity_obj_polyline";
 import {Circle} from "./entity_obj_circle";
-import {Ellipse} from "./entity_obj_ellipse";
 import {Polymesh} from "./entity_obj_polymesh";
 import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";
@@ -14,7 +13,7 @@ import {Ray} from "./entity_obj_ray";
  * @param
  * @return
  */
-export function _castToObjType(_kernel: Kernel, id: number): IRay|IPlane|ICircle|IEllipse|IPolyline|IPolymesh {
+export function _castToObjType(_kernel: Kernel, id: number): IRay|IPlane|ICircle|IPolyline|IPolymesh {
     const obj_type = _kernel.objGetType(id);
     switch (obj_type) {
         case EObjType.ray:
@@ -23,8 +22,6 @@ export function _castToObjType(_kernel: Kernel, id: number): IRay|IPlane|ICircle
             return new Plane(_kernel, id);
         case EObjType.circle:
             return new Circle(_kernel, id);
-        case EObjType.ellipse:
-            return new Ellipse(_kernel, id);
         case EObjType.polyline:
             return new Polyline(_kernel, id);
         case EObjType.polymesh:

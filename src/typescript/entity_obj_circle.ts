@@ -3,7 +3,7 @@ import {EObjType} from "./enums";
 import {Obj} from "./entity_obj";
 import {Point} from "./entity_point";
 import * as threex from "./libs/threex/threex";
-import * as math_conics from "./libs/conics/conics";
+import * as math_conics from "./libs/conics/circles";
 import * as three from "three";
 import * as util from "./_utils";
 
@@ -102,7 +102,7 @@ export class Circle extends Obj implements ICircle {
      */
     public isClosed(): boolean {
         const angles: [number, number] = this._kernel.objGetParams(this._id)[4];
-        if (angles === undefined) {return true;}
+        if (angles === null) {return true;}
         if ((angles[1] - angles[0]) === 360) {return true;}
         return false;
     }

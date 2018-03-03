@@ -6,7 +6,6 @@ export * from "./geom";
 export * from "./entity";
 export * from "./entity_obj";
 export * from "./entity_obj_circle";
-export * from "./entity_obj_ellipse";
 export * from "./entity_obj_plane";
 export * from "./entity_obj_polyline";
 export * from "./entity_obj_polymesh";
