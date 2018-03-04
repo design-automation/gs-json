@@ -23,7 +23,7 @@ export function circleLength(circle: gs.ICircle): number {
     const angles: number[] = circle.getAngles();
     // calculate the angle of the arc
     let arc_angle: number;
-    if (angles === undefined) {
+    if (angles === null) {
         return 2 * Math.PI * rad;
     } else if (angles[0] < angles[1]) {
         arc_angle = (angles[1]-angles[0]);
