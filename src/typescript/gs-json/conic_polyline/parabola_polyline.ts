@@ -4,7 +4,7 @@ import * as util from "../_utils";
 
 /*
 *
-* Function which creates a set of 50 points and polyline to the geometry from a 3D Parabola
+* Function which creates a set of 250 points and polyline to the geometry from a 3D Parabola
 *
 */
 export function parabola_polyline(parabola: IParabola): IPolyline {
@@ -29,7 +29,7 @@ export function parabola_polyline(parabola: IParabola): IPolyline {
                                                    parabola.getOrigin().getPosition()[2]);
     let theta: number = angle0*(2*Math.PI)/360;
     let r: number;
-    const N: number = 50;
+    const N: number = 500;
     const d_theta: number = (angle1-angle0)/N*2*Math.PI/360;
 
     for(let k: number = 0;k<N;k++) {

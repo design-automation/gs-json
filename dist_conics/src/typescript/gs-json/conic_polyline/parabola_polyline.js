@@ -4,7 +4,7 @@ const three = require("three");
 const util = require("../_utils");
 /*
 *
-* Function which creates a set of 50 points and polyline to the geometry from a 3D Parabola
+* Function which creates a set of 250 points and polyline to the geometry from a 3D Parabola
 *
 */
 function parabola_polyline(parabola) {
@@ -23,7 +23,7 @@ function parabola_polyline(parabola) {
     const center = new three.Vector3(parabola.getOrigin().getPosition()[0], parabola.getOrigin().getPosition()[1], parabola.getOrigin().getPosition()[2]);
     let theta = angle0 * (2 * Math.PI) / 360;
     let r;
-    const N = 50;
+    const N = 500;
     const d_theta = (angle1 - angle0) / N * 2 * Math.PI / 360;
     for (let k = 0; k < N; k++) {
         r = p / (1 + Math.cos(theta - (Math.PI / 2)));
