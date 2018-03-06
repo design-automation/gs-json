@@ -10,7 +10,7 @@ function parabola_parabola(parabola1, parabola2) {
     // console.log( "Point num = " + point.getID())
     // // if(obj.getObjType() === EObjType.rayTwo || obj.getObjType() === EObjType.ray) { geom.delObj(obj, false)}
     // }
-    const eps = 1e-14;
+    const eps = 1e-13;
     const angle0_p1 = ((parabola1.getAngles()[0] % 360) + 360) % 360;
     const angle1_p1 = (((parabola1.getAngles()[1] % 360) + 360) % 360);
     const U1 = new three.Vector3(parabola1.getAxes()[0][0], parabola1.getAxes()[0][1], parabola1.getAxes()[0][2]).normalize();
@@ -23,13 +23,16 @@ function parabola_parabola(parabola1, parabola2) {
     const xyz = arr_1.Arr.deepCopy(parabola1.getOrigin().getPosition());
     const center_ray2 = geom.addPoint([xyz[0], xyz[1], xyz[2]]);
     const N = 80;
+    const inside_dichotomie = 2;
     const distances = [];
     let count = 0;
-    const list = [];
+    let list = [];
     let k1 = undefined;
     let k2 = undefined;
     let k3 = undefined;
     let k4 = undefined;
+    let k5 = undefined;
+    let precision = [];
     for (let k = -2; k < N + 2; k++) {
         center_ray2.setPosition([xyz[0] + ((k / N) * (d1 + d2) - d2) * U1.x,
             xyz[1] + ((k / N) * (d1 + d2) - d2) * U1.y,
@@ -65,6 +68,7 @@ function parabola_parabola(parabola1, parabola2) {
             const cond2 = e3 === -1;
             const ok = cond1 && cond2;
             if (ok) {
+                //        const polyline: IPolyline = rayTwo_polyline(ray2);
                 switch (count) {
                     case 0:
                         k1 = k - 1;
@@ -86,6 +90,11 @@ function parabola_parabola(parabola1, parabola2) {
                         list.push(k - 1);
                         count++;
                         break;
+                    // case 4:
+                    //         k5 = k-1;
+                    //         list.push(k-1);
+                    //         count++;
+                    //         break;
                     default:
                         list.push(k - 1);
                         break;
@@ -93,7 +102,8 @@ function parabola_parabola(parabola1, parabola2) {
             }
         }
     }
-    for (const k of [k1, k2, k3, k4]) {
+    list = [4];
+    for (const k of list) {
         // if(k1!== undefined) {
         // let init_k1_x: number = xyz[0] + ( (k1/N)*(d1 + d2) - d2)*U1.x;
         // let init_k1_y: number = xyz[1] + ( (k1/N)*(d1 + d2) - d2)*U1.y;
@@ -106,7 +116,8 @@ function parabola_parabola(parabola1, parabola2) {
             const distance_k1 = [];
             let d_k1 = 4;
             let d = 4;
-            const eps_k1 = 1e-7;
+            let slope;
+            const eps_k1 = eps;
             let count_while_1 = 0;
             let count_while_2 = 0;
             let xyz_result;
@@ -126,6 +137,9 @@ function parabola_parabola(parabola1, parabola2) {
                     }
                     const points1 = rayTwo_1.rayTwo_parabola(ray2, parabola1);
                     const points2 = rayTwo_1.rayTwo_parabola(ray2, parabola2);
+                    //
+                    //                            const polyline: IPolyline = rayTwo_polyline(ray2);
+                    //
                     geom.delObj(ray2, false);
                     geom.delPoint(center_ray2);
                     d = vectorFromPointsAtoB(points1[0], points2[0], false).length();
@@ -137,6 +151,7 @@ function parabola_parabola(parabola1, parabola2) {
                         const num = distance_k1[distance_k1.length - 1] - distance_k1[distance_k1.length - 2];
                         if (distance_k1[distance_k1.length - 1] > distance_k1[distance_k1.length - 2]) {
                             let increasing_slope = true;
+                            let count_slope = 0;
                             do {
                                 let next_init_k1_x = init_k1_x + count_while_2 * (width_k1) * U1.x;
                                 let next_init_k1_y = init_k1_y + count_while_2 * (width_k1) * U1.y;
@@ -165,6 +180,7 @@ function parabola_parabola(parabola1, parabola2) {
                                 if (points21.length === 2 && d1 > vectorFromPointsAtoB(points11[0], points21[1], false).length()) {
                                     d1 = vectorFromPointsAtoB(points11[0], points21[1], false).length();
                                 }
+                                slope = d1 - d0;
                                 if (d1 < d0) {
                                     increasing_slope = false;
                                 }
@@ -178,6 +194,17 @@ function parabola_parabola(parabola1, parabola2) {
                                     break;
                                 }
                                 count_while_2--;
+                                console.log("d1 =" + d1);
+                                console.log("d2 =" + d2);
+                                const d1_star = vectorFromPointsAtoB(points11[0], points21[0], false).length() / eps;
+                                const d2_star = vectorFromPointsAtoB(points11[0], points21[0], false).length() / eps;
+                                console.log("d1_star =" + d1_star);
+                                console.log("d2_star =" + d2_star);
+                                console.log("slope = " + slope);
+                                count_slope++;
+                                if (slope === 0) {
+                                    break;
+                                }
                             } while (increasing_slope);
                             init_k1_x += count_while_2 * (width_k1) * U1.x;
                             init_k1_y += count_while_2 * (width_k1) * U1.y;
@@ -191,20 +218,28 @@ function parabola_parabola(parabola1, parabola2) {
                     geom.delPoints(points1);
                     geom.delPoints(points2);
                     count_while_2++;
-                    console.log("count_while_2 = " + count_while_2);
+                    // console.log("count_while_2 = " + count_while_2 );
                     geom.delObj(ray2, false);
                     geom.delPoint(center_ray2);
                     // if(count_while_2 === 800) {break;}
+                    if (slope === 0) {
+                        break;
+                    }
                 } while (cond_k1);
-                width_k1 = width_k1 / N;
+                //                    width_k1 = width_k1/N;
+                width_k1 = width_k1 / inside_dichotomie;
                 count_while_2 = 0;
                 count_while_1++;
                 d_k1 = d;
                 console.log("d = " + d);
-                console.log("count_while_1 = " + count_while_1 + "\n");
+                // console.log("count_while_1 = " + count_while_1 + "\n");
                 // if(count_while_1 === 8) {break;}
                 if (d_k1 <= eps_k1) {
                     result.push(geom.addPoint(xyz_result));
+                    precision.push(d_k1);
+                }
+                if (slope === 0) {
+                    break;
                 }
             } while (d_k1 > eps_k1);
         }
@@ -213,6 +248,15 @@ function parabola_parabola(parabola1, parabola2) {
     // const polyline2: IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
     console.log("\n");
     console.log([k1, k2, k3, k4]);
+    console.log("\n");
+    console.log("list = " + list);
+    console.log("\n");
+    console.log("precision = ");
+    for (const k of precision) {
+        console.log(k);
+    }
+    console.log("\n");
+    console.log("eps = " + eps);
     console.log("\n");
     // for(const point of result) {
     //     geom.addCircle(point,
