@@ -32,13 +32,9 @@ const d1: number = Math.abs(r1 * Math.cos(angle0_p1*(2*Math.PI/360)));
 const d2: number = Math.abs(r2 * Math.cos(angle1_p1*(2*Math.PI/360)));
 const xyz: any[] = Arr.deepCopy(parabola1.getOrigin().getPosition());
 const center_ray2: IPoint = geom.addPoint([xyz[0],xyz[1],xyz[2]]);
-
-
 const p2: number = new three.Vector3(parabola2.getAxes()[0][0],
                             parabola2.getAxes()[0][1],
                             parabola2.getAxes()[0][2]).length();
-// const numb: number = p/p2;
-// console.log("numb = " + numb)
 const N: number = (p/p2) * 20;
 const inside_dichotomie: number = 2;
 const distances: number[] = [];
@@ -205,8 +201,10 @@ for( const k of list) {
                     if(C.length() < threshold) { check_double = true;}                    
             }
             if(!check_double){
-               xyz_results.push(xyz_result);}
-            precision.push(d_k1);}
+            xyz_results.push(xyz_result);}
+            precision.push(d_k1);
+            console.log("precision = " + "\n" + d);
+            }
         if( slope === 0) {break;}
         } while( d_k1 > eps_k1 )
     }
