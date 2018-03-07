@@ -1940,7 +1940,9 @@ export function genModel_3D_parabola_parabola_2D(): gs.IModel {
     const p2: number = 0.5;
     const parabola2: gs.IParabola = geom.addParabola(
         geom.addPoint([-3*p1,-6*(p1/2),0]),[0,p2,0], [-1,0,0],[285, 255]);
+    console.time("Parabola Intersect")
     const points: gs.IPoint[] = parabola_parabola(parabola1, parabola2);
+    console.timeEnd("Parabola Intersect")
     const polyline1: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola1);
     const polyline2: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
     const U1: three.Vector3 = new three.Vector3(parabola1.getAxes()[0][0],
@@ -1954,13 +1956,6 @@ export function genModel_3D_parabola_parabola_2D(): gs.IModel {
             [U1.setLength(0.4).x,U1.setLength(0.4).y,U1.setLength(0.4).z],
             [V1.setLength(0.4).x,V1.setLength(0.4).y,V1.setLength(0.4).z])
     }
-
-    // console.log("Converging Speed results = ");
-    // const n: number = 80;
-    // const two_n: number = Math.pow(2,-n);
-    // console.log(" n = " + n);
-    // console.log(" 1/(2^n) = " + two_n);
-    // console.log("\n");
     return m;
 }
 

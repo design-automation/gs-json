@@ -1854,7 +1854,9 @@ function genModel_3D_parabola_parabola_2D() {
     const parabola1 = geom.addParabola(geom.addPoint([0, 0, 0]), [p1, 0, 0], [0, 1, 0], [300, 235]);
     const p2 = 0.5;
     const parabola2 = geom.addParabola(geom.addPoint([-3 * p1, -6 * (p1 / 2), 0]), [0, p2, 0], [-1, 0, 0], [285, 255]);
+    console.time("Parabola Intersect");
     const points = parabola_1.parabola_parabola(parabola1, parabola2);
+    console.timeEnd("Parabola Intersect");
     const polyline1 = parabola_polyline.parabola_polyline_renderXYZ(parabola1);
     const polyline2 = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
     const U1 = new three.Vector3(parabola1.getAxes()[0][0], parabola1.getAxes()[0][1], parabola1.getAxes()[0][2]).normalize();
@@ -1862,12 +1864,6 @@ function genModel_3D_parabola_parabola_2D() {
     for (const point of points) {
         parabola1.getGeom().addCircle(point, [U1.setLength(0.4).x, U1.setLength(0.4).y, U1.setLength(0.4).z], [V1.setLength(0.4).x, V1.setLength(0.4).y, V1.setLength(0.4).z]);
     }
-    // console.log("Converging Speed results = ");
-    // const n: number = 80;
-    // const two_n: number = Math.pow(2,-n);
-    // console.log(" n = " + n);
-    // console.log(" 1/(2^n) = " + two_n);
-    // console.log("\n");
     return m;
 }
 exports.genModel_3D_parabola_parabola_2D = genModel_3D_parabola_parabola_2D;

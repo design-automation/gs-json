@@ -101,7 +101,7 @@ if(require.main === module)  {
 
     // Parabola Parabola 2D
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    console.log("test " + k); k++;
+    // console.log("test " + k); k++;
     filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_parabola_parabola_2D()),
                                                      path + "genModel_3D_parabola_parabola_2D.json");
     //////////////////////////////////////////////////////////////////////////////////////////////////
