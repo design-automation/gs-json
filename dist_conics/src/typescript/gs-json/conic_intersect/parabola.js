@@ -20,7 +20,10 @@ function parabola_parabola(parabola1, parabola2) {
     const d2 = Math.abs(r2 * Math.cos(angle1_p1 * (2 * Math.PI / 360)));
     const xyz = arr_1.Arr.deepCopy(parabola1.getOrigin().getPosition());
     const center_ray2 = geom.addPoint([xyz[0], xyz[1], xyz[2]]);
-    const N = 80;
+    const p2 = new three.Vector3(parabola2.getAxes()[0][0], parabola2.getAxes()[0][1], parabola2.getAxes()[0][2]).length();
+    // const numb: number = p/p2;
+    // console.log("numb = " + numb)
+    const N = (p / p2) * 20;
     const inside_dichotomie = 2;
     const distances = [];
     let count = 0;

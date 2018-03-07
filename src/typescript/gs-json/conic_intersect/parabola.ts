@@ -32,7 +32,14 @@ const d1: number = Math.abs(r1 * Math.cos(angle0_p1*(2*Math.PI/360)));
 const d2: number = Math.abs(r2 * Math.cos(angle1_p1*(2*Math.PI/360)));
 const xyz: any[] = Arr.deepCopy(parabola1.getOrigin().getPosition());
 const center_ray2: IPoint = geom.addPoint([xyz[0],xyz[1],xyz[2]]);
-const N: number = 80;
+
+
+const p2: number = new three.Vector3(parabola2.getAxes()[0][0],
+                            parabola2.getAxes()[0][1],
+                            parabola2.getAxes()[0][2]).length();
+// const numb: number = p/p2;
+// console.log("numb = " + numb)
+const N: number = (p/p2) * 20;
 const inside_dichotomie: number = 2;
 const distances: number[] = [];
 let count: number = 0;
