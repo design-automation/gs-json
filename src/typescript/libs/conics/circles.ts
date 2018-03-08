@@ -138,33 +138,34 @@ export function circleEvaluatePoint(circle: gs.ICircle, point: gs.IPoint): numbe
 export function circleGetRenderXYZs(circle: gs.ICircle, resolution: number): gs.XYZ[] { // TODO remove resolution
     const rad: number = circle.getRadius();
     const angles: number[] = circle.getAngles();
-    // calculat the arc start angle
-    let arc_start: number;
+    // calculat the angles
+    let ang_start: number;
+    let ang_end: number;
     if (angles === null) {
-        arc_start = 0;
+        ang_start = 0;
+        ang_end = Math.PI * 2;
     } else {
-        arc_start = angles[0] * (Math.PI / 180);
+        ang_start = angles[0] * (Math.PI / 180);
+        ang_end = angles[1] * (Math.PI / 180);
     }
     // calculate the angle of the arc
     let arc_angle: number;
-    if (angles === null) {
-        arc_angle = 2 * Math.PI;
-    } else if (angles[0] < angles[1]) {
-        arc_angle = (angles[1]-angles[0]) * (Math.PI / 180);
+    if (ang_start < ang_end) {
+        arc_angle = ang_end - ang_start;
     } else {
-        arc_angle = (angles[0]-angles[1]) * (Math.PI / 180);
+        arc_angle = ((Math.PI * 2) - ang_start) + ang_end;
     }
     // calculate number of points
-    let N: number = Math.floor(arc_angle / (Math.PI/ 36));
-    if (N < 3) {N = 3;}
+    let num_points: number = Math.floor(arc_angle / (Math.PI/ 36));
+    if (num_points < 3) {num_points = 3;}
     // create matrix to map from XY plane into the 3D plane for circle
     const matrix_inv: three.Matrix4 =
         threex.matrixInv(threex.xformMatrixFromXYZs(circle.getOrigin().getPosition(), circle.getAxes()));
     // main loop to create points
     const xyz_points: gs.XYZ[] = [];
-    for(let k = 0; k < N; k++) {
-        const t: number = k/(N - 1);
-        const alpha: number = arc_start + (t * arc_angle);
+    for(let i = 0; i < num_points; i++) {
+        const t: number = i/(num_points - 1);
+        const alpha: number = ang_start + (t * arc_angle);
         const point: three.Vector3 = new three.Vector3(rad * Math.cos(alpha), rad * Math.sin(alpha), 0);
         point.applyMatrix4(matrix_inv);
         xyz_points.push(point.toArray() as gs.XYZ);

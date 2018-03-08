@@ -3,6 +3,10 @@ import {Arr} from "./libs/arr/arr";
 import {} from "jasmine";
 
 describe("Tests for Entity Object Circle", () => {
+
+    it("test_addCircle", () => {
+        expect( test_addCircle() ).toBe(true);
+    });
     it("test_getObjType", () => {
         expect( test_getObjType() ).toBe(true);
     });
@@ -41,15 +45,20 @@ describe("Tests for Entity Object Circle", () => {
     });
 });
 
-
-/**
- * Series of tests to verify Entity Object Ellipse implemented methods
- */
+export function test_addCircle(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const pt: gs.IPoint = g.addPoint([0,0,0]);
+    const c: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[270,0]);
+    const start: gs.IPoint = c.evalParam(0);
+    const end: gs.IPoint = c.evalParam(1);
+    return true;
+}
 export function test_getObjType(): boolean {
     const m: gs.Model = new gs.Model();
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
-    const curve: gs.IEllipse = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
+    const curve: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[45,135]);
     if(curve.getObjType() !== gs.EObjType.circle) {return false ;}
     return true;
 }
@@ -218,7 +227,7 @@ export function test_equiPoints(): boolean {
     const g: gs.IGeom = m.getGeom();
     const pt: gs.IPoint = g.addPoint([0,0,0]);
     {
-        const circle1: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[10,200]);
+        const circle1: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[270,0]);
         const points1 = circle1.equiPoints(20);
         if (points1.length !== 20) {return false;}
     }

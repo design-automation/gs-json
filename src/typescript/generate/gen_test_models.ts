@@ -1284,13 +1284,14 @@ export function genModelManyTorus(): gs.IModel {
 export function genModelCircles(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     const points: gs.IPoint[] = m.getGeom().addPoints([
-            [7,  33, 2],
-            [10, 12, 23],
-            [10, 10, -10],
+            [0,0,0],
+            [0,0,0],
+            [0,0,0],
         ]);
-    m.getGeom().addCircle(points[0], [7,0,0],  [0,1,0], [10,20]);
-    m.getGeom().addCircle(points[1], [0,23,0], [1,0,0], [30, 300]);
-    m.getGeom().addCircle(points[2], [0,0,16], [0,1,0], [20, 100]);
+    m.getGeom().addCircle(points[0], [1,0,0], [0,1,0], [270,0]);
+    m.getGeom().addCircle(points[1], [1,0,0], [0,0,1], [0,90]);
+    m.getGeom().addCircle(points[2], [0,1,0], [0,0,1], [90,180]);
+
     return m;
 }
 
