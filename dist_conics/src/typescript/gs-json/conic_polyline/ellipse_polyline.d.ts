@@ -1,5 +1,6 @@
-import { IEllipse, IPolyline, XYZ } from "../ifaces_gs";
+import { ICircle, IEllipse, IPolyline, XYZ } from "../ifaces_gs";
 export declare function ellipse_polyline(ellipse: IEllipse): IPolyline;
+export declare function circle_polyline(circle: ICircle): IPolyline;
 export declare function ellipse_length(curve: IEllipse, subdivision: number): number;
 export declare function ellipse_find_angle(curve: IEllipse, length: number, subdivision: number): number;
 export declare function ellipse_evaluate(curve: IEllipse, t: number, subdivision: number): XYZ;

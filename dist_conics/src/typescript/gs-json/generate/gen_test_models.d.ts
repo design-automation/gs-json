@@ -110,6 +110,10 @@ export declare function genModelDelObjs(): gs.IModel;
  */
 export declare function genModelObjWithAttribs(): gs.IModel;
 /**
+ * Generates model with a 3D Circle.
+ */
+export declare function genModel_3DConic_Circle(): gs.IModel;
+/**
  * Generates model with a 3D Polylined Ellipse.
  */
 export declare function genModel_3DConic_Ellipse(): gs.IModel;
@@ -135,6 +139,10 @@ export declare function genModel_3D_Ray2_circle_2D(): gs.IModel;
 export declare function genModel_3D_Ray2_parabola_2D(): gs.IModel;
 export declare function genModel_3D_Ray2_hyperbola_2D(): gs.IModel;
 export declare function genModel_3D_parabola_parabola_2D(): gs.IModel;
+export declare function genModel_3D_hyperbola_hyperbola_2D(): gs.IModel;
+export declare function genModel_3D_circle_circle_2D(): gs.IModel;
+export declare function genModel_3D_ellipse_ellipse_2D(): gs.IModel;
+export declare function genModel_3D_conics_conics_2D(): gs.IModel;
 export declare function orthoVectors(vector1: three.Vector3, vector2: three.Vector3): three.Vector3;
 export declare function crossVectors(v1: three.Vector3, v2: three.Vector3, norm?: boolean): three.Vector3;
 export declare function planesAreCoplanar(origin1: gs.IPoint, normal1: gs.XYZ, origin2: gs.IPoint, normal2: gs.XYZ): boolean;

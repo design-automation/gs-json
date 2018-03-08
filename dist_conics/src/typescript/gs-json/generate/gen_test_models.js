@@ -1444,6 +1444,32 @@ function genModelObjWithAttribs() {
 }
 exports.genModelObjWithAttribs = genModelObjWithAttribs;
 /**
+ * Generates model with a 3D Circle.
+ */
+function genModel_3DConic_Circle() {
+    const m = new gs.Model();
+    const g = m.getGeom();
+    const angle0 = 90;
+    const angle1 = 10;
+    const origin = g.addPoint([0, 0, 0]);
+    const pt1 = g.addPoint([1, 0, 0]);
+    const pt2 = g.addPoint([0, 1, 0]);
+    const circle = m.getGeom().addCircle(origin, pt1.getPosition(), [0, 1, 0], [angle0, angle1]);
+    const Pl1 = g.addPolyline([circle.getOrigin(), pt1], false);
+    const Pl2 = g.addPolyline([circle.getOrigin(), pt2], false);
+    const origin_e = g.addPoint([0, 0, 1]);
+    const pt1_e = g.addPoint([1, 0, 1]);
+    const pt2_e = g.addPoint([0, 1, 1]);
+    const ellipse = m.getGeom().addEllipse(origin_e, pt1.getPosition(), [0, 1, 0], [angle0, angle1]);
+    const Pl_e = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse);
+    const Pl1_e = g.addPolyline([ellipse.getOrigin(), pt1_e], false);
+    const Pl2_e = g.addPolyline([ellipse.getOrigin(), pt2_e], false);
+    console.log("Circle Angles " + circle.getAngles());
+    console.log("Ellipse Angles " + ellipse.getAngles());
+    return m;
+}
+exports.genModel_3DConic_Circle = genModel_3DConic_Circle;
+/**
  * Generates model with a 3D Polylined Ellipse.
  */
 function genModel_3DConic_Ellipse() {
@@ -1723,35 +1749,59 @@ exports.genModel_plane3D_parabola = genModel_plane3D_parabola;
 function genModel_3D_Ray2_ellipse_2D() {
     const m = new gs.Model();
     const g = m.getGeom();
-    for (let k = 0; k < 4; k++) {
-        const ellipse = g.addEllipse(g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]), [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], 
-        // [0, 360]);
-        [360 * Math.random(), 360 * Math.random()]);
-        const U1 = new three.Vector3(ellipse.getAxes()[0][0], ellipse.getAxes()[0][1], ellipse.getAxes()[0][2]).normalize();
-        const V1 = new three.Vector3(ellipse.getAxes()[1][0], ellipse.getAxes()[1][1], ellipse.getAxes()[1][2]).normalize();
-        const a = ellipse.getRadii()[0];
-        const b = ellipse.getRadii()[1];
-        const r1 = 0.5 * Math.min(a, b);
-        const center_ray2 = ellipse.getOrigin();
+    let condition = false;
+    do {
+        const U1 = new three.Vector3(15 * Math.random(), 15 * Math.random(), 15 * Math.random());
+        const V1 = new three.Vector3(15 * Math.random(), 15 * Math.random(), 15 * Math.random());
+        V1.setLength(U1.length());
+        const W1 = crossVectors(U1, V1, true);
+        const xyz1 = [40 * Math.random(), 40 * Math.random(), 40 * Math.random()];
+        const xyz2 = [xyz1[0] + 4 * W1.x, xyz1[1] + 4 * W1.y, xyz1[2] + 4 * W1.z];
+        const xyz3 = [xyz2[0] + 4 * W1.x, xyz2[1] + 4 * W1.y, xyz2[2] + 4 * W1.z];
+        const pt1 = g.addPoint(xyz1);
+        const pt2 = g.addPoint(xyz2);
+        const pt3 = g.addPoint(xyz3);
+        const angle0 = 360 * Math.random();
+        let angle1 = 360 * Math.random();
+        let condition2 = false;
+        // do{
+        //     angle1 = 360*Math.random();
+        //     condition2 = (angle1 > angle0) } while(!condition2)
+        do {
+            angle1 = 360 * Math.random();
+            condition2 = (angle1 < angle0);
+        } while (!condition2);
+        const circle1 = g.addCircle(pt1, [U1.x, U1.y, U1.z], [V1.x, V1.y, V1.z], [angle0, angle1]);
+        const ellipse2 = g.addEllipse(pt2, [U1.x, U1.y, U1.z], [V1.x, V1.y, V1.z], [angle0, angle1]);
+        const circle3 = g.addCircle(pt3, [U1.x, U1.y, U1.z], [V1.x, V1.y, V1.z], [angle0, angle1]);
         const t = Math.random();
-        const ray2_direction = [t * U1.x + (1 - t) * V1.x,
+        const ray_direction = [t * U1.x + (1 - t) * V1.x,
             t * U1.y + (1 - t) * V1.y,
             t * U1.z + (1 - t) * V1.z];
-        const ray2 = g.addRayTwo(center_ray2, ray2_direction);
-        const polyline1 = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse);
-        const polyline2 = rayTwo_polyline_1.rayTwo_polyline(ray2);
-        const points = rayTwo_1.rayTwo_ellipse(ray2, ellipse);
-        for (const point of points) {
+        const ray1 = g.addRayTwo(pt1, ray_direction);
+        const ray2 = g.addRayTwo(pt2, ray_direction);
+        const pline_circle1 = ellipse_polyline.circle_polyline(circle1);
+        const pline_ray1 = rayTwo_polyline_1.rayTwo_polyline(ray1);
+        const pline_ellipse2 = ellipse_polyline.ellipse_polyline_renderXYZ(ellipse2);
+        const pline_ray2 = rayTwo_polyline_1.rayTwo_polyline(ray2);
+        const points_circle = rayTwo_2.rayTwo_circle(ray1, circle1);
+        const points_ellipse = rayTwo_1.rayTwo_ellipse(ray2, ellipse2);
+        for (const point of points_circle) {
             g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
         }
-    }
+        for (const point of points_ellipse) {
+            g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
+        }
+        condition = (points_ellipse.length === 0);
+        g.delObj(circle1, false);
+    } while (condition);
     return m;
 }
 exports.genModel_3D_Ray2_ellipse_2D = genModel_3D_Ray2_ellipse_2D;
 function genModel_3D_Ray2_circle_2D() {
     const m = new gs.Model();
     const g = m.getGeom();
-    for (let k = 0; k < 4; k++) {
+    for (let k = 0; k < 1; k++) {
         const circle = g.addCircle(g.addPoint([4 * Math.random(), 4 * Math.random(), 4 * Math.random()]), [5 * Math.random(), 5 * Math.random(), 5 * Math.random()], [15 * Math.random(), 15 * Math.random(), 15 * Math.random()], [0, 360]);
         // [360*Math.random(), 360*Math.random()]);
         const U1 = new three.Vector3(circle.getAxes()[0][0], circle.getAxes()[0][1], circle.getAxes()[0][2]).normalize();
@@ -1867,6 +1917,26 @@ function genModel_3D_parabola_parabola_2D() {
     return m;
 }
 exports.genModel_3D_parabola_parabola_2D = genModel_3D_parabola_parabola_2D;
+function genModel_3D_hyperbola_hyperbola_2D() {
+    const m = new gs.Model();
+    return m;
+}
+exports.genModel_3D_hyperbola_hyperbola_2D = genModel_3D_hyperbola_hyperbola_2D;
+function genModel_3D_circle_circle_2D() {
+    const m = new gs.Model();
+    return m;
+}
+exports.genModel_3D_circle_circle_2D = genModel_3D_circle_circle_2D;
+function genModel_3D_ellipse_ellipse_2D() {
+    const m = new gs.Model();
+    return m;
+}
+exports.genModel_3D_ellipse_ellipse_2D = genModel_3D_ellipse_ellipse_2D;
+function genModel_3D_conics_conics_2D() {
+    const m = new gs.Model();
+    return m;
+}
+exports.genModel_3D_conics_conics_2D = genModel_3D_conics_conics_2D;
 ////////////////////////////////////////////////////////////
 function orthoVectors(vector1, vector2) {
     return crossVectors(vector1, vector2).cross(vector1);
@@ -1889,9 +1959,6 @@ function planesAreCoplanar(origin1, normal1, origin2, normal2) {
     const normal2_v = new three.Vector3(...normal2).normalize();
     const cond1 = (Math.abs(dotVectors(subVectors(origin1_v, origin2_v), normal2_v)) > EPS);
     const cond2 = (Math.abs(1 - Math.abs(normal1_v.dot(normal2_v))) > EPS);
-    console.log("Math.abs(1- Math.abs(normal1_v.dot(normal2_v))) = " + Math.abs(1 - Math.abs(normal1_v.dot(normal2_v))));
-    console.log("coplanar check 1 = " + cond1);
-    console.log("coplanar check 2 = " + cond2);
     if (Math.abs(dotVectors(subVectors(origin1_v, origin2_v), normal2_v)) > EPS) {
         return false;
     }

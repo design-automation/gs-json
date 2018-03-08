@@ -6,32 +6,11 @@ const plane3D = require("./plane3D");
 function rayTwo_circle(rayTwo, circle) {
     const v1 = new three.Vector3(circle.getAxes()[0][0], circle.getAxes()[0][1], circle.getAxes()[0][2]);
     const v2 = new three.Vector3(circle.getAxes()[1][0], circle.getAxes()[1][1], circle.getAxes()[1][2]);
-    // const r: number = circle.getRadius();
     const r = 1;
-    const ellipse = rayTwo.getGeom().addEllipse(circle.getOrigin(), [r * v1.x, r * v1.y, r * v1.z], [r * v2.x, r * v2.y, r * v2.z]);
+    const ellipse = rayTwo.getGeom().addEllipse(circle.getOrigin(), [r * v1.x, r * v1.y, r * v1.z], [r * v2.x, r * v2.y, r * v2.z], circle.getAngles());
     const points = rayTwo_ellipse(rayTwo, ellipse);
     rayTwo.getGeom().delObj(ellipse, false);
     return points;
-    // const v1: three.Vector3 = new three.Vector3(rayTwo.getVector()[0],
-    //                                             rayTwo.getVector()[1],
-    //                                             rayTwo.getVector()[2]);
-    // const v2: three.Vector3 = new three.Vector3(circle.getAxes()[0][0],
-    //                                             circle.getAxes()[0][1],
-    //                                             circle.getAxes()[0][2]);
-    // const v3: three.Vector3 = new three.Vector3(circle.getAxes()[1][0],
-    //                                             circle.getAxes()[1][1],
-    //                                             circle.getAxes()[1][2]);
-    // let ortho_rC: three.Vector3 = new three.Vector3();
-    // const EPS: number = 1e-4;
-    // if(orthoVectors(v1,v2).length() > EPS) {ortho_rC = orthoVectors(v1,v2);}
-    // if(orthoVectors(v1,v3).length() > EPS) {ortho_rC = orthoVectors(v1,v3);}
-    // if(!planesAreCoplanar(circle.getOrigin(), circle.getAxes()[2], rayTwo.getOrigin(),
-    //     [ortho_rC.x,ortho_rC.y,ortho_rC.z])) { throw new Error("Entities must be coplanar.");}
-    // const plane: IPlane = circle.getGeom().addPlane(rayTwo.getOrigin(), rayTwo.getVector(), circle.getAxes()[2]);
-    // const points = plane3D.plane3D_circle2D(circle,plane);
-    // circle.getGeom().delObj(plane, false);
-    // circle.getGeom().delObj(circle, false);
-    // return points;
 }
 exports.rayTwo_circle = rayTwo_circle;
 function rayTwo_ellipse(rayTwo, ellipse) {
@@ -40,11 +19,11 @@ function rayTwo_ellipse(rayTwo, ellipse) {
     const v3 = new three.Vector3(ellipse.getAxes()[1][0], ellipse.getAxes()[1][1], ellipse.getAxes()[1][2]);
     let ortho_rC = new three.Vector3();
     const EPS = 1e-4;
-    if (orthoVectors(v1, v2).length() > EPS) {
-        ortho_rC = orthoVectors(v1, v2);
+    if (crossVectors(v1, v2).length() > EPS) {
+        ortho_rC = crossVectors(v1, v2).normalize();
     }
-    if (orthoVectors(v1, v3).length() > EPS) {
-        ortho_rC = orthoVectors(v1, v3);
+    if (crossVectors(v1, v3).length() > EPS) {
+        ortho_rC = crossVectors(v1, v3).normalize();
     }
     if (!planesAreCoplanar(ellipse.getOrigin(), ellipse.getAxes()[2], rayTwo.getOrigin(), [ortho_rC.x, ortho_rC.y, ortho_rC.z])) {
         throw new Error("Entities must be coplanar.");
