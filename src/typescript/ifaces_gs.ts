@@ -1,6 +1,6 @@
 import * as three from "three";
 import {EGeomType, EDataType, EObjType} from "./enums";
-import {ITopoPathData} from "./ifaces_json";
+import {IModelData, ITopoPathData} from "./ifaces_json";
 
 export type XYZ = [number, number, number];
 
@@ -32,12 +32,14 @@ export interface IModel {
     delGroup(group: IGroup): boolean;
     hasGroup(group: IGroup): boolean;
     setGroupName(group: IGroup, new_name: string): boolean;
-    // Clean up nulls and unused points
+    // Others
+    merge(model: IModel):void;
     purge(): void;
-    // Runs some check
     validate(): boolean;
-    // Export the whole model to JSON
+    // Export the model
+    toModelData(): IModelData;
     toJSON(): string;
+    toString(): string;
 }
 
 /**

@@ -34,7 +34,7 @@ export class Kernel {
     private _topos_trees: Map<string, ITopoTree>;
 
     /**
-     * Construct a new model. If data is provided, the model will be populated with this data.
+     * Construct a new kernel. If data is provided, the model will be populated with this data.
      * @param
      * @return
      */
@@ -123,12 +123,12 @@ export class Kernel {
     //  Model General ------------------------------------------------------------------------------
 
     /**
-     * Exports the model as json data.
+     * Exports the model as a data object of type IModelData.
      * @param
      * @return
      */
-    public modelToJSON(): string {
-        const jsonData: IModelData = {
+    public modelToModelData(): IModelData {
+        const model_data: IModelData = {
             metadata: this._metadata,
             geom: {
                 points: this._points,
@@ -136,24 +136,24 @@ export class Kernel {
             },
         };
         if (this._attribs !== undefined) {
-            jsonData.attribs = {};
+            model_data.attribs = {};
             if (this._attribs.get(EGeomType.points) !== undefined) {
-                jsonData.attribs.points = Array.from(this._attribs.get(EGeomType.points).values());
+                model_data.attribs.points = Array.from(this._attribs.get(EGeomType.points).values());
             }
             if (this._attribs.get(EGeomType.vertices) !== undefined) {
-                jsonData.attribs.vertices = Array.from(this._attribs.get(EGeomType.vertices).values());
+                model_data.attribs.vertices = Array.from(this._attribs.get(EGeomType.vertices).values());
             }
             if (this._attribs.get(EGeomType.edges) !== undefined) {
-                jsonData.attribs.edges = Array.from(this._attribs.get(EGeomType.edges).values());
+                model_data.attribs.edges = Array.from(this._attribs.get(EGeomType.edges).values());
             }
             if (this._attribs.get(EGeomType.wires) !== undefined) {
-                jsonData.attribs.wires = Array.from(this._attribs.get(EGeomType.wires).values());
+                model_data.attribs.wires = Array.from(this._attribs.get(EGeomType.wires).values());
             }
             if (this._attribs.get(EGeomType.faces) !== undefined) {
-                jsonData.attribs.faces = Array.from(this._attribs.get(EGeomType.faces).values());
+                model_data.attribs.faces = Array.from(this._attribs.get(EGeomType.faces).values());
             }
             if (this._attribs.get(EGeomType.objs) !== undefined) {
-                jsonData.attribs.objs = Array.from(this._attribs.get(EGeomType.objs).values());
+                model_data.attribs.objs = Array.from(this._attribs.get(EGeomType.objs).values());
             }
         }
         //TODO add topos to groups
@@ -167,16 +167,26 @@ export class Kernel {
         // This kernel maintains a this._groups Map of such data, group_name -> group_data
         // When saving, the evalues of teh map are saved
         if (this._groups !== undefined) {
-            jsonData.groups = Array.from(this._groups.values());
-            for (const group of jsonData.groups) {
+            model_data.groups = Array.from(this._groups.values());
+            for (const group of model_data.groups) {
                 group.topos = []; //TODO add the topo data here
             }
         }
+        return model_data;
+    }
+
+    /**
+     * Exports the model as a json string.
+     * @param
+     * @return
+     */
+    public modelToJSON(): string {
+        const jsonData: IModelData = this.modelToModelData();
         return JSON.stringify(jsonData, null, 4);
     }
 
     /**
-     * to be completed
+     * Cleans up.
      * @param
      * @return
      */
@@ -186,7 +196,164 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Merges the data from another model into this kernel.
+     * @param data Modle data, as IModelData object.
+     */
+    public modelMerge(data: IModelData): void {
+        // Get the number of points
+        const num_ex_points: number = this._points[0].length;
+        const point_id_map: Map<number, number> = new Map();
+        const obj_id_map: Map<number, number> = new Map();
+        // Merge Geom points
+        if (data.geom !== undefined && data.geom.points !== undefined) {
+            // add the points one by one, populating a map as we go
+            for (let i = 0; i < data.geom.points[0].length; i++) {
+                if ((data.geom.points[0][i] !== undefined) && (data.geom.points[0][i] !== null)){ // TODO null // check that point has not been deleted
+                    const old_id: number = i;
+                    const xyz: XYZ = data.geom.points[1][data.geom.points[0][i]];
+                    const new_id: number = this.geomAddPoint(xyz);
+                    point_id_map.set(old_id, new_id);
+                }
+            }
+        }
+        // Merge Geom objs
+        if (data.geom !== undefined && data.geom.objs !== undefined) {
+            // add the objs one by one, populating a map as we go
+            for (let i = 0; i < data.geom.objs.length; i++) {
+                if ((data.geom.objs[i] !== undefined) && (data.geom.objs[i] !== null)) { // TODO null // check that obj has not been deleted
+                    const old_id: number = i;
+                    const old_obj: TObjData = data.geom.objs[i];
+                    const new_obj: TObjData = [[],[],[]];
+                    // wires
+                    for (const old_wire of old_obj[0]) {
+                        const new_wire = [];
+                        for (const old_point_id of old_wire) {
+                            if (old_point_id !== -1) {
+                                new_wire.push(point_id_map.get(old_point_id));
+                            } else {
+                                new_wire.push(-1);
+                            }
+                        }
+                        new_obj[0].push(new_wire);
+                    }
+                    // faces
+                    for (const old_face of old_obj[1]) {
+                        const new_face = [];
+                        for (const old_point_id of old_face) {
+                            if (old_point_id !== -1) {
+                                new_face.push(point_id_map.get(old_point_id));
+                            } else {
+                                new_face.push(-1);
+                            }
+                        }
+                        new_obj[1].push(new_face);
+                    }
+                    // parameters
+                    new_obj[2] = Arr.deepCopy(old_obj[2]);
+                    // push the new obj
+                    const new_id = this._objs.push(new_obj) - 1;
+                    obj_id_map.set(old_id, new_id);
+                }
+            }
+        }
+        // Mereg Attributes
+        // if (data.attribs && data.attribs.points !== undefined) {
+        //     for (const old_attrib_data of data.attribs.points) {
+        //         const new_attrib_data
+        //         if (attrib_data) {
+
+        //         }
+        //         attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
+        //         this._attribs.get(EGeomType.points).set(attrib_data.name, attrib_data);
+        //     }
+        // }
+        // if (data.attribs && data.attribs.objs !== undefined) {
+        //     for (const attrib_data of data.attribs.objs) {
+        //         attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
+        //         this._attribs.get(EGeomType.objs).set(attrib_data.name, attrib_data);
+        //     }
+        // }
+        // if (data.attribs && data.attribs.vertices !== undefined) {
+        //     for (const attrib_data of data.attribs.vertices) {
+        //         attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
+        //         this._attribs.get(EGeomType.vertices).set(attrib_data.name, attrib_data);
+        //     }
+        // }
+        // if (data.attribs && data.attribs.edges !== undefined) {
+        //     for (const attrib_data of data.attribs.edges) {
+        //         attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
+        //         this._attribs.get(EGeomType.edges).set(attrib_data.name, attrib_data);
+        //     }
+        // }
+        // if (data.attribs && data.attribs.wires !== undefined) {
+        //     for (const attrib_data of data.attribs.wires) {
+        //         attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
+        //         this._attribs.get(EGeomType.wires).set(attrib_data.name, attrib_data);
+        //     }
+        // }
+        // if (data.attribs && data.attribs.faces !== undefined) {
+        //     for (const attrib_data of data.attribs.faces) {
+        //         attrib_data.values[0].forEach((d, i) => (d === null) && delete attrib_data.values[0][i]);
+        //         this._attribs.get(EGeomType.faces).set(attrib_data.name, attrib_data);
+        //     }
+        // }
+        // Merge Groups
+        if (data.attribs && data.groups !== undefined) {
+            for (const old_group_data of data.groups) {
+                const new_group_data: IGroupData = {name: old_group_data.name};
+                // parent
+                if (old_group_data.parent !== undefined) {
+                    new_group_data.parent = old_group_data.parent;
+                } else {
+                    new_group_data.parent = null;
+                }
+                // properties
+                if (old_group_data.props !== undefined) {
+                    new_group_data.props = Arr.deepCopy(old_group_data.props);
+                } else {
+                    new_group_data.props = [];
+                }
+                // map point IDs
+                const new_point_ids: number[] = [];
+                if (old_group_data.points !== undefined) {
+                    for (const old_point_id of old_group_data.points) {
+                        new_point_ids.push(point_id_map.get(old_point_id));
+                    }
+                }
+                // map obj IDs
+                const new_obj_ids: number[] = [];
+                if (old_group_data.objs !== undefined) {
+                    for (const old_obj_id of old_group_data.objs) {
+                        new_obj_ids.push(obj_id_map.get(old_obj_id));
+                    }
+                }
+                // map topo trees
+
+                // TODO Topo trees
+
+                // check if the name already exists
+                const existing_group: IGroupData = this._groups.get(new_group_data.name);
+                if (existing_group !== undefined) {
+                    // add the group data to the existing group
+                    existing_group.parent = new_group_data.parent; // old parent will be overwritten
+                    existing_group.props.push(...new_group_data.props);
+                    existing_group.points.push(...new_group_data.points);
+                    existing_group.objs.push(...new_group_data.objs);
+                    // TODO add the topo trees to teh existing group
+                } else {
+                    // add a new group to the model
+                    this._groups.set(new_group_data.name, new_group_data);
+                    // TODO topo trees
+                    // this._topos_trees.set(new_group_data.name, new TopoTree(new_group_data.topos));
+                    // group_data.topos = undefined;
+                }
+
+            }
+        }
+    }
+
+    /**
+     * Checks the model.
      * @param
      * @return
      */

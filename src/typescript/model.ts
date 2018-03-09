@@ -242,6 +242,15 @@ export class Model implements IModel {
     //  Model --------------------------------------------------------------------------------------
 
     /**
+     * Merege another model into this model. Onlt the data is copied. The other model is unaffected.
+     * @param
+     * @return
+     */
+    public merge(model: IModel):void {
+        this._kernel.modelMerge(model.toModelData());
+    }
+
+    /**
      * Removes empty elements in sparse arrays.
      * @param
      * @return
@@ -260,7 +269,16 @@ export class Model implements IModel {
     }
 
     /**
-     *  Save the model as  file
+     *  Convert the model to a data object of type IModelData.
+     * @param
+     * @return
+     */
+    public toModelData(): IModelData {
+        return this._kernel.modelToModelData() as IModelData;
+    }
+
+    /**
+     *  Convert the model to a JSON string.
      * @param
      * @return
      */
@@ -269,7 +287,7 @@ export class Model implements IModel {
     }
 
     /**
-     *  Save the model as  file
+     *  Converts the model to a human readable string for printing.
      * @param
      * @return
      */

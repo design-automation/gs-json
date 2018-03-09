@@ -1,6 +1,7 @@
 import * as gs from "./gs-json";
 import {Arr} from "./libs/arr/arr";
-import * as td from "./test_data";
+import * as td from "./test_data"; // TODO remove
+import * as gen from "./generate/gen_test_models";
 import {} from "jasmine";
 
 describe("Tests for Model class", () => {
@@ -48,6 +49,9 @@ describe("Tests for Model class", () => {
     });
     it("test_Model_toJSON", () => {
         expect( test_Model_toJSON() ).toBe(true);
+    });
+    it("test_Model_merge", () => {
+        expect( test_Model_merge() ).toBe(true);
     });
 });
 
@@ -101,7 +105,7 @@ export function test_Model_constructor(): boolean {
 }
 
 export function test_Model_getGeom(): boolean {
-    const m: gs.Model = new gs.Model(td.open_box());
+    const m: gs.IModel = new gs.Model(td.open_box());
     const g: gs.IGroup = m.addGroup("Box");
     const f1: gs.IFace = m.getGeom().getObj(0).getFaces()[0];
     if (f1.getObjID() !== 0) {return false;}
@@ -109,7 +113,7 @@ export function test_Model_getGeom(): boolean {
 }
 
 export function test_Model_findAttribs(): boolean {
-    const m: gs.Model = new gs.Model(td.box_with_attribs());
+    const m: gs.IModel = new gs.Model(td.box_with_attribs());
     const e1: gs.IEntAttrib[] = m.findAttribs(gs.EGeomType.points) as gs.IEntAttrib[];
     const e2: gs.ITopoAttrib[] = m.findAttribs(gs.EGeomType.vertices) as gs.ITopoAttrib[];
     const e3: gs.ITopoAttrib[] = m.findAttribs(gs.EGeomType.faces) as gs.ITopoAttrib[];
@@ -127,7 +131,7 @@ export function test_Model_findAttribs(): boolean {
 }
 
 export function test_Model_getAttrib(): boolean {
-    const m: gs.Model = new gs.Model(td.box_with_attribs());
+    const m: gs.IModel = new gs.Model(td.box_with_attribs());
     const e1: gs.IEntAttrib = m.getEntAttrib("test1", gs.EGeomType.points);
     const e2: gs.ITopoAttrib = m.getTopoAttrib("test2", gs.EGeomType.vertices);
     const e3: gs.ITopoAttrib = m.getTopoAttrib("faces_id", gs.EGeomType.faces);
@@ -146,16 +150,16 @@ export function test_Model_getAttrib(): boolean {
 }
 
 export function test_Model_addAttrib(): boolean {
-    const m1: gs.Model = new gs.Model(td.box_with_attribs());
+    const m1: gs.IModel = new gs.Model(td.box_with_attribs());
     const e1: gs.IEntAttrib = m1.getEntAttrib("test1", gs.EGeomType.points);
-    const m2: gs.Model = new gs.Model();
+    const m2: gs.IModel = new gs.Model();
     const e2: gs.IEntAttrib = m2.addEntAttrib(e1.getName(), e1.getGeomType(), e1.getDataType());
     if (!(e2.getName() === e1.getName())) {return false; }
     return true;
 }
 
 export function test_Model_delAttrib(): boolean {
-    const m1: gs.Model = new gs.Model(td.box_with_attribs());
+    const m1: gs.IModel = new gs.Model(td.box_with_attribs());
     const a1: gs.IEntAttrib = m1.getEntAttrib("test1", gs.EGeomType.points);
     if (a1.getName() !== "test1") {return false; }
     if(!m1.delAttrib(a1)) {return false;}
@@ -164,7 +168,7 @@ export function test_Model_delAttrib(): boolean {
 }
 
 export function test_Model_getGroups(): boolean {
-    const m: gs.Model = new gs.Model();
+    const m: gs.IModel = new gs.Model();
     if (!(Arr.equal(m.getAllGroups(), []))) {return false; }
     const g1: gs.IGroup = m.addGroup("G1");
     const g2: gs.IGroup = m.addGroup("G2");
@@ -177,7 +181,7 @@ export function test_Model_getGroups(): boolean {
 }
 
 export function test_Model_getGroup(): boolean {
-    const m: gs.Model = new gs.Model(td.open_box());
+    const m: gs.IModel = new gs.Model(td.open_box());
     const g: gs.IGroup = m.addGroup("Box"); // No group in Box
     if (!( m.getGroup("Alpha") === null)) {return false; }
     if (!( m.getGroup("Box").getName() === "Box")) {return false; }
@@ -185,7 +189,7 @@ export function test_Model_getGroup(): boolean {
 }
 
 export function test_Model_addGroup(): boolean {
-    const m: gs.Model = new gs.Model();
+    const m: gs.IModel = new gs.Model();
     if (!( m.getGroup("Group1") === null)) {return false; }
     const g: gs.IGroup = m.addGroup("Group1");
     if (!( m.getGroup("Group1").getName() === "Group1")) {return false; }
@@ -193,7 +197,7 @@ export function test_Model_addGroup(): boolean {
 }
 
 export function test_Model_hasGroup(): boolean {
-    const m: gs.Model = new gs.Model();
+    const m: gs.IModel = new gs.Model();
     const g1: gs.IGroup = m.addGroup("First_Group");
     if (!m.hasGroup(g1)) {return false; }
     m.delGroup(g1);
@@ -202,7 +206,7 @@ export function test_Model_hasGroup(): boolean {
 }
 
 export function test_Model_delGroup(): boolean {
-    const m: gs.Model = new gs.Model();
+    const m: gs.IModel = new gs.Model();
     const g1: gs.IGroup = m.addGroup("First_Group");
     if (!m.hasGroup(g1)) {return false; }
     m.delGroup(g1);
@@ -226,7 +230,18 @@ export function test_Model_validateModel(): boolean { // OPTIONAL testing as of 
 }
 
 export function test_Model_toJSON(): boolean {
-    const m: gs.Model = new gs.Model(td.open_box());
+    const m: gs.IModel = new gs.Model(td.open_box());
     m.toJSON();
+    return true;
+}
+
+export function test_Model_merge(): boolean {
+    const m1: gs.IModel = gen.genModelBox();
+    const m2: gs.IModel = gen.genModelGroups();
+    m1.merge(m2);
+
+    console.log(gen.genModelGroups());
+
+    console.log(m1, m2);
     return true;
 }

@@ -1453,3 +1453,14 @@ export function genModelObjWithAttribs(): gs.IModel {
     }
     return m;
 }
+
+
+/**
+ * Generates and merge 2 models.
+ */
+export function genModelsAndMerge(): gs.IModel {
+    const m: gs.IModel = genModelDelPoints()
+    m.merge(genModelDelObjs());
+
+    return m;
+}
