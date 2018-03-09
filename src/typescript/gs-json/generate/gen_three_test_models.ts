@@ -65,21 +65,21 @@ if(require.main === module)  {
 
     // Conics Conics
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    console.log("test " + k); k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_circle_circle_2D()),
-                                                     path + "model_genModel_circle_circle.json");
-    console.log("test " + k); k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_ellipse_ellipse_2D()),
-                                                     path + "model_genModel_ellipse_ellipse.json");
-    console.log("test " + k); k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_parabola_parabola_2D()),
-                                                     path + "model_genModel_parabola_parabola.json");
-    console.log("test " + k); k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_hyperbola_hyperbola_2D()),
-                                                     path + "model_genModel_hyperbola_hyperbola.json");
-    console.log("test " + k); k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_conics_conics_2D()),
-                                                     path + "model_genModel_conics_conics.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_circle_circle_2D()),
+    //                                                  path + "model_genModel_circle_circle.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_ellipse_ellipse_2D()),
+    //                                                  path + "model_genModel_ellipse_ellipse.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_parabola_parabola_2D()),
+    //                                                  path + "model_genModel_parabola_parabola.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_hyperbola_hyperbola_2D()),
+    //                                                  path + "model_genModel_hyperbola_hyperbola.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_conics_conics_2D()),
+    //                                                  path + "model_genModel_conics_conics.json");
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Conics Plane 3D
