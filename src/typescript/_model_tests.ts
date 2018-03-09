@@ -236,12 +236,9 @@ export function test_Model_toJSON(): boolean {
 }
 
 export function test_Model_merge(): boolean {
-    const m1: gs.IModel = gen.genModelBox();
-    const m2: gs.IModel = gen.genModelGroups();
+    const m1: gs.IModel = gen.genModelGroups(); // 3 groups
+    const m2: gs.IModel = gen.genModelGroups(); // 3 groups, same names
     m1.merge(m2);
-
-    console.log(gen.genModelGroups());
-
-    console.log(m1, m2);
+    if (m1.getAllGroups().length !== 3) {return false;}
     return true;
 }

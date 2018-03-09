@@ -111,6 +111,7 @@ export class Kernel {
         if (data && data.attribs && data.groups !== undefined) {
             for (const group_data of data.groups) {
                 if (group_data.parent === undefined) {group_data.parent = null;}
+                if (group_data.props === undefined) {group_data.props = [];}
                 if (group_data.objs === undefined) {group_data.objs = [];}
                 if (group_data.points === undefined) {group_data.points = [];}
                 this._topos_trees.set(group_data.name, new TopoTree(group_data.topos));
@@ -314,17 +315,17 @@ export class Kernel {
                     new_group_data.props = [];
                 }
                 // map point IDs
-                const new_point_ids: number[] = [];
+                new_group_data.points = [];
                 if (old_group_data.points !== undefined) {
                     for (const old_point_id of old_group_data.points) {
-                        new_point_ids.push(point_id_map.get(old_point_id));
+                        new_group_data.points.push(point_id_map.get(old_point_id));
                     }
                 }
                 // map obj IDs
-                const new_obj_ids: number[] = [];
+                new_group_data.objs = [];
                 if (old_group_data.objs !== undefined) {
                     for (const old_obj_id of old_group_data.objs) {
-                        new_obj_ids.push(obj_id_map.get(old_obj_id));
+                        new_group_data.objs.push(obj_id_map.get(old_obj_id));
                     }
                 }
                 // map topo trees
@@ -537,7 +538,7 @@ export class Kernel {
      */
     public modelAddGroup(name: string, parent?: string): IGroupData {
         if (this.modelHasGroup(name)) {return this.modelGetGroup(name);}
-        const data: IGroupData = {name, parent: null, objs: [], points: []};
+        const data: IGroupData = {name, parent: null, props: [], points: [], objs: []};
         if (parent !== undefined) {
             if (this._groups.has(parent)) {
                 data.parent = parent;
@@ -2295,7 +2296,7 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupGetProps(name: string): Array<[string, any]> { // TODO change to Map
+    public groupGetProps(name: string): Array<[string, any]> { // TODO
         return this._groups.get(name).props;
     }
 
@@ -2304,9 +2305,9 @@ export class Kernel {
      * @param
      * @return
      */
-    public groupSetProps(name: string, new_map: Array<[string, any]>): Array<[string, any]> { // TODO
+    public groupSetProps(name: string, props: Array<[string, any]>): Array<[string, any]> { // TODO
         const old_map = this._groups.get(name).props;
-        this._groups.get(name).props = new_map ;
+        this._groups.get(name).props = props ;
         return old_map;
     }
 
