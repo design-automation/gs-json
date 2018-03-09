@@ -214,7 +214,8 @@ if(xyz_results.length >= 1) {
             result.push(geom.addPoint(xyz))
             }
 }
-return result;
+return null;
+//return result;
 }
 
 export function vectorFromPointsAtoB(a: IPoint, b: IPoint, norm: boolean = false): three.Vector3 {

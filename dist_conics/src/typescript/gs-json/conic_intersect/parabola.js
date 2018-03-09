@@ -220,7 +220,8 @@ function parabola_parabola(parabola1, parabola2) {
             result.push(geom.addPoint(xyz));
         }
     }
-    return result;
+    return null;
+    // return result;
 }
 exports.parabola_parabola = parabola_parabola;
 function vectorFromPointsAtoB(a, b, norm = false) {

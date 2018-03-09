@@ -220,7 +220,8 @@ function hyperbola_hyperbola(hyperbola1, hyperbola2) {
             result.push(geom.addPoint(xyz));
         }
     }
-    return result;
+    return null;
+    //return result;
 }
 exports.hyperbola_hyperbola = hyperbola_hyperbola;
 function vectorFromPointsAtoB(a, b, norm = false) {

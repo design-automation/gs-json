@@ -13,7 +13,6 @@ const plane3D_1 = require("../conic_intersect/plane3D");
 const circle_1 = require("../conic_intersect/circle");
 const ellipse_1 = require("../conic_intersect/ellipse");
 const parabola_1 = require("../conic_intersect/parabola");
-const hyperbola_1 = require("../conic_intersect/hyperbola");
 /**
  * Generates an empty model with nothing in it.
  */
@@ -1945,65 +1944,72 @@ function genModel_3D_parabola_parabola_2D() {
 exports.genModel_3D_parabola_parabola_2D = genModel_3D_parabola_parabola_2D;
 function genModel_3D_hyperbola_hyperbola_2D() {
     const m = new gs.Model();
-    const g = m.getGeom();
-    let condition = false;
-    let num_pairs = 0;
-    do {
-        do {
-            const U1 = new three.Vector3(15 * Math.random(), 15 * Math.random(), 15 * Math.random());
-            const V1 = new three.Vector3(15 * Math.random(), 15 * Math.random(), 15 * Math.random());
-            const W1 = crossVectors(U1, V1, true);
-            const alpha = Math.random() * 2 * Math.PI;
-            const a = Math.cos(alpha);
-            const b = Math.sin(alpha);
-            const U1_ = new three.Vector3(a * U1.x + b * V1.x, a * U1.y + b * V1.y, a * U1.z + b * V1.z);
-            const V1_ = new three.Vector3(b * U1.x + a * V1.x, b * U1.y + a * V1.y, b * U1.z + a * V1.z);
-            const xyz1 = [40 * Math.random(), 40 * Math.random(), 40 * Math.random()];
-            const xyz2 = [xyz1[0] + 4 * W1.x, xyz1[1] + 4 * W1.y, xyz1[2] + 4 * W1.z];
-            const xyz3 = [xyz2[0] + 4 * W1.x, xyz2[1] + 4 * W1.y, xyz2[2] + 4 * W1.z];
-            const xyz1_ = [xyz1[0] + 0.8 * U1.x, xyz1[1] + 0.8 * U1.y, xyz1[2] + 0.8 * U1.z];
-            const xyz2_ = [xyz2[0] + 0.8 * U1.x, xyz2[1] + 0.8 * U1.y, xyz2[2] + 0.8 * U1.z];
-            const xyz3_ = [xyz3[0] + 0.8 * U1.x, xyz3[1] + 0.8 * U1.y, xyz3[2] + 0.8 * U1.z];
-            const pt2 = g.addPoint(xyz2);
-            const pt2_ = g.addPoint(xyz2_);
-            // const t_v1: three.Vector3 = new three.Vector3(40*Math.random(),40*Math.random(),40*Math.random());
-            // const vec1: [number,number,number] = [t_v1.x,t_v1.y,t_v1.z];
-            const a1 = U1.length();
-            // const t_v2: three.Vector3 = new three.Vector3(40*Math.random(),40*Math.random(),40*Math.random());
-            // const vec2: [number,number,number] = [t_v2.x,t_v2.y,t_v2.z];
-            const b1 = V1.length();
-            const angle_max = Math.atan(a1 / b1) * 360 / (2 * Math.PI);
-            const domain_angle0 = 360 - 2 * angle_max;
-            const angle0 = (270 + angle_max + domain_angle0 * Math.random()) % 360;
-            const angle0_max = (270 + angle_max) % 360;
-            const angle1_max = (270 - angle_max) % 360;
-            let domain_angle1;
-            if (angle0 < angle1_max) {
-                domain_angle1 = angle1_max - angle0;
-            }
-            if (angle0 > angle0_max) {
-                domain_angle1 = 360 - (angle0 - angle1_max);
-            }
-            const angle1 = (angle0 + domain_angle1 * Math.random()) % 360;
-            // const angle0: number = 270 + 90*Math.random();
-            // const angle1: number = angle0 + (270 + 360 - angle0)*Math.random();
-            const hyperbola2 = g.addHyperbola(pt2, [U1.x, U1.y, U1.z], [V1.x, V1.y, V1.z], [angle0, angle1]);
-            const hyperbola2_ = g.addHyperbola(pt2_, [U1_.x, U1_.y, U1_.z], [V1_.x, V1_.y, V1_.z], [angle0, angle1]);
-            const points_hyperbola = hyperbola_1.hyperbola_hyperbola(hyperbola2, hyperbola2_);
-            for (const point of points_hyperbola) {
-                g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
-            }
-            condition = (points_hyperbola.length === 0);
-            if (!condition) {
-                const pline_ellipse2 = hyperbola_polyline.hyperbola_polyline_renderXYZ(hyperbola2);
-                const pline_ellipse2_ = hyperbola_polyline.hyperbola_polyline_renderXYZ(hyperbola2_);
-            }
-            g.delObj(hyperbola2, false);
-            g.delObj(hyperbola2_, false);
-        } while (condition);
-        num_pairs++;
-        console.log(num_pairs);
-    } while (num_pairs != 4);
+    // const g: gs.IGeom = m.getGeom();
+    // let condition: boolean = false;
+    // let num_pairs: number = 0;
+    // do{
+    //     do {
+    //     const U1: three.Vector3 = new three.Vector3(15*Math.random(),15*Math.random(),15*Math.random());
+    //     const V1: three.Vector3 = new three.Vector3(15*Math.random(),15*Math.random(),15*Math.random());
+    //     const W1: three.Vector3 = crossVectors(U1,V1,true);
+    //     const alpha: number = Math.random()*2*Math.PI;
+    //     const a: number = Math.cos(alpha);
+    //     const b: number = Math.sin(alpha);
+    //     const U1_: three.Vector3 = new three.Vector3(
+    //             a*U1.x + b*V1.x,
+    //             a*U1.y + b*V1.y,
+    //             a*U1.z + b*V1.z);
+    //     const V1_: three.Vector3 = new three.Vector3(
+    //             b*U1.x + a*V1.x,
+    //             b*U1.y + a*V1.y,
+    //             b*U1.z + a*V1.z);
+    //     const xyz1: gs.XYZ = [40*Math.random(),40*Math.random(),40*Math.random()];
+    //     const xyz2: gs.XYZ = [xyz1[0] + 4*W1.x, xyz1[1] + 4*W1.y, xyz1[2] + 4*W1.z];
+    //     const xyz3: gs.XYZ = [xyz2[0] + 4*W1.x, xyz2[1] + 4*W1.y, xyz2[2] + 4*W1.z];
+    //     const xyz1_: gs.XYZ = [xyz1[0] + 0.8*U1.x, xyz1[1] + 0.8*U1.y, xyz1[2] + 0.8*U1.z];
+    //     const xyz2_: gs.XYZ = [xyz2[0] + 0.8*U1.x, xyz2[1] + 0.8*U1.y, xyz2[2] + 0.8*U1.z];
+    //     const xyz3_: gs.XYZ = [xyz3[0] + 0.8*U1.x, xyz3[1] + 0.8*U1.y, xyz3[2] + 0.8*U1.z];
+    //     const pt2: gs.IPoint = g.addPoint(xyz2);
+    //     const pt2_: gs.IPoint = g.addPoint(xyz2_);
+    //     const a1: number = U1.length();
+    //     const b1: number = V1.length();
+    //     const angle_max: number = Math.atan(a1/b1)*360/(2*Math.PI);
+    //     const domain_angle0: number = 360 - 2*angle_max;
+    //     const angle0: number = (270 + angle_max + domain_angle0*Math.random()) %360;
+    //     const angle0_max: number = (270 + angle_max ) %360;
+    //     const angle1_max: number = (270 - angle_max ) %360;
+    //     let domain_angle1: number;
+    //     if (angle0 < angle1_max) {domain_angle1 = angle1_max - angle0;}
+    //     if (angle0 > angle0_max) {domain_angle1 = 360 - (angle0 - angle1_max);}
+    //     const angle1: number = (angle0 + domain_angle1*Math.random()) %360;
+    //     const hyperbola2: gs.IHyperbola = g.addHyperbola(pt2,[U1.x,U1.y,U1.z],[V1.x,V1.y,V1.z],[angle0,angle1])
+    //     const a1_: number = U1_.length();
+    //     const b1_: number = V1_.length();
+    //     const angle_max_: number = Math.atan(a1_/b1_)*360/(2*Math.PI);
+    //     const domain_angle0_: number = 360 - 2*angle_max_;
+    //     const angle0_: number = (270 + angle_max_ + domain_angle0_*Math.random()) %360;
+    //     const angle0_max_: number = (270 + angle_max_ ) %360;
+    //     const angle1_max_: number = (270 - angle_max_ ) %360;
+    //     let domain_angle1_: number;
+    //     if (angle0_ < angle1_max_) {domain_angle1_ = angle1_max_ - angle0_;}
+    //     if (angle0_ > angle0_max_) {domain_angle1_ = 360 - (angle0_ - angle1_max_);}
+    //     const angle1_: number = (angle0_ + domain_angle1_*Math.random()) %360;
+    //     const hyperbola2_: gs.IHyperbola = g.addHyperbola(pt2_,[U1_.x,U1_.y,U1_.z],[V1_.x,V1_.y,V1_.z],[angle0,angle1])
+    //     const points_hyperbola: gs.IPoint[] = hyperbola_hyperbola(hyperbola2, hyperbola2_);
+    //    for(const point of points_hyperbola) {
+    //         g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+    //     }
+    //     condition = (points_hyperbola.length === 0);
+    //     if(!condition) {
+    //     const pline_ellipse2: gs.IPolyline = hyperbola_polyline.hyperbola_polyline_renderXYZ(hyperbola2);
+    //     const pline_ellipse2_: gs.IPolyline = hyperbola_polyline.hyperbola_polyline_renderXYZ(hyperbola2_);            
+    //     }
+    //     g.delObj(hyperbola2, false);
+    //     g.delObj(hyperbola2_, false);
+    //     } while(condition)
+    // num_pairs++;
+    // console.log(num_pairs)
+    // } while(num_pairs != 4)
     return m;
 }
 exports.genModel_3D_hyperbola_hyperbola_2D = genModel_3D_hyperbola_hyperbola_2D;

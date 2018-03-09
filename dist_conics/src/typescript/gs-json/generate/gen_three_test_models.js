@@ -1,8 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const gm = require("./gen_test_models");
-const filesys = require("../libs/filesys/filesys");
-const tg = require("./three_generate");
 const path = "../gs-json/src/assets/three/";
 /**
  * Write all models to disk as json files.
@@ -74,9 +71,9 @@ if (require.main === module) {
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_parabola_parabola_2D()),
     //                                                  path + "model_genModel_parabola_parabola.json");
-    console.log("test " + k);
-    k++;
-    filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_hyperbola_hyperbola_2D()), path + "model_genModel_hyperbola_hyperbola.json");
+    // console.log("test " + k); k++;
+    // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_hyperbola_hyperbola_2D()),
+    //                                                  path + "model_genModel_hyperbola_hyperbola.json");
     // console.log("test " + k); k++;
     // filesys.writeThreeToJSONFile(tg.genThreeOptModel(gm.genModel_3D_conics_conics_2D()),
     //                                                  path + "model_genModel_conics_conics.json");
