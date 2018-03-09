@@ -240,5 +240,12 @@ export function test_Model_merge(): boolean {
     const m2: gs.IModel = gen.genModelGroups(); // 3 groups, same names
     m1.merge(m2);
     if (m1.getAllGroups().length !== 3) {return false;}
+
+
+    const m3: gs.IModel = gen.genModelGroups(); // 3 groups
+    const m4: gs.IModel = new gs.Model();
+    const g1: gs.IGroup = m4.addGroup("First_Group");
+    m3.merge(m4);
+
     return true;
 }

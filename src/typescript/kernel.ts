@@ -329,8 +329,11 @@ export class Kernel {
                     }
                 }
                 // map topo trees
-
-                // TODO Topo trees
+                if (old_group_data.topos !== undefined) {
+                    new_group_data.topos = Arr.deepCopy(old_group_data.topos);
+                } else {
+                    new_group_data.topos = [];
+                }
 
                 // check if the name already exists
                 const existing_group: IGroupData = this._groups.get(new_group_data.name);
@@ -340,13 +343,12 @@ export class Kernel {
                     existing_group.props.push(...new_group_data.props);
                     existing_group.points.push(...new_group_data.points);
                     existing_group.objs.push(...new_group_data.objs);
-                    // TODO add the topo trees to teh existing group
+                    // TODO add the topo trees to the existing group
                 } else {
                     // add a new group to the model
                     this._groups.set(new_group_data.name, new_group_data);
-                    // TODO topo trees
-                    // this._topos_trees.set(new_group_data.name, new TopoTree(new_group_data.topos));
-                    // group_data.topos = undefined;
+                    // create the topo trees
+                    this._topos_trees.set(new_group_data.name, new TopoTree(new_group_data.topos));
                 }
 
             }
