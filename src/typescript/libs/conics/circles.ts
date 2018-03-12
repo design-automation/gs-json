@@ -21,16 +21,22 @@ export function getRenderXYZs(obj: gs.IObj, resolution: number): gs.XYZ[] {
 export function circleLength(circle: gs.ICircle): number {
     const rad: number = circle.getRadius();
     const angles: number[] = circle.getAngles();
-    // calculate the angle of the arc
-    let arc_angle: number;
+    // if circle is closed, then return 2PI * rad
     if (angles === null) {
         return 2 * Math.PI * rad;
-    } else if (angles[0] < angles[1]) {
-        arc_angle = (angles[1]-angles[0]);
-    } else {
-        arc_angle = (angles[0]-angles[1]);
     }
-    return 2 * Math.PI * rad * (arc_angle / 360);
+    // set arc start and arc end angles, in radians
+    const ang_start: number = angles[0] * (Math.PI / 180);
+    const ang_end: number = angles[1] * (Math.PI / 180);
+    // calculate the angle of the arc
+    let arc_angle: number;
+    if (ang_start < ang_end) {
+        arc_angle = ang_end - ang_start;
+    } else {
+        arc_angle = ((Math.PI * 2) - ang_start) + ang_end;
+    }
+    // calculate the length, 2PI * rad * (arc_angle/2PI)
+    return rad * arc_angle;
 }
 
 /**
