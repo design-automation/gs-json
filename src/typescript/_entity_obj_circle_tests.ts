@@ -2,6 +2,8 @@ import * as gs from "./gs-json";
 import {Arr} from "./libs/arr/arr";
 import {} from "jasmine";
 
+const EPS: number = 1e-6;
+
 describe("Tests for Entity Object Circle", () => {
 
     it("test_addCircle", () => {
@@ -155,8 +157,8 @@ export function test_length(): boolean {
     const angle_1: number = 0;
     const angle_2: number = 180;
     const angle_3: number = 360;
-    const curve1: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[10,200]);
-    if(curve1.length() < 0) {return false;}
+    const cir: gs.ICircle = g.addCircle(pt,[1,0,0],[0,1,0],[270,0]);
+    if(Math.abs(cir.length() - (0.5 * Math.PI)) > EPS) {return false;}
     return true;
 }
 
