@@ -347,7 +347,7 @@ export class Geom implements IGeom {
      * @return
      */
     public findObjs(obj_type?: EObjType): IObj[] {
-        throw new Error("Method not implemented");
+        return this._kernel.geomFindObjIDs(obj_type).map((id) => _castToObjType(this._kernel, id));
     }
 
     /**

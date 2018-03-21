@@ -1089,7 +1089,18 @@ export class Kernel {
      */
     public geomGetObjIDs(): number[] {
         const obj_ids: number[] = [];
-        this._objs.forEach((v,i) => (v !== undefined) && obj_ids.push(i));
+        this._objs.forEach((o,i) => (o !== undefined) && obj_ids.push(i));
+        return obj_ids;
+    }
+
+    /**
+     * Creates a list of object IDs of a certain type. Skips empty slots in spare array.
+     * @param
+     * @return
+     */
+    public geomFindObjIDs(obj_type: EObjType): number[] {
+        const obj_ids: number[] = [];
+        this._objs.forEach((o,i) => (o !== undefined) && (o[2][0] === obj_type) && obj_ids.push(i));
         return obj_ids;
     }
 
@@ -3106,13 +3117,13 @@ export class Kernel {
     private _objXformAxes(ids: number[], matrix: three.Matrix4): void {
         for (const id of ids) {
             switch (this.objGetType(id)) {
-                case EObjType.ray: case EObjType.plane:  case EObjType.circle: case EObjType.ellipse:
+                case EObjType.ray: case EObjType.plane: case EObjType.circle: case EObjType.ellipse:
                     // set position of matrix to 0 so no translation
                     const matrix2 = matrix.clone();
                     matrix2.setPosition(new three.Vector3());
                     this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][1], matrix2);
-                    this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][2], matrix2);
-                    this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][3], matrix2);
+                    this._objs[id][2][2] = threex.multXYZMatrix(this._objs[id][2][2], matrix2);
+                    this._objs[id][2][3] = threex.multXYZMatrix(this._objs[id][2][3], matrix2);
                     break;
                 case EObjType.polyline: case EObjType.polymesh:
                     //no need to do anything
