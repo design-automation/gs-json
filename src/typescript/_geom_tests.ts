@@ -62,6 +62,9 @@ describe("Tests for Geom class", () => {
     it("test_Geom_getObj", () => {
         expect( test_Geom_getObj() ).toBe(true);
     });
+    it("test_Geom_unweldObjs", () => {
+        expect( test_Geom_unweldObjs() ).toBe(true);
+    });
     it("test_Geom_delObj", () => {
         expect( test_Geom_delObj() ).toBe(true);
     });
@@ -405,6 +408,23 @@ export function test_Geom_getObj(): boolean {
     const polymesh: gs.IObj = geom.getObj(0);
     if(!(Arr.equal([polymesh.getObjType()],[200]))) {return false;}
 
+    return true;
+}
+
+export function test_Geom_unweldObjs(): boolean {
+    const m: gs.Model = new gs.Model();
+    const g: gs.IGeom = m.getGeom();
+    const p1 = g.addPoint([0,0,0]);
+    const p2 = g.addPoint([2,0,0]);
+    const p3 = g.addPoint([3,6,0]);
+    const p4 = g.addPoint([7,4,9]);
+    const p5 = g.addPoint([1,2,6]);
+    const pline1: gs.IPolyline = g.addPolyline([p1,p2,p3,p4,p5], true);
+    const pline2: gs.IPolyline = g.addPolyline([p1,p2,p3], false);
+    const pline3: gs.IPolyline = g.addPolyline([p1,p3,p4], false);
+    // unweld
+    const new_points: gs.IPoint[] = g.unweldObjs([pline1, pline2, pline3]);
+    if (new_points.length !== 6){return false;}
     return true;
 }
 

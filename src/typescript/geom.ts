@@ -405,6 +405,14 @@ export class Geom implements IGeom {
     }
 
     /**
+     * Unweld the objects so that they all have unique points.
+     */
+    public unweldObjs(objs: IObj[]): IPoint[] {
+        return this._kernel.geomUnweldObjs(objs.map((obj) => obj.getID()))
+            .map((id) => new Point(this._kernel, id));
+    }
+
+    /**
      * Copy the array of object.
      */
     public copyObjs(objs: IObj[], copy_attribs: boolean = true): IObj[] {

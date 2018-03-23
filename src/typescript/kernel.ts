@@ -985,6 +985,40 @@ export class Kernel {
     }
 
     /**
+     * Make the objects all have unique points that are not shared by other objects.
+     * @param ids
+     * @param copy_attribs
+     * @return Array of new point ids
+     */
+    public geomUnweldObjs(ids: number[]): number[] {
+        const all_new_points: number[] = [];
+        // copy all the objects, one by one
+        for (const obj_id of ids) {
+            const old_points: number[] = [];
+            for (const point_id of this.objGetAllPointIDs(obj_id)) {
+                const vertices: ITopoPathData[] = this.pointGetVertices(point_id);
+                if (vertices.length > 1) {
+                    for (const vertex of vertices) {
+                        if (vertex.id !== obj_id) {
+                            old_points.push(point_id);
+                            break;
+                        }
+                    }
+                }
+            }
+            // create the new points, and copy attributes to new points
+            const new_points: number[] = this.geomCopyPoints(old_points, true);
+            // swap the points
+            this._swapObjPoints(obj_id, old_points, new_points);
+            // add the new points to the array
+            all_new_points.push(...new_points);
+
+        }
+        // return the new point ids
+        return all_new_points;
+    }
+
+    /**
      * Copy an object and  its points.
      * If copy_attribs is true, then the copied object will have the same attributes as the original object.
      * @param ids

@@ -81,6 +81,7 @@ export interface IGeom  {
     delObjs(objs: IObj[], keep_points: boolean): boolean;
     delObj(obj: IObj, keep_points: boolean): boolean;
     numObjs(): number;
+    unweldObjs(objs: IObj[]): IPoint[];
     copyObjs(objs: IObj[], copy_attribs: boolean): IObj[];
     xformObjs(objs: IObj[], matrix: three.Matrix4): void;
     // Topos
