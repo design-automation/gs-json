@@ -21,7 +21,8 @@ function parabola_parabola(parabola1, parabola2) {
     const xyz = arr_1.Arr.deepCopy(parabola1.getOrigin().getPosition());
     const center_ray2 = geom.addPoint([xyz[0], xyz[1], xyz[2]]);
     const p2 = new three.Vector3(parabola2.getAxes()[0][0], parabola2.getAxes()[0][1], parabola2.getAxes()[0][2]).length();
-    const N = (p / p2) * 20;
+    // const N: number = (p/p2) * 120;
+    const N = 80;
     const inside_dichotomie = 2;
     const distances = [];
     let count = 0;
@@ -65,9 +66,11 @@ function parabola_parabola(parabola1, parabola2) {
                 list.push(k - 1);
             }
         }
+        // console.log("d = " + d)
         geom.delPoints(points1);
         geom.delPoints(points2);
     }
+    console.log("list = " + list);
     let total = 0;
     for (const k of list) {
         if (k !== undefined) {
@@ -101,9 +104,11 @@ function parabola_parabola(parabola1, parabola2) {
                     const points2 = rayTwo_1.rayTwo_parabola(ray2, parabola2);
                     geom.delObj(ray2, false);
                     geom.delPoint(center_ray2);
-                    d = vectorFromPointsAtoB(points1[0], points2[0], false).length();
-                    if (points2.length === 2 && d > vectorFromPointsAtoB(points1[0], points2[1], false).length()) {
-                        d = vectorFromPointsAtoB(points1[0], points2[1], false).length();
+                    if (points1[0] !== undefined && points2[0] !== undefined) {
+                        d = vectorFromPointsAtoB(points1[0], points2[0], false).length();
+                        if (points2.length === 2 && d > vectorFromPointsAtoB(points1[0], points2[1], false).length()) {
+                            d = vectorFromPointsAtoB(points1[0], points2[1], false).length();
+                        }
                     }
                     geom.delPoints(points1);
                     geom.delPoints(points2);
@@ -220,8 +225,8 @@ function parabola_parabola(parabola1, parabola2) {
             result.push(geom.addPoint(xyz));
         }
     }
-    return null;
-    // return result;
+    // return null;
+    return result;
 }
 exports.parabola_parabola = parabola_parabola;
 function vectorFromPointsAtoB(a, b, norm = false) {

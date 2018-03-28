@@ -1989,7 +1989,7 @@ export function genModel_3D_parabola_parabola_2D(): gs.IModel {
     const g: gs.IGeom = m.getGeom();
     let condition: boolean = false;
     let num_pairs: number = 0;
-    do{
+    do {
         do {
         const U1: three.Vector3 = new three.Vector3(15*Math.random(),15*Math.random(),15*Math.random());
         const V1: three.Vector3 = new three.Vector3(15*Math.random(),15*Math.random(),15*Math.random());
@@ -2008,7 +2008,6 @@ export function genModel_3D_parabola_parabola_2D(): gs.IModel {
                 b*U1.x + a*V1.x,
                 b*U1.y + a*V1.y,
                 b*U1.z + a*V1.z);
-
         const xyz1: gs.XYZ = [40*Math.random(),40*Math.random(),40*Math.random()];
         const xyz2: gs.XYZ = [xyz1[0] + 4*W1.x, xyz1[1] + 4*W1.y, xyz1[2] + 4*W1.z];
         const xyz3: gs.XYZ = [xyz2[0] + 4*W1.x, xyz2[1] + 4*W1.y, xyz2[2] + 4*W1.z];
@@ -2023,26 +2022,29 @@ export function genModel_3D_parabola_parabola_2D(): gs.IModel {
         const angle0: number = 270 + 90*Math.random();
         const angle1: number = angle0 + (270 + 360 - angle0)*Math.random();
 
-        const parabola2: gs.IParabola = g.addParabola(pt2,[U1.x,U1.y,U1.z],[V1.x,V1.y,V1.z],[angle0,angle1])
-        const parabola2_: gs.IParabola = g.addParabola(pt2_,[U1_.x,U1_.y,U1_.z],[V1_.x,V1_.y,V1_.z],[angle0,angle1])
+        const parabola2: gs.IParabola = g.addParabola(pt2,[U1.x,U1.y,U1.z],[V1.x,V1.y,V1.z],[angle0,angle1]);
+        const parabola2_: gs.IParabola = g.addParabola(pt2_,[U1_.x,U1_.y,U1_.z],[V1_.x,V1_.y,V1_.z],[angle0,angle1]);
         const points_parabola: gs.IPoint[] = parabola_parabola(parabola2, parabola2_);
-
-       for(const point of points_parabola) {
-            g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
-        }
-        condition = (points_parabola.length === 0);
-        if(!condition) {
-        const pline_ellipse2: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
-        const pline_ellipse2_: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola2_);            
-        }
+        if(points_parabola !== null) {
+        console.log("points_parabola = " + points_parabola.length)
+        condition = (points_parabola.length !== 2);
+                if(!condition) {
+                    for(const point of points_parabola) {
+                        g.addCircle(point, [0.2*U1.x,0.2*U1.y,0.2*U1.z],[0.2*V1.x,0.2*V1.y,0.2*V1.z]);
+                    }
+                    const pline_ellipse2: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
+                    const pline_ellipse2_: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola2_);
+                                    }
+                }
         g.delObj(parabola2, false);
         g.delObj(parabola2_, false);
-        } while(condition)
-    num_pairs++;
-    console.log(num_pairs)
-    } while(num_pairs != 4)
+        } while(condition);
+        num_pairs++;
+        console.log(num_pairs)
+        } while(num_pairs !== 1)
     return m;
 }
+
 export function genModel_3D_hyperbola_hyperbola_2D(): gs.IModel {
     const m: gs.IModel = new gs.Model();
     // const g: gs.IGeom = m.getGeom();

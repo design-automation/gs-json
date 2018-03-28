@@ -35,7 +35,8 @@ const center_ray2: IPoint = geom.addPoint([xyz[0],xyz[1],xyz[2]]);
 const p2: number = new three.Vector3(parabola2.getAxes()[0][0],
                             parabola2.getAxes()[0][1],
                             parabola2.getAxes()[0][2]).length();
-const N: number = (p/p2) * 20;
+// const N: number = (p/p2) * 120;
+const N = 80;
 const inside_dichotomie: number = 2;
 const distances: number[] = [];
 let count: number = 0;
@@ -76,9 +77,11 @@ for (let k = -2; k<N+2 ; k++) {
         if(ok) { list.push(k-1);
         }
     }
+    // console.log("d = " + d)
     geom.delPoints(points1);
     geom.delPoints(points2);
 }
+console.log("list = " + list);
 let total: number = 0;
 for( const k of list) {
     if(k!== undefined) {
@@ -112,11 +115,13 @@ for( const k of list) {
                 const points2: IPoint[] = rayTwo_parabola(ray2, parabola2);
                 geom.delObj(ray2, false);
                 geom.delPoint(center_ray2);
-                d = vectorFromPointsAtoB(points1[0],points2[0],false).length();
-                if( points2.length === 2 && d > vectorFromPointsAtoB(points1[0],points2[1],false).length()) {
-                d = vectorFromPointsAtoB(points1[0],points2[1],false).length();}
+                if(points1[0] !== undefined && points2[0] !== undefined){
+                    d = vectorFromPointsAtoB(points1[0],points2[0],false).length();
+                    if( points2.length === 2 && d > vectorFromPointsAtoB(points1[0],points2[1],false).length()) {
+                    d = vectorFromPointsAtoB(points1[0],points2[1],false).length();}
+                }
                 geom.delPoints(points1);
-                geom.delPoints(points2);                
+                geom.delPoints(points2);
                 distance_k1.push(d);
                 if( distance_k1.length >= 2) {
                     const num: number = distance_k1[distance_k1.length - 1] -  distance_k1[distance_k1.length - 2];
@@ -181,7 +186,7 @@ for( const k of list) {
                         cond_k1 = distance_k1[distance_k1.length - 1] <  distance_k1[distance_k1.length - 2];}
                     }
                     geom.delPoints(points1);
-                    geom.delPoints(points2);                                        
+                    geom.delPoints(points2);
                     count_while_2++;
                     geom.delObj(ray2, false);
                     geom.delPoint(center_ray2);
@@ -198,7 +203,7 @@ for( const k of list) {
                 const A: three.Vector3 = new three.Vector3(check_xyz[0],check_xyz[1],check_xyz[2]);
                 const B: three.Vector3 = new three.Vector3(xyz_result[0],xyz_result[1],xyz_result[2]);
                 const C: three.Vector3 = subVectors(A,B,false);
-                    if(C.length() < threshold) { check_double = true;}                    
+                    if(C.length() < threshold) { check_double = true;}
             }
             if(!check_double){
             xyz_results.push(xyz_result);}
@@ -215,8 +220,8 @@ if(xyz_results.length >= 1) {
             result.push(geom.addPoint(xyz))
             }
 }
-return null;
-// return result;
+// return null;
+return result;
 }
 
 export function vectorFromPointsAtoB(a: IPoint, b: IPoint, norm: boolean = false): three.Vector3 {

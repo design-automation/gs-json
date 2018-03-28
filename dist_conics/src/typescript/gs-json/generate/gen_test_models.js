@@ -1925,20 +1925,23 @@ function genModel_3D_parabola_parabola_2D() {
             const parabola2 = g.addParabola(pt2, [U1.x, U1.y, U1.z], [V1.x, V1.y, V1.z], [angle0, angle1]);
             const parabola2_ = g.addParabola(pt2_, [U1_.x, U1_.y, U1_.z], [V1_.x, V1_.y, V1_.z], [angle0, angle1]);
             const points_parabola = parabola_1.parabola_parabola(parabola2, parabola2_);
-            for (const point of points_parabola) {
-                g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
-            }
-            condition = (points_parabola.length === 0);
-            if (!condition) {
-                const pline_ellipse2 = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
-                const pline_ellipse2_ = parabola_polyline.parabola_polyline_renderXYZ(parabola2_);
+            if (points_parabola !== null) {
+                console.log("points_parabola = " + points_parabola.length);
+                condition = (points_parabola.length !== 2);
+                if (!condition) {
+                    for (const point of points_parabola) {
+                        g.addCircle(point, [0.2 * U1.x, 0.2 * U1.y, 0.2 * U1.z], [0.2 * V1.x, 0.2 * V1.y, 0.2 * V1.z]);
+                    }
+                    const pline_ellipse2 = parabola_polyline.parabola_polyline_renderXYZ(parabola2);
+                    const pline_ellipse2_ = parabola_polyline.parabola_polyline_renderXYZ(parabola2_);
+                }
             }
             g.delObj(parabola2, false);
             g.delObj(parabola2_, false);
         } while (condition);
         num_pairs++;
         console.log(num_pairs);
-    } while (num_pairs != 4);
+    } while (num_pairs !== 1);
     return m;
 }
 exports.genModel_3D_parabola_parabola_2D = genModel_3D_parabola_parabola_2D;
