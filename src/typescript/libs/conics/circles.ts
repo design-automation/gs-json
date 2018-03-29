@@ -74,6 +74,18 @@ export function circleEvaluate(circle: gs.ICircle, t: number): gs.XYZ {
 }
 
 /**
+ * Calculate the xyz tangent at parameter t on the circle or arc. The t parameter range is from 0 to 1.
+ */
+export function circleEvaluateTangent(circle: gs.ICircle, t: number): gs.XYZ {
+    const point_xyz: gs.XYZ = circleEvaluate(circle, t);
+    if (point_xyz === null) {return null;}
+    const origin_xyz: gs.XYZ = circle.getOrigin().getPosition();
+    const normal_xyz: gs.XYZ = circle.getNormal();
+    const vec_xyz: gs.XYZ = threex.subXYZs(point_xyz, origin_xyz);
+    return threex.crossXYZs(vec_xyz, normal_xyz, true);
+}
+
+/**
  * Project a point on a circle, and calculate the parameter t.
  */
 export function circleEvaluatePoint(circle: gs.ICircle, point: gs.IPoint): number {

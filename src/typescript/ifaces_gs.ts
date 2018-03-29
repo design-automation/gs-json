@@ -201,6 +201,7 @@ export interface ICircle  extends IObj {
     setRadius(radius: number): number ;
     length(): number;
     evalParam(t: number): IPoint;
+    evalParamTangent(t: number): XYZ;
     evalPoint(point:IPoint): number;
     equiPoints(num_points: number): IPoint[];
 }

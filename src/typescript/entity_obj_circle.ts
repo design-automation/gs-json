@@ -125,6 +125,14 @@ export class Circle extends Obj implements ICircle {
     }
 
     /**
+     * Get the t parameter on the circle or arc.
+     * @return A unit vector.
+     */
+    public evalParamTangent(t: number): XYZ {
+        return math_conics.circleEvaluateTangent(this, t);
+    }
+
+    /**
      * Project a point onto the circle or arc, and return the t parameter.
      * @return t parameter value.
      */
