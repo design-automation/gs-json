@@ -83,7 +83,6 @@ describe("Tests for Group class", () => {
     });
 });
 
-
 // Testing methods the Groups Class, composed of 1 constructor and 17 methods
 export function test_Groups_constructor(): boolean {
     const m: gs.Model = new gs.Model(td.box_with_groups());
@@ -313,13 +312,34 @@ export function test_Groups_addPoint(): boolean {
 
 export function test_Groups_addPoints(): boolean {
     const m: gs.Model = new gs.Model(td.open_box());
+    const geom: gs.IGeom = m.getGeom();
     const g1: gs.IGroup = m.addGroup("Box1");
+    const point1: gs.IPoint = geom.addPoint([11, 22, 36]);
+    const point2: gs.IPoint = geom.addPoint([12, 22, 23]);
+    const point3: gs.IPoint = geom.addPoint([14, 32, 33]);
+    g1.addPoints([point2, point1, point3]);
+    if ((g1.getPoints().length) !== 3) {return false; }
+
+    // test large numbers of points
     const g2: gs.IGroup = m.addGroup("Box2");
-    const point1: gs.IPoint = m.getGeom().addPoint([11, 22, 36]);
-    const point2: gs.IPoint = m.getGeom().addPoint([12, 22, 23]);
-    const point3: gs.IPoint = m.getGeom().addPoint([14, 32, 33]);
-    // g2.addPoints([point1.getID(), point2.getID(), point3.getID()]);
-    // if ((g2.getPointIDs().length - g1.getPointIDs().length) !== 3) {return false; }
+    g2.addPoints([point2, point2, point2]);
+    if ((g2.getPoints().length) !== 1) {return false; }
+    for (let i=0; i<100; i++) {
+        g2.addPoint(point2);
+    }
+    if ((g2.getPoints().length) !== 1) {return false; }
+
+    // test adding lists
+    const g3: gs.IGroup = m.addGroup("Box3");
+    const points_a: gs.IPoint[] = [];
+    const points_b: gs.IPoint[] = [];
+    for (let i=0; i<10; i++) {
+        points_a.push(geom.addPoint([12, 22, 23]));
+        points_b.push(geom.addPoint([5,4,3]));
+    }
+    g3.addPoints(points_a);
+    g3.addPoints(points_b);
+    if ((g3.getPoints().length) !== 20) {return false; }
     return true;
 }
 

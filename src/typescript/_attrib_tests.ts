@@ -70,15 +70,26 @@ export function test_Attrib_getObjDataType(): boolean {
 export function test_Attrib_getValues(): boolean {
     const m: gs.IModel = gen.genModelBoxWithAttribs();
     const g: gs.IGeom = m.getGeom();
+
+    // get ent attrib values
     const ent_attribs: gs.IEntAttrib[] = m.getAllEntAttribs();
-    // test ent attrib
-    const values1: any[] = ent_attribs[0].getValues();
+    const ent_attrib: gs.IEntAttrib =  ent_attribs[0];
+    const values1: any[] = ent_attrib.getValues();
+    if (values1.length !== 8) {return false;}
+
+    // add points, then get ent attrib values
     g.addPoints([[1,2,3], [2,3,4], [3,4,5]]);
+    const values2: any[] = ent_attribs[0].getValues();
+    if (values2.length !== 11) {return false;}
+    if (values2[9] !== null) {return false;}
+
+    // del points, then get ent attrib values
     const points: gs.IPoint[] = g.getAllPoints();
     g.delPoint(points[5]);
-    const values2: any[] = ent_attribs[0].getValues();
-    if (values1.length !== 8) {return false;}
-    if (values2.length !== 10) {return false;}
+    const values3: any[] = ent_attribs[0].getValues();
+    if (values3.length !== 10) {return false;}
+    if (values3[8] !== null) {return false;}
+
     // test topo attribs
     const topo_attribs: gs.ITopoAttrib[] = m.getAllTopoAttribs();
     const topo_values1: any[] =  topo_attribs[0].getValues();
@@ -87,6 +98,7 @@ export function test_Attrib_getValues(): boolean {
     if (topo_values1.length !== 24) {return false;}
     if (topo_values2.length !== 24) {return false;}
     if (topo_values3.length !== 6) {return false;}
+
     return true;
 }
 

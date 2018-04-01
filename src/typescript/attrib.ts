@@ -117,4 +117,16 @@ export abstract class Attrib implements IAttrib {
     public count(): number  {
         return this._kernel.attribCount(this._name, this._geom_type);
     }
+
+    //  toString -------------------------------------------------------------------------------------
+
+    /**
+     * Create a string representation of this attribute.
+     * @return String
+     */
+    public toString(): string {
+        return "Attrib(name:" + this.getName() +
+            ", geom:" + EGeomType[this.getGeomType()] +
+            ", data:" + EDataType[this.getDataType()] + ")";
+    }
 }

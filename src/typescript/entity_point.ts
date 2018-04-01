@@ -115,6 +115,6 @@ export class Point extends Ent implements IPoint {
      * @return String
      */
     public toString(): string {
-        return "Point:[" + this.getPosition() + "]";
+        return this.getLabel() + ":[" + this.getPosition() + "]";
     }
 }

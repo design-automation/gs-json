@@ -327,19 +327,36 @@ export function test_Geom_getPoint(): boolean {
 }
 
 export function test_Geom_delPoint(): boolean {
-    const m: gs.IModel = new gs.Model();
-    const g: gs.IGeom =  m.getGeom();
-    const p0: gs.IPoint = g.addPoint([1,2,3]);
-    const p1: gs.IPoint = g.addPoint([0,0,0]);
-    const p2: gs.IPoint = g.addPoint([4,5,6]);
-    if (!g.delPoint(p1)) {return false;}
-    if (g.numPoints() !== 2) {return false;}
-    if (!Arr.equal(g.getPoint(2).getPosition(), [4,5,6])) {return false;}
-    if (!g.delPoint(p2)) {return false;}
-    if (g.numPoints() !== 1) {return false;}
-    if (!Arr.equal(g.getPoint(0).getPosition(), [1,2,3])) {return false;}
-    if (!g.delPoint(p0)) {return false;}
-    if (g.numPoints() !== 0) {return false;}
+    {
+        const m: gs.IModel = new gs.Model();
+        const g: gs.IGeom =  m.getGeom();
+        const p0: gs.IPoint = g.addPoint([1,2,3]);
+        const p1: gs.IPoint = g.addPoint([0,0,0]);
+        const p2: gs.IPoint = g.addPoint([4,5,6]);
+        if (!g.delPoint(p1)) {return false;}
+        if (g.numPoints() !== 2) {return false;}
+        if (!Arr.equal(g.getPoint(2).getPosition(), [4,5,6])) {return false;}
+        if (!g.delPoint(p2)) {return false;}
+        if (g.numPoints() !== 1) {return false;}
+        if (!Arr.equal(g.getPoint(0).getPosition(), [1,2,3])) {return false;}
+        if (!g.delPoint(p0)) {return false;}
+        if (g.numPoints() !== 0) {return false;}
+    }
+    {
+        const m: gs.IModel = new gs.Model();
+        const g: gs.IGeom =  m.getGeom();
+        const p0: gs.IPoint = g.addPoint([1,2,3]);
+        const p1: gs.IPoint = g.addPoint([0,0,0]);
+        const p2: gs.IPoint = g.addPoint([4,5,6]);
+        const pline: gs.IPolyline = g.addPolyline([p0, p1, p2], false);
+        if (!g.delPoint(p1)) {return false;}
+        if (!pline.exists()) {return false;}
+        if (g.numPoints() !== 2) {return false;}
+        const points: gs.IPoint[] = pline.getPointsArr();
+        if (points.length !== 2) {return false;}
+        if (!g.delPoint(p2)) {return false;}
+        if (pline.exists()) {return false;}
+    }
     return true;
 }
 

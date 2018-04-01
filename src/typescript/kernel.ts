@@ -1715,12 +1715,12 @@ export class Kernel {
         // insert the new vertex
         vertices.splice(new_vertex_index, 0, point_id);
         // update edge attributes
-        for (const attrib of this._attribs.get(EGeomType.edges)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.edges).entries()) {
             const edge_attribs: number[] = attrib.values[0][path.id][path.tt][path.ti];
             edge_attribs.splice(new_edge_index, 0, 0); // points to null
         }
         // update vertex attributes
-        for (const attrib of this._attribs.get(EGeomType.vertices)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.vertices).entries()) {
             const vertex_attribs: number[] = attrib.values[0][path.id][path.tt][path.ti];
             vertex_attribs.splice(new_vertex_index, 0, 0); // points to null
         }
@@ -1803,12 +1803,12 @@ export class Kernel {
         const edges: number[] = this._objs[edge_path.id][edge_path.tt][edge_path.ti];
         edges.splice(edge_path.si + 1, 0, point_id);
         // update edge attributes
-        for (const attrib of this._attribs.get(EGeomType.edges)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.edges).entries()) {
             const edge_attribs: number[] = attrib.values[0][edge_path.id][edge_path.tt][edge_path.ti];
             edge_attribs.splice(edge_path.si + 1, 0, 0); // points to null
         }
         // update vertex attributes
-        for (const attrib of this._attribs.get(EGeomType.vertices)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.vertices).entries()) {
             const vertex_attribs: number[] = attrib.values[0][edge_path.id][edge_path.tt][edge_path.ti];
             vertex_attribs.splice(edge_path.si, 0, 0); // points to null
         }
@@ -1895,18 +1895,16 @@ export class Kernel {
     }
 
     /**
-     * to be completed
+     * Get all attribute names
      * @param
      * @return
      */
     public attribGetNames(geom_type: EGeomType): string[] {
-        const names: string[] = [];
-        this._attribs.get(geom_type).forEach((a) => names.push(a.name));
-        return names;
+        return Array.from(this._attribs.get(geom_type).keys());
     }
 
     /**
-     * to be completed
+     * Get attrib data type
      * @param
      * @return
      */
@@ -2125,7 +2123,8 @@ export class Kernel {
      */
     public groupAddObj(name: string, id: number): boolean {
         const group: IGroupData = this._groups.get(name);
-        if (id in group.objs) {return false;} else {group.objs.push(id); }
+        if (group.objs.indexOf(id) !== -1) {return false; }
+        group.objs.push(id);
         return true;
     }
 
@@ -2136,7 +2135,6 @@ export class Kernel {
      * @return Returns true if all obj IDs were added, false otherwise.
      */
     public groupAddObjs(name: string, ids: number[]): boolean {
-        const group: IGroupData = this._groups.get(name);
         let ok: boolean = true;
         for (const id of ids) {
             if (!this.groupAddObj(name, id)) {ok = false; }
@@ -2162,7 +2160,6 @@ export class Kernel {
      * @return
      */
     public groupRemoveObjs(name: string, ids: number[]): boolean {
-        const group: IGroupData = this._groups.get(name);
         let ok: boolean = true;
         for (const id of ids) {
             if (!this.groupRemoveObj(name, id)) {ok = false; }
@@ -2176,8 +2173,7 @@ export class Kernel {
      * @return
      */
     public groupHasObj(name: string, id: number): boolean {
-        const group: IGroupData = this._groups.get(name);
-        const index = group.objs.indexOf(id);
+        const index = this._groups.get(name).objs.indexOf(id);
         if (index === -1) {return false; }
         return true;
     }
@@ -2281,7 +2277,8 @@ export class Kernel {
      */
     public groupAddPoint(name: string, id: number): boolean {
         const group: IGroupData = this._groups.get(name);
-        if (id in group.points) {return false;} else {group.points.push(id); }
+        if (group.points.indexOf(id) !== -1) {return false; }
+        group.points.push(id);
         return true;
     }
 
@@ -2291,7 +2288,6 @@ export class Kernel {
      * @return
      */
     public groupAddPoints(name: string, ids: number[]): boolean {
-        const group: IGroupData = this._groups.get(name);
         let ok: boolean = true;
         for (const id of ids) {
             if (!this.groupAddPoint(name, id)) {ok = false; }
@@ -2439,16 +2435,16 @@ export class Kernel {
      * @return
      */
     private _newObjAddToAttribs(new_id: number): void {
-        for (const attrib of this._attribs.get(EGeomType.objs).values()) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.objs).entries()) {
             attrib.values[0][new_id] = 0;
         }
-        for (const attrib of this._attribs.get(EGeomType.wires).values()) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.wires).entries()) {
             attrib.values[0][new_id] = Arr.make(this._objs[new_id][0].length, 0);
         }
-        for (const attrib of this._attribs.get(EGeomType.faces).values()) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.faces).entries()) {
             attrib.values[0][new_id] = Arr.make(this._objs[new_id][1].length, 0);
         }
-        for (const attrib of this._attribs.get(EGeomType.edges).values()) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.edges).entries()) {
             attrib.values[0][new_id] =
                 [
                     this._objs[new_id][0].map((w, wi) =>
@@ -2457,7 +2453,7 @@ export class Kernel {
                         Arr.make(f.filter((v) => v !== -1).length, 0)),
                 ];
         }
-        for (const attrib of this._attribs.get(EGeomType.vertices).values()) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.vertices).entries()) {
             attrib.values[0][new_id] =
                 [
                     this._objs[new_id][0].map((w, wi) =>
@@ -2491,7 +2487,7 @@ export class Kernel {
      * @return
      */
     private _newPointAddToAttribs(id: number): void {
-        for (const attrib of this._attribs.get(EGeomType.points).values()) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.points).entries()) {
             attrib.values[0][id] = 0;
         }
     }
@@ -2503,7 +2499,7 @@ export class Kernel {
      * @return
      */
     private _copiedPointAddToAttribs(new_id: number, old_id: number, copy_attribs: boolean): void {
-        for (const attrib of this._attribs.get(EGeomType.points).values()) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.points).entries()) {
             if (copy_attribs) {
                 attrib.values[0][new_id] = Arr.deepCopy(attrib.values[0][old_id]);
             } else {
@@ -2599,10 +2595,10 @@ export class Kernel {
      * @return
      */
     private _updateAttribsForNewVertexOrEdge(path: ITopoPathData): void {
-        for (const attrib of this._attribs.get(EGeomType.vertices)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.vertices).entries()) {
             this._updateAttribsSetToNull(attrib.values[0], path);
         }
-        for (const attrib of this._attribs.get(EGeomType.edges)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.edges).entries()) {
             this._updateAttribsSetToNull(attrib.values[0], path);
         }
     }
@@ -2613,7 +2609,7 @@ export class Kernel {
      * @return
      */
     private _updateAttribsForNewWire(path: ITopoPathData): void {
-        for (const attrib of this._attribs.get(EGeomType.wires)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.wires).entries()) {
             this._updateAttribsSetToNull(attrib.values[0], path);
         }
     }
@@ -2624,7 +2620,7 @@ export class Kernel {
      * @return
      */
     private _updateAttribsForNewFace(path: ITopoPathData): void {
-        for (const attrib of this._attribs.get(EGeomType.faces)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.faces).entries()) {
             this._updateAttribsSetToNull(attrib.values[0], path);
         }
     }
@@ -2709,7 +2705,7 @@ export class Kernel {
      */
     private _updateObjsForDelPoint(id: number): void {
         for (const vertex_path of this.pointGetVertices(id)) {
-            if (!this.geomHasTopo(vertex_path)) {
+            if (this.geomHasTopo(vertex_path)) {
                 this._delVertexFromObj(vertex_path);
             }
         }
@@ -2809,10 +2805,10 @@ export class Kernel {
      * @return
      */
     private _updateAttribsForDelVertexOrEdge(path: ITopoPathData): void {
-        for (const attrib of this._attribs.get(EGeomType.vertices)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.vertices).entries()) {
             attrib.values[0][path.id][path.tt][path.ti].splice(path.si, 1);
         }
-        for (const attrib of this._attribs.get(EGeomType.edges)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.edges).entries()) {
             attrib.values[0][path.id][path.tt][path.ti].splice(path.si, 1);
         }
     }
@@ -2823,7 +2819,7 @@ export class Kernel {
      * @return
      */
     private _updateAttribsForDelWire(path: ITopoPathData): void {
-        for (const attrib of this._attribs.get(EGeomType.wires)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.wires).entries()) {
             attrib.values[0][path.id].splice(path.ti, 1);
         }
     }
@@ -2834,7 +2830,7 @@ export class Kernel {
      * @return
      */
     private _updateAttribsForDelFace(path: ITopoPathData): void {
-        for (const attrib of this._attribs.get(EGeomType.faces)) {
+        for (const [name, attrib] of this._attribs.get(EGeomType.faces).entries()) {
             attrib.values[0][path.id].splice(path.ti, 1);
         }
     }

@@ -283,7 +283,8 @@ export abstract class Obj extends Ent implements IObj {
      * @return Strig
      */
     public toString(): string {
-        return "Obj('"+ this.getLabel() +"', "+ mapObjTypeToString.get(this.getObjType()) +
+        return "Obj('"+ this.getLabel() +
+            "', "+ mapObjTypeToString.get(this.getObjType()) +
             ", faces:" + this.numFaces() + ", wires:" + this.numWires() +
             ", edges:" + (this.numFaceEdges() + this.numWireEdges()) +
             ", vertices:" + (this.numFaceVertices() + this.numWireVertices()) + ")";
