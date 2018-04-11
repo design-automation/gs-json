@@ -37,6 +37,7 @@ function _castToObjType(_kernel, id) {
             return new entity_obj_hyperbola_1.Hyperbola(_kernel, id);
         default:
             throw new Error("Object type does not exist.");
+        // TODO add more here
     }
 }
 exports._castToObjType = _castToObjType;

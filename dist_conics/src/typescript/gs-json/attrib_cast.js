@@ -13,7 +13,7 @@ function _castToAttribType(_kernel, geom_type, name) {
         case enums_1.EGeomType.points:
         case enums_1.EGeomType.objs:
             return new attrib_entattrib_1.EntAttrib(_kernel, name, geom_type);
-        default:// topo attribs
+        default: // topo attribs
             return new attrib_topoattrib_1.TopoAttrib(_kernel, name, geom_type);
     }
 }
@@ -23,7 +23,7 @@ function _castToAttribTypes(_kernel, geom_type, names) {
         case enums_1.EGeomType.points:
         case enums_1.EGeomType.objs:
             return names.map((name) => new attrib_entattrib_1.EntAttrib(_kernel, name, geom_type));
-        default:// topo attribs
+        default: // topo attribs
             return names.map((name) => new attrib_topoattrib_1.TopoAttrib(_kernel, name, geom_type));
     }
 }

@@ -141,7 +141,7 @@ function genModelBoxWithAttribs() {
     const verts = gs.Arr.flatten(box.getVertices());
     for (const vert of verts) {
         const paths = [];
-        for (const vert2 of vert.verticesSharedPoint()[1]) {
+        for (const vert2 of vert.verticesSharedPoint()[1]) { //getPoint().getVertices()) {
             if (vert2 !== vert) {
                 paths.push(vert2.getTopoPathStr());
             }
@@ -1502,27 +1502,25 @@ exports.genModel_3DConic_Ellipse = genModel_3DConic_Ellipse;
 function genModel_3DConic_Parabola() {
     const m = new gs.Model();
     const g = m.getGeom();
-    for (let k = 0; k < 10; k++) {
-        const center = g.addPoint([40 * Math.random(), 40 * Math.random(), 40 * Math.random()]);
-        const angle0 = 270 + 90 * Math.random();
-        const angle1 = angle0 + (270 + 360 - angle0) * Math.random();
-        const parabola = m.getGeom().addParabola(center, [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [10 * Math.random(), 10 * Math.random(), 10 * Math.random()], [angle0, angle1]);
-        const polyline = parabola_polyline.parabola_polyline(parabola);
-        g.delObj(parabola, false);
-    }
-    // const center: gs.IPoint = g.addPoint([0,0,0]);
-    // const angle0: number = 340;
-    // const angle1: number = 230;
-    // const parabola: gs.IParabola = m.getGeom().addParabola(center, [10,0,0],[0,1,0],[angle0, angle1]);
-    // // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
-    // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline_renderXYZ(parabola);
+    // for(let k: number = 0; k<10; k++) {
+    // const center: gs.IPoint = g.addPoint([40*Math.random(),40*Math.random(),40*Math.random()]);
+    // const angle0: number = 270 + 90*Math.random();
+    // const angle1: number = angle0 + (270 + 360 - angle0)*Math.random();
+    // const parabola: gs.IParabola = m.getGeom().addParabola(center, [10*Math.random(),10*Math.random(),10*Math.random()],
+    //                                                             [10*Math.random(),10*Math.random(),10*Math.random()],
+    //                                                             [angle0, angle1]);
+    // const polyline: gs.IPolyline = parabola_polyline.parabola_polyline(parabola);
+    // console.log("Width = " + parabola_width(parabola));
     // g.delObj(parabola,false);
-    // const center2: gs.IPoint = g.addPoint([0,0,4]);
-    // const parabola2: gs.IParabola = m.getGeom().addParabola(center2, [10,0,0],[0,1,0],[angle0, angle1]);
-    // const polyline2: gs.IPolyline = parabola_polyline.parabola_polyline(parabola2);
-    // g.delObj(parabola2,false);
-    // g.delPoint(center);
-    // g.delPoint(center2);
+    // }
+    const center = g.addPoint([0, 0, 0]);
+    const angle0 = 0;
+    const angle1 = 90;
+    const p = 5;
+    const parabola = m.getGeom().addParabola(center, [p, 0, 0], [0, 1, 0], [angle0, angle1]);
+    const polyline = parabola_polyline.parabola_polyline(parabola);
+    console.log("Width = " + parabola_1.parabola_width(parabola));
+    g.delObj(parabola, false);
     return m;
 }
 exports.genModel_3DConic_Parabola = genModel_3DConic_Parabola;
@@ -1901,7 +1899,9 @@ function genModel_3D_parabola_parabola_2D() {
     const m = new gs.Model();
     const g = m.getGeom();
     let condition = false;
+    let condition2 = true;
     let num_pairs = 0;
+    let counter = 0;
     do {
         do {
             const U1 = new three.Vector3(15 * Math.random(), 15 * Math.random(), 15 * Math.random());
@@ -1926,7 +1926,6 @@ function genModel_3D_parabola_parabola_2D() {
             const parabola2_ = g.addParabola(pt2_, [U1_.x, U1_.y, U1_.z], [V1_.x, V1_.y, V1_.z], [angle0, angle1]);
             const points_parabola = parabola_1.parabola_parabola(parabola2, parabola2_);
             if (points_parabola !== null) {
-                console.log("points_parabola = " + points_parabola.length);
                 condition = (points_parabola.length !== 2);
                 if (!condition) {
                     for (const point of points_parabola) {
@@ -1938,10 +1937,22 @@ function genModel_3D_parabola_parabola_2D() {
             }
             g.delObj(parabola2, false);
             g.delObj(parabola2_, false);
+            // console.log("count = "+ counter)
+            condition2 = true;
+            condition = true;
+            if (counter > 4) {
+                condition = false;
+                // condition2 = false;
+            }
+            counter++;
         } while (condition);
-        num_pairs++;
+        if (condition2 === true) {
+            num_pairs++;
+        }
+        ;
+        counter = 0;
         console.log(num_pairs);
-    } while (num_pairs !== 1);
+    } while (num_pairs !== 2);
     return m;
 }
 exports.genModel_3D_parabola_parabola_2D = genModel_3D_parabola_parabola_2D;

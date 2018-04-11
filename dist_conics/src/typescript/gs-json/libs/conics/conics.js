@@ -201,7 +201,7 @@ function ellipseEvaluate(curve, t) {
     const g = m.getGeom();
     const pt = g.addPoint([0, 0, 0]);
     let curve_theta = null;
-    for (let k = 0; k < K; k++) {
+    for (let k = 0; k < K; k++) { // This loops 1000 x 1000 times !
         while (epsilon >= 0) {
             theta = (angle_1 + k * (angle_2 - angle_1) / K);
             curve_theta = g.addEllipse(curve.getOrigin(), curve.getAxes()[0], curve.getAxes()[1], [curve.getAngles()[0], theta]); // Why is this adding ellipses to the model?

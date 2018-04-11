@@ -53,7 +53,7 @@ class Vertex extends topo_1.Topo {
      */
     getWireOrFace() {
         const path = this._kernel.vertexGetTopo(this._path);
-        if (path.tt === 0) {
+        if (path.tt === 0) { // wire
             return new Wire(this._kernel, path);
         }
         else {
@@ -159,7 +159,7 @@ class Edge extends topo_1.Topo {
      */
     getWireOrFace() {
         const path = this._kernel.edgeGetTopo(this._path);
-        if (path.tt === 0) {
+        if (path.tt === 0) { // wire
             return new Wire(this._kernel, path);
         }
         else {

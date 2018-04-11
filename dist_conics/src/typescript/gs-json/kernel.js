@@ -1253,7 +1253,7 @@ class Kernel {
         switch (this.objGetType(id)) {
             case 1 /* ray */:
             case 2 /* plane */:
-            case 3 /* circle */:// cannot be streched
+            case 3 /* circle */: // cannot be streched
                 // set position of matrix to 0 so no translation
                 const matrix2 = matrix.clone();
                 matrix2.setPosition(new three.Vector3());
@@ -1261,7 +1261,7 @@ class Kernel {
                 this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][2], matrix2);
                 this._objs[id][2][1] = threex.multXYZMatrix(this._objs[id][2][3], matrix2);
                 break;
-            case 4 /* ellipse */:// can be streched
+            case 4 /* ellipse */: // can be streched
                 // multiply by transpose of the inverse of that matrix
                 const matrix3 = matrix.clone();
                 matrix3.setPosition(new three.Vector3());
@@ -1311,7 +1311,7 @@ class Kernel {
      */
     pointGetVertices(id) {
         const vertices = [];
-        for (const [obj_id_str, obj] of this._objsDense().entries()) {
+        for (const [obj_id_str, obj] of this._objsDense().entries()) { // sparse array
             obj[0].forEach((w, wi) => w.forEach((v, vi) => (v === id) && vertices.push(// Slow
             { id: Number(obj_id_str), tt: 0, ti: wi, st: 0, si: vi })));
             obj[1].forEach((f, fi) => f.forEach((v, vi) => (v === id) && vertices.push(// Slow
@@ -1325,7 +1325,7 @@ class Kernel {
      * @return
      */
     pointIsUnused(point_id) {
-        for (const obj of this._objsDense()) {
+        for (const obj of this._objsDense()) { // sparse array
             if (arr_1.Arr.flatten(obj.slice(0, 3)).indexOf(point_id) !== -1) {
                 return false;
             } // Slow
@@ -2306,14 +2306,14 @@ class Kernel {
      * @return
      */
     _updateAttribsForNewTopo(path) {
-        if (path.st !== undefined) {
+        if (path.st !== undefined) { // vertex or edge
             this._updateAttribsForNewVertexOrEdge(path);
         }
         else {
-            if (path.tt === 0) {
+            if (path.tt === 0) { // wire
                 this._updateAttribsForNewWire(path);
             }
-            else {
+            else { // face
                 this._updateAttribsForNewFace(path);
             }
         }
@@ -2327,7 +2327,7 @@ class Kernel {
         if (value_indexes[path.id] === undefined) {
             value_indexes[path.id] = [];
         }
-        if (path.st !== undefined) {
+        if (path.st !== undefined) { // vertex or edge
             if (value_indexes[path.id][path.tt] === undefined) {
                 value_indexes[path.id][path.tt] = [];
             }
@@ -2336,7 +2336,7 @@ class Kernel {
             }
             value_indexes[path.id][path.tt][path.ti][path.si] = 0;
         }
-        else {
+        else { // wire or face
             if (value_indexes[path.id][path.ti] === undefined) {
                 value_indexes[path.id][path.ti] = [];
             }
@@ -2539,14 +2539,14 @@ class Kernel {
      * @return
      */
     _updateAttribsAndGroupsForDelTopo(path) {
-        if (path.st !== undefined) {
+        if (path.st !== undefined) { // vertex or edge
             this._updateAttribsForDelVertexOrEdge(path);
         }
         else {
-            if (path.tt === 0) {
+            if (path.tt === 0) { // wire
                 this._updateAttribsForDelWire(path);
             }
-            else {
+            else { // face
                 this._updateAttribsForDelFace(path);
             }
         }
@@ -2747,7 +2747,7 @@ class Kernel {
      */
     _getWFPathsFromObjsData(objs_data, wf_topos) {
         const path_arr = [];
-        for (const obj_id_str of objs_data.keys()) {
+        for (const obj_id_str of objs_data.keys()) { // sparse arrays
             const wf_data = objs_data[obj_id_str][wf_topos]; // wf_choice is 0 or 1, wires or faces
             for (let wf_index = 0; wf_index < wf_data.length; wf_index++) {
                 path_arr.push({ id: Number(obj_id_str), tt: wf_topos, ti: wf_index });
@@ -2763,7 +2763,7 @@ class Kernel {
      */
     _getVEPathsFromObjsData(objs_data, v_or_e) {
         const path_arr = [];
-        for (const obj_id_str of objs_data.keys()) {
+        for (const obj_id_str of objs_data.keys()) { // sparse array
             const w_data = objs_data[obj_id_str][0];
             this._getVEPathsFromWF(path_arr, Number(obj_id_str), w_data, 0, v_or_e);
             const f_data = objs_data[obj_id_str][1];
@@ -2892,7 +2892,7 @@ class Kernel {
      * @return
      */
     _depreceated_delPointFromObjs(id) {
-        for (const [obj_id_str, obj] of this._objsDense().entries()) {
+        for (const [obj_id_str, obj] of this._objsDense().entries()) { // sparse array
             switch (obj[2][0]) {
                 // Polyline
                 case 100:

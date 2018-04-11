@@ -41,7 +41,7 @@ class Model {
                     ent_attribs.push(new attrib_entattrib_1.EntAttrib(this._kernel, data.name, geom_type));
                 }
                 return ent_attribs;
-            default:// topo attribs
+            default: // topo attribs
                 const topo_attribs = [];
                 for (const data of attribs_data) {
                     topo_attribs.push(new attrib_topoattrib_1.TopoAttrib(this._kernel, data.name, geom_type));
