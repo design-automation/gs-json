@@ -1,10 +1,9 @@
 import * as three from "three";
-import {XYZ, IPoint, IVertex, IGroup} from "./ifaces_gs";
+import {XYZ, IPoint, IVertex} from "./ifaces_gs";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
 import {Vertex} from "./topo_sub";
 import {Ent} from "./entity";
-import {Group} from "./groups";
 
 /**
  * Class Point.
@@ -87,25 +86,6 @@ export class Point extends Ent implements IPoint {
      */
     public xform(matrix: three.Matrix4): void {
         return this._kernel.pointXform(this._id, matrix);
-    }
-
-    //  Groups -------------------------------------------------------------------------------------
-
-    /**
-     * Get the group names for all the groups for which this entity is a member.
-     * @return The array of group names.
-     */
-    public getGroups(): IGroup[] {
-        return this._kernel.pointGetGroups(this._id).map((v) => new Group(this._kernel, v));
-    }
-
-    /**
-     * Add this entity to a group.
-     * @param name The group name.
-     * @return True if the entity was added, False is the entity was already in the group.
-     */
-    public addToGroup(group: IGroup): boolean {
-        return this._kernel.groupAddPoint(group.getName(), this._id);
     }
 
     //  toString -------------------------------------------------------------------------------------

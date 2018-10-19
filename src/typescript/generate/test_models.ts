@@ -30,8 +30,6 @@ function writeThreeFiles(): void {
     gen(gm.genModelGrid(), "grid.gs");
     gen(gm.genModelTorus(), "torus.gs");
     //gen(gm.genModelManyTorus(), "many_torus.gs");
-    gen(gm.genModelCircles(), "circles.gs");
-    gen(gm.genModelGroups(), "groups.gs");
     gen(gm.genModelPlanes(), "planes.gs");
     gen(gm.genModelDelPoints(), "del_points.gs");
     gen(gm.genModelDelObjs(), "del_objs.gs");

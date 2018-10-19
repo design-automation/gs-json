@@ -25,13 +25,6 @@ export interface IModel {
     delAttrib(attrib: IAttrib): boolean;
     hasAttrib(attrib: IAttrib): boolean;
     setAttribName(attrib: IAttrib, new_name: string): boolean;
-    // Groups
-    getAllGroups(): IGroup[];
-    getGroup(name: string): IGroup;
-    addGroup(name: string, parent?: IGroup): IGroup;
-    delGroup(group: IGroup): boolean;
-    hasGroup(group: IGroup): boolean;
-    setGroupName(group: IGroup, new_name: string): boolean;
     // Others
     merge(model: IModel):void;
     purge(): void;
@@ -49,7 +42,6 @@ export interface IGeom  {
     //Copy
     copyRayFromModel(ray: IRay): IRay;
     copyPlaneFromModel(plane: IPlane): IPlane;
-    copyCircleFromModel(circle: ICircle): ICircle;
     copyPlineFromModel(pline: IPolyline): IPolyline;
     copyPmeshFromModel(pline: IPolymesh): IPolymesh;
     copyObjFromModel(obj: IObj): IObj;
@@ -59,7 +51,6 @@ export interface IGeom  {
     addPoints(xyz_arr: XYZ[]): IPoint[];
     addRay(origin_point: IPoint, ray_vec: XYZ): IRay;
     addPlane(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ): IPlane;
-    addCircle(origin_point: IPoint, x_vec: XYZ, y_vec: XYZ, angles?: [number, number]);
     addPolyline(wire_points: IPoint[], is_closed: boolean): IPolyline;
     addPolymesh(face_points: IPoint[][]): IPolymesh;
     // Points
@@ -85,7 +76,6 @@ export interface IGeom  {
     copyObjs(objs: IObj[], copy_attribs: boolean): IObj[];
     xformObjs(objs: IObj[], matrix: three.Matrix4): void;
     // Topos
-    // getTopos(topo_type: EGeomType): ITopo[];
     getTopos(topo_type: EGeomType): (IVertex[] | IEdge[] | IWire[] | IFace[]);
     numTopos(topo_type: EGeomType): number;
     getTopo(path: ITopoPathData): IVertex|IEdge|IWire|IFace;
@@ -114,9 +104,6 @@ export interface IEnt  {
     getAttribs(): IEntAttrib[]|ITopoAttrib[];
     getAttribValue(attrib: IEntAttrib): any;
     setAttribValue(attrib: IEntAttrib, value: any): any;
-    // groups
-    getGroups(): IGroup[];
-    addToGroup(group: IGroup): boolean;
     // strings
     toString(): string;
 }
@@ -164,6 +151,15 @@ export interface IObj extends IEnt {
     copy(copy_attribs?: boolean): IObj; //overrides return value of IEnt
 }
 
+
+/**
+ * Interface, for a Compound class.
+ */
+export interface ICompound extends IObj {
+    getObjType(): EObjType;
+    getOrigin(): IPoint;
+}
+
 /**
  * Interface, for a Ray class.
  */
@@ -183,58 +179,6 @@ export interface IPlane  extends IObj {
     getNormal(): XYZ;
     setOrientation(x_vec: XYZ, vec: XYZ): void;
     getCartesians(): number[];
-}
-
-/**
- * Interface, for a Circle class.
- */
-export interface ICircle  extends IObj {
-    getObjType(): EObjType;
-    isClosed(): boolean;
-    getOrigin(): IPoint;
-    getAxes(): [XYZ,XYZ,XYZ];
-    getNormal(): XYZ;
-    setOrientation(x_vec: XYZ, vec: XYZ): void;
-    getAngles(): [number, number];
-    setAngles(angles: [number, number]): void;
-    getRadius(): number;
-    setRadius(radius: number): number ;
-    length(): number;
-    evalParam(t: number): IPoint;
-    evalParamTangent(t: number): XYZ;
-    evalPoint(point:IPoint): number;
-    equiPoints(num_points: number): IPoint[];
-}
-
-/**
- * Interface, for a Ellipse class.
- */
-export interface IEllipse  extends IObj {
-    getObjType(): EObjType;
-    isClosed(): boolean;
-    getOrigin(): IPoint;
-    getAxes(): [XYZ,XYZ,XYZ];
-    getNormal(): XYZ;
-    setOrientation(x_vec: XYZ, vec: XYZ): void;
-    getRadii(): [number, number];
-    getAngles(): [number, number];
-    setAngles(angles: [number, number]): void;
-}
-
-/**
- * Interface, for a Hyperbola class.
- */
-export interface IHyperbola  extends IObj {
-    getObjType(): EObjType;
-    getOrigin(): IPoint;
-    getVectors(): XYZ[];
-    setVectors(x_vec: XYZ, y_vec: XYZ): void;
-    getAngles(): [number, number];
-    setAngles(angles: [number, number]): void;
-    getRadii(): [number, number];
-    length(): number;
-    evalParam(t: number): IPoint;
-    equiPoints(num_points: number): IPoint[];
 }
 
 /**
@@ -281,9 +225,6 @@ export interface ITopo {
     getAttribs(): ITopoAttrib[];
     setAttribValue(attrib: ITopoAttrib, value: any): any;
     getAttribValue(attrib: ITopoAttrib): any;
-    // groups
-    getGroups(): IGroup[];
-    addToGroup(group: IGroup): boolean;
 }
 
 /**
@@ -334,8 +275,8 @@ export interface IFace extends ITopo {
     facesSharedPoints(num_shared_points?: number): IFace[];
 }
 
-//  INTERFACES for Attrib and Group classes ========================================================
-//  IAttrib, IGroup
+//  INTERFACES for Attrib classes ========================================================
+//  IAttrib
 
 /**
  * Interface, for Attrib class.
@@ -362,52 +303,4 @@ export interface IEntAttrib extends IAttrib {
 export interface ITopoAttrib extends IAttrib {
     getPaths(): ITopoPathData[];
     getTopos(): IVertex[]|IEdge[]|IWire[]|IFace[];
-}
-
-/**
- * Interface, for Group class.
- */
-export interface IGroup {
-    exists(): boolean;
-    getModel(): IModel;
-    getGeom(): IGeom;
-    // constructor(model: ifs.IModel, name: string)
-    getName(): string;
-    setName(name: string): string;
-    // Parent/child groups
-    getParentGroup(): IGroup;
-    getChildGroups(): IGroup[];
-    setParentGroup(group: IGroup): IGroup;
-    removeParentGroup(): IGroup;
-
-    // Objs in this group
-    getObjs(obj_type?: EObjType): IObj[];
-    addObj(obj: IObj): boolean;
-    addObjs(objs: IObj[]): boolean;
-    removeObj(obj: IObj): boolean;
-    removeObjs(objs: IObj[]): boolean;
-    hasObj(obj: IObj): boolean;
-
-    // Topos in this group
-    getTopos(geom_type?: EGeomType): ITopo[];
-    addTopo(path: ITopo): boolean;
-    addTopos(paths: ITopo[]): boolean;
-    removeTopo(path: ITopo): boolean;
-    removeTopos(paths: ITopo[]): boolean;
-    hasTopo(path: ITopo): boolean;
-
-    // Points in this group
-    getPoints(): IPoint[];
-    addPoint(point: IPoint): boolean;
-    addPoints(points: IPoint[]): boolean;
-    removePoint(point: IPoint): boolean;
-    removePoints(points: IPoint[]): boolean;
-    hasPoint(point: IPoint): boolean;
-
-    // Properties for this group (key-value pairs)
-    getProps(): Array<[string, any]>; // TODO
-    setProps(new_Map: Array<[string, any]>): Array<[string, any]>; // TODO
-
-    // strings
-    toString(): string;
 }

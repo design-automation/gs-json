@@ -15,7 +15,6 @@ export interface IModelData {
     metadata: IMetadata;
     geom: IGeomData;
     attribs?: IAttribsData;
-    groups?: IGroupData[];
     skins?: ISkinData[];
 }
 
@@ -46,15 +45,6 @@ export interface IAttribData {
     geom_type: TGeomTypeStr;
     data_type: TDataTypeStr;
     values: any[]; // TODO
-}
-
-export interface IGroupData {
-    name: string;
-    parent?: string;
-    objs?: number[];
-    topos?: TTreeData;
-    points?: number[];
-    props?: Array<[string, any]>;
 }
 
 export interface ISkinData {

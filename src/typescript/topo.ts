@@ -1,8 +1,7 @@
-import {XYZ, IModel, IGeom, IObj, ITopo, ITopoAttrib, IGroup} from "./ifaces_gs";
+import {XYZ, IModel, IGeom, IObj, ITopo, ITopoAttrib} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType} from "./enums";
-import {Group} from "./groups";
 import {TopoAttrib} from "./attrib_topoattrib";
 import {_castToObjType} from "./entity_obj_cast";
 
@@ -146,27 +145,5 @@ export abstract class Topo implements ITopo {
     public setAttribValue(attrib: ITopoAttrib, value: any): any {
         if (attrib.getGeomType() !== this.getGeomType()) {return null;}
         return this._kernel.topoAttribSetValue(attrib.getName(), attrib.getGeomType(), this._path, value);
-    }
-
-    //  Groups -------------------------------------------------------------------------------------
-
-    /**
-     * Get the groups for which this topo component is a member.
-     * @return The array of groups.
-     */
-    public getGroups(): IGroup[] {
-        const names: string[] = this._kernel.topoGetGroups(this._path);
-        return names.map((name) => new Group(this._kernel, name));
-    }
-
-    /**
-     * Add this topo to a group.
-     * @param group The group.
-     * @return True if the topo was added, False is the topo was already in the group.
-     */
-    public addToGroup(group: IGroup): boolean {
-        // return this._kernel.groupAddTopo(group.getName(), this._path);
-        // TODO
-        throw new Error("Method not implemented");
     }
 }

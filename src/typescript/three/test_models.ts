@@ -31,8 +31,6 @@ function writeGSFiles(): void {
     gen(gm.genModelGrid(), "grid.json");
     gen(gm.genModelTorus(), "torus.json");
     //gen(gm.genModelManyTorus(), "many_torus.json");
-    gen(gm.genModelCircles(), "circles.json");
-    gen(gm.genModelGroups(), "groups.json");
     gen(gm.genModelPlanes(), "planes.json");
     gen(gm.genModelDelPoints(), "del_points.json");
     gen(gm.genModelDelObjs(), "del_objs.json");

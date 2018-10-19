@@ -1,4 +1,4 @@
-import {IEnt, IGeom, IModel, IEntAttrib, ITopoAttrib, IGroup, XYZ} from "./ifaces_gs";
+import {IEnt, IGeom, IModel, IEntAttrib, ITopoAttrib, XYZ} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {EGeomType} from "./enums";
 import {Attrib} from "./attrib";
@@ -142,29 +142,6 @@ export abstract class Ent implements IEnt{
     public setAttribValue(attrib: IEntAttrib, value: any): any {
         if (attrib.getGeomType() !== this.getGeomType()) {return null;}
         return this._kernel.entAttribSetValue(attrib.getName(), attrib.getGeomType(), this._id, value);
-    }
-
-    //  Groups -------------------------------------------------------------------------------------
-
-    /**
-     * Get the groups for all the groups for which this entity is a member.
-     * This method must be overridden by the sub-classes.
-     * @return The array of group names.
-     */
-    public getGroups(): IGroup[] {
-        // Do not implement this method.
-        throw new Error ("Method to be overridden by subclass.");
-    }
-
-    /**
-     * Add this object to a group.
-     * This method must be overridden by the sub-classes.
-     * @param group The group.
-     * @return True if the entity was added, False is the object was already in the group.
-     */
-    public addToGroup(group: IGroup): boolean {
-        // Do not implement this method.
-        throw new Error ("Method to be overridden by subclass.");
     }
 
     //  toString -------------------------------------------------------------------------------------

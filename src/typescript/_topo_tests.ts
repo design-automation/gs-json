@@ -27,9 +27,6 @@ describe("Tests for Topo class", () => {
     it("test_Topo_setAttribValue", () => {
         expect( test_Topo_setAttribValue() ).toBe(true);
     });
-    it("test_Topo_getGroups", () => {
-        expect( test_Topo_getGroups() ).toBe(true);
-    });
 });
 
 export function test_Topo_constructor(): boolean {
@@ -110,15 +107,4 @@ export function test_Topo_setAttribValue(): boolean {
     if((a1.getFaces()[0].getAttribValue(faces_id) === 0)) {return false;}
     if(!(a1.getFaces()[0].getAttribValue(faces_id) === 49)) {return false;}
     return true;
-}
-
-export function test_Topo_getGroups(): boolean {
-    const m: gs.IModel = new gs.Model(td.box_with_attribs());
-    const g: gs.IGeom = m.getGeom();
-    const p: gs.IPolymesh = g.getObj(0) as gs.IPolymesh;
-
-    // TODO
-
-    return true;
-
 }

@@ -20,8 +20,6 @@ export function exportObj(model: gs.IModel): string {
     // add polymeshes
     const pmeshes: gs.IPolymesh[] = model.getGeom().findObjs(gs.EObjType.polymesh) as gs.IPolymesh[];
     for (const pmesh of pmeshes) {
-        const groups: string[] = pmesh.getGroups().map((g) => g.getName());
-        obj_str += "g " + groups.join(" ") + " o" + pmesh.getID() + "\n";
         for (const face of pmesh.getFaces()) {
             const point_ids: number[] = face.getVertices().map((v) => v.getPoint().getID());
             const point_ixs: number[] = point_ids.map((id) => id_ix_map.get(id));
@@ -31,8 +29,6 @@ export function exportObj(model: gs.IModel): string {
     // add polylines
     const plines: gs.IPolyline[] = model.getGeom().findObjs(gs.EObjType.polyline) as gs.IPolyline[];
     for (const pline of plines) {
-        const groups: string[] = pline.getGroups().map((g) => g.getName());
-        obj_str += "g " + groups.join(" ") + " o" + pline.getID() + "\n";
         const point_ids: number[] = pline.getPointsArr().map((p) => p.getID());
         const point_ixs: number[] = point_ids.map((id) => id_ix_map.get(id));
         obj_str += "l " + point_ixs.join(" ") + "\n";

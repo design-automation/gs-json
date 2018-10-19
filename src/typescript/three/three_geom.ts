@@ -2,7 +2,6 @@ import * as three from "three";
 import * as gs from "../gs-json";
 import * as arr from "../libs/arr/arr";
 import * as threex from "../libs/threex/threex";
-import * as math_conics from "../libs/conics/circles";
 import {triangulate2D} from "../libs/triangulate/triangulate";
 
 //  GENERAL ==================================================================================================
@@ -163,8 +162,7 @@ export function getDataAllOtherLines(objs: gs.IObj[]): IThreeData {
     //const objs_filtered: Array<gs.IRay|gs.IPlane|gs.ICircle> = objs.filter((obj) =>
     const objs_filtered = objs.filter((obj) =>
         obj.getObjType() === gs.EObjType.ray ||
-        obj.getObjType() === gs.EObjType.plane ||
-        obj.getObjType() === gs.EObjType.circle);
+        obj.getObjType() === gs.EObjType.plane);
     // create points
     const indexes: number[] = [];
     const xyzs: gs.XYZ[][] = [];
@@ -191,15 +189,6 @@ export function getDataAllOtherLines(objs: gs.IObj[]): IThreeData {
                     }
                     index_counter++;
                 }
-                break;
-            case gs.EObjType.circle:
-                const obj_render_xyzs: gs.XYZ[] = math_conics.getRenderXYZs(obj, 1);
-                xyzs.push(obj_render_xyzs);
-                for (let j = 0; j < obj_render_xyzs.length - 1; j++) {
-                    indexes.push(index_counter);
-                    indexes.push(++index_counter);
-                }
-                index_counter++;
                 break;
             default:
                 // code...

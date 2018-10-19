@@ -30,16 +30,8 @@ export const enum EObjType {
     acorn = 0,
     ray = 1,
     plane = 2,
-    circle = 3,
-    ellipse = 4,
-    parabola = 5,
-    hyperbola = 6,
     polyline = 100,
-    nurbs_curve = 120,
-    bezier_curve = 121,
     polymesh = 200,
-    nurbs_surface = 220,
-    bezier_surface = 221,
 }
 
 /**
@@ -50,16 +42,8 @@ export let mapObjTypeToString = new Map<EObjType, string> ([
     [EObjType.acorn, "acorn"],
     [EObjType.ray, "ray"],
     [EObjType.plane, "plane"],
-    [EObjType.circle, "circle"],
-    [EObjType.ellipse, "ellipse"],
-    [EObjType.hyperbola, "hyperbola"],
-    [EObjType.parabola, "parabola"],
     [EObjType.polyline, "polyline"],
-    [EObjType.nurbs_curve, "nurbs_curve"],
-    [EObjType.bezier_curve, "bezier_curve"],
     [EObjType.polymesh, "polymesh"],
-    [EObjType.nurbs_surface, "nurbs_surface"],
-    [EObjType.bezier_surface, "bezier_surface"],
 ]);
 
 // =================== MAPS ===================

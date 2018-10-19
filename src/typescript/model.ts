@@ -1,11 +1,10 @@
-import {IModel, IGeom, IGroup, IAttrib, IEntAttrib, ITopoAttrib} from "./ifaces_gs";
+import {IModel, IGeom, IAttrib, IEntAttrib, ITopoAttrib} from "./ifaces_gs";
 import {Kernel} from "./kernel";
-import {IModelData,  IAttribData, IGroupData} from "./ifaces_json";
+import {IModelData,  IAttribData} from "./ifaces_json";
 import {EGeomType, EDataType, mapStringToGeomType} from "./enums";
 import {Geom} from "./geom";
 import {EntAttrib} from "./attrib_entattrib";
 import {TopoAttrib} from "./attrib_topoattrib";
-import {Group} from "./groups";
 /**
  * Model Class
  */
@@ -174,75 +173,10 @@ export class Model implements IModel {
         return this._kernel.attribSetName(attrib.getName(), new_name, attrib.getGeomType());
     }
 
-    //  Groups -------------------------------------------------------------------------------------
-
-    /**
-     * Get all the groups in a model.
-     * @param
-     * @return
-     */
-    public getAllGroups(): IGroup[] {
-        const groups_data: IGroupData[] = this._kernel.modelGetAllGroups();
-        return groups_data.map((v) => new Group(this._kernel, v.name));
-    }
-
-    /**
-     * Get one group from the model.
-     * @param
-     * @return
-     */
-    public getGroup(name: string): IGroup {
-        const data: IGroupData = this._kernel.modelGetGroup(name);
-        if (data === undefined) {return null;}
-        return new Group(this._kernel, data.name);
-    }
-
-    /**
-     * Add a group to the model.
-     * If the parent name is given and does not exist, then an error will be thrown.
-     * @param
-     * @return
-     */
-    public addGroup(name: string, parent?: IGroup): IGroup {
-        if (parent !== undefined) {
-            this._kernel.modelAddGroup(name, parent.getName());
-        } else {
-            this._kernel.modelAddGroup(name);
-        }
-        return this.getGroup(name);
-    }
-
-    /**
-     * Delete a group i the model. Returns true if successful.
-     * @param
-     * @return
-     */
-    public delGroup(group: IGroup): boolean {
-        return this._kernel.modelDelGroup(group.getName());
-    }
-
-    /**
-     * Checks if the group exists in the model.
-     * @param
-     * @return
-     */
-    public hasGroup(group: IGroup): boolean {
-        return this._kernel.modelHasGroup(group.getName());
-    }
-
-    /**
-     * Renames the group.
-     * @param
-     * @return
-     */
-    public setGroupName(group: IGroup, new_name): boolean {
-        return this._kernel.groupSetName(group.getName(), new_name);
-    }
-
     //  Model --------------------------------------------------------------------------------------
 
     /**
-     * Merege another model into this model. Onlt the data is copied. The other model is unaffected.
+     * Merege another model into this model. Only the data is copied. The other model is unaffected.
      * @param
      * @return
      */
@@ -306,11 +240,6 @@ export class Model implements IModel {
         rep += "Num Topo Attribs:" + attribs[1].length + "\n";
         for (const attrib of attribs[1]) {
             rep += "   " + attrib.toString() + "\n";
-        }
-        const groups: IGroup[] = this.getAllGroups();
-        rep += "Num Groups:" + groups.length + "\n";
-        for (const group of groups) {
-            rep += "   " + group.toString() + "\n";
         }
         return rep;
     }

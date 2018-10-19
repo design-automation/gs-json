@@ -23,21 +23,6 @@ describe("Tests for Model class", () => {
     it("test_Model_delAttrib", () => {
         expect( test_Model_delAttrib() ).toBe(true);
     });
-    it("test_Model_getGroups", () => {
-        expect( test_Model_getGroups() ).toBe(true);
-    });
-    it("test_Model_getGroup", () => {
-        expect( test_Model_getGroup() ).toBe(true);
-    });
-    it("test_Model_addGroup", () => {
-        expect( test_Model_addGroup() ).toBe(true);
-    });
-    it("test_Model_delGroup", () => {
-        expect( test_Model_delGroup() ).toBe(true);
-    });
-    it("test_Model_delGroup", () => {
-        expect( test_Model_hasGroup() ).toBe(true);
-    });
     it("test_Model_purgePoints", () => {
         expect( test_Model_purgePoints() ).toBe(true);
     });
@@ -74,39 +59,12 @@ export function test_Model_constructor(): boolean {
     const test3: gs.ITopoAttrib = model.getTopoAttrib("test3", gs.EGeomType.faces);
     if (model.getGeom().getObj(0).getFaces()[0].getAttribValue(test3) !== 2.0) {return false; }
 
-    // model with groups
-    model = new gs.Model(td.box_with_groups());
-    model.getAllGroups();
-    const grp: gs.IGroup = model.getGroup("building_obj");
 
-    // save the data to JSON, the read it back again
-    const my_model: gs.IModel = new gs.Model();
-    const group: gs.IGroup = my_model.addGroup("test");
-    const myg: gs.IGeom = my_model.getGeom();
-    const p1: gs.IPoint = myg.addPoint([1,2,3]);
-    const p2: gs.IPoint = myg.addPoint([4,5,6]);
-    const p3: gs.IPoint = myg.addPoint([6,2,9]);
-    const p4: gs.IPoint = myg.addPoint([1,2,7]);
-    const p5: gs.IPoint = myg.addPoint([5,6,3]);
-    p1.addToGroup(group);
-    group.addPoints([p3, p4]);
-    const pline: gs.IPolyline  = myg.addPolyline([p1,p2,p3,p4,p5], false);
-    group.addObj(pline);
-    const model_string: string = my_model.toJSON();
-    const model_data: gs.IModelData = JSON.parse(model_string) as gs.IModelData;
-    //console.log("TEST", model_data);
-    let model2: gs.IModel = new gs.Model(model_data);
-    const group2: gs.IGroup = model2.getGroup("test");
-    if (group2 === undefined) {return false;}
-    if (group2.getPoints().length !== 3) {return false;}
-    if (group2.getObjs().length !== 1) {return false;}
-    //console.log("TEST2", model2);
     return true;
 }
 
 export function test_Model_getGeom(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const g: gs.IGroup = m.addGroup("Box");
     const f1: gs.IFace = m.getGeom().getObj(0).getFaces()[0];
     if (f1.getObjID() !== 0) {return false;}
     return true;
@@ -167,53 +125,6 @@ export function test_Model_delAttrib(): boolean {
     return true;
 }
 
-export function test_Model_getGroups(): boolean {
-    const m: gs.IModel = new gs.Model();
-    if (!(Arr.equal(m.getAllGroups(), []))) {return false; }
-    const g1: gs.IGroup = m.addGroup("G1");
-    const g2: gs.IGroup = m.addGroup("G2");
-    const g3: gs.IGroup = m.addGroup("G3");
-    const G: gs.IGroup[] = [g1, g2, g3];
-    if (m.getAllGroups()[0].getName() !== G[0].getName()) {return false; }
-    if (m.getAllGroups()[1].getName() !== G[1].getName()) {return false; }
-    if (m.getAllGroups()[2].getName() !== G[2].getName()) {return false; }
-    return true;
-}
-
-export function test_Model_getGroup(): boolean {
-    const m: gs.IModel = new gs.Model(td.open_box());
-    const g: gs.IGroup = m.addGroup("Box"); // No group in Box
-    if (!( m.getGroup("Alpha") === null)) {return false; }
-    if (!( m.getGroup("Box").getName() === "Box")) {return false; }
-    return true;
-}
-
-export function test_Model_addGroup(): boolean {
-    const m: gs.IModel = new gs.Model();
-    if (!( m.getGroup("Group1") === null)) {return false; }
-    const g: gs.IGroup = m.addGroup("Group1");
-    if (!( m.getGroup("Group1").getName() === "Group1")) {return false; }
-    return true;
-}
-
-export function test_Model_hasGroup(): boolean {
-    const m: gs.IModel = new gs.Model();
-    const g1: gs.IGroup = m.addGroup("First_Group");
-    if (!m.hasGroup(g1)) {return false; }
-    m.delGroup(g1);
-    if (m.hasGroup(g1)) {return false; }
-    return true;
-}
-
-export function test_Model_delGroup(): boolean {
-    const m: gs.IModel = new gs.Model();
-    const g1: gs.IGroup = m.addGroup("First_Group");
-    if (!m.hasGroup(g1)) {return false; }
-    m.delGroup(g1);
-    if (m.hasGroup(g1)) {return false; }
-    return true;
-}
-
 export function test_Model_purgePoints(): boolean { // OPTIONAL testing as of now
     //TODO
     return true;
@@ -237,16 +148,7 @@ export function test_Model_toJSON(): boolean {
 
 export function test_Model_merge(): boolean {
 
-    const m1: gs.IModel = gen.genModelGroups(); // 3 groups
-    const m2: gs.IModel = gen.genModelGroups(); // 3 groups, same names
-    m1.merge(m2);
-    if (m1.getAllGroups().length !== 3) {return false;}
-
-    const m3: gs.IModel = gen.genModelGroups(); // 3 groups
-    const m4: gs.IModel = new gs.Model();
-    const g1: gs.IGroup = m4.addGroup("First_Group");
-    m3.merge(m4);
-    if (m3.getAllGroups().length !== 4) {return false;}
+    //TODO
 
     return true;
 }

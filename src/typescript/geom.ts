@@ -1,11 +1,10 @@
-import {XYZ, IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane, ICircle, IEllipse,
+import {XYZ, IGeom, IPoint, IVertex, IEdge, IWire, IFace, IObj, IRay, IPlane,
         IPolyline, IPolymesh, ITopo} from "./ifaces_gs";
 import {Kernel} from "./kernel";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType} from "./enums";
 import {Point} from "./entity_point";
 import {Polyline} from "./entity_obj_polyline";
-import {Circle} from "./entity_obj_circle";
 import {Polymesh} from "./entity_obj_polymesh";
 import {Plane} from "./entity_obj_plane";
 import {Ray} from "./entity_obj_ray";
@@ -13,7 +12,6 @@ import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {_castToObjType} from "./entity_obj_cast";
 import * as three from "three";
 import * as threex from "./libs/threex/threex";
-import * as util from "./_utils";
 
 /**
  * Class Geom
@@ -85,23 +83,6 @@ export class Geom implements IGeom {
     }
 
     /**
-     * Copies a circle to the model.
-     * @param circle The circle to copy.
-     * @return Object of type Circle
-     */
-    public copyCircleFromModel(circle: ICircle): ICircle {
-        // get the data
-        const origin: IPoint = circle.getOrigin();
-        const axes: [XYZ,XYZ,XYZ] = circle.getAxes();
-        const angles: [number, number] = circle.getAngles();
-        // create the points
-        const origin_id: number = this._kernel.geomAddPoint(origin.getPosition());
-        // create the obj
-        const id: number = this._kernel.geomAddCircle(origin_id, axes, angles);
-        return new Circle(this._kernel, id);
-    }
-
-    /**
      * Copies a polyline to the model.
      * @param circle The polyline to copy.
      * @return Object of type Polyline
@@ -132,8 +113,6 @@ export class Geom implements IGeom {
                 return this.copyRayFromModel(obj as IRay);
             case EObjType.plane:
                 return this.copyPlaneFromModel(obj as IPlane);
-            case EObjType.circle:
-                return this.copyCircleFromModel(obj as ICircle);
             case EObjType.polyline:
                 return this.copyPlineFromModel(obj as IPolyline);
             case EObjType.polymesh:
@@ -200,25 +179,6 @@ export class Geom implements IGeom {
         // make the circle
         const id: number = this._kernel.geomAddPlane(origin_point.getID(), axes);
         return new Plane(this._kernel, id);
-    }
-
-    /**
-     * Adds a new circle to the model.
-     * @param Origin The origin point.
-     * @param x_vec A vector in the local x direction, also defines the raidus.
-     * @param vec A vector in the plane
-     * @param angles The angles, can be undefined, in which case a closed conic is generated.
-     * @return Object of type Circle
-     */
-    public addCircle(origin_point: IPoint, x_vec: XYZ, vec: XYZ, angles?: [number, number]): ICircle {
-        // make the angles correct
-        angles = util.checkCircleAngles(angles);
-        // make three ortho vectors
-        const axes: [XYZ,XYZ,XYZ] = threex.makeXYZOrthogonal(x_vec, vec, false);
-        if (axes === null) {throw new Error("Vectors cannot be parallel.");}
-        // make the circle
-        const id: number = this._kernel.geomAddCircle(origin_point.getID(), axes, angles);
-        return new Circle(this._kernel, id);
     }
 
     /**

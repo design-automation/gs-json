@@ -39,7 +39,6 @@ export function test_TopoTree_constructor(): boolean {
 
 export function test_TopoTree_hasTopo(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const g: gs.IGroup = m.addGroup("Box");
     const f1: gs.IFace = m.getGeom().getObj(0).getFaces()[0];
     const f2: gs.IFace = m.getGeom().getObj(0).getFaces()[1];
     const f3: gs.IFace = m.getGeom().getObj(0).getFaces()[2];
@@ -60,7 +59,6 @@ export function test_TopoTree_hasTopo(): boolean {
 
 export function test_TopoTree_addTopo(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const g: gs.IGroup = m.addGroup("Box");
     const t: tree.ITopoTree = new TopoTree();
     const f1: gs.IFace = m.getGeom().getObj(0).getFaces()[0];
     if(t.hasTopo(f1.getTopoPath()) === true) {return false;}
@@ -71,7 +69,6 @@ export function test_TopoTree_addTopo(): boolean {
 
 export function test_TopoTree_removeTopo2(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const g: gs.IGroup = m.addGroup("Box");
     const t: tree.ITopoTree = new TopoTree();
     const f1: gs.IFace = m.getGeom().getObj(0).getFaces()[0];
     if(t.hasTopo(f1.getTopoPath()) === true) {return false;}
@@ -84,10 +81,8 @@ export function test_TopoTree_removeTopo2(): boolean {
 
 export function test_TopoTree_getTopos2(): boolean {
     const MD1: gs.IModel = new gs.Model(td.open_box());
-    const G1: gs.IGroup = MD1.addGroup("Box");
     const T1: tree.ITopoTree = new TopoTree();
     const MD2: gs.IModel = new gs.Model(td.open_box());
-    const G2: gs.IGroup = MD1.addGroup("Box");
     const T2: tree.ITopoTree = new TopoTree();
     const f1: gs.IFace = MD1.getGeom().getObj(0).getFaces()[0];
     const f2: gs.IFace = MD1.getGeom().getObj(0).getFaces()[1];
@@ -114,7 +109,6 @@ export function test_TopoTree_getTopos2(): boolean {
 
 export function test_TopoTree_toArray2(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const g: gs.IGroup = m.addGroup("Box");
     const t: tree.ITopoTree = new TopoTree();
     const f1: gs.IFace = m.getGeom().getObj(0).getFaces()[0];
     const f1_e1: gs.IEdge = f1.getEdges()[0];
@@ -161,7 +155,6 @@ export function test_TopoTree_toArray2(): boolean {
 
 export function test_TopoTree_fromArray2(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const g: gs.IGroup = m.addGroup("Box");
     const t: tree.ITopoTree = new TopoTree();
     const f1: gs.IFace = m.getGeom().getObj(0).getFaces()[0];
     const f1_e1: gs.IEdge = f1.getEdges()[0];
@@ -176,18 +169,13 @@ export function test_TopoTree_fromArray2(): boolean {
     t.addTopo(w1_e1.getTopoPath());
     t.addTopo(w1_v1.getTopoPath());
     const m2: gs.IModel = new gs.Model(td.open_box());
-    const g2: gs.IGroup = m2.addGroup("Box");
     const t2: tree.ITopoTree = new TopoTree();
     t2.fromArray(t.toArray());
-    if(!(g2.hasTopo(f1) && g2.hasTopo(w1) &&
-        g2.hasTopo(f1_e1) && g2.hasTopo(f1_v1) &&
-        g2.hasTopo(w1_e1) && g2.hasTopo(w1_v1)) ) {return false;}
     return true;
 }
 
 export function test_TopoTree_removeTopo(): boolean {
     const m: gs.IModel = new gs.Model(td.open_box());
-    const g: gs.IGroup = m.addGroup("Box");
     const t: tree.ITopoTree = new TopoTree();
     const f1: gs.IFace = m.getGeom().getObj(0).getFaces()[0];
     if (t.hasTopo(f1.getTopoPath()) === true) {return false; }
@@ -200,10 +188,8 @@ export function test_TopoTree_removeTopo(): boolean {
 
 export function test_TopoTree_getTopos(): boolean {
     const MD1: gs.IModel = new gs.Model(td.open_box());
-    const G1: gs.IGroup = MD1.addGroup("Box");
     const T1: tree.ITopoTree = new TopoTree();
     const MD2: gs.IModel = new gs.Model(td.open_box());
-    const G2: gs.IGroup = MD1.addGroup("Box");
     const T2: tree.ITopoTree = new TopoTree();
     const f1: gs.IFace = MD1.getGeom().getObj(0).getFaces()[0];
     const f2: gs.IFace = MD1.getGeom().getObj(0).getFaces()[1];

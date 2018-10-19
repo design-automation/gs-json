@@ -1,12 +1,11 @@
 import * as three from "three";
 import {Arr} from "./libs/arr/arr";
-import {XYZ, IObj, IPoint, IVertex, IEdge, IWire, IFace, IGroup} from "./ifaces_gs";
+import {XYZ, IObj, IPoint, IVertex, IEdge, IWire, IFace} from "./ifaces_gs";
 import {ITopoPathData} from "./ifaces_json";
 import {EGeomType, EObjType, mapObjTypeToString} from "./enums";
 import {Vertex, Edge, Wire, Face} from "./topo_sub";
 import {Ent} from "./entity";
 import {Point} from "./entity_point";
-import {Group} from "./groups";
 import {_castToObjType} from "./entity_obj_cast";
 
 /**
@@ -256,24 +255,6 @@ export abstract class Obj extends Ent implements IObj {
         const points: IPoint[] = [];
         for (const face of this.getFaces()) {points.push(...face.getVertices().map((v) => v.getPoint()));}
         return points;
-    }
-    //  Groups -------------------------------------------------------------------------------------
-
-    /**
-     * Get the group names for all the groups for which this entity is a member.
-     * @return The array of group names.
-     */
-    public getGroups(): IGroup[] {
-        return this._kernel.objGetGroups(this._id).map((v) => new Group(this._kernel, v));
-    }
-
-    /**
-     * Add this object to a group.
-     * @param group The group.
-     * @return True if the entity was added, False is the object was already in the group.
-     */
-    public addToGroup(group: IGroup): boolean {
-        return this._kernel.groupAddObj(group.getName(), this._id);
     }
 
     //  toString -------------------------------------------------------------------------------------

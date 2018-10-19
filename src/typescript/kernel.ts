@@ -3,7 +3,7 @@ import {Arr} from "./libs/arr/arr";
 import {XYZ, IModel, IGeom} from "./ifaces_gs";
 
 import {IMetadata, IModelData,  IAttribData,
-    IGroupData, TObjData, TPointsData, ITopoPathData} from "./ifaces_json";
+    TObjData, TPointsData, ITopoPathData} from "./ifaces_json";
 
 import {EGeomType, EDataType, EObjType, TDataTypeStr,
     mapGeomTypeToString, mapDataTypeToString,
@@ -30,7 +30,6 @@ export class Kernel {
     private _points: TPointsData;
     private _objs: TObjData[];
     private _attribs: Map<EGeomType, Map<string, IAttribData>>;
-    private _groups: Map<string, IGroupData>;
     private _topos_trees: Map<string, ITopoTree>;
 
     /**
@@ -48,7 +47,6 @@ export class Kernel {
         this._attribs.set(EGeomType.edges, new Map());
         this._attribs.set(EGeomType.wires, new Map());
         this._attribs.set(EGeomType.faces, new Map());
-        this._groups = new Map();
         this._topos_trees = new Map();
         // Set the data
         if (data && data.metadata !== undefined) {
@@ -107,18 +105,6 @@ export class Kernel {
                 this._attribs.get(EGeomType.faces).set(attrib_data.name, attrib_data);
             }
         }
-        // Groups
-        if (data && data.attribs && data.groups !== undefined) {
-            for (const group_data of data.groups) {
-                if (group_data.parent === undefined) {group_data.parent = null;}
-                if (group_data.props === undefined) {group_data.props = [];}
-                if (group_data.objs === undefined) {group_data.objs = [];}
-                if (group_data.points === undefined) {group_data.points = [];}
-                this._topos_trees.set(group_data.name, new TopoTree(group_data.topos));
-                group_data.topos = undefined;
-                this._groups.set(group_data.name, group_data);
-            }
-        }
     }
 
     //  Model General ------------------------------------------------------------------------------
@@ -155,22 +141,6 @@ export class Kernel {
             }
             if (this._attribs.get(EGeomType.objs) !== undefined) {
                 model_data.attribs.objs = Array.from(this._attribs.get(EGeomType.objs).values());
-            }
-        }
-        //TODO add topos to groups
-        // In the IGroupData, groups data consists of the following:
-        //     name: string;
-        //     parent?: string;
-        //     objs?: number[];
-        //     topos?: TTreeData; <<< This is an array of 2 x TreeBranch2, and 4 x TreeBranch3
-        //     points?: number[];
-        //     props?: Array<[string, any]>;
-        // This kernel maintains a this._groups Map of such data, group_name -> group_data
-        // When saving, the evalues of teh map are saved
-        if (this._groups !== undefined) {
-            model_data.groups = Array.from(this._groups.values());
-            for (const group of model_data.groups) {
-                group.topos = []; //TODO add the topo data here
             }
         }
         return model_data;
@@ -298,61 +268,6 @@ export class Kernel {
         //         this._attribs.get(EGeomType.faces).set(attrib_data.name, attrib_data);
         //     }
         // }
-        // Merge Groups
-        if (data.attribs && data.groups !== undefined) {
-            for (const old_group_data of data.groups) {
-                const new_group_data: IGroupData = {name: old_group_data.name};
-                // parent
-                if (old_group_data.parent !== undefined) {
-                    new_group_data.parent = old_group_data.parent;
-                } else {
-                    new_group_data.parent = null;
-                }
-                // properties
-                if (old_group_data.props !== undefined) {
-                    new_group_data.props = Arr.deepCopy(old_group_data.props);
-                } else {
-                    new_group_data.props = [];
-                }
-                // map point IDs
-                new_group_data.points = [];
-                if (old_group_data.points !== undefined) {
-                    for (const old_point_id of old_group_data.points) {
-                        new_group_data.points.push(point_id_map.get(old_point_id));
-                    }
-                }
-                // map obj IDs
-                new_group_data.objs = [];
-                if (old_group_data.objs !== undefined) {
-                    for (const old_obj_id of old_group_data.objs) {
-                        new_group_data.objs.push(obj_id_map.get(old_obj_id));
-                    }
-                }
-                // map topo trees
-                if (old_group_data.topos !== undefined) {
-                    new_group_data.topos = Arr.deepCopy(old_group_data.topos);
-                } else {
-                    new_group_data.topos = [];
-                }
-
-                // check if the name already exists
-                const existing_group: IGroupData = this._groups.get(new_group_data.name);
-                if (existing_group !== undefined) {
-                    // add the group data to the existing group
-                    existing_group.parent = new_group_data.parent; // old parent will be overwritten
-                    existing_group.props.push(...new_group_data.props);
-                    existing_group.points.push(...new_group_data.points);
-                    existing_group.objs.push(...new_group_data.objs);
-                    // TODO add the topo trees to the existing group
-                } else {
-                    // add a new group to the model
-                    this._groups.set(new_group_data.name, new_group_data);
-                    // create the topo trees
-                    this._topos_trees.set(new_group_data.name, new TopoTree(new_group_data.topos));
-                }
-
-            }
-        }
     }
 
     /**
@@ -512,66 +427,6 @@ export class Kernel {
         return this._attribs.get(geom_type).has(name);
     }
 
-    //  Model Groups -------------------------------------------------------------------------------
-
-    /**
-     * Get all the groups in the model.
-     * @param
-     * @return
-     */
-    public modelGetAllGroups(): IGroupData[] {
-        return Array.from(this._groups.values());
-    }
-
-    /**
-     * Get one group in the model.
-     * @param
-     * @return
-     */
-    public modelGetGroup(name: string): IGroupData {
-        return this._groups.get(name);
-    }
-
-    /**
-     * Add a new group to the model.
-     * If a group with this name already exists, then that group is returned.
-     * @param
-     * @return
-     */
-    public modelAddGroup(name: string, parent?: string): IGroupData {
-        if (this.modelHasGroup(name)) {return this.modelGetGroup(name);}
-        const data: IGroupData = {name, parent: null, props: [], points: [], objs: []};
-        if (parent !== undefined) {
-            if (this._groups.has(parent)) {
-                data.parent = parent;
-            } else {
-                throw new Error("Parent group does not exist.");
-            }
-        }
-        this._groups.set(name, data);
-        this._topos_trees.set(name, new TopoTree());
-        return data;
-    }
-
-    /**
-     * Delete a group from the model.
-     * @param
-     * @return
-     */
-    public modelDelGroup(name: string): boolean {
-        const group = this._groups.delete(name);
-        const tree = this._topos_trees.delete(name);
-        return (group && tree);
-    }
-
-    /**
-     * Check if the group exists in the model.
-     * @param
-     * @return
-     */
-    public modelHasGroup(name: string): boolean {
-        return this._groups.has(name);
-    }
     //  Geom Points --------------------------------------------------------------------------------
 
     /**
@@ -649,8 +504,6 @@ export class Kernel {
         this._updateObjsForDelPoint(id);
         // delete the point from attribs
         this._updateAttribsForDelPoint(id);
-        // delete the points from groups
-        this._updateGroupsForDelPoint(id);
 
         // all seem ok
         return true;
@@ -892,50 +745,6 @@ export class Kernel {
     }
 
     /**
-     * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
-     * two angles.
-     * @param origin_id The origin point.
-     * @param axes Three orthogonal axes as XYZ vectors
-     * @param angles The angles, can be undefined, in which case a closed circle is generated.
-     * @return ID of object.
-     */
-    public geomAddCircle(origin_id: number, axes: [XYZ, XYZ, XYZ], angles?: [number, number]): number {
-        const new_id: number = this._objs.length;
-        // add the obj
-        this._objs.push([
-            [[origin_id]], // wire with just a single point
-            [], // faces, none
-            [EObjType.circle, axes[0], axes[1], axes[2], angles], // params
-        ]);
-        // update all attributes
-        this._newObjAddToAttribs(new_id);
-        // return the new conic id
-        return new_id;
-    }
-
-    /**
-     * Adds a new ellipse to the model defined by origin and two vectors for the x and y axes, and
-     * two angles.
-     * @param origin_id The origin point.
-     * @param axes Three orthogonal axes as XYZ vectors
-     * @param angles The angles, can be undefined, in which case a ellipse is generated.
-     * @return ID of object.
-     */
-    public geomAddEllipse(origin_id: number, axes: [XYZ, XYZ, XYZ], angles?: [number, number]): number {
-        const new_id: number = this._objs.length;
-        // add the obj
-        this._objs.push([
-            [[origin_id]], // wire with just a single point
-            [], // faces, none
-            [EObjType.ellipse, axes[0], axes[1], axes[2], angles], // params
-        ]);
-        // update all attributes
-        this._newObjAddToAttribs(new_id);
-        // return the new conic id
-        return new_id;
-    }
-
-    /**
      * Adds a new polyline to the model that passes through a sequence of points.
      * @param points An array of Points.
      * @param is_closed Indicates whether the polyline is closed.
@@ -1080,8 +889,6 @@ export class Kernel {
         delete this._objs[id];
         // delete attribute values for this object
         this._updateAttribsForDelObj(id);
-        // delete this object from all groups
-        this._updateGroupsForDelObj(id);
         // delete the points
         if (!keep_unused_points) {
             const unused_points: Set<number> = new Set();
@@ -1507,16 +1314,6 @@ export class Kernel {
     }
 
     /**
-     * Get all the groups for which this obj is a member.
-     * @return The array of group names.
-     */
-    public objGetGroups(id: number): string[] {
-        const names: string[] = [];
-        this._groups.forEach((v,k) => (v.objs.indexOf(id) !== -1) && names.push(v.name));
-        return names;
-    }
-
-    /**
      * Transform all the points for this object.
      */
     public objXform(id: number, matrix: three.Matrix4): void {
@@ -1577,16 +1374,6 @@ export class Kernel {
             if (Arr.flatten(obj.slice(0,3)).indexOf(id) !== -1) {return false;} // Slow
         }
         return true;
-    }
-
-    /**
-     * Get all the groups for which this point is a member.
-     * @return The array of group names.
-     */
-    public pointGetGroups(id: number): string[] {
-        const names: string[] = [];
-        this._groups.forEach((v,k) => (v.points.indexOf(id) !== -1) && names.push(v.name));
-        return names;
     }
 
     /**
@@ -1678,17 +1465,6 @@ export class Kernel {
     public topoFindSharedPoints(topo_path: ITopoPathData, num_shared_points?: number): ITopoPathData[] {
         // TODO trees
         throw new Error ("Method not implemented.");
-    }
-
-    /**
-     * Get the group names for all the groups for which this topological component is a member.
-     * @return The array of group names.
-     */
-    public topoGetGroups(path: ITopoPathData): string[] {
-        const group_names: string[] = [];
-        this._topos_trees.forEach((tree,group_name) =>
-            tree.hasTopo(path) && group_names.push(group_name));
-        return group_names;
     }
 
     /**
@@ -2044,315 +1820,6 @@ export class Kernel {
         throw new Error("geom_type must be either vertices, edges, wires, or faces");
     }
 
-    //  Group manipulation methods -----------------------------------------------------------------
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupSetName(old_name, new_name): boolean {
-        if (!this._groups.has(old_name)) {return false; }
-        if (this._groups.has(new_name)) {return false; }
-        this._groups.set(new_name, this._groups.get(old_name));
-        this._groups.delete(old_name);
-        return true;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupGetParent(name: string): string {
-        return this._groups.get(name).parent;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupSetParent(name: string, parent: string): string {
-        const old_parent_name: string = this._groups.get(name).parent;
-        this._groups.get(name).parent = parent;
-        return old_parent_name;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupGetChildren(name: string): string[] {
-        const children: string[] = [];
-        this._groups.forEach((g) => (g.parent === name) && children.push(g.name));
-        return children;
-    }
-
-    // Objs in group -------------------------------------------------------------------------------
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupGetNumObjs(name: string, obj_type?: EObjType): number {
-        const group: IGroupData = this._groups.get(name);
-        if (obj_type === undefined) {return group.objs.length; }
-        return group.objs.filter((oi) => this._objs[oi][2][0] === obj_type).length;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupGetObjIDs(name: string, obj_type?: EObjType): number[] {
-        const group: IGroupData = this._groups.get(name);
-        if (obj_type === undefined) {return group.objs; }
-        const ids: number[] = [];
-        group.objs.forEach((oi) => (this._objs[oi][2][0] === obj_type) && ids.push(oi));
-        return ids;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupAddObj(name: string, id: number): boolean {
-        const group: IGroupData = this._groups.get(name);
-        if (group.objs.indexOf(id) !== -1) {return false; }
-        group.objs.push(id);
-        return true;
-    }
-
-    /**
-     * to be completed
-     *
-     * @param
-     * @return Returns true if all obj IDs were added, false otherwise.
-     */
-    public groupAddObjs(name: string, ids: number[]): boolean {
-        let ok: boolean = true;
-        for (const id of ids) {
-            if (!this.groupAddObj(name, id)) {ok = false; }
-        }
-        return ok;
-    }
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupRemoveObj(name: string, id: number): boolean {
-        const group: IGroupData = this._groups.get(name);
-        const index = group.objs.indexOf(id);
-        if (index === -1) {return false; }
-        group.objs.splice(index, 1);
-        return true;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupRemoveObjs(name: string, ids: number[]): boolean {
-        let ok: boolean = true;
-        for (const id of ids) {
-            if (!this.groupRemoveObj(name, id)) {ok = false; }
-        }
-        return ok;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupHasObj(name: string, id: number): boolean {
-        const index = this._groups.get(name).objs.indexOf(id);
-        if (index === -1) {return false; }
-        return true;
-    }
-
-    // Topos in group ------------------------------------------------------------------------------
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupGetNumTopos(name: string, geom_type?: EGeomType): number {
-        return this._topos_trees.get(name).getNumTopos(geom_type);
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupGetTopos(name: string, geom_type?: EGeomType): ITopoPathData[] {
-        return this._topos_trees.get(name).getTopos(geom_type);
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupAddTopo(name: string, topo: ITopoPathData): boolean {
-        return this._topos_trees.get(name).addTopo(topo);
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupAddTopos(name: string, topos: ITopoPathData[]): boolean {
-        let ok: boolean = true;
-        for (const topo of topos) {
-            if (!this._topos_trees.get(name).addTopo(topo)) {ok = false; }
-        }
-        return ok;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupRemoveTopo(name: string, topo: ITopoPathData): boolean {
-        return this._topos_trees.get(name).removeTopo(topo);
-    }
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupRemoveTopos(name: string, topos: ITopoPathData[]): boolean {
-        let ok: boolean = true;
-        for (const topo of topos) {
-            if (!this._topos_trees.get(name).removeTopo(topo)) {ok = false; }
-        }
-        return ok;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupHasTopo(name: string, topo: ITopoPathData): boolean {
-        return this._topos_trees.get(name).hasTopo(topo);
-    }
-
-    //  Points in group ----------------------------------------------------------------------------
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupGetNumPoints(name: string): number {
-        return this._groups.get(name).points.length;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupGetPointIDs(name: string): number[] {
-        return this._groups.get(name).points;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupAddPoint(name: string, id: number): boolean {
-        const group: IGroupData = this._groups.get(name);
-        if (group.points.indexOf(id) !== -1) {return false; }
-        group.points.push(id);
-        return true;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupAddPoints(name: string, ids: number[]): boolean {
-        let ok: boolean = true;
-        for (const id of ids) {
-            if (!this.groupAddPoint(name, id)) {ok = false; }
-        }
-        return ok;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupRemovePoint(name: string, id: number): boolean {
-        const group: IGroupData = this._groups.get(name);
-        const index = group.points.indexOf(id);
-        if (index === -1) {return false; }
-        group.points.splice(index, 1);
-        return true;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupRemovePoints(name: string, ids: number[]): boolean {
-        let ok: boolean = true;
-        for (const id of ids) {
-            if (!this.groupRemovePoint(name, id)) {ok = false; }
-        }
-        return ok;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupHasPoint(name: string, id: number): boolean {
-        const index = this._groups.get(name).points.indexOf(id);
-        if (index === -1) {return false; }
-        return true;
-    }
-
-    //  Group Properties ---------------------------------------------------------------------------
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupGetProps(name: string): Array<[string, any]> { // TODO
-        return this._groups.get(name).props;
-    }
-
-    /**
-     * to be completed
-     * @param
-     * @return
-     */
-    public groupSetProps(name: string, props: Array<[string, any]>): Array<[string, any]> { // TODO
-        const old_map = this._groups.get(name).props;
-        this._groups.get(name).props = props ;
-        return old_map;
-    }
 
     //  ======================================================================================================
     //  ======================================================================================================
@@ -2654,20 +2121,6 @@ export class Kernel {
         }
     }
 
-    /**
-     * Deletes this obj from all groups
-     * @param
-     * @return
-     */
-    private _updateGroupsForDelObj(obj_id: number): void {
-        for (const [name, group] of this._groups.entries()) {
-            // objects
-            const oi: number = group.objs.indexOf(obj_id);
-            if (oi !== -1) {group.objs.splice(oi, 1);}
-            // topos
-            this._topos_trees.get(name).removeObj(obj_id);
-        }
-    }
 
     //  ------------------------------------------------------------------------------------------------------
     //  ------------------------------------------------------------------------------------------------------
@@ -2686,17 +2139,7 @@ export class Kernel {
         }
     }
 
-    /**
-     * Delete this point from all groups
-     * @param
-     * @return
-     */
-    private _updateGroupsForDelPoint(id: number): void {
-        for (const [name, group] of this._groups.entries()) {
-            const pi: number = group.points.indexOf(id);
-            if (pi !== -1) {group.points.splice(pi, 1);}
-        }
-    }
+
 
     /**
      * Delete this point->vertex from all objs
@@ -2739,9 +2182,6 @@ export class Kernel {
             // Plane
             case EObjType.plane:
                 this.geomDelObj(vertex_path.id);
-            // Ellipse
-            case EObjType.ellipse:
-                this.geomDelObj(vertex_path.id);
             // Polyline
             case EObjType.polyline:
                 const w: number[] = obj[0][vertex_path.ti];
@@ -2752,7 +2192,7 @@ export class Kernel {
                     return;
                 }
                 w.splice(vertex_path.si, 1); // delete one vertex
-                this._updateAttribsAndGroupsForDelTopo(vertex_path);
+                this._updateAttribsForDelTopo(vertex_path);
                 return;
             // Polymesh
             case EObjType.polymesh:
@@ -2766,14 +2206,14 @@ export class Kernel {
                 }
                 if (num_f_vertices > 3) {
                     obj[1][vertex_path.ti].splice(vertex_path.si, 1); // delete one vertex
-                    this._updateAttribsAndGroupsForDelTopo(vertex_path);
+                    this._updateAttribsForDelTopo(vertex_path);
                 } else {
                     obj[1].splice(vertex_path.ti,1); // delete the whole face
-                    this._updateAttribsAndGroupsForDelTopo(
+                    this._updateAttribsForDelTopo(
                         {id: vertex_path.id, tt: vertex_path.tt, ti:vertex_path.ti});
                 }
                 const new_wires: number[][] = this._findPolymeshWires(obj[1]);
-                this._updateAttribsAndGroupsChangedWiresOrFaces(vertex_path.id, 0, new_wires);
+                this._updateAttribsChangedWiresOrFaces(vertex_path.id, 0, new_wires);
                 return;
             // Not found
             default:
@@ -2782,11 +2222,11 @@ export class Kernel {
     }
 
     /**
-     * Deletes this topo from attributes and groups, it calls methods below
+     * Deletes this topo from attributes, it calls methods below
      * @param
      * @return
      */
-    private _updateAttribsAndGroupsForDelTopo(path: ITopoPathData): void {
+    private _updateAttribsForDelTopo(path: ITopoPathData): void {
         if (path.st !== undefined) { // vertex or edge
             this._updateAttribsForDelVertexOrEdge(path);
         } else {
@@ -2796,7 +2236,6 @@ export class Kernel {
                 this._updateAttribsForDelFace(path);
             }
         }
-        this._updateGroupsForDelTopo(path);
     }
 
     /**
@@ -2835,17 +2274,6 @@ export class Kernel {
         }
     }
 
-    /**
-     * Deletes this topo from all groups
-     * @param
-     * @return
-     */
-    private _updateGroupsForDelTopo(path: ITopoPathData): void {
-        for (const [name, group] of this._groups.entries()) {
-            this._topos_trees.get(name).removeTopo(path);
-        }
-    }
-
     //  ------------------------------------------------------------------------------------------------------
     //  ------------------------------------------------------------------------------------------------------
     //  CHANGED TOPOS ----------------------------------------------------------------------------------------
@@ -2854,41 +2282,41 @@ export class Kernel {
 
     /**
      * Compares the existing topo of an obj to this new topo. If there are any differences, then
-     * attribs and groups are all updated to relflect the changes.
+     * attribs are all updated to relflect the changes.
      * Finally, the topo for this obj is set to new topo.
      * @param
      * @return
      */
-    private _updateAttribsAndGroupsChangedTopo(id: number, new_topo: number[][][]): void {
+    private _updateAttribsChangedTopo(id: number, new_topo: number[][][]): void {
         // update wires
-        this._updateAttribsAndGroupsChangedWiresOrFaces(id, 0, new_topo[0]);
+        this._updateAttribsChangedWiresOrFaces(id, 0, new_topo[0]);
         // update faces
-        this._updateAttribsAndGroupsChangedWiresOrFaces(id, 1, new_topo[1]);
+        this._updateAttribsChangedWiresOrFaces(id, 1, new_topo[1]);
     }
 
     /**
      * Compares the existing wires/faces of an obj to the new wires/faces.
      * If there are any differences, then
-     * attribs and groups are all updated to relflect the new changes.
+     * attribs are all updated to relflect the new changes.
      * Finally, the wires/faces for this obj is set to new wires/faces.
      * @param
      * @return
      */
-    private _updateAttribsAndGroupsChangedWiresOrFaces(id: number, tt: 0|1, new_topo: number[][]): void {
+    private _updateAttribsChangedWiresOrFaces(id: number, tt: 0|1, new_topo: number[][]): void {
         const old_topo: number[][] = this._objs[id][tt];
         // check for deleted wires / vertices / edges
         for (let wf = 0; wf < old_topo.length; wf++) {
             // check for deleted wires
             if (new_topo[wf] === undefined) {
-                // a wire has been deleted, so delete from both attrbs and groups
-                this._updateAttribsAndGroupsForDelTopo({id, tt, ti:wf});
+                // a wire has been deleted, so delete from both attrbs
+                this._updateAttribsForDelTopo({id, tt, ti:wf});
             }
             // check for deleted vertices
             for (let v = 0; v < old_topo[wf].length; v++) {
                 if (v !== -1) {
                     // deleted vertex
                     if (new_topo[wf] === undefined || new_topo[wf][v] === undefined) {
-                        this._updateAttribsAndGroupsForDelTopo({id, tt, ti:wf, st: 0, si: v});
+                        this._updateAttribsForDelTopo({id, tt, ti:wf, st: 0, si: v});
                     }
                 }
             }
@@ -2896,7 +2324,7 @@ export class Kernel {
             for (let v = 0; v < old_topo[wf].length; v++) {
                 // deleted edge
                 if (new_topo[wf] === undefined || new_topo[wf][v] === undefined) {
-                    this._updateAttribsAndGroupsForDelTopo({id, tt, ti:wf, st: 0, si: v});
+                    this._updateAttribsForDelTopo({id, tt, ti:wf, st: 0, si: v});
                 }
             }
         }
@@ -3147,7 +2575,7 @@ export class Kernel {
     private _objXformAxes(ids: number[], matrix: three.Matrix4): void {
         for (const id of ids) {
             switch (this.objGetType(id)) {
-                case EObjType.ray: case EObjType.plane: case EObjType.circle: case EObjType.ellipse:
+                case EObjType.ray: case EObjType.plane: 
                     // set position of matrix to 0 so no translation
                     const matrix2 = matrix.clone();
                     matrix2.setPosition(new three.Vector3());

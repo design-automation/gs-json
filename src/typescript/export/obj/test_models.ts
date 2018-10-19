@@ -31,8 +31,6 @@ function writeObjFiles(): void {
     gen(gm.genModelGrid(), "grid.obj");
     gen(gm.genModelTorus(), "torus.obj");
     //gen(gm.genModelManyTorus(), "many_torus.obj");
-    gen(gm.genModelCircles(), "circles.obj");
-    gen(gm.genModelGroups(), "groups.obj");
     gen(gm.genModelPlanes(), "planes.obj");
     gen(gm.genModelDelPoints(), "del_points.obj");
     gen(gm.genModelDelObjs(), "del_objs.obj");

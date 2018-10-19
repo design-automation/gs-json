@@ -28,9 +28,6 @@ describe("Tests for Entity class", () => {
     it("test_ent_setAttribValue", () => {
         expect( test_ent_setAttribValue() ).toBe(true);
     });
-    it("test_ent_getGroups", () => {
-        expect( test_ent_getGroups() ).toBe(true);
-    });
 });
 
 
@@ -118,35 +115,3 @@ export function test_ent_setAttribValue(): boolean {
     return true;
 }
 
-export function test_ent_getGroups(): boolean {
-    const m: gs.IModel = new gs.Model(test_data.open_box());
-    const geom: gs.IGeom = m.getGeom();
-    const a1: gs.IObj = geom.getObj(0);
-    const p1: gs.IPoint = geom.getPoint(0);
-    const gpr1a: gs.IGroup = m.addGroup("test1a");
-    const gpr1b: gs.IGroup = m.addGroup("test1b");
-    const gpr1c: gs.IGroup = m.addGroup("test1b");
-    gpr1a.addObj(a1);
-    gpr1b.addObj(a1);
-    gpr1c.addObj(a1);
-    const gpr2: gs.IGroup = m.addGroup("test2");
-    gpr2.addPoint(p1);
-    if(a1.getGroups()[0].getName() !== "test1a") {return false;}
-    if(a1.getGroups()[1].getName() !== "test1b") {return false;}
-    if(p1.getGroups()[0].getName() !== "test2") {return false;}
-    return true;
-}
-
-export function test_ent_addToGroup(): boolean {
-    const m: gs.IModel = new gs.Model(test_data.box_with_groups());
-    const geom: gs.IGeom = m.getGeom();
-    const a1: gs.IObj = geom.getObj(0);
-    const gpr1: gs.IGroup = m.addGroup("test1");
-    // console.log(gpr1.hasObj(0));
-    // console.log(true);
-    if(gpr1.hasObj(a1)) {return false;}
-    a1.addToGroup(gpr1);
-    // console.log(gpr1.hasObj(0));
-    if(gpr1.hasObj(a1)) {return false;}
-    return true;
-}
