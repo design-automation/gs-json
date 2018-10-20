@@ -917,7 +917,7 @@ img { max-width: 100%; }
 			<p>[<img src="https://travis-ci.org/phtj/gs-json.svg?branch=master" alt="Build Status">]</p>
 			<h1 id="gs-json">gs-json</h1>
 			<p>gs-json is a domain agnostic unifying 3D file format for geometric and semantic modelling (hence the &#39;gs&#39;).</p>
-			<p>See the API docs: <a href="https://phtj.github.io/gs-json">https://phtj.github.io/gs-json</a></p>
+			<p>See the API docs: <a href="https://design-automation.github.io/gs-json">https://design-automation.github.io/gs-json</a></p>
 			<h1 id="conceptual-model">Conceptual Model</h1>
 			<p>The gs-json conceptual model uses topology as the organising framework for defining both geometry and semantics. The semantics is not hard coded as is typically the case with product models, but is instead user defined through the use of attributes and groups.</p>
 			<p>Geometry consists of objects, and includes both polygonal and spline based geometry. Semantics consists of data linked to objects and groups of objects in the model.</p>
@@ -1014,18 +1014,16 @@ img { max-width: 100%; }
 			<p>These two approaches to adding semantics to a model are based on existing approaches in specific domains. Attributes are similar to the way sematics are specified in existing geospatial file formats such as geojson. However, in gs-json, the concept of attributes has been further generalised, allowing them to be added to topological components that are implicit within geometric objects. Properties are similar to the way semantics are specified in existing product modelling file formats such as the various STEP formats. Geometric objects can be groups into collections, and possible organised into part-whole hierarchies, with properties being specified for each level of the hierarchy. However, gs-json does not specify any domain-specific semantics.</p>
 			<h1 id="json-encoding-of-geometry">JSON Encoding of Geometry</h1>
 			<p>Within a gs-json file, the geometry is defined in two arrays. Points are specified in the &quot;points&quot; array.</p>
-			<pre><code class="lang-javascript"><span class="hljs-string">"points"</span>: [
+			<pre><code class="language-javascript"><span class="hljs-string">"points"</span>: [
     [...], <span class="hljs-comment">//values_map</span>
     [...]  <span class="hljs-comment">//values</span>
-]
-</code></pre>
+]</code></pre>
 			<p>Objects are specified in the &quot;objs&quot; array.</p>
-			<pre><code class="lang-javascript"><span class="hljs-string">"objs"</span>: [
+			<pre><code class="language-javascript"><span class="hljs-string">"objs"</span>: [
     [...], <span class="hljs-comment">//obj0</span>
     [...], <span class="hljs-comment">//obj1</span>
     [...]  <span class="hljs-comment">//obj2</span>
-]
-</code></pre>
+]</code></pre>
 			<h2 id="geometric-objects">Geometric Objects</h2>
 			<p>Objects are represented using integer arrays, consisting of three sub-arrays as follows:</p>
 			<ul>
@@ -1058,15 +1056,14 @@ img { max-width: 100%; }
 			<h1 id="json-encoding-of-semantics">JSON Encoding of Semantics</h1>
 			<p>Within a js-JSON file, all semantics is defined in attributes and groups.</p>
 			<h2 id="attributes">Attributes</h2>
-			<pre><code class="lang-javascript"><span class="hljs-string">"attribs"</span>:  {
+			<pre><code class="language-javascript"><span class="hljs-string">"attribs"</span>:  {
     <span class="hljs-string">"points"</span>:[{...}, ...],
     <span class="hljs-string">"vertices"</span>:[{...},...],
     <span class="hljs-string">"edges"</span>:[{...},...],
     <span class="hljs-string">"wires"</span>:[{...}, ...],
     <span class="hljs-string">"faces"</span>:[{...}, ...],
     <span class="hljs-string">"objs"</span>:[{...}, ...]
-}
-</code></pre>
+}</code></pre>
 			<p>Attributes are defined as follows:</p>
 			<ul>
 				<li>{&quot;name&quot;=&quot;my_attrib&quot;, &quot;geom_type&quot;=&quot;xxx&quot;, &quot;data_type&quot;=&quot;xxx&quot;, &quot;values&quot;=[...]}</li>
@@ -1082,13 +1079,12 @@ img { max-width: 100%; }
 				<li>colour - the point colour, as [r,g,b].</li>
 			</ul>
 			<h2 id="groups">Groups</h2>
-			<pre><code class="lang-javascript"><span class="hljs-string">"groups"</span>: [
+			<pre><code class="language-javascript"><span class="hljs-string">"groups"</span>: [
     {...},
     {...},
     {...},
     <span class="hljs-comment">//...</span>
-]
-</code></pre>
+]</code></pre>
 			<p>A group can contain points, topos, and objects. A point, topo, or object may be contained in more than one group.</p>
 			<p>Each group can have a single parent group. This allows groups to form a hierarchy. If no parent is defined, the the group is assumed to be a <em>root</em> or <em>top-level</em> group.</p>
 			<p>Groups are defined as follows:</p>
@@ -1114,25 +1110,19 @@ img { max-width: 100%; }
 						<h3>External modules</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-external-module"><a href="modules/__attrib_tests_.html" class="tsd-kind-icon">"_<wbr>attrib_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_circle_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>circle_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_ellipse_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>ellipse_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_plane_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>plane_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_polyline_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>polyline_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_polymesh_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>polymesh_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__entity_obj_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>obj_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__entity_point_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>point_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__entity_tests_.html" class="tsd-kind-icon">"_<wbr>entity_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/__export_.html" class="tsd-kind-icon">"_<wbr>export"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__geom_tests_.html" class="tsd-kind-icon">"_<wbr>geom_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/__groups_tests_.html" class="tsd-kind-icon">"_<wbr>groups_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__model_tests_.html" class="tsd-kind-icon">"_<wbr>model_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__topo_edge_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>edge_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__topo_face_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>face_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__topo_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/__topo_trees_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>trees_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__topo_vertex_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>vertex_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/__topo_wire_tests_.html" class="tsd-kind-icon">"_<wbr>topo_<wbr>wire_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/__utils_.html" class="tsd-kind-icon">"_<wbr>utils"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_attrib_.html" class="tsd-kind-icon">"attrib"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_attrib_cast_.html" class="tsd-kind-icon">"attrib_<wbr>cast"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_attrib_entattrib_.html" class="tsd-kind-icon">"attrib_<wbr>entattrib"</a></li>
@@ -1140,69 +1130,44 @@ img { max-width: 100%; }
 							<li class="tsd-kind-external-module"><a href="modules/_entity_.html" class="tsd-kind-icon">"entity"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_.html" class="tsd-kind-icon">"entity_<wbr>obj"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_cast_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>cast"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_circle_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>circle"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_ellipse_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>ellipse"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_hyperbola_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>hyperbola"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_plane_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>plane"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_polyline_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>polyline"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_polymesh_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>polymesh"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_entity_obj_ray_.html" class="tsd-kind-icon">"entity_<wbr>obj_<wbr>ray"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_entity_point_.html" class="tsd-kind-icon">"entity_<wbr>point"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_enums_.html" class="tsd-kind-icon">"enums"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_export_threejs__export_threejs_tests_.html" class="tsd-kind-icon">"export/threejs/_<wbr>export_<wbr>threejs_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_export_threejs_export_threejs_.html" class="tsd-kind-icon">"export/threejs/export_<wbr>threejs"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_export_threejs_ifaces_threejs_.html" class="tsd-kind-icon">"export/threejs/ifaces_<wbr>threejs"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_generate_gen_gs_test_models_.html" class="tsd-kind-icon">"generate/gen_<wbr>gs_<wbr>test_<wbr>models"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_export_obj_obj_.html" class="tsd-kind-icon">"export/obj/obj"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_export_obj_obj_export_.html" class="tsd-kind-icon">"export/obj/obj_<wbr>export"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_export_obj_test_models_.html" class="tsd-kind-icon">"export/obj/test_<wbr>models"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_generate_gen_test_models_.html" class="tsd-kind-icon">"generate/gen_<wbr>test_<wbr>models"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_generate_gen_three_test_models_.html" class="tsd-kind-icon">"generate/gen_<wbr>three_<wbr>test_<wbr>models"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_generate_generate_.html" class="tsd-kind-icon">"generate/generate"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_generate_three_generate_.html" class="tsd-kind-icon">"generate/three_<wbr>generate"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_generate_three_geom_.html" class="tsd-kind-icon">"generate/three_<wbr>geom"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_generate_three_scene_.html" class="tsd-kind-icon">"generate/three_<wbr>scene"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_generate_test_models_.html" class="tsd-kind-icon">"generate/test_<wbr>models"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_geom_.html" class="tsd-kind-icon">"geom"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_groups_.html" class="tsd-kind-icon">"groups"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_gs_json_.html" class="tsd-kind-icon">"gs-<wbr>json"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_ifaces_gs_.html" class="tsd-kind-icon">"ifaces_<wbr>gs"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_ifaces_json_.html" class="tsd-kind-icon">"ifaces_<wbr>json"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_ifaces_three_.html" class="tsd-kind-icon">"ifaces_<wbr>three"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_ifaces_trees_.html" class="tsd-kind-icon">"ifaces_<wbr>trees"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_import_citygml_import_citygml_.html" class="tsd-kind-icon">"import/citygml/import_<wbr>citygml"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_kernel_.html" class="tsd-kind-icon">"kernel"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_libs_arr__arr_tests_.html" class="tsd-kind-icon">"libs/arr/_<wbr>arr_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_libs_arr_arr_.html" class="tsd-kind-icon">"libs/arr/arr"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_libs_arr_arr_tests_.html" class="tsd-kind-icon">"libs/arr/arr_<wbr>tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_libs_conics_conics_.html" class="tsd-kind-icon">"libs/conics/conics"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_libs_conics_conics_tests_.html" class="tsd-kind-icon">"libs/conics/conics_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_libs_filesys_filesys_.html" class="tsd-kind-icon">"libs/filesys/filesys"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_libs_threex_earcut_.html" class="tsd-kind-icon">"libs/threex/earcut"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_libs_threex__threex_tests_.html" class="tsd-kind-icon">"libs/threex/_<wbr>threex_<wbr>tests"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_libs_threex_threex_.html" class="tsd-kind-icon">"libs/threex/threex"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_libs_threex_threex_tests_.html" class="tsd-kind-icon">"libs/threex/threex_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_libs_topo_trees__topo_trees_tests_.html" class="tsd-kind-icon">"libs/topo_<wbr>trees/_<wbr>topo_<wbr>trees_<wbr>tests"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_libs_topo_trees_ifaces_trees_.html" class="tsd-kind-icon">"libs/topo_<wbr>trees/ifaces_<wbr>trees"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_libs_topo_trees_topo_trees_.html" class="tsd-kind-icon">"libs/topo_<wbr>trees/topo_<wbr>trees"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_libs_triangulate_earcut_.html" class="tsd-kind-icon">"libs/triangulate/earcut"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_libs_triangulate_triangulate_.html" class="tsd-kind-icon">"libs/triangulate/triangulate"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_libs_uuid_uuid_.html" class="tsd-kind-icon">"libs/uuid/uuid"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_model_.html" class="tsd-kind-icon">"model"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_test_data_.html" class="tsd-kind-icon">"test_<wbr>data"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_ifaces_three_.html" class="tsd-kind-icon">"three/ifaces_<wbr>three"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_test_models_.html" class="tsd-kind-icon">"three/test_<wbr>models"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_three_.html" class="tsd-kind-icon">"three/three"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_three_generate_.html" class="tsd-kind-icon">"three/three_<wbr>generate"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_three_geom_.html" class="tsd-kind-icon">"three/three_<wbr>geom"</a></li>
+							<li class="tsd-kind-external-module"><a href="modules/_three_three_scene_.html" class="tsd-kind-icon">"three/three_<wbr>scene"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_topo_.html" class="tsd-kind-icon">"topo"</a></li>
 							<li class="tsd-kind-external-module"><a href="modules/_topo_sub_.html" class="tsd-kind-icon">"topo_<wbr>sub"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_topo_trees_.html" class="tsd-kind-icon">"topo_<wbr>trees"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_arr_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/arr.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_attrib_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/attrib.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_conics_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/conics.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_entity_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/entity.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_entity_obj_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/entity_<wbr>obj.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_entity_obj_circle_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/entity_<wbr>obj_<wbr>circle.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_entity_obj_ellipse_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/entity_<wbr>obj_<wbr>ellipse.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_entity_obj_plane_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/entity_<wbr>obj_<wbr>plane.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_entity_obj_polyline_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/entity_<wbr>obj_<wbr>polyline.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_entity_obj_polymesh_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/entity_<wbr>obj_<wbr>polymesh.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_entity_point_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/entity_<wbr>point.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_export_threejs_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/export_<wbr>threejs.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_geom_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/geom.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_groups_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/groups.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_model_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/model.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_three_utils_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/three_<wbr>utils.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_topo_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/topo.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_topo_edge_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/topo_<wbr>edge.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_topo_face_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/topo_<wbr>face.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_topo_trees_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/topo_<wbr>trees.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_topo_vertex_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/topo_<wbr>vertex.tests"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_unit_tests_topo_wire_tests_.html" class="tsd-kind-icon">"unit-<wbr>tests/topo_<wbr>wire.tests"</a></li>
 						</ul>
 					</section>
 				</div>
