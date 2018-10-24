@@ -88,6 +88,17 @@ export interface IGeom  {
 /**
  * Interface, for the abstract Ent class, that represents any geometric entity.
  * The Ent class cannot be instantiated.
+ * 
+ * An enity has a unique ID and has a reference to the model. 
+ * An entity is an asbtract superclass of two sub-classes: objects and points.
+ * 
+ * The geometric model is loosely based 
+ * OpenGIS Implementation Specification for Geographic information - Simple feature access - Part 1: Common architecture
+ * https://www.sis.se/api/document/preview/905048/
+ * 
+ * 
+ * 
+ * 
  */
 export interface IEnt  {
     getModel(): IModel;
